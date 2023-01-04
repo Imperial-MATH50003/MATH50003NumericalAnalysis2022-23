@@ -1,0 +1,192 @@
+# A Asymptotics and Computational Cost
+
+We introduce Big-O, little-o and asymptotic notation and see
+how they can be used to describe computational cost.
+
+1. Asymptotics as $n → ∞$
+2. Asymptotics as $x → x_0$
+3. Computational cost
+
+## 1. Asymptotics as $n → ∞$
+
+Big-O, little-o, and "asymptotic to" are used to describe behaviour of functions
+at infinity. 
+
+**Definition (Big-O)** 
+$$
+f(n) = O(ϕ(n)) \qquad \hbox{(as $n → ∞$)}
+$$
+means
+$$
+\left|{f(n) \over ϕ(n)}\right|
+$$
+is bounded for sufficiently large $n$. That is,
+there exist constants $C$ and $N_0$ such 
+that, for all $n \geq N_0$, $|{f(n) \over ϕ(n)}| \leq C$.
+
+**Definition (little-O)** 
+$$
+f(n) = o(ϕ(n)) \qquad \hbox{(as $n → ∞$)}
+$$
+means
+$$
+\lim_{n → ∞} {f(n) \over ϕ(n)} = 0.
+$$
+
+**Definition (asymptotic to)** 
+$$
+f(n) ∼ ϕ(n) \qquad \hbox{(as $n → ∞$)}
+$$
+means
+$$
+\lim_{n → ∞} {f(n) \over ϕ(n)} = 1.
+$$
+
+**Examples**
+$$
+{\cos n \over n^2 -1} = O(n^{-2})
+$$
+as
+$$
+\left|{{\cos n \over n^2 -1} \over n^{-2}} \right| \leq \left| n^2 \over n^2 -1 \right|  \leq 2
+$$
+for $n \geq N_0 = 2$.
+$$
+\log n = o(n)
+$$
+as
+$$
+lim_{n → ∞} {\log n \over n} = 0.
+$$
+$$
+n^2 + 1 ∼ n^2
+$$
+as
+$$
+{n^2 +1 \over n^2} → 1.
+$$
+
+
+Note we sometimes write $f(O(ϕ(n)))$ for a function of the form
+$f(g(n))$ such that $g(n) = O(ϕ(n))$.
+
+### Rules
+
+We have some simple algebraic rules:
+
+**Proposition (Big-O rules)**
+$$
+\begin{align*}
+O(ϕ(n))O(ψ(n)) = O(ϕ(n)ψ(n))  \qquad \hbox{(as $n → ∞$)} \\
+O(ϕ(n)) + O(ψ(n)) = O(|ϕ(n)| + |ψ(n)|)  \qquad \hbox{(as $n → ∞$)}.
+\end{align*}
+$$
+
+
+## 2. Asymptotics as $x → x_0$
+
+We also have Big-O, little-o and "asymptotic to" at a point:
+
+**Definition (Big-O)** 
+$$
+f(x) = O(ϕ(x)) \qquad \hbox{(as $x → x_0$)}
+$$
+means
+$$
+|f(x) \over ϕ(x)|
+$$
+is bounded in a neighbourhood of $x_0$. That is,
+there exist constants $C$ and $r$ such 
+that, for all $0 \leq |x - x_0| \leq r$, $|{f(x) \over ϕ(x)}| \leq C$.
+
+**Definition (little-O)** 
+$$
+f(x) = o(ϕ(x)) \qquad \hbox{(as $x → x_0$)}
+$$
+means
+$$
+\lim_{x → x_0} {f(x) \over ϕ(x)} = 0.
+$$
+
+**Definition (asymptotic to)** 
+$$
+f(x) ∼ ϕ(x) \qquad \hbox{(as $x → x_0$)}
+$$
+means
+$$
+\lim_{x → x_0} {f(x) \over ϕ(x)} = 1.
+$$
+
+**Example**
+$$
+\exp x = 1 + x + O(x^2) \qquad \hbox{as $x → 0$}
+$$
+Since
+$$
+\exp x = 1 + x + {\exp t \over 2} x^2
+$$
+for some $t \in [0,x]$ and
+$$
+\left|{{\exp t \over 2} x^2 \over x^2}\right| \leq {3 \over 2}
+$$
+provided $x \leq 1$.
+
+
+## 3. Computational cost
+
+We will use Big-O notation to describe the computational cost of algorithms.
+Consider the following simple sum
+$$
+\sum_{k=1}^n x_k^2
+$$
+which we might implement as:
+```julia
+function sumsq(x)
+    n = length(x)
+    ret = 0.0
+    for k = 1:n
+        ret = ret + x[k]^2
+    end
+    ret
+end
+
+n = 100
+x = randn(n)
+sumsq(x)
+```
+Each step of this algorithm consists of one memory look-up (`z = x[k]`),
+one multiplication (`w = z*z`) and one addition (`ret = ret + w`).
+We will ignore the memory look-up in the following discussion.
+The number of CPU operations per step is therefore 2 (the addition and multiplication).
+Thus the total number of CPU operations is $2n$. But the constant $2$ here is
+misleading: we didn't count the memory look-up, thus it is more sensible to
+just talk about the asymptotic complexity, that is, the _computational cost_ is $O(n)$.
+
+Now consider a double sum like:
+$$
+\sum_{k=1}^n \sum_{j=1}^k x_j^2
+$$
+which we might implement as:
+```julia
+function sumsq2(x)
+    n = length(x)
+    ret = 0.0
+    for k = 1:n
+        for j = 1:k
+            ret = ret + x[j]^2
+        end
+    end
+    ret
+end
+
+n = 100
+x = randn(n)
+sumsq2(x)
+```
+
+Now the inner loop is $O(1)$ operations (we don't try to count the precise number),
+which we do $k$ times for $O(k)$ operations as $k → ∞$. The outer loop therefore takes
+$$
+∑_{k = 1}^n O(k) = O\left(∑_{k = 1}^n k\right) = O\left( {n (n+1) \over 2} \right) = O(n^2)
+$$
+operations.

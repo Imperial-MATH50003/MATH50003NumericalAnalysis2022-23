@@ -1,0 +1,334 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[a4paper,text={16.5cm,25.2cm},centering]{geometry}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.2ex}
+
+\hypersetup
+       {   pdfauthor = {  },
+           pdftitle={  },
+           colorlinks=TRUE,
+           linkcolor=black,
+           citecolor=blue,
+           urlcolor=blue
+       }
+
+
+
+
+\usepackage{upquote}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    upquote=true,
+    breaklines=true,
+    breakindent=0pt,
+    keepspaces=true,
+    showspaces=false,
+    columns=fullflexible,
+    showtabs=false,
+    showstringspaces=false,
+    escapeinside={(*@}{@*)},
+    extendedchars=true,
+}
+\newcommand{\HLJLt}[1]{#1}
+\newcommand{\HLJLw}[1]{#1}
+\newcommand{\HLJLe}[1]{#1}
+\newcommand{\HLJLeB}[1]{#1}
+\newcommand{\HLJLo}[1]{#1}
+\newcommand{\HLJLk}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkc}[1]{\textcolor[RGB]{59,151,46}{\textit{#1}}}
+\newcommand{\HLJLkd}[1]{\textcolor[RGB]{214,102,97}{\textit{#1}}}
+\newcommand{\HLJLkn}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkp}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkr}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkt}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLn}[1]{#1}
+\newcommand{\HLJLna}[1]{#1}
+\newcommand{\HLJLnb}[1]{#1}
+\newcommand{\HLJLnbp}[1]{#1}
+\newcommand{\HLJLnc}[1]{#1}
+\newcommand{\HLJLncB}[1]{#1}
+\newcommand{\HLJLnd}[1]{\textcolor[RGB]{214,102,97}{#1}}
+\newcommand{\HLJLne}[1]{#1}
+\newcommand{\HLJLneB}[1]{#1}
+\newcommand{\HLJLnf}[1]{\textcolor[RGB]{66,102,213}{#1}}
+\newcommand{\HLJLnfm}[1]{\textcolor[RGB]{66,102,213}{#1}}
+\newcommand{\HLJLnp}[1]{#1}
+\newcommand{\HLJLnl}[1]{#1}
+\newcommand{\HLJLnn}[1]{#1}
+\newcommand{\HLJLno}[1]{#1}
+\newcommand{\HLJLnt}[1]{#1}
+\newcommand{\HLJLnv}[1]{#1}
+\newcommand{\HLJLnvc}[1]{#1}
+\newcommand{\HLJLnvg}[1]{#1}
+\newcommand{\HLJLnvi}[1]{#1}
+\newcommand{\HLJLnvm}[1]{#1}
+\newcommand{\HLJLl}[1]{#1}
+\newcommand{\HLJLld}[1]{\textcolor[RGB]{148,91,176}{\textit{#1}}}
+\newcommand{\HLJLs}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsa}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsb}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsc}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsd}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsdB}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsdC}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLse}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLsh}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsi}[1]{#1}
+\newcommand{\HLJLso}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsr}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLss}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLssB}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLnB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnbB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnfB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnh}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLni}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnil}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnoB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLoB}[1]{\textcolor[RGB]{102,102,102}{\textbf{#1}}}
+\newcommand{\HLJLow}[1]{\textcolor[RGB]{102,102,102}{\textbf{#1}}}
+\newcommand{\HLJLp}[1]{#1}
+\newcommand{\HLJLc}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLch}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcm}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcp}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcpB}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcs}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcsB}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLg}[1]{#1}
+\newcommand{\HLJLgd}[1]{#1}
+\newcommand{\HLJLge}[1]{#1}
+\newcommand{\HLJLgeB}[1]{#1}
+\newcommand{\HLJLgh}[1]{#1}
+\newcommand{\HLJLgi}[1]{#1}
+\newcommand{\HLJLgo}[1]{#1}
+\newcommand{\HLJLgp}[1]{#1}
+\newcommand{\HLJLgs}[1]{#1}
+\newcommand{\HLJLgsB}[1]{#1}
+\newcommand{\HLJLgt}[1]{#1}
+
+
+\begin{document}
+
+
+
+\section{A Asymptotics and Computational Cost}
+We introduce Big-O, little-o and asymptotic notation and see how they can be used to describe computational cost.
+
+\begin{itemize}
+\item[1. ] Asymptotics as $n \ensuremath{\rightarrow} \ensuremath{\infty}$
+
+
+\item[2. ] Asymptotics as $x \ensuremath{\rightarrow} x_0$
+
+
+\item[3. ] Computational cost
+
+\end{itemize}
+\subsection{1. Asymptotics as $n \ensuremath{\rightarrow} \ensuremath{\infty}$}
+Big-O, little-o, and "asymptotic to" are used to describe behaviour of functions at infinity. 
+
+\textbf{Definition (Big-O)} 
+
+\[
+f(n) = O(\ensuremath{\phi}(n)) \qquad \hbox{(as $n \ensuremath{\rightarrow} \ensuremath{\infty}$)}
+\]
+means
+
+\[
+\left|{f(n) \over \ensuremath{\phi}(n)}\right|
+\]
+is bounded for sufficiently large $n$. That is, there exist constants $C$ and $N_0$ such  that, for all $n \geq N_0$, $|{f(n) \over \ensuremath{\phi}(n)}| \leq C$.
+
+\textbf{Definition (little-O)} 
+
+\[
+f(n) = o(\ensuremath{\phi}(n)) \qquad \hbox{(as $n \ensuremath{\rightarrow} \ensuremath{\infty}$)}
+\]
+means
+
+\[
+\lim_{n \ensuremath{\rightarrow} \ensuremath{\infty}} {f(n) \over \ensuremath{\phi}(n)} = 0.
+\]
+\textbf{Definition (asymptotic to)} 
+
+\[
+f(n) \ensuremath{\sim} \ensuremath{\phi}(n) \qquad \hbox{(as $n \ensuremath{\rightarrow} \ensuremath{\infty}$)}
+\]
+means
+
+\[
+\lim_{n \ensuremath{\rightarrow} \ensuremath{\infty}} {f(n) \over \ensuremath{\phi}(n)} = 1.
+\]
+\textbf{Examples}
+
+\[
+{\cos n \over n^2 -1} = O(n^{-2})
+\]
+as
+
+\[
+\left|{{\cos n \over n^2 -1} \over n^{-2}} \right| \leq \left| n^2 \over n^2 -1 \right|  \leq 2
+\]
+for $n \geq N_0 = 2$.
+
+\[
+\log n = o(n)
+\]
+as
+
+\[
+lim_{n \ensuremath{\rightarrow} \ensuremath{\infty}} {\log n \over n} = 0.
+\]
+\[
+n^2 + 1 \ensuremath{\sim} n^2
+\]
+as
+
+\[
+{n^2 +1 \over n^2} \ensuremath{\rightarrow} 1.
+\]
+Note we sometimes write $f(O(\ensuremath{\phi}(n)))$ for a function of the form $f(g(n))$ such that $g(n) = O(\ensuremath{\phi}(n))$.
+
+\subsubsection{Rules}
+We have some simple algebraic rules:
+
+\textbf{Proposition (Big-O rules)}
+
+
+\begin{align*}
+O(\ensuremath{\phi}(n))O(\ensuremath{\psi}(n)) = O(\ensuremath{\phi}(n)\ensuremath{\psi}(n))  \qquad \hbox{(as $n \ensuremath{\rightarrow} \ensuremath{\infty}$)} \\
+O(\ensuremath{\phi}(n)) + O(\ensuremath{\psi}(n)) = O(|\ensuremath{\phi}(n)| + |\ensuremath{\psi}(n)|)  \qquad \hbox{(as $n \ensuremath{\rightarrow} \ensuremath{\infty}$)}.
+\end{align*}
+\subsection{2. Asymptotics as $x \ensuremath{\rightarrow} x_0$}
+We also have Big-O, little-o and "asymptotic to" at a point:
+
+\textbf{Definition (Big-O)} 
+
+\[
+f(x) = O(\ensuremath{\phi}(x)) \qquad \hbox{(as $x \ensuremath{\rightarrow} x_0$)}
+\]
+means
+
+\[
+|f(x) \over \ensuremath{\phi}(x)|
+\]
+is bounded in a neighbourhood of $x_0$. That is, there exist constants $C$ and $r$ such  that, for all $0 \leq |x - x_0| \leq r$, $|{f(x) \over \ensuremath{\phi}(x)}| \leq C$.
+
+\textbf{Definition (little-O)} 
+
+\[
+f(x) = o(\ensuremath{\phi}(x)) \qquad \hbox{(as $x \ensuremath{\rightarrow} x_0$)}
+\]
+means
+
+\[
+\lim_{x \ensuremath{\rightarrow} x_0} {f(x) \over \ensuremath{\phi}(x)} = 0.
+\]
+\textbf{Definition (asymptotic to)} 
+
+\[
+f(x) \ensuremath{\sim} \ensuremath{\phi}(x) \qquad \hbox{(as $x \ensuremath{\rightarrow} x_0$)}
+\]
+means
+
+\[
+\lim_{x \ensuremath{\rightarrow} x_0} {f(x) \over \ensuremath{\phi}(x)} = 1.
+\]
+\textbf{Example}
+
+\[
+\exp x = 1 + x + O(x^2) \qquad \hbox{as $x \ensuremath{\rightarrow} 0$}
+\]
+Since
+
+\[
+\exp x = 1 + x + {\exp t \over 2} x^2
+\]
+for some $t \in [0,x]$ and
+
+\[
+\left|{{\exp t \over 2} x^2 \over x^2}\right| \leq {3 \over 2}
+\]
+provided $x \leq 1$.
+
+\subsection{3. Computational cost}
+We will use Big-O notation to describe the computational cost of algorithms. Consider the following simple sum
+
+\[
+\sum_{k=1}^n x_k^2
+\]
+which we might implement as:
+
+
+\begin{lstlisting}
+(*@\HLJLk{function}@*) (*@\HLJLnf{sumsq}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLn{n}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{length}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLn{ret}@*) (*@\HLJLoB{=}@*) (*@\HLJLnfB{0.0}@*)
+    (*@\HLJLk{for}@*) (*@\HLJLn{k}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{1}@*)(*@\HLJLoB{:}@*)(*@\HLJLn{n}@*)
+        (*@\HLJLn{ret}@*) (*@\HLJLoB{=}@*) (*@\HLJLn{ret}@*) (*@\HLJLoB{+}@*) (*@\HLJLn{x}@*)(*@\HLJLp{[}@*)(*@\HLJLn{k}@*)(*@\HLJLp{]}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{2}@*)
+    (*@\HLJLk{end}@*)
+    (*@\HLJLn{ret}@*)
+(*@\HLJLk{end}@*)
+
+(*@\HLJLn{n}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{100}@*)
+(*@\HLJLn{x}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{randn}@*)(*@\HLJLp{(}@*)(*@\HLJLn{n}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{sumsq}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+103.37928495486999
+\end{lstlisting}
+
+
+Each step of this algorithm consists of one memory look-up (\texttt{z = x[k]}), one multiplication (\texttt{w = z*z}) and one addition (\texttt{ret = ret + w}). We will ignore the memory look-up in the following discussion. The number of CPU operations per step is therefore 2 (the addition and multiplication). Thus the total number of CPU operations is $2n$. But the constant $2$ here is misleading: we didn't count the memory look-up, thus it is more sensible to just talk about the asymptotic complexity, that is, the \emph{computational cost} is $O(n)$.
+
+Now consider a double sum like:
+
+\[
+\sum_{k=1}^n \sum_{j=1}^k x_j^2
+\]
+which we might implement as:
+
+
+\begin{lstlisting}
+(*@\HLJLk{function}@*) (*@\HLJLnf{sumsq2}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLn{n}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{length}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{)}@*)
+    (*@\HLJLn{ret}@*) (*@\HLJLoB{=}@*) (*@\HLJLnfB{0.0}@*)
+    (*@\HLJLk{for}@*) (*@\HLJLn{k}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{1}@*)(*@\HLJLoB{:}@*)(*@\HLJLn{n}@*)
+        (*@\HLJLk{for}@*) (*@\HLJLn{j}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{1}@*)(*@\HLJLoB{:}@*)(*@\HLJLn{k}@*)
+            (*@\HLJLn{ret}@*) (*@\HLJLoB{=}@*) (*@\HLJLn{ret}@*) (*@\HLJLoB{+}@*) (*@\HLJLn{x}@*)(*@\HLJLp{[}@*)(*@\HLJLn{j}@*)(*@\HLJLp{]}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{2}@*)
+        (*@\HLJLk{end}@*)
+    (*@\HLJLk{end}@*)
+    (*@\HLJLn{ret}@*)
+(*@\HLJLk{end}@*)
+
+(*@\HLJLn{n}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{100}@*)
+(*@\HLJLn{x}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{randn}@*)(*@\HLJLp{(}@*)(*@\HLJLn{n}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{sumsq2}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+4309.772948636952
+\end{lstlisting}
+
+
+Now the inner loop is $O(1)$ operations (we don't try to count the precise number), which we do $k$ times for $O(k)$ operations as $k \ensuremath{\rightarrow} \ensuremath{\infty}$. The outer loop therefore takes
+
+\[
+\ensuremath{\sum}_{k = 1}^n O(k) = O\left(\ensuremath{\sum}_{k = 1}^n k\right) = O\left( {n (n+1) \over 2} \right) = O(n^2)
+\]
+operations.
+
+
+
+\end{document}
