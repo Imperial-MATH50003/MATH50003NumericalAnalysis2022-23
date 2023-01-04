@@ -1,0 +1,1216 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[a4paper,text={16.5cm,25.2cm},centering]{geometry}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1.2ex}
+
+\hypersetup
+       {   pdfauthor = { Sheehan Olver },
+           pdftitle={ foo },
+           colorlinks=TRUE,
+           linkcolor=black,
+           citecolor=blue,
+           urlcolor=blue
+       }
+
+
+
+
+\usepackage{upquote}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    upquote=true,
+    breaklines=true,
+    breakindent=0pt,
+    keepspaces=true,
+    showspaces=false,
+    columns=fullflexible,
+    showtabs=false,
+    showstringspaces=false,
+    escapeinside={(*@}{@*)},
+    extendedchars=true,
+}
+\newcommand{\HLJLt}[1]{#1}
+\newcommand{\HLJLw}[1]{#1}
+\newcommand{\HLJLe}[1]{#1}
+\newcommand{\HLJLeB}[1]{#1}
+\newcommand{\HLJLo}[1]{#1}
+\newcommand{\HLJLk}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkc}[1]{\textcolor[RGB]{59,151,46}{\textit{#1}}}
+\newcommand{\HLJLkd}[1]{\textcolor[RGB]{214,102,97}{\textit{#1}}}
+\newcommand{\HLJLkn}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkp}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkr}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLkt}[1]{\textcolor[RGB]{148,91,176}{\textbf{#1}}}
+\newcommand{\HLJLn}[1]{#1}
+\newcommand{\HLJLna}[1]{#1}
+\newcommand{\HLJLnb}[1]{#1}
+\newcommand{\HLJLnbp}[1]{#1}
+\newcommand{\HLJLnc}[1]{#1}
+\newcommand{\HLJLncB}[1]{#1}
+\newcommand{\HLJLnd}[1]{\textcolor[RGB]{214,102,97}{#1}}
+\newcommand{\HLJLne}[1]{#1}
+\newcommand{\HLJLneB}[1]{#1}
+\newcommand{\HLJLnf}[1]{\textcolor[RGB]{66,102,213}{#1}}
+\newcommand{\HLJLnfm}[1]{\textcolor[RGB]{66,102,213}{#1}}
+\newcommand{\HLJLnp}[1]{#1}
+\newcommand{\HLJLnl}[1]{#1}
+\newcommand{\HLJLnn}[1]{#1}
+\newcommand{\HLJLno}[1]{#1}
+\newcommand{\HLJLnt}[1]{#1}
+\newcommand{\HLJLnv}[1]{#1}
+\newcommand{\HLJLnvc}[1]{#1}
+\newcommand{\HLJLnvg}[1]{#1}
+\newcommand{\HLJLnvi}[1]{#1}
+\newcommand{\HLJLnvm}[1]{#1}
+\newcommand{\HLJLl}[1]{#1}
+\newcommand{\HLJLld}[1]{\textcolor[RGB]{148,91,176}{\textit{#1}}}
+\newcommand{\HLJLs}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsa}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsb}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsc}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsd}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsdB}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsdC}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLse}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLsh}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsi}[1]{#1}
+\newcommand{\HLJLso}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLsr}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLss}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLssB}[1]{\textcolor[RGB]{201,61,57}{#1}}
+\newcommand{\HLJLnB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnbB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnfB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnh}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLni}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnil}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLnoB}[1]{\textcolor[RGB]{59,151,46}{#1}}
+\newcommand{\HLJLoB}[1]{\textcolor[RGB]{102,102,102}{\textbf{#1}}}
+\newcommand{\HLJLow}[1]{\textcolor[RGB]{102,102,102}{\textbf{#1}}}
+\newcommand{\HLJLp}[1]{#1}
+\newcommand{\HLJLc}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLch}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcm}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcp}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcpB}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcs}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLcsB}[1]{\textcolor[RGB]{153,153,119}{\textit{#1}}}
+\newcommand{\HLJLg}[1]{#1}
+\newcommand{\HLJLgd}[1]{#1}
+\newcommand{\HLJLge}[1]{#1}
+\newcommand{\HLJLgeB}[1]{#1}
+\newcommand{\HLJLgh}[1]{#1}
+\newcommand{\HLJLgi}[1]{#1}
+\newcommand{\HLJLgo}[1]{#1}
+\newcommand{\HLJLgp}[1]{#1}
+\newcommand{\HLJLgs}[1]{#1}
+\newcommand{\HLJLgsB}[1]{#1}
+\newcommand{\HLJLgt}[1]{#1}
+
+
+
+\def\qqand{\qquad\hbox{and}\qquad}
+\def\qqfor{\qquad\hbox{for}\qquad}
+\def\qqas{\qquad\hbox{as}\qquad}
+\def\half{ {1 \over 2} }
+\def\D{ {\rm d} }
+\def\I{ {\rm i} }
+\def\E{ {\rm e} }
+\def\C{ {\mathbb C} }
+\def\R{ {\mathbb R} }
+\def\H{ {\mathbb H} }
+\def\Z{ {\mathbb Z} }
+\def\CC{ {\cal C} }
+\def\FF{ {\cal F} }
+\def\HH{ {\cal H} }
+\def\LL{ {\cal L} }
+\def\vc#1{ {\mathbf #1} }
+\def\bbC{ {\mathbb C} }
+
+
+
+\def\fR{ f_{\rm R} }
+\def\fL{ f_{\rm L} }
+
+\def\qqqquad{\qquad\qquad}
+\def\qqwhere{\qquad\hbox{where}\qquad}
+\def\Res_#1{\underset{#1}{\rm Res}\,}
+\def\sech{ {\rm sech}\, }
+\def\acos{ {\rm acos}\, }
+\def\asin{ {\rm asin}\, }
+\def\atan{ {\rm atan}\, }
+\def\Ei{ {\rm Ei}\, }
+\def\upepsilon{\varepsilon}
+
+
+\def\Xint#1{ \mathchoice
+   {\XXint\displaystyle\textstyle{#1} }%
+   {\XXint\textstyle\scriptstyle{#1} }%
+   {\XXint\scriptstyle\scriptscriptstyle{#1} }%
+   {\XXint\scriptscriptstyle\scriptscriptstyle{#1} }%
+   \!\int}
+\def\XXint#1#2#3{ {\setbox0=\hbox{$#1{#2#3}{\int}$}
+     \vcenter{\hbox{$#2#3$}}\kern-.5\wd0} }
+\def\ddashint{\Xint=}
+\def\dashint{\Xint-}
+% \def\dashint
+\def\infdashint{\dashint_{-\infty}^\infty}
+
+
+
+
+\def\addtab#1={#1\;&=}
+\def\ccr{\\\addtab}
+\def\ip<#1>{\left\langle{#1}\right\rangle}
+\def\dx{\D x}
+\def\dt{\D t}
+\def\dz{\D z}
+\def\ds{\D s}
+
+\def\rR{ {\rm R} }
+\def\rL{ {\rm L} }
+
+\def\norm#1{\left\| #1 \right\|}
+
+\def\pr(#1){\left({#1}\right)}
+\def\br[#1]{\left[{#1}\right]}
+
+\def\abs#1{\left|{#1}\right|}
+\def\fpr(#1){\!\pr({#1})}
+
+\def\sopmatrix#1{ \begin{pmatrix}#1\end{pmatrix} }
+
+\def\endash{–}
+\def\emdash{—}
+\def\mdblksquare{\blacksquare}
+\def\lgblksquare{\blacksquare}
+\def\scre{\E}
+\def\mapengine#1,#2.{\mapfunction{#1}\ifx\void#2\else\mapengine #2.\fi }
+
+\def\map[#1]{\mapengine #1,\void.}
+
+\def\mapenginesep_#1#2,#3.{\mapfunction{#2}\ifx\void#3\else#1\mapengine #3.\fi }
+
+\def\mapsep_#1[#2]{\mapenginesep_{#1}#2,\void.}
+
+
+\def\vcbr[#1]{\pr(#1)}
+
+
+\def\bvect[#1,#2]{
+{
+\def\dots{\cdots}
+\def\mapfunction##1{\ | \  ##1}
+	\sopmatrix{
+		 \,#1\map[#2]\,
+	}
+}
+}
+
+
+
+\def\vect[#1]{
+{\def\dots{\ldots}
+	\vcbr[{#1}]
+} }
+
+\def\vectt[#1]{
+{\def\dots{\ldots}
+	\vect[{#1}]^{\top}
+} }
+
+\def\Vectt[#1]{
+{
+\def\mapfunction##1{##1 \cr} 
+\def\dots{\vdots}
+	\begin{pmatrix}
+		\map[#1]
+	\end{pmatrix}
+} }
+
+\def\addtab#1={#1\;&=}
+\def\ccr{\\\addtab}
+
+\def\questionequals{= \!\!\!\!\!\!{\scriptstyle ? \atop }\,\,\,}
+
+\begin{document}
+
+\section{Numbers}
+Reference: \href{https://cs.nyu.edu/~overton/book/}{Overton}
+
+In this chapter, we introduce the \href{https://en.wikipedia.org/wiki/Two's_complement}{Two's-complement} storage for integers and the \href{https://en.wikipedia.org/wiki/IEEE_754}{IEEE Standard for Floating-Point Arithmetic}. There are many  possible ways of representing real numbers on a computer, as well as the precise behaviour of operations such as addition, multiplication, etc. Before the 1980s each processor had potentially a different representation for real numbers, as well as different behaviour for operations. IEEE introduced in 1985 was a means to standardise this across processors so that algorithms would produce consistent and reliable results.
+
+This chapter may seem very low level for a mathematics course but there are two important reasons to understand the behaviour of integers and floating-point numbers:
+
+\begin{itemize}
+\item[1. ] Integer arithmetic can suddenly start giving wrong negative answers when numbers
+
+\end{itemize}
+become large.
+
+\begin{itemize}
+\item[2. ] Floating-point arithmetic is very precisely defined, and can even be used
+
+\end{itemize}
+in rigorous computations as we shall see in the problem sheets. But it is not exact and its important to understand how errors in computations can accumulate.
+
+\begin{itemize}
+\item[3. ] Failure to understand floating-point arithmetic can cause catastrophic issues
+
+\end{itemize}
+in practice, with the extreme example being the \href{https://youtu.be/N6PWATvLQCY?t=86}{explosion of the Ariane 5 rocket}.
+
+In this chapter we discuss the following:
+
+\begin{itemize}
+\item[1. ] Binary representation: Any real number can be represented in binary, that is,
+
+\end{itemize}
+by an infinite sequence of 0s and 1s (bits). We review  binary representation.
+
+\begin{itemize}
+\item[2. ] Integers:  There are multiple ways of representing integers on a computer. We discuss the
+
+\end{itemize}
+the different types of integers and their representation as bits, and how arithmetic operations behave like modular arithmetic. As an advanced topic we discuss \texttt{BigInt}, which uses variable bit length storage.
+
+\begin{itemize}
+\item[2. ] Floating-point numbers: Real numbers are stored on a computer with a finite number of bits.
+
+\end{itemize}
+There are three types of floating-point numbers: \emph{normal numbers}, \emph{subnormal numbers}, and \emph{special numbers}.
+
+\begin{itemize}
+\item[3. ] Arithmetic: Arithmetic operations in floating-point are exact up to rounding, and how the
+
+\end{itemize}
+rounding mode can be set. This allows us to bound  errors computations.
+
+\begin{itemize}
+\item[4. ] High-precision floating-point numbers: As an advanced topic, we discuss how the precision of floating-point arithmetic can be increased arbitrary
+
+\end{itemize}
+using \texttt{BigFloat}.
+
+Before we begin, we load two external packages. SetRounding.jl allows us to set the rounding mode of floating-point arithmetic. ColorBitstring.jl   implements functions \texttt{printbits} (and \texttt{printlnbits}) which print the bits (and with a newline) of floating-point numbers in colour.
+
+
+\begin{lstlisting}
+(*@\HLJLk{using}@*) (*@\HLJLn{SetRounding}@*)(*@\HLJLp{,}@*) (*@\HLJLn{ColorBitstring}@*)
+\end{lstlisting}
+
+
+\subsection{Binary representation}
+Any integer can be presented in binary format, that is, a sequence of \texttt{0}s and \texttt{1}s.
+
+\textbf{Definition 1 (Binary)} For $B_0,\ldots,B_p \in \{0,1\}$ denote a non-negative integer in \emph{binary format} by:
+
+\[
+(B_p\ldots B_1B_0)_2 := 2^pB_p + \cdots + 2B_1 + B_0
+\]
+For $b_1,b_2,\ldots \in \{0,1\}$, Denote a non-negative real number in \emph{binary format} by:
+
+\[
+(B_p \ldots B_0.b_1b_2b_3\ldots)_2 = (B_p \ldots B_0)_2 + {b_1 \over 2} + {b_2 \over 2^2} + {b_3 \over 2^3} + \cdots
+\]
+First we show some examples of verifying a numbers binary representation:
+
+\textbf{Example 1 (integer in binary)} A simple integer example is $5 = 2^2 + 2^0 = (101)_2$.
+
+\textbf{Example 2 (rational in binary)} Consider the number \texttt{1/3}.  In decimal recall that:
+
+\[
+1/3 = 0.3333\ldots =  \sum_{k=1}^\ensuremath{\infty} {3 \over 10^k}
+\]
+We will see that in binary
+
+\[
+1/3 = (0.010101\ldots)_2 = \sum_{k=1}^\ensuremath{\infty} {1 \over 2^{2k}}
+\]
+Both results can be proven using the geometric series:
+
+\[
+\sum_{k=0}^\ensuremath{\infty} z^k = {1 \over 1 - z}
+\]
+provided $|z| < 1$. That is, with $z = {1 \over 4}$ we verify the binary expansion:
+
+\[
+\sum_{k=1}^\ensuremath{\infty} {1 \over 4^k} = {1 \over 1 - 1/4} - 1 = {1 \over 3}
+\]
+A similar argument with $z = 1/10$ shows the decimal case.
+
+\subsection{Integers}
+On a computer one typically represents integers by a finite number of $p$ bits, with $2^p$ possible combinations of 0s and 1s. For \emph{unsigned integers} (non-negative integers) these bits are just the first $p$ binary digits: $(B_{p-1}\ldots B_1B_0)_2$.
+
+Integers on a computer follow \href{https://en.wikipedia.org/wiki/Modular_arithmetic}{modular arithmetic}:
+
+\textbf{Definition 2 (ring of integers modulo $m$)} Denote the ring
+
+\[
+{\mathbb Z}_{m} := \{0 \ ({\rm mod}\ m), 1 \ ({\rm mod}\ m), \ldots, m-1 \ ({\rm mod}\ m) \}
+\]
+Integers represented with $p$-bits on a computer actually represent elements of ${\mathbb Z}_{2^p}$ and integer arithmetic on a computer is equivalent to arithmetic modulo $2^p$.
+
+\textbf{Example 3 (addition of 8-bit unsigned integers)} Consider the addition of two 8-bit numbers:
+
+\[
+255 + 1 = (11111111)_2 + (00000001)_2 = (100000000)_2 = 256
+\]
+The result is impossible to store in just 8-bits! It is way too slow for a computer to increase the number of bits, or to throw an error (checks are slow). So instead it treats the integers as elements of ${\mathbb Z}_{256}$:
+
+\[
+255 + 1 \ ({\rm mod}\ 256) = (00000000)_2 \ ({\rm mod}\ 256) = 0 \ ({\rm mod}\ 256)
+\]
+We can see this in Julia:
+
+
+\begin{lstlisting}
+(*@\HLJLn{x}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{UInt8}@*)(*@\HLJLp{(}@*)(*@\HLJLni{255}@*)(*@\HLJLp{)}@*)
+(*@\HLJLn{y}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{UInt8}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{);}@*) (*@\HLJLnf{println}@*)(*@\HLJLp{(}@*)(*@\HLJLs{"{}}@*) (*@\HLJLs{+}@*) (*@\HLJLs{"{}}@*)(*@\HLJLp{);}@*) (*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLn{y}@*)(*@\HLJLp{);}@*) (*@\HLJLnf{println}@*)(*@\HLJLp{(}@*)(*@\HLJLs{"{}}@*) (*@\HLJLs{=}@*) (*@\HLJLs{"{}}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*) (*@\HLJLoB{+}@*) (*@\HLJLn{y}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+11111111 + 
+00000001 = 
+00000000
+\end{lstlisting}
+
+
+\textbf{Example 4 (multiplication of 8-bit unsigned integers)} Multiplication works similarly: for example,
+
+\[
+254 * 2 \ ({\rm mod}\ 256) = 252 \ ({\rm mod}\ 256) = (11111100)_2 \ ({\rm mod}\ 256)
+\]
+We can see this behaviour in code by printing the bits:
+
+
+\begin{lstlisting}
+(*@\HLJLn{x}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{UInt8}@*)(*@\HLJLp{(}@*)(*@\HLJLni{254}@*)(*@\HLJLp{)}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{254}@*) (*@\HLJLcs{represented}@*) (*@\HLJLcs{in}@*) (*@\HLJLcs{8-bits}@*) (*@\HLJLcs{as}@*) (*@\HLJLcs{an}@*) (*@\HLJLcs{unsigned}@*) (*@\HLJLcs{integer}@*)
+(*@\HLJLn{y}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{UInt8}@*)(*@\HLJLp{(}@*)(*@\HLJLni{2}@*)(*@\HLJLp{)}@*)   (*@\HLJLcs{{\#}}@*)   (*@\HLJLcs{2}@*) (*@\HLJLcs{represented}@*) (*@\HLJLcs{in}@*) (*@\HLJLcs{8-bits}@*) (*@\HLJLcs{as}@*) (*@\HLJLcs{an}@*) (*@\HLJLcs{unsigned}@*) (*@\HLJLcs{integer}@*)
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{);}@*) (*@\HLJLnf{println}@*)(*@\HLJLp{(}@*)(*@\HLJLs{"{}}@*) (*@\HLJLs{*}@*) (*@\HLJLs{"{}}@*)(*@\HLJLp{);}@*) (*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLn{y}@*)(*@\HLJLp{);}@*) (*@\HLJLnf{println}@*)(*@\HLJLp{(}@*)(*@\HLJLs{"{}}@*) (*@\HLJLs{=}@*) (*@\HLJLs{"{}}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*) (*@\HLJLoB{*}@*) (*@\HLJLn{y}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+11111110 * 
+00000010 = 
+11111100
+\end{lstlisting}
+
+
+\subsubsection{Signed integer}
+Signed integers use the \href{https://epubs.siam.org/doi/abs/10.1137/1.9780898718072.ch3}{Two's complemement} convention. The convention is if the first bit is 1 then the number is negative: the number $2^p - y$ is interpreted as $-y$. Thus for $p = 8$ we are interpreting $2^7$ through $2^8-1$ as negative numbers.
+
+\textbf{Example 5 (converting bits to signed integers)} What 8-bit integer has the bits \texttt{01001001}? Adding the corresponding decimal places we get:
+
+
+\begin{lstlisting}
+(*@\HLJLni{2}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{0}@*) (*@\HLJLoB{+}@*) (*@\HLJLni{2}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{3}@*) (*@\HLJLoB{+}@*) (*@\HLJLni{2}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{6}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+73
+\end{lstlisting}
+
+
+What 8-bit (signed) integer has the bits \texttt{11001001}? Because the first bit is \texttt{1} we know it's a negative number, hence we need to sum the bits but then subtract \texttt{2\^{}p}:
+
+
+\begin{lstlisting}
+(*@\HLJLni{2}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{0}@*) (*@\HLJLoB{+}@*) (*@\HLJLni{2}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{3}@*) (*@\HLJLoB{+}@*) (*@\HLJLni{2}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{6}@*) (*@\HLJLoB{+}@*) (*@\HLJLni{2}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{7}@*) (*@\HLJLoB{-}@*) (*@\HLJLni{2}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{8}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+-55
+\end{lstlisting}
+
+
+We can check the results using \texttt{printbits}:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{printlnbits}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{Int8}@*)(*@\HLJLp{(}@*)(*@\HLJLni{73}@*)(*@\HLJLp{))}@*)
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLoB{-}@*)(*@\HLJLnf{Int8}@*)(*@\HLJLp{(}@*)(*@\HLJLni{55}@*)(*@\HLJLp{))}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+01001001
+11001001
+\end{lstlisting}
+
+
+Arithmetic works precisely the same for signed and unsigned integers.
+
+\textbf{Example 6 (addition of 8-bit integers)} Consider \texttt{(-1) + 1} in 8-bit arithmetic. The number $-1$ has the same bits as $2^8 - 1 = 255$. Thus this is equivalent to the previous question and we get the correct result of \texttt{0}. In other words:
+
+\[
+-1 + 1 \ ({\rm mod}\ 2^p) = 2^p-1  + 1 \ ({\rm mod}\ 2^p) = 2^p \ ({\rm mod}\ 2^p) = 0 \ ({\rm mod}\ 2^p)
+\]
+\textbf{Example 7 (multiplication of 8-bit integers)} Consider \texttt{(-2) * 2}. $-2$ has the same bits as $2^{256} - 2 = 254$ and $-4$ has the same bits as $2^{256}-4 = 252$, and hence from the previous example we get the correct result of \texttt{-4}. In other words:
+
+\[
+(-2) * 2 \ ({\rm mod}\ 2^p) = (2^p-2) * 2 \ ({\rm mod}\ 2^p) = 2^{p+1}-4 \ ({\rm mod}\ 2^p) = -4 \ ({\rm mod}\ 2^p)
+\]
+\textbf{Example 8 (overflow)} We can find the largest and smallest instances of a type using \texttt{typemax} and \texttt{typemin}:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{printlnbits}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{typemax}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Int8}@*)(*@\HLJLp{))}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{2{\textasciicircum}7-1}@*) (*@\HLJLcs{=}@*) (*@\HLJLcs{127}@*)
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{typemin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Int8}@*)(*@\HLJLp{))}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{-2{\textasciicircum}7}@*) (*@\HLJLcs{=}@*) (*@\HLJLcs{-128}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+01111111
+10000000
+\end{lstlisting}
+
+
+As explained, due to modular arithmetic, when we add \texttt{1} to the largest 8-bit integer we get the smallest:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{typemax}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Int8}@*)(*@\HLJLp{)}@*) (*@\HLJLoB{+}@*) (*@\HLJLnf{Int8}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLp{)}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{returns}@*) (*@\HLJLcs{typemin(Int8)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+-128
+\end{lstlisting}
+
+
+This behaviour is often not desired and is known as \emph{overflow}, and one must be wary of using integers close to their largest value.
+
+\subsubsection{Variable bit representation (\textbf{advanced})}
+An alternative representation for integers uses a variable number of bits, with the advantage of avoiding overflow but with the disadvantage of a substantial speed penalty. In Julia these are \texttt{BigInt}s, which we can create by calling \texttt{big} on an integer:
+
+
+\begin{lstlisting}
+(*@\HLJLn{x}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{typemax}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Int64}@*)(*@\HLJLp{)}@*) (*@\HLJLoB{+}@*) (*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLp{)}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{Too}@*) (*@\HLJLcs{big}@*) (*@\HLJLcs{to}@*) (*@\HLJLcs{be}@*) (*@\HLJLcs{an}@*) (*@\HLJLcs{{\textasciigrave}Int64{\textasciigrave}}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+9223372036854775808
+\end{lstlisting}
+
+
+Note in this case addition automatically promotes an \texttt{Int64} to a \texttt{BigInt}. We can create very large numbers using \texttt{BigInt}:
+
+
+\begin{lstlisting}
+(*@\HLJLn{x}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{100}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+308299402527763474570010682154566572137179853330569745885534227792109373198
+447640470596653941241089824056172991237203850122889314192108015240464239377
+659907729443406151990542412460139422694360143091643438371471672472022733159
+695061370166103454894838872109766727543876375812850840329719945826027770730
+120246098009381841416708056334276148239586243518509394244354072236315177002
+222178324395959253133606299849420991475240801906072080512453438264605109361
+381484864606203866242348750432604436120370843048930586423433380140154714002
+337629571838339036072866290023067143715171661582628684226791756074958601816
+573949210192042971926128564012559683306389156286526215702602395591987379284
+682309585448452092050934594471287167569179082769090777848505882924858894568
+168528817978796393118106206809246398429622597308249405630795808918972670167
+873557636539414623207691708807594905363669045958112877309721274696727649649
+601081087800063823914375007554316324004987448998664232743644123445804025448
+082503822047990459461530060239055638579924527680558002493780472302931956594
+201351581704871454345525023520878974570116527956902624814539521898506299183
+170783021797439315846606778519958103771496882062824105186711983296636153004
+791033906572655026074103671610093220596965508325771424407112022165467934046
+108400156032167602544380124835543930597492387362414798072811058145280610901
+173900506006060422808766749928885121870507880736423792545581389057525756998
+145009099711769746929923409439498484057402540146394209901941336109623390905
+611742766343976495491640159256565111157141476925718770456826870124308204483
+840020135761385100647110424482884227023263774739896271187541348841577264708
+857112527293249071721746826360468332593346955562978550702077536636800275361
+270990152624845632820964329212289967743661388636076587788674818529924999492
+184318357313040349631189661494939940979601130119128006720905325934191881396
+7552543176532349157376
+\end{lstlisting}
+
+
+Note the number of bits is not fixed, the larger the number, the more bits required to represent it, so while overflow is impossible, it is possible to run out of memory if a number is astronomically large: go ahead and try \texttt{x\^{}x} (at your own risk).
+
+\subsection{Division}
+In addition to \texttt{+}, \texttt{-}, and \texttt{*} we have integer division \texttt{\ensuremath{\div}}, which rounds down:
+
+
+\begin{lstlisting}
+(*@\HLJLni{5}@*) (*@\HLJLoB{\ensuremath{\div}}@*) (*@\HLJLni{2}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{equivalent}@*) (*@\HLJLcs{to}@*) (*@\HLJLcs{div(5,2)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+2
+\end{lstlisting}
+
+
+Standard division \texttt{/} (or \texttt{{\textbackslash}} for division on the right) creates a floating-point number, which will be discussed shortly:
+
+
+\begin{lstlisting}
+(*@\HLJLni{5}@*) (*@\HLJLoB{/}@*) (*@\HLJLni{2}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{alternatively}@*) (*@\HLJLcs{2}@*) (*@\HLJLcs{{\textbackslash}}@*) (*@\HLJLcs{5}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+2.5
+\end{lstlisting}
+
+
+We can also create rational numbers using \texttt{//}:
+
+
+\begin{lstlisting}
+(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLoB{//}@*)(*@\HLJLni{2}@*)(*@\HLJLp{)}@*) (*@\HLJLoB{+}@*) (*@\HLJLp{(}@*)(*@\HLJLni{3}@*)(*@\HLJLoB{//}@*)(*@\HLJLni{4}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+5//4
+\end{lstlisting}
+
+
+Rational arithmetic often leads to overflow so it is often best to combine \texttt{big} with rationals:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLni{102324}@*)(*@\HLJLp{)}@*)(*@\HLJLoB{//}@*)(*@\HLJLni{132413023}@*) (*@\HLJLoB{+}@*) (*@\HLJLni{23434545}@*)(*@\HLJLoB{//}@*)(*@\HLJLni{4243061}@*) (*@\HLJLoB{+}@*) (*@\HLJLni{23434545}@*)(*@\HLJLoB{//}@*)(*@\HLJLni{42430534435}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+26339037835007648477541540//4767804878707544364596461
+\end{lstlisting}
+
+
+\subsection{3. Floating-point numbers}
+Floating-point numbers are a subset of real numbers that are representable using a fixed number of bits.
+
+\textbf{Definition 3 (floating-point numbers)} Given integers $\ensuremath{\sigma}$ (the "exponential shift") $Q$ (the number of exponent bits) and $S$ (the precision), define the set of \emph{Floating-point numbers} by dividing into \emph{normal}, \emph{sub-normal}, and \emph{special number} subsets:
+
+\[
+F_{\ensuremath{\sigma},Q,S} := F^{\rm normal}_{\ensuremath{\sigma},Q,S} \cup F^{\rm sub}_{\ensuremath{\sigma},Q,S} \cup F^{\rm special}.
+\]
+The \emph{normal numbers} $F^{\rm normal}_{\ensuremath{\sigma},Q,S} \subset {\mathbb R}$ are defined by
+
+\[
+F^{\rm normal}_{\ensuremath{\sigma},Q,S} = \{\ensuremath{\pm} 2^{q-\ensuremath{\sigma}} \times (1.b_1b_2b_3\ldots b_S)_2 : 1 \leq q < 2^Q-1 \}.
+\]
+The \emph{sub-normal numbers} $F^{\rm sub}_{\ensuremath{\sigma},Q,S} \subset {\mathbb R}$ are defined as
+
+\[
+F^{\rm sub}_{\ensuremath{\sigma},Q,S} = \{\ensuremath{\pm} 2^{1-\ensuremath{\sigma}} \times (0.b_1b_2b_3\ldots b_S)_2\}.
+\]
+The \emph{special numbers} $F^{\rm special} \not\subset {\mathbb R}$ are defined later.
+
+Note this set of real numbers has no nice algebraic structure: it is not closed under addition, subtraction, etc. We will therefore need to define approximate versions of algebraic operations later.
+
+Floating-point numbers are stored in $1 + Q + S$ total number of bits, in the format
+
+\[
+sq_{Q-1}\ldots q_0 b_1 \ldots b_S
+\]
+The first bit ($s$) is the sign bit: 0 means positive and 1 means negative. The bits $q_{Q-1}\ldots q_0$ are the exponent bits: they are the binary digits of the unsigned integer $q$:
+
+\[
+q = (q_{Q-1}\ldots q_0)_2.
+\]
+Finally, the bits $b_1\ldots b_S$ are the significand bits. If $1 \leq q < 2^Q-1$ then the bits represent the normal number
+
+\[
+x = \ensuremath{\pm} 2^{q-\ensuremath{\sigma}} \times (1.b_1b_2b_3\ldots b_S)_2.
+\]
+If $q = 0$ (i.e. all bits are 0) then the bits represent the sub-normal number
+
+\[
+x = \ensuremath{\pm} 2^{1-\ensuremath{\sigma}} \times (0.b_1b_2b_3\ldots b_S)_2.
+\]
+If $q = 2^Q-1$  (i.e. all bits are 1) then the bits represent a special number, discussed later.
+
+\subsubsection{IEEE floating-point numbers}
+\textbf{Definition 4 (IEEE floating-point numbers)} IEEE has 3 standard floating-point formats: 16-bit (half precision), 32-bit (single precision) and 64-bit (double precision) defined by:
+
+
+\begin{align*}
+F_{16} &:= F_{15,5,10} \\
+F_{32} &:= F_{127,8,23} \\
+F_{64} &:= F_{1023,11,52}
+\end{align*}
+In Julia these correspond to 3 different floating-point types:
+
+\begin{itemize}
+\item[1. ] \texttt{Float64} is a type representing double precision ($F_{64}$).
+
+\end{itemize}
+We can create a \texttt{Float64} by including a decimal point when writing the number: \texttt{1.0} is a \texttt{Float64}. \texttt{Float64} is the default format for scientific computing (on the \emph{Floating-Point Unit}, FPU).
+
+\begin{itemize}
+\item[2. ] \texttt{Float32} is a type representing single precision ($F_{32}$).  We can create a \texttt{Float32} by including a
+
+\end{itemize}
+\texttt{f0} when writing the number: \texttt{1f0} is a \texttt{Float32}. \texttt{Float32} is generally the default format for graphics (on the \emph{Graphics Processing Unit}, GPU), as the difference between 32 bits and 64 bits is indistinguishable to the eye in visualisation, and more data can be fit into a GPU's limitted memory.
+
+\begin{itemize}
+\item[3. ] \texttt{Float16} is a type representing half-precision ($F_{16}$).
+
+\end{itemize}
+It is important in machine learning where one wants to maximise the amount of data and high accuracy is not necessarily helpful.
+
+\textbf{Example 9 (rational in \texttt{Float32})} How is the number $1/3$ stored in \texttt{Float32}? Recall that
+
+\[
+1/3 = (0.010101\ldots)_2 = 2^{-2} (1.0101\ldots)_2 = 2^{125-127} (1.0101\ldots)_2
+\]
+and since $125 = (1111101)_2$  the exponent bits are \texttt{01111101}. For the significand we round the last bit to the nearest element of $F_{32}$, (this is explained in detail in the section on rounding), so we have
+
+\[
+1.010101010101010101010101\ldots \approx 1.01010101010101010101011 \in F_{32}
+\]
+and the significand bits are \texttt{01010101010101010101011}. Thus the \texttt{Float32} bits for $1/3$ are:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLnfB{1f0}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+00111110101010101010101010101011
+\end{lstlisting}
+
+
+For sub-normal numbers, the simplest example is zero, which has $q=0$ and all significand bits zero:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLnfB{0.0}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+0000000000000000000000000000000000000000000000000000000000000000
+\end{lstlisting}
+
+
+Unlike integers, we also have a negative zero:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLoB{-}@*)(*@\HLJLnfB{0.0}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+1000000000000000000000000000000000000000000000000000000000000000
+\end{lstlisting}
+
+
+This is treated as identical to \texttt{0.0} (except for degenerate operations as explained in special numbers).
+
+\subsubsection{Special normal numbers}
+When dealing with normal numbers there are some important constants that we will use to bound errors.
+
+\textbf{Definition 5 (machine epsilon/smallest positive normal number/largest normal number)} \emph{Machine epsilon} is denoted
+
+\[
+\ensuremath{\epsilon}_{{\rm m},S} := 2^{-S}.
+\]
+When $S$ is implied by context we use the notation $\ensuremath{\epsilon}_{\rm m}$. The \emph{smallest positive normal number} is $q = 1$ and $b_k$ all zero:
+
+\[
+\min |F_{\ensuremath{\sigma},Q,S}^{\rm normal}| = 2^{1-\ensuremath{\sigma}}
+\]
+where $|A| := \{|x| : x \ensuremath{\in} A \}$. The \emph{largest (positive) normal number} is
+
+\[
+\max F_{\ensuremath{\sigma},Q,S}^{\rm normal} = 2^{2^Q-2-\ensuremath{\sigma}} (1.11\ldots1)_2 = 2^{2^Q-2-\ensuremath{\sigma}} (2-\ensuremath{\epsilon}_{\rm m})
+\]
+We confirm the simple bit representations:
+
+
+\begin{lstlisting}
+(*@\HLJLn{\ensuremath{\sigma}}@*)(*@\HLJLp{,}@*)(*@\HLJLn{Q}@*)(*@\HLJLp{,}@*)(*@\HLJLn{S}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{127}@*)(*@\HLJLp{,}@*)(*@\HLJLni{23}@*)(*@\HLJLp{,}@*)(*@\HLJLni{8}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{Float32}@*)
+(*@\HLJLn{\ensuremath{\varepsilon}\ensuremath{\_m}}@*) (*@\HLJLoB{=}@*) (*@\HLJLnfB{2.0}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLp{(}@*)(*@\HLJLoB{-}@*)(*@\HLJLn{S}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{printlnbits}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{Float32}@*)(*@\HLJLp{(}@*)(*@\HLJLnfB{2.0}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLoB{-}@*)(*@\HLJLn{\ensuremath{\sigma}}@*)(*@\HLJLp{)))}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{smallest}@*) (*@\HLJLcs{positive}@*) (*@\HLJLcs{Float32}@*)
+(*@\HLJLnf{printlnbits}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{Float32}@*)(*@\HLJLp{(}@*)(*@\HLJLnfB{2.0}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLp{(}@*)(*@\HLJLni{2}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLn{Q}@*)(*@\HLJLoB{-}@*)(*@\HLJLni{2}@*)(*@\HLJLoB{-}@*)(*@\HLJLn{\ensuremath{\sigma}}@*)(*@\HLJLp{)}@*) (*@\HLJLoB{*}@*) (*@\HLJLp{(}@*)(*@\HLJLni{2}@*)(*@\HLJLoB{-}@*)(*@\HLJLn{\ensuremath{\varepsilon}\ensuremath{\_m}}@*)(*@\HLJLp{)))}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{largest}@*) (*@\HLJLcs{Float32}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+00000000100000000000000000000000
+01111111100000000000000000000000
+\end{lstlisting}
+
+
+For a given floating-point type, we can find these constants using the following functions:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{eps}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Float32}@*)(*@\HLJLp{),}@*)(*@\HLJLnf{floatmin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Float32}@*)(*@\HLJLp{),}@*)(*@\HLJLnf{floatmax}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Float32}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+(1.1920929f-7, 1.1754944f-38, 3.4028235f38)
+\end{lstlisting}
+
+
+\textbf{Example 10 (creating a sub-normal number)} If we divide the smallest normal number by two, we get a subnormal number:
+
+
+\begin{lstlisting}
+(*@\HLJLn{mn}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{floatmin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Float32}@*)(*@\HLJLp{)}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{smallest}@*) (*@\HLJLcs{normal}@*) (*@\HLJLcs{Float32}@*)
+(*@\HLJLnf{printlnbits}@*)(*@\HLJLp{(}@*)(*@\HLJLn{mn}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLn{mn}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{2}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+00000000100000000000000000000000
+00000000010000000000000000000000
+\end{lstlisting}
+
+
+Can you explain the bits?
+
+\subsubsection{Special numbers}
+The special numbers extend the real line by adding $\ensuremath{\pm} \ensuremath{\infty}$ but also a notion of "not-a-number".
+
+\textbf{Definition 6 (not a number)} Let ${\rm NaN}$ represent "not a number" and define
+
+\[
+F^{\rm special} := \{\ensuremath{\infty}, -\ensuremath{\infty}, {\rm NaN}\}
+\]
+Whenever the bits of $q$ of a floating-point number are all 1 then they represent an element of $F^{\rm special}$. If all $b_k=0$, then the number represents either $\ensuremath{\pm}\ensuremath{\infty}$, called \texttt{Inf} and \texttt{-Inf} for 64-bit floating-point numbers (or \texttt{Inf16}, \texttt{Inf32} for 16-bit and 32-bit, respectively):
+
+
+\begin{lstlisting}
+(*@\HLJLnf{printlnbits}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Inf16}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLoB{-}@*)(*@\HLJLn{Inf16}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+0111110000000000
+1111110000000000
+\end{lstlisting}
+
+
+All other special floating-point numbers represent ${\rm NaN}$. One particular representation of ${\rm NaN}$ is denoted by \texttt{NaN} for 64-bit floating-point numbers (or \texttt{NaN16}, \texttt{NaN32} for 16-bit and 32-bit, respectively):
+
+
+\begin{lstlisting}
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLn{NaN16}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+0111111000000000
+\end{lstlisting}
+
+
+These are needed for undefined algebraic operations such as:
+
+
+\begin{lstlisting}
+(*@\HLJLni{0}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{0}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+NaN
+\end{lstlisting}
+
+
+\textbf{Example  11 (many \texttt{NaN}s)} What happens if we change some other $b_k$ to be nonzero? We can create bits as a string and see:
+
+
+\begin{lstlisting}
+(*@\HLJLn{i}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{parse}@*)(*@\HLJLp{(}@*)(*@\HLJLn{UInt16}@*)(*@\HLJLp{,}@*) (*@\HLJLs{"{}0111110000010001"{}}@*)(*@\HLJLp{;}@*) (*@\HLJLn{base}@*)(*@\HLJLoB{=}@*)(*@\HLJLni{2}@*)(*@\HLJLp{)}@*)
+(*@\HLJLnf{reinterpret}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Float16}@*)(*@\HLJLp{,}@*) (*@\HLJLn{i}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+NaN16
+\end{lstlisting}
+
+
+Thus, there are more than one \texttt{NaN}s on a computer.
+
+\subsection{4. Arithmetic}
+Arithmetic operations on floating-point numbers are  \emph{exact up to rounding}. There are three basic rounding strategies: round up/down/nearest. Mathematically we introduce a function to capture the notion of rounding:
+
+\textbf{Definition 7 (rounding)} ${\rm fl}^{\rm up}_{\ensuremath{\sigma},Q,S} : \mathbb R \rightarrow F_{\ensuremath{\sigma},Q,S}$ denotes the function that rounds a real number up to the nearest floating-point number that is greater or equal. ${\rm fl}^{\rm down}_{\ensuremath{\sigma},Q,S} : \mathbb R \rightarrow F_{\ensuremath{\sigma},Q,S}$ denotes the function that rounds a real number down to the nearest floating-point number that is greater or equal. ${\rm fl}^{\rm nearest}_{\ensuremath{\sigma},Q,S} : \mathbb R \rightarrow F_{\ensuremath{\sigma},Q,S}$ denotes the function that rounds a real number to the nearest floating-point number. In case of a tie, it returns the floating-point number whose least significant bit is equal to zero. We use the notation ${\rm fl}$ when $\ensuremath{\sigma},Q,S$ and the rounding mode are implied by context, with ${\rm fl}^{\rm nearest}$ being the default rounding mode.
+
+In Julia, the rounding mode is specified by tags \texttt{RoundUp}, \texttt{RoundDown}, and \texttt{RoundNearest}. (There are also more exotic rounding strategies \texttt{RoundToZero}, \texttt{RoundNearestTiesAway} and \texttt{RoundNearestTiesUp} that we won't use.)
+
+\textbf{WARNING (rounding performance, advanced)} These rounding modes are part of the FPU instruction set so will be (roughly) equally fast as the default, \texttt{RoundNearest}. Unfortunately, changing the rounding mode is expensive, and is not thread-safe.
+
+Let's try rounding a \texttt{Float64} to a \texttt{Float32}.
+
+
+\begin{lstlisting}
+(*@\HLJLnf{printlnbits}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)(*@\HLJLp{)}@*)  (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{64}@*) (*@\HLJLcs{bits}@*)
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{Float32}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)(*@\HLJLp{))}@*)  (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{round}@*) (*@\HLJLcs{to}@*) (*@\HLJLcs{nearest}@*) (*@\HLJLcs{32-bit}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+0011111111010101010101010101010101010101010101010101010101010101
+00111110101010101010101010101011
+\end{lstlisting}
+
+
+The default rounding mode can be changed:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{printbits}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{Float32}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)(*@\HLJLp{,}@*)(*@\HLJLn{RoundDown}@*)(*@\HLJLp{)}@*) (*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+00111110101010101010101010101010
+\end{lstlisting}
+
+
+Or alternatively we can change the rounding mode for a chunk of code using \texttt{setrounding}. The following computes upper and lower bounds for \texttt{/}:
+
+
+\begin{lstlisting}
+(*@\HLJLn{x}@*) (*@\HLJLoB{=}@*) (*@\HLJLnfB{1f0}@*)
+(*@\HLJLnf{setrounding}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Float32}@*)(*@\HLJLp{,}@*) (*@\HLJLn{RoundDown}@*)(*@\HLJLp{)}@*) (*@\HLJLk{do}@*)
+    (*@\HLJLn{x}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)
+(*@\HLJLk{end}@*)(*@\HLJLp{,}@*)
+(*@\HLJLnf{setrounding}@*)(*@\HLJLp{(}@*)(*@\HLJLn{Float32}@*)(*@\HLJLp{,}@*) (*@\HLJLn{RoundUp}@*)(*@\HLJLp{)}@*) (*@\HLJLk{do}@*)
+    (*@\HLJLn{x}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)
+(*@\HLJLk{end}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+(0.3333333f0, 0.33333334f0)
+\end{lstlisting}
+
+
+\textbf{WARNING (compiled constants, advanced)}: Why did we first create a variable \texttt{x} instead of typing \texttt{1f0/3}? This is due to a very subtle issue where the compiler is \emph{too clever for it's own good}: it recognises \texttt{1f0/3} can be computed at compile time, but failed to recognise the rounding mode was changed.
+
+In IEEE arithmetic, the arithmetic operations \texttt{+}, \texttt{-}, \texttt{*}, \texttt{/} are defined by the property that they are exact up to rounding.  Mathematically we denote these operations as follows:
+
+
+\begin{align*}
+x\oplus y &:= {\rm fl}(x+y) \\
+x\ominus y &:= {\rm fl}(x - y) \\
+x\otimes y &:= {\rm fl}(x * y) \\
+x\oslash y &:= {\rm fl}(x / y)
+\end{align*}
+Note also that  \texttt{\^{}} and \texttt{sqrt} are similarly exact up to rounding.
+
+\textbf{Example 12 (decimal is not exact)} \texttt{1.1+0.1} gives a different result than \texttt{1.2}:
+
+
+\begin{lstlisting}
+(*@\HLJLn{x}@*) (*@\HLJLoB{=}@*) (*@\HLJLnfB{1.1}@*)
+(*@\HLJLn{y}@*) (*@\HLJLoB{=}@*) (*@\HLJLnfB{0.1}@*)
+(*@\HLJLn{x}@*) (*@\HLJLoB{+}@*) (*@\HLJLn{y}@*) (*@\HLJLoB{-}@*) (*@\HLJLnfB{1.2}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{Not}@*) (*@\HLJLcs{Zero?!?}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+2.220446049250313e-16
+\end{lstlisting}
+
+
+This is because ${\rm fl}(1.1) \neq 1+1/10$, but rather:
+
+\[
+{\rm fl}(1.1) = 1 + 2^{-4}+2^{-5} + 2^{-8}+2^{-9}+\cdots + 2^{-48}+2^{-49} + 2^{-51}
+\]
+\textbf{WARNING (non-associative)} These operations are not associative! E.g. $(x \oplus y) \oplus z$ is not necessarily equal to $x \oplus (y \oplus z)$. Commutativity is preserved, at least. Here is a surprising example of non-associativity:
+
+
+\begin{lstlisting}
+(*@\HLJLp{(}@*)(*@\HLJLnfB{1.1}@*) (*@\HLJLoB{+}@*) (*@\HLJLnfB{1.2}@*)(*@\HLJLp{)}@*) (*@\HLJLoB{+}@*) (*@\HLJLnfB{1.3}@*)(*@\HLJLp{,}@*) (*@\HLJLnfB{1.1}@*) (*@\HLJLoB{+}@*) (*@\HLJLp{(}@*)(*@\HLJLnfB{1.2}@*) (*@\HLJLoB{+}@*) (*@\HLJLnfB{1.3}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+(3.5999999999999996, 3.6)
+\end{lstlisting}
+
+
+Can you explain this in terms of bits?
+
+\subsubsection{Bounding errors in floating point arithmetic}
+Before we dicuss bounds on errors, we need to talk about the two notions of errors:
+
+\textbf{Definition 8 (absolute/relative error)} If $\tilde x = x + \ensuremath{\delta}_{rm a} = x (1 + \ensuremath{\delta}_{\rm r})$ then $|\ensuremath{\delta}_{\rm a}|$ is called the \emph{absolute error} and $|\ensuremath{\delta}_{\rm r}|$ is called the \emph{relative error} in approximating $x$ by $\tilde x$.
+
+We can bound the error of basic arithmetic operations in terms of machine epsilon, provided a real number is close to a normal number:
+
+\textbf{Definition 9 (normalised range)} The \emph{normalised range} ${\cal N}_{\ensuremath{\sigma},Q,S} \subset {\mathbb R}$ is the subset of real numbers that lies between the smallest and largest normal floating-point number:
+
+\[
+{\cal N}_{\ensuremath{\sigma},Q,S} := \{x : \min |F_{\ensuremath{\sigma},Q,S}| \leq |x| \leq \max F_{\ensuremath{\sigma},Q,S} \}
+\]
+When $\ensuremath{\sigma},Q,S$ are implied by context we use the notation ${\cal N}$.
+
+We can use machine epsilon to determine bounds on rounding:
+
+\textbf{Proposition (rounding arithmetic)} If $x \in {\cal N}$ then
+
+\[
+{\rm fl}^{\rm mode}(x) = x (1 + \delta_x^{\rm mode})
+\]
+where the \emph{relative error} is
+
+
+\begin{align*}
+|\delta_x^{\rm nearest}| &\leq {\ensuremath{\epsilon}_{\rm m} \over 2} \\
+|\delta_x^{\rm up/down}| &< {\ensuremath{\epsilon}_{\rm m}}.
+\end{align*}
+This immediately implies relative error bounds on all IEEE arithmetic operations, e.g., if $x+y \in {\cal N}$ then we have
+
+\[
+x \oplus y = (x+y) (1 + \delta_1)
+\]
+where (assuming the default nearest rounding) \$ |{\textbackslash}delta\emph{1| {\textbackslash}leq \{\ensuremath{\epsilon}}\{{\textbackslash}rm m\} {\textbackslash}over 2\}. \$
+
+\textbf{Example 13 (bounding a simple computation)} We show how to bound the error in computing
+
+\[
+(1.1 + 1.2) + 1.3
+\]
+using floating-point arithmetic. First note that \texttt{1.1} on a computer is in fact ${\rm fl}(1.1)$. Thus this computation becomes
+
+\[
+({\rm fl}(1.1) \oplus {\rm fl}(1.2)) \oplus {\rm fl}(1.3)
+\]
+First we find
+
+\[
+({\rm fl}(1.1) \oplus {\rm fl}(1.2)) = (1.1(1 + \ensuremath{\delta}_1) + 1.2 (1+\ensuremath{\delta}_2))(1 + \ensuremath{\delta}_3)
+ = 2.3 + 1.1 \ensuremath{\delta}_1 + 1.2 \ensuremath{\delta}_2 + 2.3 \ensuremath{\delta}_3 + 1.1 \ensuremath{\delta}_1 \ensuremath{\delta}_3 + 1.2 \ensuremath{\delta}_2 \ensuremath{\delta}_3
+ = 2.3 + \ensuremath{\delta}_4
+\]
+where (note $\ensuremath{\delta}_1 \ensuremath{\delta}_3$ and $\ensuremath{\delta}_2 \ensuremath{\delta}_3$ are tiny so we just round up our bound to the nearest decimal)
+
+\[
+|\ensuremath{\delta}_4| \leq 2.3 \ensuremath{\epsilon}_{\rm m}
+\]
+Thus the computation becomes
+
+\[
+((2.3 + \ensuremath{\delta}_4) + 1.3 (1 + \ensuremath{\delta}_5)) (1 + \ensuremath{\delta}_6) = 3.6 + \ensuremath{\delta}_4 + 1.3 \ensuremath{\delta}_5 + 3.6 \ensuremath{\delta}_6 + \ensuremath{\delta}_4 \ensuremath{\delta}_6  + 1.3 \ensuremath{\delta}_5 \ensuremath{\delta}_6 = 3.6 + \ensuremath{\delta}_7
+\]
+where the \emph{absolute error} is
+
+\[
+|\ensuremath{\delta}_7| \leq 4.8 \ensuremath{\epsilon}_{\rm m}
+\]
+Indeed, this bound is bigger than the observed error:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{abs}@*)(*@\HLJLp{(}@*)(*@\HLJLnfB{3.6}@*) (*@\HLJLoB{-}@*) (*@\HLJLp{(}@*)(*@\HLJLnfB{1.1}@*)(*@\HLJLoB{+}@*)(*@\HLJLnfB{1.2}@*)(*@\HLJLoB{+}@*)(*@\HLJLnfB{1.3}@*)(*@\HLJLp{)),}@*) (*@\HLJLnfB{4.8}@*)(*@\HLJLnf{eps}@*)(*@\HLJLp{()}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+(4.440892098500626e-16, 1.0658141036401502e-15)
+\end{lstlisting}
+
+
+\subsubsection{Arithmetic and special numbers}
+Arithmetic works differently on \texttt{Inf} and \texttt{NaN} and for undefined operations. In particular we have:
+
+
+\begin{lstlisting}
+(*@\HLJLni{1}@*)(*@\HLJLoB{/}@*)(*@\HLJLnfB{0.0}@*)        (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{Inf}@*)
+(*@\HLJLni{1}@*)(*@\HLJLoB{/}@*)(*@\HLJLp{(}@*)(*@\HLJLoB{-}@*)(*@\HLJLnfB{0.0}@*)(*@\HLJLp{)}@*)     (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{-Inf}@*)
+(*@\HLJLnfB{0.0}@*)(*@\HLJLoB{/}@*)(*@\HLJLnfB{0.0}@*)      (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{NaN}@*)
+
+(*@\HLJLn{Inf}@*)(*@\HLJLoB{*}@*)(*@\HLJLni{0}@*)        (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{NaN}@*)
+(*@\HLJLn{Inf}@*)(*@\HLJLoB{+}@*)(*@\HLJLni{5}@*)        (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{Inf}@*)
+(*@\HLJLp{(}@*)(*@\HLJLoB{-}@*)(*@\HLJLni{1}@*)(*@\HLJLp{)}@*)(*@\HLJLoB{*}@*)(*@\HLJLn{Inf}@*)     (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{-Inf}@*)
+(*@\HLJLni{1}@*)(*@\HLJLoB{/}@*)(*@\HLJLn{Inf}@*)        (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{0.0}@*)
+(*@\HLJLni{1}@*)(*@\HLJLoB{/}@*)(*@\HLJLp{(}@*)(*@\HLJLoB{-}@*)(*@\HLJLn{Inf}@*)(*@\HLJLp{)}@*)     (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{-0.0}@*)
+(*@\HLJLn{Inf}@*) (*@\HLJLoB{-}@*) (*@\HLJLn{Inf}@*)    (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{NaN}@*)
+(*@\HLJLn{Inf}@*) (*@\HLJLoB{==}@*)  (*@\HLJLn{Inf}@*)  (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{true}@*)
+(*@\HLJLn{Inf}@*) (*@\HLJLoB{==}@*) (*@\HLJLoB{-}@*)(*@\HLJLn{Inf}@*)  (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{false}@*)
+
+(*@\HLJLn{NaN}@*)(*@\HLJLoB{*}@*)(*@\HLJLni{0}@*)        (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{NaN}@*)
+(*@\HLJLn{NaN}@*)(*@\HLJLoB{+}@*)(*@\HLJLni{5}@*)        (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{NaN}@*)
+(*@\HLJLni{1}@*)(*@\HLJLoB{/}@*)(*@\HLJLn{NaN}@*)        (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{NaN}@*)
+(*@\HLJLn{NaN}@*) (*@\HLJLoB{==}@*) (*@\HLJLn{NaN}@*)   (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{false}@*)
+(*@\HLJLn{NaN}@*) (*@\HLJLoB{!=}@*) (*@\HLJLn{NaN}@*)   (*@\HLJLcs{{\#}}@*)  (*@\HLJLcs{true}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+true
+\end{lstlisting}
+
+
+\subsubsection{Special functions (advanced)}
+Other special functions like \texttt{cos}, \texttt{sin}, \texttt{exp}, etc. are \emph{not} part of the IEEE standard. Instead, they are implemented by composing the basic arithmetic operations, which accumulate errors. Fortunately many are  designed to have \emph{relative accuracy}, that is, \texttt{s = sin(x)} (that is, the Julia implementation of $\sin x$) satisfies
+
+\[
+{\tt s} = (\sin x) ( 1 + \delta)
+\]
+where $|\delta| < c\ensuremath{\epsilon}_{\rm m}$ for a reasonably small $c > 0$, \emph{provided} that $x \in {\rm F}^{\rm normal}$. Note these special functions are written in (advanced) Julia code, for example, \href{https://github.com/JuliaLang/julia/blob/d08b05df6f01cf4ec6e4c28ad94cedda76cc62e8/base/special/trig.jl#L76}{sin}.
+
+\textbf{WARNING (sin(fl(x)) is not always close to sin(x))} This is possibly a misleading statement when one thinks of $x$ as a real number. Consider $x = \pi$ so that $\sin x = 0$. However, as ${\rm fl}(\pi) \neq \pi$. Thus we only have relative accuracy compared to the floating point approximation:
+
+
+\begin{lstlisting}
+(*@\HLJLn{\ensuremath{\pi}\ensuremath{\_6}\ensuremath{\_4}}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{Float64}@*)(*@\HLJLp{(}@*)(*@\HLJLn{\ensuremath{\pi}}@*)(*@\HLJLp{)}@*)
+(*@\HLJLn{\ensuremath{\pi}\ensuremath{\_beta}}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLn{\ensuremath{\pi}\ensuremath{\_6}\ensuremath{\_4}}@*)(*@\HLJLp{)}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{Convert}@*) (*@\HLJLcs{64-bit}@*) (*@\HLJLcs{approximation}@*) (*@\HLJLcs{of}@*) (*@\HLJLcs{\ensuremath{\pi}}@*) (*@\HLJLcs{to}@*) (*@\HLJLcs{higher}@*) (*@\HLJLcs{precision.}@*) (*@\HLJLcs{Note}@*) (*@\HLJLcs{its}@*) (*@\HLJLcs{the}@*) (*@\HLJLcs{same}@*) (*@\HLJLcs{number.}@*)
+(*@\HLJLnf{abs}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{sin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{\ensuremath{\pi}\ensuremath{\_6}\ensuremath{\_4}}@*)(*@\HLJLp{)),}@*) (*@\HLJLnf{abs}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{sin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{\ensuremath{\pi}\ensuremath{\_6}\ensuremath{\_4}}@*)(*@\HLJLp{)}@*) (*@\HLJLoB{-}@*) (*@\HLJLnf{sin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{\ensuremath{\pi}\ensuremath{\_beta}}@*)(*@\HLJLp{))}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{only}@*) (*@\HLJLcs{has}@*) (*@\HLJLcs{relative}@*) (*@\HLJLcs{accuracy}@*) (*@\HLJLcs{compared}@*) (*@\HLJLcs{to}@*) (*@\HLJLcs{sin(\ensuremath{\pi}\ensuremath{\_beta}),}@*) (*@\HLJLcs{not}@*) (*@\HLJLcs{sin(\ensuremath{\pi})}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+(1.2246467991473532e-16, 2.994769809718339860754263822337778811430799841054
+596882794158676581342467643355e-33)
+\end{lstlisting}
+
+
+Another issue is when $x$ is very large:
+
+
+\begin{lstlisting}
+(*@\HLJLn{\ensuremath{\varepsilon}}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{eps}@*)(*@\HLJLp{()}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{machine}@*) (*@\HLJLcs{epsilon,}@*) (*@\HLJLcs{2{\textasciicircum}(-52)}@*)
+(*@\HLJLn{x}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{2}@*)(*@\HLJLoB{*}@*)(*@\HLJLnfB{10.0}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{100}@*)
+(*@\HLJLnf{abs}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{sin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{)}@*) (*@\HLJLoB{-}@*) (*@\HLJLnf{sin}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{)))}@*)  (*@\HLJLoB{\ensuremath{\leq}}@*)  (*@\HLJLnf{abs}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{sin}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{)))}@*) (*@\HLJLoB{*}@*) (*@\HLJLn{\ensuremath{\varepsilon}}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+true
+\end{lstlisting}
+
+
+But if we instead compute \texttt{10\^{}100} using \texttt{BigFloat} we get a completely different answer that even has the wrong sign!
+
+
+\begin{lstlisting}
+(*@\HLJLn{xt}@*) (*@\HLJLoB{=}@*) (*@\HLJLni{2}@*)(*@\HLJLoB{*}@*)(*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLnfB{10.0}@*)(*@\HLJLp{)}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{100}@*)
+(*@\HLJLnf{sin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{),}@*) (*@\HLJLnf{sin}@*)(*@\HLJLp{(}@*)(*@\HLJLn{xt}@*)(*@\HLJLp{)}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+(-0.703969872087777, 0.6911910845037462219623751594978914260403966392716944
+990360937340001300242965408)
+\end{lstlisting}
+
+
+This is because we commit an error on the order of roughly
+
+\[
+2 * 10^{100} * \ensuremath{\epsilon}_{\rm m} \approx 4.44 * 10^{84}
+\]
+when we round $2*10^{100}$ to the nearest float.
+
+\textbf{Example  14 (polynomial near root)} For general functions we do not generally have relative accuracy. For example, consider a simple polynomial $1 + 4x + x^2$ which has a root at $\sqrt 3 - 2$. But
+
+
+\begin{lstlisting}
+(*@\HLJLn{f}@*) (*@\HLJLoB{=}@*) (*@\HLJLn{x}@*) (*@\HLJLoB{->}@*) (*@\HLJLni{1}@*) (*@\HLJLoB{+}@*) (*@\HLJLni{4}@*)(*@\HLJLn{x}@*) (*@\HLJLoB{+}@*) (*@\HLJLn{x}@*)(*@\HLJLoB{{\textasciicircum}}@*)(*@\HLJLni{2}@*)
+(*@\HLJLn{x}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{sqrt}@*)(*@\HLJLp{(}@*)(*@\HLJLni{3}@*)(*@\HLJLp{)}@*) (*@\HLJLoB{-}@*) (*@\HLJLni{2}@*)
+(*@\HLJLn{abserr}@*) (*@\HLJLoB{=}@*) (*@\HLJLnf{abs}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{f}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{))}@*) (*@\HLJLoB{-}@*) (*@\HLJLnf{f}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{))}@*)
+(*@\HLJLn{relerr}@*) (*@\HLJLoB{=}@*) (*@\HLJLn{abserr}@*)(*@\HLJLoB{/}@*)(*@\HLJLnf{abs}@*)(*@\HLJLp{(}@*)(*@\HLJLnf{f}@*)(*@\HLJLp{(}@*)(*@\HLJLn{x}@*)(*@\HLJLp{))}@*)
+(*@\HLJLn{abserr}@*)(*@\HLJLp{,}@*) (*@\HLJLn{relerr}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{very}@*) (*@\HLJLcs{large}@*) (*@\HLJLcs{relative}@*) (*@\HLJLcs{error}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+(6.808194126854568545271553503125001640528110233296921194323658710345625877
+380371e-19, 0.0019623283540971669935970567166805267333984375000000000000000
+00000000000000000008)
+\end{lstlisting}
+
+
+We can see this in the error bound (note that $4x$ is exact for floating point numbers and adding $1$ is exact for this particular $x$):
+
+\[
+(x \otimes x \oplus 4x) + 1 = (x^2 (1 + \delta_1) + 4x)(1+\delta_2) + 1 = x^2 + 4x + 1 + \delta_1 x^2 + 4x \delta_2 + x^2 \delta_1 \delta_2
+\]
+Using a simple bound $|x| < 1$ we get a (pessimistic) bound on the absolute error of $3 \ensuremath{\epsilon}_{\rm m}$. Here \texttt{f(x)} itself is less than $2 \ensuremath{\epsilon}_{\rm m}$ so this does not imply relative accuracy. (Of course, a bad upper bound is not the same as a proof of inaccuracy, but here we observe the inaccuracy in practice.)
+
+\subsection{5. High-precision floating-point numbers (advanced)}
+It is possible to set the precision of a floating-point number using the \texttt{BigFloat} type, which results from the usage of \texttt{big} when the result is not an integer. For example, here is an approximation of 1/3 accurate to 77 decimal digits:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLp{)}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+0.3333333333333333333333333333333333333333333333333333333333333333333333333
+333348
+\end{lstlisting}
+
+
+Note we can set the rounding mode as in \texttt{Float64}, e.g., this gives (rigorous) bounds on \texttt{1/3}:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{setrounding}@*)(*@\HLJLp{(}@*)(*@\HLJLn{BigFloat}@*)(*@\HLJLp{,}@*) (*@\HLJLn{RoundDown}@*)(*@\HLJLp{)}@*) (*@\HLJLk{do}@*)
+  (*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLp{)}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)
+(*@\HLJLk{end}@*)(*@\HLJLp{,}@*) (*@\HLJLnf{setrounding}@*)(*@\HLJLp{(}@*)(*@\HLJLn{BigFloat}@*)(*@\HLJLp{,}@*) (*@\HLJLn{RoundUp}@*)(*@\HLJLp{)}@*) (*@\HLJLk{do}@*)
+  (*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLp{)}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)
+(*@\HLJLk{end}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+(0.333333333333333333333333333333333333333333333333333333333333333333333333
+3333305, 0.3333333333333333333333333333333333333333333333333333333333333333
+333333333333348)
+\end{lstlisting}
+
+
+We can also increase the precision, e.g., this finds bounds on \texttt{1/3} accurate to more than 1000 decimal places:
+
+
+\begin{lstlisting}
+(*@\HLJLnf{setprecision}@*)(*@\HLJLp{(}@*)(*@\HLJLni{4{\_}000}@*)(*@\HLJLp{)}@*) (*@\HLJLk{do}@*) (*@\HLJLcs{{\#}}@*) (*@\HLJLcs{4000}@*) (*@\HLJLcs{bit}@*) (*@\HLJLcs{precision}@*)
+  (*@\HLJLnf{setrounding}@*)(*@\HLJLp{(}@*)(*@\HLJLn{BigFloat}@*)(*@\HLJLp{,}@*) (*@\HLJLn{RoundDown}@*)(*@\HLJLp{)}@*) (*@\HLJLk{do}@*)
+    (*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLp{)}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)
+  (*@\HLJLk{end}@*)(*@\HLJLp{,}@*) (*@\HLJLnf{setrounding}@*)(*@\HLJLp{(}@*)(*@\HLJLn{BigFloat}@*)(*@\HLJLp{,}@*) (*@\HLJLn{RoundUp}@*)(*@\HLJLp{)}@*) (*@\HLJLk{do}@*)
+    (*@\HLJLnf{big}@*)(*@\HLJLp{(}@*)(*@\HLJLni{1}@*)(*@\HLJLp{)}@*)(*@\HLJLoB{/}@*)(*@\HLJLni{3}@*)
+  (*@\HLJLk{end}@*)
+(*@\HLJLk{end}@*)
+\end{lstlisting}
+
+\begin{lstlisting}
+(0.333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333308, 0.33333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+333333333333333333333333333333333333333333333333333333333333333333333333333
+3333333333333333346)
+\end{lstlisting}
+
+
+In the problem sheet we shall see how this can be used to rigorously bound ${\rm e}$, accurate to 1000 digits.
+
+
+
+\end{document}

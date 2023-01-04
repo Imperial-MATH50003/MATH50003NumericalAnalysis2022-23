@@ -1,6 +1,6 @@
 using Weave
 
-nkwds = (out_path="notebooks/", doctype = "md2pdf")
+nkwds = (out_path="notebooks/", doctype = "md2pdf", template="src/template.tpl")
 pkwds = (out_path="sheets/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors --clear-output")
 skwds = (out_path="sheets/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors")
 ekwds = (out_path="exams/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors  --clear-output")
@@ -11,6 +11,7 @@ eskwds = (out_path="exams/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyt
 ##
 
 weave("src/notes/Asymptotics.jmd"; nkwds...)
+weave("src/notes/Numbers.jmd"; nkwds...)
 
 
 notebook("src/Julia.jmd"; nkwds...)
