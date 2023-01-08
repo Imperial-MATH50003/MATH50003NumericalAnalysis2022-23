@@ -358,7 +358,7 @@ Can you explain this in terms of bits?
 
 Before we dicuss bounds on errors, we need to talk about the two notions of errors:
 
-**Definition 7 (absolute/relative error)** If $\tilde x = x + δ_{rm a} = x (1 + δ_{\rm r})$ then 
+**Definition 7 (absolute/relative error)** If $\tilde x = x + δ_{\rm a} = x (1 + δ_{\rm r})$ then 
 $|δ_{\rm a}|$ is called the _absolute error_ and $|δ_{\rm r}|$ is called the 
 _relative error_ in approximating $x$ by $\tilde x$.
 
