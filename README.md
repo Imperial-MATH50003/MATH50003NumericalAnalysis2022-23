@@ -16,7 +16,7 @@ Lecturer: [Dr Sheehan Olver](https://www.ma.imperial.ac.uk/~solver/)
 
 ## Problem sheets
 
-## Workbooks
+## Labs
 
 
 ## Reading List

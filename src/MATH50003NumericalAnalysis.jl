@@ -1,6 +1,6 @@
 using Weave
 
-nkwds = (out_path="notebooks/", doctype = "md2pdf")
+nkwds = (out_path="notebooks/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors --clear-output")
 pkwds = (out_path="sheets/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors --clear-output")
 skwds = (out_path="sheets/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors")
 ekwds = (out_path="exams/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors  --clear-output")
@@ -10,14 +10,19 @@ eskwds = (out_path="exams/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyt
 # notes
 ##
 
-weave("src/notes/Asymptotics.jmd"; nkwds...)
+notebook("src/notes/Asymptotics.jmd"; nkwds...)
 
+notebook("src/notes/Integers.jmd"; nkwds...)
+notebook("src/notes/Reals.jmd"; nkwds...)
+
+
+#####
+#####
 
 notebook("src/Julia.jmd"; nkwds...)
-notebook("src/Asymptotics.jmd"; nkwds...)
 notebook("src/SpectralTheorem.jmd"; nkwds...)
 
-notebook("src/Numbers.jmd"; nkwds...)
+
 notebook("src/Differentiation.jmd"; nkwds...)
 
 notebook("src/StructuredMatrices.jmd"; nkwds...)
