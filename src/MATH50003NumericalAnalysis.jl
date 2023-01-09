@@ -1,8 +1,9 @@
 using Weave
 
-nkwds = (out_path="notebooks/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors --clear-output")
+nkwds = (out_path="notes/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors")
 pkwds = (out_path="sheets/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors --clear-output")
 skwds = (out_path="sheets/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors")
+lkwds = (out_path="labs/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors")
 ekwds = (out_path="exams/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors  --clear-output")
 eskwds = (out_path="exams/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyter", nbconvert_options="--allow-errors")
 
@@ -10,16 +11,30 @@ eskwds = (out_path="exams/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyt
 # notes
 ##
 
+notebook("src/notes/Julia.jmd"; nkwds...)
 notebook("src/notes/Asymptotics.jmd"; nkwds...)
+
 
 notebook("src/notes/Integers.jmd"; nkwds...)
 notebook("src/notes/Reals.jmd"; nkwds...)
 
 
 #####
+# sheets
 #####
 
-notebook("src/Julia.jmd"; nkwds...)
+notebook("src/sheets/sheet1.jmd"; pkwds...)
+
+#####
+# labs
+####
+
+notebook("src/labs/lab1.jmd"; lkwds...)
+
+####
+# OLD
+####
+
 notebook("src/SpectralTheorem.jmd"; nkwds...)
 
 
@@ -35,21 +50,6 @@ notebook("src/OrthogonalPolynomials.jmd"; nkwds...)
 notebook("src/Quadrature.jmd"; nkwds...)
 
 notebook("src/Applications.jmd"; nkwds...)
-
-
-##
-# problem sheets
-##
-
-notebook("src/week1.jmd"; pkwds...)
-notebook("src/week2.jmd"; pkwds...)
-notebook("src/week4.jmd"; pkwds...)
-notebook("src/week5.jmd"; pkwds...)
-notebook("src/week9.jmd"; pkwds...)
-notebook("src/week10.jmd"; pkwds...)
-notebook("src/advanced1.jmd"; pkwds...)
-notebook("src/advanced2.jmd"; pkwds...)
-notebook("src/advanced3.jmd"; pkwds...)
 
 ##
 # solutions 

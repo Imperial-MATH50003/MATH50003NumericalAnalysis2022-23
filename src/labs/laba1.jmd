@@ -1,0 +1,137 @@
+## 5. Interval arithmetic
+
+
+The following problems consider implementation of interval arithmetic for
+proving precise bounds on arithmetic operations. That is recall the set operations
+$$
+A + B = \{x + y : x \in A, y \in B\}, AB = \{xy : x \in A, y \in B\}.
+$$
+
+**Problem 5.1⋆** For intervals $A = [a,b]$ and $B = [c,d]$ such that $0 \notin A,B$
+ and integer $n \neq 0$, 
+deduce formulas for the minimum and maximum of $A/n$, $A+B$ and $AB$.
+
+
+
+
+
+
+**Problem 5.2** 
+We want to implement floating point variants such that, for $S = [a,b] + [c,d]$
+ $P = [a,b] * [c,d]$, and $D = [a,b]/n$ for an integer $n$,
+$$
+\begin{align*}
+[a,b] ⊕ [c,d] &:= [{\rm fl}^{\rm down}(\min S), {\rm fl}^{\rm up}(\max S)] \\
+[a,b] ⊗ [c,d] &:= [{\rm fl}^{\rm down}(\min P), {\rm fl}^{\rm up}(\max P)] \\
+[a,b] ⊘ n &:= [{\rm fl}^{\rm down}(\min D), {\rm fl}^{\rm up}(\max D)]
+\end{align*}
+$$
+This guarantees $S ⊆ [a,b] ⊕ [c,d]$, $P ⊆ [a,b] ⊗ [c,d]$, and
+$D ⊆ [a,b] ⊘ n$.
+In other words, if $x \in [a,b]$ and
+$y \in [c,d]$ then $x +y \in [a,b] ⊕ [c,d]$, and we thereby have  bounds on $x + y$.
+
+Use the formulae from Problem 5.1 to complete (by replacing the `# TODO: …` comments with code)
+ the following implementation of an 
+`Interval` 
+so that `+`, `-`, and `/` implement $⊕$, $⊖$, and $⊘$ as defined above.
+
+```julia
+# Interval(a,b) represents the closed interval [a,b]
+struct Interval{T}
+    a::T
+    b::T
+end
+
+import Base: *, +, -, /, one, in
+
+# create an interval corresponding to [1,1]
+one(x::Interval) = Interval(one(x.a), one(x.b))
+
+# Support x in Interval(a,b)
+in(x, y::Interval) = y.a ≤ x ≤ y.b
+
+# Following should implement ⊕
+function +(x::Interval, y::Interval)
+    T = promote_type(typeof(x.a), typeof(x.b))
+    a = setrounding(T, RoundDown) do
+        # TODO: upper bound
+    end
+    b = setrounding(T, RoundUp) do
+        # TODO: upper bound
+    end
+    Interval(a, b)
+end
+
+# Following should implement ⊘
+function /(x::Interval, n::Integer)
+    T = typeof(x.a)
+    if iszero(n)
+        error("Dividing by zero not support")
+    end
+    a = setrounding(T, RoundDown) do
+        # TODO: lower bound
+    end
+    b = setrounding(T, RoundUp) do
+        # TODO: upper bound
+    end
+    Interval(a, b)
+end
+
+# Following should implement ⊗
+function *(x::Interval, y::Interval)
+    T = promote_type(typeof(x.a), typeof(x.b))
+    if 0 in x || 0 in y
+        error("Multiplying with intervals containing 0 not supported.")
+    end
+    a = setrounding(T, RoundDown) do
+        # TODO: lower bound
+    end
+    b = setrounding(T, RoundUp) do
+        # TODO: upper bound
+    end
+    Interval(a, b)
+end
+```
+
+**Problem 5.3** The following function  computes the first `n+1` terms of the Taylor series of $\exp(x)$:
+$$
+\sum_{k=0}^n {x^k \over k!}
+$$
+
+```julia
+function exp_t(x, n)
+    ret = one(x) # 1 of same type as x
+    s = one(x)
+    for k = 1:n
+        s = s/k * x
+        ret = ret + s
+    end
+    ret
+end
+```
+Bound the tail of the Taylor series for ${\rm e}^x$ assuming $|x| \leq 1$. 
+(Hint: ${\rm e}^x \leq 3$ for $x \leq 1$.)
+Use the bound
+to complete the function `exp_bound` which computes ${\rm e}^x$ with rigorous error bounds, that is
+so that when applied to an interval $[a,b]$ it returns an interval that is 
+guaranteed to contain the interval $[{\rm e}^a, {\rm e}^b]$.
+
+```julia
+function exp_bound(x::Interval, n)
+    if abs(x.a) > 1 || abs(x.b) > 1
+        error("Interval must be a subset of [-1, 1]")
+    end
+    ret = exp_t(x, n) # the code for Taylor series should work on Interval unmodified
+    f = factorial(min(20, n + 1)) # avoid overflow in computing factorial
+    T = typeof(ret.a)
+
+    # TODO: modify ret so that exp(x) is guaranteed to lie in it
+end
+```
+Check your result for computing ${\rm ℯ}$ and ${\rm e}^{-1}$ by assuring that
+the following returns true:
+```julia
+exp(big(1)) in exp_bound(Interval(1.0,1.0), 20) && exp(big(-1)) in exp_bound(Interval(-1.0,-1.0), 20)
+```
+Further, ensure that the width of each returned interval is less than $10^{-14}$.

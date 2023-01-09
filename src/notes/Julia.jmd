@@ -1,0 +1,726 @@
+# A. Introduction to Julia
+
+References: [The Julia Documentation](https://docs.julialang.org), [The Julia–Matlab–Python Cheatsheet](https://cheatsheets.quantecon.org), 
+[Think Julia](https://benlauwens.github.io/ThinkJulia.jl/latest/book)
+
+These notes give an overview of Julia. 
+In these notes we focus on the aspects of Julia and computing that are essential to numerical computing:
+
+
+1. Integers: We discuss briefly how to create and manipulate integers, and how to see the underlying bit representation.
+1. Strings and parsing: We discuss how to create and manipulate strings and characters, and how we can convert a string
+of 0's and 1's to an integer or other type.
+3. Vectors and matrices: We discuss how to build and manipulate vectors and matrices (which are both types of _arrays_).
+Later lectures will discuss linear algebra.
+4. Types: In Julia everything has a type, which plays a similar role to classes in Python. Here we 
+discuss how to make new types, for example, a complex number in radial format.
+5. Loops and branches: We discuss `if`, `for` and `while`, which work similar to Python.
+6. Functions: We discuss the construction of named and anonymous functions.
+Julia allows overloading functions for different types, for example, we can overload `*` for 
+our radial complex type.
+7. Modules, Packages, and Plotting: We discuss how to load external packages, in particular, for plotting.
+
+
+## 1. Integers
+
+Julia uses a math-like syntax for manipulating integers:
+```julia
+1 + 1 # Addition
+```
+```julia
+2 * 3 # Multiplication
+```
+```julia
+2 / 3 # Division
+```
+```julia
+x = 5; # semicolon is optional but supresses output if used in the last line
+x^2 # Powers
+```
+In Julia everything has a type. This is similar in spirit to
+a class in Python, but much more lightweight.
+An integer defaults to a type `Int`,
+which is either 32-bit (`Int32`) or 64-bit (`Int64`) depending
+on the processor of the machine. There are also 8-bit (`Int8`), 16-bit (`Int16`), 
+and 128-bit (`Int128`) integer types, which
+we can construct by converting an `Int`, e.g. `Int8(3)`.
+
+These are all "primitive types", instances of the type are stored in memory as
+a fixed length sequence of bits.
+We can find the type of a variable as follows:
+```julia
+typeof(x)
+```
+For a primitive type we can see the bits using the function `bitstring`:
+```julia
+bitstring(Int8(1))
+```
+Negative numbers may be surprising:
+```julia
+bitstring(-Int8(1))
+```
+This is explained in detail in Chapter [Numbers](Numbers.ipynb)
+
+There are other primitive integer types:  `UInt8`, `UInt16`, `UInt32`, and `UInt64` are unsigned integers, 
+e.g., we do not interpret
+the number as negative if the first bit is `1`. As they tend to be used to represent
+bit sequences they are displayed in hexadecimal, that is base-16, using digits 0-9a-c,
+e.g., $12 = (c)_{16}$:
+```julia
+UInt16(12)
+```
+
+
+A non-primitive type is `BigInt` which allows arbitrary length
+integers.
+
+
+
+## 2. Strings and parsing
+
+We have seen that `bitstring` returns a string of bits.
+Strings can be created with quotation marks
+```julia
+str = "hello world 😀"
+```
+We can access characters of a string with brackets:
+```julia
+str[1], str[13]
+```
+Each character is a primitive type, in this case using 32 bits/4 bytes:
+```julia
+typeof(str[6]), length(bitstring(str[6]))
+```
+Strings are not primitive types, but rather point to the start of a sequence
+of `Char`s in memory.  In this case, there are $32*13=416$ bits/52
+bytes in memory.
+
+Strings are _immutable_: once created they cannot be changed.
+But a new string can be created that modifies an existing string.
+The simplest example is `*`, which concatenates two strings:
+```julia
+"hi" * "bye"
+```
+(Why `*`? Because concatenation is non-commutive.)
+We can combine this with indexing to, for example, create a new string
+with a different last character:
+```julia
+str[1:end-1] * "😂"
+```
+
+
+### Parsing strings
+
+We can use the command `parse` to turn a string into an integer:
+```julia
+parse(Int, "123")
+```
+We can specify base 2 as an optional argument:
+```julia
+parse(Int, "-101"; base=2)
+```
+ If we are specifying
+bits its safer to parse as an `UInt32`, otherwise the first bit
+is not recognised as a sign:
+```julia
+bts = "11110000100111111001100110001010"
+x = parse(UInt32, bts; base=2)
+```
+The function `reinterpret` allows us to reinterpret the resulting
+sequence of 32 bits as a different type. For example, we can reinterpret
+as an `Int32` in which case the first bit is taken to be the sign bit
+and we get a negative number:
+```julia
+reinterpret(Int32, x)
+```
+We can also reinterpret as a `Char`:
+```julia
+reinterpret(Char, x)
+```
+We will use `parse` and `reinterpret` as it allows one to easily manipulate bits. 
+This is not actually how one should
+do it as it is slow.
+
+### Bitwise operations (non-examinable)
+
+In practice, one should manipulate bits using bitwise operations.
+These will not be required in this course and are not examinable, but
+are valuable to know if you have a career involving high performance computing.
+The `p << k` shifts the bits of `p` to the left `k` times inserting zeros,
+while `p >> k` shifts to the right:
+```julia
+println(bitstring(23));
+println(bitstring(23 << 2));
+println(bitstring(23 >> 2));
+```
+The operations `&`, `|` and `⊻` do bitwise and, or, and xor.
+
+## 3. Vectors, Matrices, and Arrays
+
+We can create a vector using brackets:
+```julia
+v = [11, 24, 32]
+```
+Like a string, elements are accessed via brackets. Julia
+uses 1-based indexing (like Matlab and Mathematica, unlike
+Python and C which use 0-based indexing):
+```julia
+v[1], v[3]
+```
+Accessing outside the range gives an error:
+```julia
+v[4]
+```
+Vectors can be made with different types, for example,
+here is a vector of three 8-bit integers:
+```julia
+v = [Int8(11), Int8(24), Int8(32)]
+```
+Just like strings, Vectors are not primitive types,
+but rather point to the start of sequence of bits in memory 
+that are interpreted in the corresponding type.
+In this last case, there are $3*8=24$ bits/3 bytes in memory.
+
+The easiest way to create a vector is to use `zeros` to create a zero `Vector`
+and then modify its entries:
+```julia
+v = zeros(Int, 5)
+v[2] = 3
+v
+```
+Note: we can't assign a non-integer floating point number to an integer vector:
+```julia
+v[2] = 3.5
+```
+We can also create vectors with `ones` (a vector of all ones), `rand` (a vector of random numbers between `0` and `1`)
+and `randn` (a vector of samples of normal distributed quasi-random numbers).
+
+When we create a vector whose entries are of different types, they are mapped to a type that can represent every entry.
+For example, here we input a list of one `Int32` followed by three `Int64`s, which are automatically converted to
+all be `Int64`:
+```julia
+[Int32(1), 2, 3, 4]
+```
+In the event that the types cannot automatically be converted, it defaults to an `Any` vector, which
+is similar to a Python list.
+This is bad performancewise as it does not know how many bits each element will need, so should be avoided.
+```julia
+[1.0, 1, "1"]
+```
+We can also specify the type of the Vector explicitly by writing the desired type before the first bracket:
+```julia
+Int32[1, 2, 3]
+```
+We can also create an array using comprehensions:
+```julia
+[k^2 for k = 1:5]
+```
+
+
+Matrices are created similar to vectors, but by specifying two dimensions instead of one.
+Again, the simplest way is to use `zeros` to create a matrix of all zeros:
+```julia
+zeros(Int, 5, 5) # creates a 5x5 matrix of Int zeros
+```
+We can also create matrices by hand.  Here, spaces delimit the columns and semicolons delimit the rows:
+```julia
+A = [1 2; 3 4; 5 6]
+```
+We can also create matrices using brackets, a formula, and a `for` command:
+```julia
+[k^2+j for k=1:5, j=1:5]
+```
+Matrices are really vectors in disguise.  They are still stored in memory in a consecutive sequence of bits.
+We can see the underlying vector using the `vec` command:
+```julia
+vec(A)
+```
+The only difference between matrices and vectors from the computers perspective is that they have a `size` which 
+changes the interpretation of whats stored in memory:
+```julia
+size(A)
+```
+Matrices can be manipulated easily on a computer.  We can multiply a matrix times vector:
+```julia
+x = [8; 9]
+A * x
+```
+or a matrix times matrix:
+```julia
+A * [4 5; 6 7]
+```
+If you use `.*`, it does entrywise multiplication:
+```julia
+[1 2; 3 4] .* [4 5; 6 7]
+```
+
+We can take the transpose of a real vector as follows:
+```julia
+a = [1, 2, 3]
+a'
+```
+Note for complex-valued vectors this is the conjugate-transpose,
+and so one may need to use `transpose(a)`. Both `a'` and `transpose(a)`
+should be thought of as "dual-vectors", and so multiplcation with a
+transposed vector with a normal vector gives a constant:
+```julia
+b = [4, 5, 6]
+a' * b
+```
+
+One important note: a vector is not the same as an `n x 1` matrix, and a transposed
+vector is not the same as a `1 \times n` matrix.
+
+### Accessing and altering subsections of arrays 
+
+We will use the following notation to get at the columns and rows of matrices:
+```
+A[a:b,k]    # returns the a-th through b-th rows of the k-th column of A as a Vector of length (b-a+1)
+A[k,a:b]    # returns the a-th through b-th columns of the k-th row of A as a Vector of length (b-a+1)
+A[:,k]      # returns all rows of the k-th column of A as a Vector of length size(A,1)
+A[k,:]      # returns all columns of the k-th row of A as a Vector of length size(A,2)
+A[a:b,c:d]  # returns the a-th through b-th rows and c-th through d-th columns of A 
+            # as a (b-a+1) x (d-c+1) Matrix
+```
+ The ranges `a:b` and `c:d` can be replaced by any `AbstractVector{Int}`.  For example:
+```julia
+A = [1 2 3; 4 5 6; 7 8 9; 10 11 12]
+A[[1,3,4],2]  # returns the 1st, 3rd and 4th rows of the 2nd column of A
+```
+
+
+**Exercise**  Can you guess what `A[2,[1,3,4]]` returns, using the definition of `A` as above?  
+What about `A[1:2,[1,3]]`?  And `A[1,B[1:2,1]]`?  And `vec(A[1,B[1:2,1]])`?
+
+We can also use this notation to modify entries of the matrix.  For example, we can set the `1:2` x `2:3` subblock of A to `[1 2; 3 4]` as follows:
+```julia
+A[1:2,2:3] = [1 2; 3 4]
+A
+```
+
+### Broadcasting
+
+It often is necessary to apply a function to every entry of a vector.
+By adding `.` to the end of a function we "broadcast" the function over
+a vector:
+```julia
+x = [1,2,3]
+cos.(x) # equivalent to [cos(1), cos(2), cos(3)]
+```
+Broadcasting has some interesting behaviour for matrices.
+If one dimension of a matrix (or vector) is 1, it automatically
+repeats the matrix (or vector) to match the size of another example.
+
+**Example**
+```julia
+[1,2,3] .* [4,5]'
+```
+Since `size([1,2,3],2) == 1` it repeats the same vector to match the size
+`size([4,5]',2) == 2`. Similarly, `[4,5]'` is repeated 3 times. So the
+above is equivalent to:
+```julia
+[1 1; 2 2; 3 3] .* [4 5; 4 5; 4 5]
+```
+Note we can also use broadcasting with our own functions (construction discussed later):
+```julia
+f = (x,y) -> cos(x + 2y)
+f.([1,2,3], [4,5]')
+```
+
+### Ranges
+
+We have already seen that we can represent a range of integers via `a:b`. Note we can
+convert it to a `Vector` as follows:
+```julia
+Vector(2:6)
+```
+We can also specify a step:
+```julia
+Vector(2:2:6), Vector(6:-1:2)
+```
+Finally, the `range` function gives more functionality, for example, we can create 4 evenly
+spaced points between `-1` and `1`:
+```julia
+Vector(range(-1, 1; length=4))
+```
+Note that `Vector` is mutable but a range is not:
+```julia
+r = 2:6
+r[2] = 3   # Not allowed
+```
+
+
+
+## 4. Types
+
+
+Julia has two different kinds of types: primitive types (like `Int64`, `Int32`, `UInt32` and `Char`) and composite types.
+Here is an example of an in-built composite type representing complex numbers, for example,
+$z = 1+2{\rm i}$:
+```julia
+z = 1 + 2im
+typeof(z)
+```
+A complex number consists of two fields: a real part (denoted `re`)
+and an imaginary part (denoted `im`).
+Fields of a type can be accessed using the `.` notation:
+```julia
+z.re, z.im
+```
+We can make our own types.  Let's make a type to represent complex numbers in the format
+$$z=r {\rm exp}({\rm i}\theta)$$
+That is, we want to create a type with two fields: `r` and `θ`.
+This is done using the `struct` syntax,
+followed by a list of names for the fields,
+and finally the keyword `end`.
+```julia
+struct RadialComplex
+    r
+    θ
+end
+z = RadialComplex(1,0.1)
+```
+We can access the fields using `.`:
+```julia
+z.r, z.θ
+```
+
+
+Note that the fields are immutable: we can create
+a new `RadialComplex` but we cannot modify an existing one.
+To make a mutable type we use the command `mutable struct`:
+```julia
+mutable struct MutableRadialComplex
+    r
+    θ
+end
+
+z = MutableRadialComplex(1,2)
+z.r = 2
+z.θ = 3
+z
+```
+
+### Abstract types
+
+Every type is a sub-type of an _abstract type_, which can never be instantiated on its own.
+For example, every integer and floating point number is a real number.  
+Therefore, there is an abstract type `Real`, which encapsulates many other types, 
+including `Float64`, `Float32`, `Int64` and `Int32`.  
+
+We can test if type `T` is part of an abstract type `V` using the sytax `T <: V`:
+
+```julia
+Float64 <: Real, Float32 <: Real, Int64 <: Real
+```
+
+Every type has one and only one super type, which is _always_ an abstract type.  
+The function `supertype` applied to a type returns its super type:
+```julia
+supertype(Int32)  # returns Signed, which represents all signed integers.  
+```
+```julia
+supertype(Float32) # returns `AbstractFloat`, which is a subtype of `Real`
+```
+An abstract type also has a super type:
+```julia
+supertype(Real)
+```
+
+### Type annotation and templating
+
+The types `RadialComplex` and `MutableRadialComplex` 
+won't be efficient as we have not told the compiler
+the type of `r` and `θ`. For the purposes of this module,
+this is fine as we are not focussing on high performance
+computing. However, it may be of interest how to rectify this.
+
+
+We can impose a type on the field name with `::`:
+```julia
+struct FastRadialComplex
+    r::Float64
+    θ::Float64
+end
+z = FastRadialComplex(1,0.1)
+z.r, z.θ
+```
+In this case `z` is stored using precisely 128-bits.
+
+Sometimes we want to support multiple types.
+For example, we may wish to support 32-bit
+floats. This can be done as follows:
+```julia
+struct TemplatedRadialComplex{T}
+    r::T
+    θ::T
+end
+z = TemplatedRadialComplex(1f0,0.1f0) # f0 creates a `Float32`
+```
+This is stored in precisely 64-bits.
+
+
+### Relationship with C structs, heap and stack (advanced)
+
+For those familiar with C, a `struct` in Julia
+whose fields are primitive types or composite
+types built from primitive types,
+is exactly equivalent to a `struct` C,
+and can in fact be passed to C functions without
+any performance cost. Behind the scenes Julia uses the
+LLVM compiler and so C and Julia can be freely mixed.
+
+Another thing to note is that there are two types of
+memory: the [stack](https://en.wikipedia.org/wiki/Stack-based_memory_allocation)
+and the [heap](https://en.wikipedia.org/wiki/Memory_management). The stack has
+fixed memory length and is much
+faster as it avoids dynamic allocation and deallocation of memory.
+So an instance of a type with a known fixed length
+(like `FastRadialComplex`) will
+typically be in the stack and be much faster than
+an instance of a type with unknown or variable length
+(like `RadialComplex` or `Vector`), which will be on the heap.
+
+For stack-allocated instances, the compiler may even go a step further
+and compile a function so
+that an instance of a type only lives on the cache or even in registers.
+
+## 5. Loops and branches
+
+For loops work essentially the same as in Python. The one
+caveat is to remember we are using 1-based indexing, e.g.,
+`1:5` is a range consisting of `[1,2,3,4,5]`:
+```julia
+for k = 1:5
+    println(k^2) 
+end
+```
+While loops look like
+```julia
+x = 1
+while x < 5
+    println("x is $x which is less than 5, incrementing!")
+    x += 1
+end
+x
+```
+If-elseif-else statements look like:
+```julia
+x = 5
+if isodd(x)
+    println("it's odd")
+elseif x == 2
+    println("it's 2")
+else
+    println("it's even")
+end
+```
+
+
+## 6. Functions
+
+Functions are created in a number of ways.
+The most standard way is using the keyword `function`, 
+followed by a name for the function, 
+and in parentheses a list of arguments.  
+Let's make a function that takes in a 
+single number $x$ and returns $x^2$.  
+
+```julia
+function sq(x)
+   x^2 
+end
+sq(2), sq(3)
+```
+There is also a convenient syntax for defining functions on
+one line, e.g., we can also write
+```julia
+sq(x) = x^2
+```
+
+Multiple arguments to the function can be included with `,`.  
+Here's a function that takes in 3 arguments and returns the average.  
+(We write it on 3 lines only to show that functions can take multiple lines.)
+
+```julia
+function av(x, y, z)
+    ret = x + y
+    ret = ret + z
+    ret/3
+end
+av(1, 2, 3)
+```
+
+Variables live in different scopes.  In the previous example, `x`, `y`, `z` and `ret` are _local variables_: 
+they only exist inside of `av`.  
+So this means `x` and `z` are _not_ the same as our complex number `x` and `z` defined above.
+
+**Warning**: if you reference variables not defined inside the function, they will use the outer scope definition.  
+The following example shows that if we mistype the first argument as `xx`, 
+then it takes on the outer scope definition `x`, which is a complex number:
+
+```julia
+function av2(xx, y, z)
+    (x + y + z)/3
+end
+```
+You should almost never use this feature!!  
+We should ideally be able to predict the output of a function from knowing just the inputs.
+
+**Example**
+Let's create a function that calculates the average of the entries of a vector.  
+```julia
+function vecaverage(v)
+    ret=0
+    for k = 1:length(v)
+        ret = ret + v[k]
+    end
+    ret/length(v)
+end
+vecaverage([1,5,2,3,8,2])
+```
+Julia has an inbuilt `sum` command that we can use to check our code:
+```julia
+sum([1,5,2,3,8,2])/6
+```
+
+### Functions with type signatures
+
+functions can be defined only for specific types using `::` after the variable name.
+The same function name can be used with different type signatures.  
+
+The following defines a function `mydot` that calculates the dot product, with a definition changing
+depending on whether it is an `Integer` or a `Vector`.  
+Note that `Integer` is an abstract type that includes all integer types:
+`mydot` is defined for pairs of `Int64`'s, `Int32`'s, etc. 
+
+
+```julia
+function mydot(a::Integer, b::Integer)
+    a*b
+end
+
+function mydot(a::AbstractVector, b::AbstractVector)
+    # we assume length(a)  == length(b)
+    ret = 0
+    for k = 1:length(a)
+        ret = ret + a[k]*b[k]
+    end
+    ret
+end
+
+mydot(5, 6)  # calls the first definition
+```
+```julia
+mydot(Int8(5), Int8(6))   # also calls the first definition
+```
+```julia
+mydot(1:3, [4,5,6])    # calls the second definition
+```
+
+We should actually check that the lengths of `a` and `b` match.  
+Let's rewrite `mydot` using an `if`, `else` statement.  The following code only does 
+the for loop if the length of a is equal to the length of b, otherwise, it throws an error.
+
+If we name something with the exact same signature (name, and argument types),
+previous definitions get overriden. Here we correct the implementation of `mydot`
+to throw an error if the lengths of the inputs do not match:
+```julia
+function mydot(a::AbstractVector, b::AbstractVector)
+    ret=0    
+    if length(a) == length(b)
+        for k = 1:length(a)
+            ret = ret + a[k]*b[k]
+        end
+    else
+        error("arguments have different lengths") 
+    end
+    ret    
+end
+mydot([1,2,3], [5,6,7,8])
+```
+
+### Anonymous (lambda) functions
+
+Just like Python it is possible to make anonymous functions,
+with two variants on syntax:
+```julia
+f = x -> x^2
+g = function(x)
+    x^2
+end
+```
+There is not much difference between named and anonymous functions,
+both are compiled in the same manner. One can essentially think of
+named functions as "global constant anonymous functions".
+
+### Tuples
+
+`Tuples` are similar to vectors but written with the notation `(x,y,z)` instead of `[x,y,z]`. 
+They allow the storage of _different types_.  For example:
+```julia
+t = (1,2.0,"hi")
+```
+On the surface, this is very similar to a `Vector{Any}`:
+```julia
+v=[1,2.0,"hi"]
+```
+The main difference is that a `Tuple` knows the type of its arguments:
+```julia
+typeof(t)
+```
+The main benefit of tuples for us is that they provide a convenient
+way to return multiple arguments from a function. 
+For example, the following returns both `cos(x)` and `x^2`
+from a single function:
+```julia
+function mytuplereturn(x)
+    (cos(x), x^2)
+end
+mytuplereturn(5)
+```
+We can also employ the convenient syntax to create two variables at once:
+```julia
+x,y = mytuplereturn(5)
+```
+
+
+## Modules, Packages, and Plotting
+
+Julia, like Python, has modules and packages.
+For example to load support for linear algebra functionality
+like `norm` and `det`, we need to load the `LinearAlgebra` module:
+```julia
+using LinearAlgebra
+norm([1,2,3]), det([1 2; 3 4])
+```
+It is fairly straightword to create ones own modules and packages, however,
+we will not need modules in this....module.
+
+### Plotting
+
+Some important functionality such as plotting requires non-built in
+packages. There are many packages such as [PyPlot.jl](https://github.com/JuliaPy/PyPlot.jl),
+which wraps Python's [matplotlib](https://matplotlib.org) and
+[Makie.jl](https://github.com/JuliaPlots/Makie.jl), which is a state-of-the-art
+GPU based 3D plotting package. We will use [Plots.jl](https://github.com/JuliaPlots/Plots.jl),
+which is an umbrella package that supports different backends.
+
+For example, we can plot a simple function as follows:
+```julia
+using Plots
+x = range(-1, 1; length=1000) # Create a range of a 1000 evenly spaced numbers between -1 and 1
+y = cos.(x) # Create a new vector with `cos` applied to each entry of `x`
+plot(x, y; label="cos(x)")
+plot!(x, 2y; label="2cos(x)")
+```
+Note the `!` is  just a convention: any function that modifies
+its input or global state should have `!` at the end of its name.
+
+
+### Installing packages (advanced)
+
+If you choose to use Julia on your own machine, you may need to install
+packages. This can be done by typing the following, either in Jupyter or in the REPL:
+`] add Plots`.
+

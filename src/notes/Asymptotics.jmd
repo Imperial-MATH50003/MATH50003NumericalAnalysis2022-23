@@ -1,4 +1,4 @@
-# A. Asymptotics and Computational Cost
+# B. Asymptotics and Computational Cost
 
 We introduce Big-O, little-o and asymptotic notation and see
 how they can be used to describe computational cost.
