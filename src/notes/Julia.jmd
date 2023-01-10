@@ -59,7 +59,7 @@ Negative numbers may be surprising:
 ```julia
 bitstring(-Int8(1))
 ```
-This is explained in detail in Chapter [Numbers](Numbers.ipynb)
+This is explained in detail in Chapter [Numbers](Numbers.ipynb).
 
 There are other primitive integer types:  `UInt8`, `UInt16`, `UInt32`, and `UInt64` are unsigned integers, 
 e.g., we do not interpret
@@ -72,7 +72,10 @@ UInt16(12)
 
 
 A non-primitive type is `BigInt` which allows arbitrary length
-integers.
+integers (using an arbitrary amount of memory):
+```julia
+factorial(big(100))^10
+```
 
 
 
@@ -220,7 +223,7 @@ We can also create an array using comprehensions:
 Matrices are created similar to vectors, but by specifying two dimensions instead of one.
 Again, the simplest way is to use `zeros` to create a matrix of all zeros:
 ```julia
-zeros(Int, 5, 5) # creates a 5x5 matrix of Int zeros
+zeros(Int, 4, 5) # creates a 4 × 5 matrix of Int zeros
 ```
 We can also create matrices by hand.  Here, spaces delimit the columns and semicolons delimit the rows:
 ```julia
@@ -228,7 +231,7 @@ A = [1 2; 3 4; 5 6]
 ```
 We can also create matrices using brackets, a formula, and a `for` command:
 ```julia
-[k^2+j for k=1:5, j=1:5]
+[k^2+j for k=1:4, j=1:5]
 ```
 Matrices are really vectors in disguise.  They are still stored in memory in a consecutive sequence of bits.
 We can see the underlying vector using the `vec` command:
@@ -269,7 +272,7 @@ a' * b
 ```
 
 One important note: a vector is not the same as an `n x 1` matrix, and a transposed
-vector is not the same as a `1 \times n` matrix.
+vector is not the same as a `1 × n` matrix.
 
 ### Accessing and altering subsections of arrays 
 
@@ -470,24 +473,24 @@ and can in fact be passed to C functions without
 any performance cost. Behind the scenes Julia uses the
 LLVM compiler and so C and Julia can be freely mixed.
 
-Another thing to note is that there are two types of
-memory: the [stack](https://en.wikipedia.org/wiki/Stack-based_memory_allocation)
-and the [heap](https://en.wikipedia.org/wiki/Memory_management). The stack has
+Another thing to note is that from a programmers perspective there are three types of
+memory: [registers](https://en.wikipedia.org/wiki/Processor_register),
+the [stack](https://en.wikipedia.org/wiki/Stack-based_memory_allocation)
+and the [heap](https://en.wikipedia.org/wiki/Memory_management). 
+Registers only live on the CPU and are extremely fast. The stack lives in 
+memory and has
 fixed memory length and is much
-faster as it avoids dynamic allocation and deallocation of memory.
+faster than the heap as it avoids dynamic allocation and deallocation of memory.
 So an instance of a type with a known fixed length
 (like `FastRadialComplex`) will
-typically be in the stack and be much faster than
+typically live either in registers or in the stack (the compiler
+sorts out the details) and be much faster than
 an instance of a type with unknown or variable length
-(like `RadialComplex` or `Vector`), which will be on the heap.
-
-For stack-allocated instances, the compiler may even go a step further
-and compile a function so
-that an instance of a type only lives on the cache or even in registers.
+(like `RadialComplex` or `Vector`), which must be on the heap.
 
 ## 5. Loops and branches
 
-For loops work essentially the same as in Python. The one
+Loops such as `for` work essentially the same as in Python. The one
 caveat is to remember we are using 1-based indexing, e.g.,
 `1:5` is a range consisting of `[1,2,3,4,5]`:
 ```julia
@@ -495,7 +498,7 @@ for k = 1:5
     println(k^2) 
 end
 ```
-While loops look like
+There are also `while` loops:
 ```julia
 x = 1
 while x < 5
@@ -651,12 +654,13 @@ g = function(x)
 end
 ```
 There is not much difference between named and anonymous functions,
-both are compiled in the same manner. One can essentially think of
+both are compiled in the same manner. The only difference is
+named functions are in a sense "permanent". One can essentially think of
 named functions as "global constant anonymous functions".
 
 ### Tuples
 
-`Tuples` are similar to vectors but written with the notation `(x,y,z)` instead of `[x,y,z]`. 
+`Tuple`s are similar to vectors but written with the notation `(x,y,z)` instead of `[x,y,z]`. 
 They allow the storage of _different types_.  For example:
 ```julia
 t = (1,2.0,"hi")

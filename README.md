@@ -4,7 +4,19 @@ Notes and course material for MATH50003 Numerical Analysis
 Lecturer: [Dr Sheehan Olver](https://www.ma.imperial.ac.uk/~solver/)
 
 
-## Course notes
+## Notes
+
+**Background material**
+
+A. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Julia.ipynb): we introduce  the basic features of the Julia language.
+B. [Asymptotics and Computational Cost](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Asymptotics.ipynb): we review Big-O, little-o and asymptotic to notation,
+and their usage in describing computational cost.
+
+**I: Computing with numbers**
+
+**II: Computing with matrices**
+
+**III: Computing with functions**
 
 ## Assessment
 
@@ -28,8 +40,6 @@ Lecturer: [Dr Sheehan Olver](https://www.ma.imperial.ac.uk/~solver/)
 4. [The Julia Documentation](https://docs.julialang.org)
 5. [The Julia–Matlab–Python Cheatsheet](https://cheatsheets.quantecon.org)
 6. [Think Julia](https://benlauwens.github.io/ThinkJulia.jl/latest/book)
-
-## Notes from lectures
 
 
 ## What is numerical analysis? 
