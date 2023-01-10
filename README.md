@@ -15,6 +15,7 @@ and their usage in describing computational cost.
 **I: Computing with numbers**
 
 1. [Integers](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Integers.ipynb): we discuss how computers represent integers using modular arithmetic.
+2. [Reals](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Reals.ipynb): we discuss how computers represent reals using IEEE floating-point arithmetic.
 
 **II: Computing with matrices**
 

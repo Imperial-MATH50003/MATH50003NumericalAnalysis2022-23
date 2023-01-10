@@ -5,10 +5,20 @@ Reference: [Overton](https://cs.nyu.edu/~overton/book/)
 
 In this chapter, we introduce  the 
 [IEEE Standard for Floating-Point Arithmetic](https://en.wikipedia.org/wiki/IEEE_754).
-There are many  possible ways of representing real numbers on a computer, as well as 
-the precise behaviour of operations such as addition, multiplication, etc.
+There are multiplies ways of representing real numbers on a computer, as well as 
+the precise behaviour of operations such as addition, multiplication, etc.: one can use
+1. [Fixed-point arithmetic](https://en.wikipedia.org/wiki/Fixed-point_arithmetic): essentially representing a real number as
+integer where a decimal point is inserted at a fixed point. This turns out to be
+impractical in most applications, e.g., due to loss of relative accuracy for small numbers.
+2. [Floating-point arithmetic](https://en.wikipedia.org/wiki/Floating-point_arithmetic): 
+essentially scientific notation where an exponent is stored alongside
+a fixed number of digits. This is what is used in practice.
+3. [Level-index arithmetic](https://en.wikipedia.org/wiki/Symmetric_level-index_arithmetic):
+stores numbers as iterated exponents. This is the most beautiful mathematically but unfortunately
+is not as useful for most applications and is not implemented in hardware.
+
 Before the 1980s each processor had potentially a different representation for 
-real numbers, as well as different behaviour for operations.  
+floating-point numbers, as well as different behaviour for operations. 
 IEEE introduced in 1985 was a means to standardise this across
 processors so that algorithms would produce consistent and reliable results.
 
@@ -49,7 +59,7 @@ Reals can also be presented in binary format, that is, a sequence of `0`s and `1
 **Definition 1 (real binary format)**
 For $b_1,b_2,\ldots \in \{0,1\}$, Denote a non-negative real number in _binary format_ by:
 $$
-(B_p \ldots B_0.b_1b_2b_3\ldots)_2 = (B_p \ldots B_0)_2 + {b_1 \over 2} + {b_2 \over 2^2} + {b_3 \over 2^3} + \cdots
+(B_p \ldots B_0.b_1b_2b_3\ldots)_2 := (B_p \ldots B_0)_2 +  \sum_{k=1}^∞ {b_k \over 2^k}.
 $$
 
 **Example 1 (rational in binary)**
@@ -85,18 +95,22 @@ $$
 F_{σ,Q,S} := F^{\rm normal}_{σ,Q,S} \cup F^{\rm sub}_{σ,Q,S} \cup F^{\rm special}.
 $$
 The _normal numbers_
-$F^{\rm normal}_{σ,Q,S} \subset {\mathbb R}$ are defined by
+$F^{\rm normal}_{σ,Q,S} ⊂ ℝ$ are
 $$
-F^{\rm normal}_{σ,Q,S} = \{\pm 2^{q-σ} \times (1.b_1b_2b_3\ldots b_S)_2 : 1 \leq q < 2^Q-1 \}.
+F^{\rm normal}_{σ,Q,S} := \{\pm 2^{q-σ} \times (1.b_1b_2b_3\ldots b_S)_2 : 1 ≤ q < 2^Q-1 \}.
 $$
-The _sub-normal numbers_ $F^{\rm sub}_{σ,Q,S} \subset {\mathbb R}$ are defined as
+The _sub-normal numbers_ $F^{\rm sub}_{σ,Q,S} ⊂ ℝ$ are
 $$
-F^{\rm sub}_{σ,Q,S} = \{\pm 2^{1-σ} \times (0.b_1b_2b_3\ldots b_S)_2\}.
+F^{\rm sub}_{σ,Q,S} := \{\pm 2^{1-σ} \times (0.b_1b_2b_3\ldots b_S)_2\}.
 $$
-The _special numbers_ $F^{\rm special} \not\subset {\mathbb R}$ are defined later.
+The _special numbers_ $F^{\rm special} ⊄ ℝ$ are 
+$$
+F^{\rm special} :=  \{∞, -∞, {\rm NaN}\}
+$$
+where ${\rm NaN}$ is a special symbol representing "not a number", essentially an error flag.
 
-Note this set of real numbers has no nice algebraic structure: it is not closed under addition, subtraction, etc.
-We will therefore need to define approximate versions of algebraic operations later.
+Note this set of real numbers has no nice _algebraic structure_: it is not closed under addition, subtraction, etc.
+On the other hand, we can control errors effectively hence it is extremely useful for analysis.
 
 Floating-point numbers are stored in $1 + Q + S$ total number of bits, in the format
 $$
@@ -109,7 +123,7 @@ $$
 q = (q_{Q-1}\ldots q_0)_2.
 $$
 Finally, the bits $b_1\ldots b_S$ are the <span style="color:blue">significand bits</span>.
-If $1 \leq q < 2^Q-1$ then the bits represent the normal number
+If $1 ≤ q < 2^Q-1$ then the bits represent the normal number
 $$
 x = \pm 2^{q-σ} \times (1.b_1b_2b_3\ldots b_S)_2.
 $$
@@ -147,7 +161,7 @@ scientific computing (on the _Floating-Point Unit_, FPU).
 `1f0` is a `Float32` (this is in fact scientific notation so `1f1 ≡ 10f0`). 
 `Float32` is generally the default format for graphics (on the _Graphics Processing Unit_, GPU), 
 as the difference between 32 bits and 64 bits is indistinguishable to the eye in visualisation,
-and more data can be fit into a GPU's limitted memory.
+and more data can be fit into a GPU's limited memory.
 3.  `Float16` is a type representing half-precision ($F_{16}$).
 It is important in machine learning where one wants to maximise the amount of data
 and high accuracy is not necessarily helpful. 
@@ -217,7 +231,7 @@ printlnbits(Float32(2.0^(2^Q-2-σ) * (2-εₘ))) # largest normal Float32
 ```
 For a given floating-point type, we can find these constants using the following functions:
 ```julia
-eps(Float32),floatmin(Float32),floatmax(Float32)
+eps(Float32), floatmin(Float32), floatmax(Float32)
 ```
 
 **Example 3 (creating a sub-normal number)** If we divide the smallest normal number by two, we get a subnormal number: 
@@ -233,14 +247,7 @@ Can you explain the bits?
 
 ### Special numbers
 
-The special numbers extend the real line by adding $±∞$ but also a notion of "not-a-number".
-
-**Definition 5 (not a number)**
-Let ${\rm NaN}$ represent "not a number" and define
-$$
-F^{\rm special} := \{\infty, -\infty, {\rm NaN}\}
-$$
-
+The special numbers extend the real line by adding $±∞$ but also a notion of "not-a-number" ${\rm NaN}$.
 Whenever the bits of $q$ of a floating-point number are all 1 then they represent an element of $F^{\rm special}$.
 If all $b_k=0$, then the number represents either $\pm\infty$, called `Inf` and `-Inf` for 64-bit floating-point numbers (or `Inf16`, `Inf32`
 for 16-bit and 32-bit, respectively):
@@ -257,12 +264,13 @@ These are needed for undefined algebraic operations such as:
 ```julia
 0/0
 ```
+Essentially it is a CPU's way of indicating an error has occurred.
 
 
 **Example 4 (many `NaN`s)** What happens if we change some other $b_k$ to be nonzero?
 We can create bits as a string and see:
 ```julia
-i = parse(UInt16, "0111110000010001"; base=2)
+i = 0b0111110000010001 # an UInt16
 reinterpret(Float16, i)
 ```
 Thus, there are more than one `NaN`s on a computer.  
@@ -325,10 +333,10 @@ In IEEE arithmetic, the arithmetic operations `+`, `-`, `*`, `/` are defined by 
 that they are exact up to rounding.  Mathematically we denote these operations as follows:
 $$
 \begin{align*}
-x\oplus y &:= {\rm fl}(x+y) \\
-x\ominus y &:= {\rm fl}(x - y) \\
-x\otimes y &:= {\rm fl}(x * y) \\
-x\oslash y &:= {\rm fl}(x / y)
+x ⊕ y &:= {\rm fl}(x+y) \\
+x ⊖ y &:= {\rm fl}(x - y) \\
+x ⊗ y &:= {\rm fl}(x * y) \\
+x ⊘ y &:= {\rm fl}(x / y)
 \end{align*}
 $$
 Note also that  `^` and `sqrt` are similarly exact up to rounding.
@@ -340,12 +348,31 @@ x = 1.1
 y = 0.1
 x + y - 1.2 # Not Zero?!?
 ```
-This is because ${\rm fl}(1.1) \neq 1+1/10$, but rather:
+This is because ${\rm fl}(1.1) ≠ 1+1/10$ and ${\rm fl}(1.1) ≠ 1/10$ since their
+expansion in _binary_ is not finite, but rather:
 $$
-{\rm fl}(1.1) = 1 + 2^{-4}+2^{-5} + 2^{-8}+2^{-9}+\cdots + 2^{-48}+2^{-49} + 2^{-51}
+\begin{align*}
+{\rm fl}(1.1) &= (1.0001100110011001100110011001100110011001100110011010)_2 \\
+{\rm fl}(0.1) &= 2^{-4} * (1.1001100110011001100110011001100110011001100110011010)_2 \\
+              &= (0.00011001100110011001100110011001100110011001100110011010)_2
+\end{align*}
 $$
+Thus when we add them we get
+$$
+{\rm fl}(1.1) + {\rm fl}(1.1) = (1.0011001100110011001100110011001100110011001100110011\red{1010})_2
+$$
+where the red digits indicate those beyond the 52 representable in $F_{54}$. In this case we round up and
+get
+$$
+{\rm fl}(1.1) ⊕ {\rm fl}(1.1) = (1.0011001100110011001100110011001100110011001100110100)_2
+$$
+On the other hand,
+$$
+{\rm fl}(1.2) = (1.011001100110011001100110011001100110011001100110011)_2
+$$
+which differs by 1 bit.
 
-**WARNING (non-associative)** These operations are not associative! E.g. $(x \oplus y) \oplus z$ is not necessarily equal to $x \oplus (y \oplus z)$. 
+**WARNING (non-associative)** These operations are not associative! E.g. $(x ⊕ y) ⊕ z$ is not necessarily equal to $x ⊕ (y ⊕ z)$. 
 Commutativity is preserved, at least.
 Here is a surprising example of non-associativity:
 ```julia
@@ -365,11 +392,11 @@ _relative error_ in approximating $x$ by $\tilde x$.
 We can bound the error of basic arithmetic operations in terms of machine epsilon, provided
 a real number is close to a normal number:
 
-**Definition 8 (normalised range)** The _normalised range_ ${\cal N}_{σ,Q,S} \subset {\mathbb R}$
+**Definition 8 (normalised range)** The _normalised range_ ${\cal N}_{σ,Q,S} ⊂ ℝ$
 is the subset of real numbers that lies
 between the smallest and largest normal floating-point number:
 $$
-{\cal N}_{σ,Q,S} := \{x : \min |F_{σ,Q,S}| \leq |x| \leq \max F_{σ,Q,S} \}
+{\cal N}_{σ,Q,S} := \{x : \min |F_{σ,Q,S}| ≤ |x| ≤ \max F_{σ,Q,S} \}
 $$
 When $σ,Q,S$ are implied by context we use the notation ${\cal N}$.
 
@@ -383,7 +410,7 @@ $$
 where the _relative error_ is
 $$
 \begin{align*}
-|\delta_x^{\rm nearest}| &\leq {ϵ_{\rm m} \over 2} \\
+|\delta_x^{\rm nearest}| &≤ {ϵ_{\rm m} \over 2} \\
 |\delta_x^{\rm up/down}| &< {ϵ_{\rm m}}.
 \end{align*}
 $$
@@ -393,11 +420,11 @@ This immediately implies relative error bounds on all IEEE arithmetic operations
 if $x+y \in {\cal N}$ then
 we have
 $$
-x \oplus y = (x+y) (1 + \delta_1)
+x ⊕ y = (x+y) (1 + \delta_1)
 $$
 where (assuming the default nearest rounding)
 $
-|\delta_1| \leq {ϵ_{\rm m} \over 2}.
+|\delta_1| ≤ {ϵ_{\rm m} \over 2}.
 $
 
 **Example 6 (bounding a simple computation)** We show how to bound the error in computing
@@ -407,29 +434,31 @@ $$
 using floating-point arithmetic. First note that `1.1` on a computer is in
 fact ${\rm fl}(1.1)$. Thus this computation becomes
 $$
-({\rm fl}(1.1) \oplus {\rm fl}(1.2)) \oplus {\rm fl}(1.3)
+({\rm fl}(1.1) ⊕ {\rm fl}(1.2)) ⊕ {\rm fl}(1.3)
 $$
 First we find
 $$
-({\rm fl}(1.1) \oplus {\rm fl}(1.2)) = (1.1(1 + δ_1) + 1.2 (1+δ_2))(1 + δ_3)
- = 2.3 + 1.1 δ_1 + 1.2 δ_2 + 2.3 δ_3 + 1.1 δ_1 δ_3 + 1.2 δ_2 δ_3
- = 2.3 + δ_4
+({\rm fl}(1.1) ⊕ {\rm fl}(1.2)) = (1.1(1 + δ_1) + 1.2 (1+δ_2))(1 + δ_3)
+ = 2.3 + \underbrace{1.1 δ_1 + 1.2 δ_2 + 2.3 δ_3 + 1.1 δ_1 δ_3 + 1.2 δ_2 δ_3}_{δ_4}.
  $$
-where (note $δ_1 δ_3$ and $δ_2 δ_3$ are tiny so we just round up our bound to the nearest decimal)
+In this module we will never ask for precise bounds: that is, we will always want bounds of the form
+$C ϵ_{\rm m}$ for a specified constant $C$ but the choice of $C$ need not be sharp. Thus we will
+tend to round up to integers. Further, while $δ_1 δ_3$ and $δ_2 δ_3$ are absolutely tiny 
+we will tend to bound them rather naïvely by $|ϵ_{\rm m}/2|$. Using these rules we have the bound
 $$
-|δ_4| \leq 2.3 ϵ_{\rm m}
+|δ_4| ≤ (1+1+2+1+1) ϵ_{\rm m} = 6ϵ_{\rm m}
 $$
 Thus the computation becomes
 $$
-((2.3 + δ_4) + 1.3 (1 + δ_5)) (1 + δ_6) = 3.6 + δ_4 + 1.3 δ_5 + 3.6 δ_6 + δ_4 δ_6  + 1.3 δ_5 δ_6 = 3.6 + δ_7
+((2.3 + δ_4) + 1.3 (1 + δ_5)) (1 + δ_6) = 3.6 + \underbrace{δ_4 + 1.3 δ_5 + 3.6 δ_6 + δ_4 δ_6  + 1.3 δ_5 δ_6}_{δ_7}
 $$
 where the _absolute error_ is
 $$
-|δ_7| \leq 4.8 ϵ_{\rm m}
+|δ_7| ≤ (6 + 1 + 2 + 1 + 1) ϵ_{\rm m} = 11 ϵ_{\rm m} 
 $$
 Indeed, this bound is bigger than the observed error:
 ```julia
-abs(3.6 - (1.1+1.2+1.3)), 4.8eps()
+abs(3.6 - (1.1+1.2+1.3)), 11eps()
 ```
 
 
@@ -476,7 +505,7 @@ Note these special functions are written in (advanced) Julia code, for example,
 
 **WARNING (sin(fl(x)) is not always close to sin(x))** This is possibly a misleading statement
 when one thinks of $x$ as a real number. Consider $x = \pi$ so that $\sin x = 0$.
-However, as ${\rm fl}(\pi) \neq \pi$. Thus we only have relative accuracy compared
+However, as ${\rm fl}(\pi) ≠ \pi$. Thus we only have relative accuracy compared
 to the floating point approximation:
 ```julia
 π₆₄ = Float64(π)
@@ -516,7 +545,7 @@ abserr, relerr # very large relative error
 We can see this in the error bound (note that $4x$ is exact for floating point numbers
 and adding $1$ is exact for this particular $x$):
 $$
-(x \otimes x \oplus 4x) + 1 = (x^2 (1 + \delta_1) + 4x)(1+\delta_2) + 1 = x^2 + 4x + 1 + \delta_1 x^2 + 4x \delta_2 + x^2 \delta_1 \delta_2
+(x ⊗ x) ⊕ 4x + 1 = (x^2 (1 + \delta_1) + 4x)(1+\delta_2) + 1 = x^2 + 4x + 1 + \delta_1 x^2 + 4x \delta_2 + x^2 \delta_1 \delta_2
 $$
 Using a simple bound $|x| < 1$ we get a (pessimistic) bound on the absolute error of
 $3 ϵ_{\rm m}$. Here `f(x)` itself is less than $2 ϵ_{\rm m}$ so this does not imply
@@ -559,5 +588,5 @@ setprecision(4_000) do # 4000 bit precision
   end
 end
 ```
-In the problem sheet we shall see how this can be used to rigorously bound ${\rm e}$,
+In the labs we shall see how this can be used to rigorously bound ${\rm e}$,
 accurate to 1000 digits. 
