@@ -9,6 +9,7 @@ Lecturer: [Dr Sheehan Olver](https://www.ma.imperial.ac.uk/~solver/)
 **Background material**
 
 A. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Julia.ipynb): we introduce  the basic features of the Julia language.
+
 B. [Asymptotics and Computational Cost](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Asymptotics.ipynb): we review Big-O, little-o and asymptotic to notation,
 and their usage in describing computational cost.
 
