@@ -1,26 +1,22 @@
 # I.1 Integers
 
 
-In this chapter, we discuss how computers represent integers, in particular
-via [modular arithmetic](https://en.wikipedia.org/wiki/Modular_arithmetic),
-and introduce the [Two's-complement](https://en.wikipedia.org/wiki/Two's_complement)
-format for representing negative numbers. 
 In this chapter we discuss the following:
 
 1. Binary representation: Any real number can be represented in binary, that is,
 by an infinite sequence of 0s and 1s (bits). We review  binary representation.
 2. Unsigned integers:  We discuss how computers represent non-negative integers using only
-$p$-bits, via modular arithmetic.
-3. Signed integers: we discuss how negative integers are handled using the Two's complement format.
-3. As an advanced (non-examinable) topic we discuss `BigInt`, which uses variable bit length storage.
+$p$-bits, via [modular arithmetic](https://en.wikipedia.org/wiki/Modular_arithmetic).
+3. Signed integers: we discuss how negative integers are handled using the [Two's-complement](https://en.wikipedia.org/wiki/Two's_complement) format.
+4. As an advanced (non-examinable) topic we discuss `BigInt`, which uses variable bit length storage.
 
 Before we begin its important to have a basic model of how a computer works. Our simplified model of a computer
-will consist of a (Central Processing Unit (CPU))[https://en.wikipedia.org/wiki/Central_processing_unit]—the 
+will consist of a [Central Processing Unit (CPU)](https://en.wikipedia.org/wiki/Central_processing_unit)—the 
 brains of the computer—and [Memory](https://en.wikipedia.org/wiki/Computer_data_storage#Primary_storage)—where 
 data is stored. Inside the CPU there are [registers](https://en.wikipedia.org/wiki/Processor_register),
-where data is temporarily stored and manipulated by the CPU. 
+where data is temporarily stored after being loaded from memory, manipulated by the CPU, then stored back to memory. 
 
-Memory is a sequence of bits: 1s and 0s, essentially "on/off" switches. These are grouped into bytes, which
+Memory is a sequence of bits: `1`s and `0`s, essentially "on/off" switches. These are grouped into bytes, which
 consist of 8 bits. Each byte has a memory address: a unique number specifying its location in memory. The number
 of possible addresses is limited by the processor: if a computer has a a $p$-bit CPU then each address is represented
 by $p$ bits, for a total of $2^p$ addresses (on a modern 64-bit CPU this is $2^{64} ≈ 1.8 \times 10^{19}$ bytes).
@@ -34,7 +30,7 @@ A CPU has the following possible operations:
 and write the result to a register.
 
 Mathematically, the important point is CPUs only act on $2^p$ possible sequences of bits at a time.
-That is, any basic function $f$ on a computer is either of the form
+That is, essentially all functions $f$ implemented on a CPU are either of the form
 $f : ℤ_{2^p} → ℤ_{2^p}$ or  $f : ℤ_{2^p} × ℤ_{2^p} → ℤ_{2^p}$,
 where we use the following notation:
 
@@ -47,7 +43,10 @@ The limitations this imposes on representing integers is substantial.
 If we have an implementation of $+$, which we shall denote $⊕ₘ$, how can we possibly represent
 $m + 1$ in this implementation when the result is above the largest possible integer?
 
-The solution that is used is straightforward: the CPU uses modular arithmetic. E.g., we have $(m-1) ⊕ₘ 1 = 0$.
+The solution that is used is straightforward: the CPU uses modular arithmetic. E.g., we have
+$$
+(m-1) ⊕ₘ 1 = m\ ({\rm mod}\ m) = 0.
+$$
 In this chapter we discuss the implications of this approach and how it works with negative numbers.
 
 
@@ -70,7 +69,7 @@ Any integer can be presented in binary format, that is, a sequence of `0`s and `
 **Definition 2 (binary format)**
 For $B_0,\ldots,B_p \in \{0,1\}$ denote an integer in _binary format_ by:
 $$
-±(B_p\ldots B_1B_0)_2 := ±(2^pB_p + \cdots + 2B_1 + B_0)
+±(B_p\ldots B_1B_0)_2 := ±\sum_{k=0}^p B_k 2^k
 $$
 
 
@@ -92,7 +91,15 @@ these bits dictate the first $p$ binary digits: $(B_{p-1}\ldots B_1B_0)_2$.
 Integers on a computer follow [modular arithmetic](https://en.wikipedia.org/wiki/Modular_arithmetic):
 Integers represented with $p$-bits on a computer actually 
 represent elements of ${\mathbb Z}_{2^p}$ and integer arithmetic on a computer is 
-equivalent to arithmetic modulo $2^p$. We denote modular arithmetic with base $m = 2^p$ using $⊕_m$ and $⊖_m$:
+equivalent to arithmetic modulo $2^p$. We denote modular arithmetic with $m = 2^p$ as follows:
+$$
+\begin{align*}
+x ⊕_m y &:= (x+y) ({\rm mod}\ m) \\
+x ⊖_m y &:= (x-y) ({\rm mod}\ m) \\
+x ⊗_m y &:= (x-y) ({\rm mod}\ m)
+\end{align*}
+$$
+When $m$ is implied by context we just write $⊕, ⊖, ⊗$.
 
 **Example 2 (arithmetic with  8-bit unsigned integers)** 
 If  arithmetic lies between $0$ and $m = 2^8 = 256$ works as expected. 
@@ -158,7 +165,7 @@ printbits(x * y)
 
 In Julia unsigned integers are displayed in hexadecimal
 form: that is, in base-16.
-Since there are only 10 standard digits (0-9) it uses 6 letters (a–f) to represent
+Since there are only 10 standard digits (`0-9`) it uses 6 letters (`a–f`) to represent
 11–16. For example,
 ```julia
 UInt8(250)
@@ -167,8 +174,9 @@ because `f` corresponds to 15 and `a` corresponds to 10, and we have
 $$
 15 * 16 + 10 = 250.
 $$
-The reason for this is that each digit then corresponds to two bytes, so
-is aligned with memory.
+The reason for this is that each hex-digit encodes 4 bits (since 4 bits have $2^4 = 16$ possible
+values) and hence two hex-digits are encode 1 byte, and thus the digits correspond
+exactly with how memory is divided into addresses.
 We can create unsigned integers either by specifying their hex format:
 ```julia
 0xfa
@@ -194,14 +202,14 @@ $$
 $$
 
 **Definition 4 (Shifted mod)**
-Define for $y = x \mod 2^p$
+Define for $y = x\ ({\rm mod}\ 2^p)$
 $$
-x \mod^{\rm s} 2^p := \begin{cases} y & 0 ≤ y ≤ 2^{p-1}-1 \\
+x\ ({\rm mod}^{\rm s}\ 2^p) := \begin{cases} y & 0 ≤ y ≤ 2^{p-1}-1 \\
                              y - 2^p & 2^{p-1} ≤ y ≤ 2^p - 1
                              \end{cases}
 $$
 
-Note that if $R_p(x) = x \mod^{\rm s} 2^p$ then it can be viewed as a map
+Note that if $R_p(x) = x ({\rm mod}^{\rm s}\ 2^p)$ then it can be viewed as a map
 $R_p : ℤ → ℤ_{2^p}^s$ or a one-to-one map
 $R_p : ℤ_{2^p} → ℤ_{2^p}^s$ whose inverse is $R_p^{-1}(x) = x \mod 2^p$. 
 
@@ -226,7 +234,7 @@ printbits(-Int8(55))
 Arithmetic works precisely
 the same for signed and unsigned integers, e.g. we have
 $$
-x ⊕_{2^p}^s y := x + y \mod^{\rm s} 2^p
+x ⊕_{2^p}^s y := x + y ({\rm mod}^{\rm s}\ 2^p)
 $$
 
 **Example 6 (addition of 8-bit integers)**
@@ -243,7 +251,7 @@ Consider `(-2) * 2`. $-2$ has the same bits as $2^{256} - 2 = 254$ and $-4$ has 
 same bits as $2^{256}-4 = 252$, and hence from the previous example we get the correct result of `-4`.
 In other words:
 $$
-(-2) ⊗_{2^p} 2 = (-2) * 2 \ ({\rm mod}\ 2^p) = (2^p-2) * 2 \ ({\rm mod}\ 2^p) = 2^{p+1}-4 \ ({\rm mod}\ 2^p) = -4 \ ({\rm mod}\ 2^p)
+(-2) ⊗_{2^p}^s 2 = (-2) * 2 \ ({\rm mod}^{\rm s}\ 2^p) = (2^p-2) * 2 \ ({\rm mod}^{\rm s}\ 2^p) = 2^{p+1}-4 \ ({\rm mod}^{\rm s}\ 2^p) = -4
 $$
 
 
@@ -266,7 +274,7 @@ of using integers close to their largest value.
 
 ### Division
 
- In addition to `+`, `-`, and `*` we have integer division `÷`, which rounds down:
+ In addition to `+`, `-`, and `*` we have integer division `÷`, which rounds towards zero:
 ```julia
 5 ÷ 2 # equivalent to div(5,2)
 ```
@@ -286,7 +294,7 @@ is often best to combine `big` with rationals:
 big(102324)//132413023 + 23434545//4243061 + 23434545//42430534435
 ```
 
-## 3. Variable bit representation (non-examinable)
+## 4. Variable bit representation (non-examinable)
 
 An alternative representation for integers uses a variable number of bits,
 with the advantage of avoiding overflow but with the disadvantage of a substantial
