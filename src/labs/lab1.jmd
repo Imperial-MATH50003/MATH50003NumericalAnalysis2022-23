@@ -215,11 +215,12 @@ that require more than $p$-bits. A simple example is a rational function.
 
 **Problem 2.1** Create a type `Rat` with two `Int` fields, `p` and `q`,
 representing a rational function including `+`, `*`, `-`, and `/`.
-Use `gcd` and `div` to reduce the numerator and denominator (use `?` to
-find out what these functions do).
+
 
 ```julia
 # `struct` creates a new type called `Rat`
+# consisting of 128 bits, half encode `p`
+# and half encode `q`
 struct Rat
     p::Int
     q::Int
@@ -235,8 +236,39 @@ x = Rat(1, 2)
 
 # We import `+`, `-`, `*`, `/` so we can "overload" these operations specifically
 # for `Rat`.
-import Base: +, -, *, /
+import Base: +, -, *, /, ==
 
+# The ::Rat means the following version of `==` is only called if both arguments
+# are Rat
+function ==(x::Rat, y::Rat)
+    # TODO: implement equality, making sure to check the case where
+    # the numerator/denominator are possibly reducible
+    # Hint: `gcd` and `div` may be useful. Use `?` to find out what they do
+end
 
+# We can also support equality when `x isa Rat` and `y isa Integer`
+function ==(x::Rat, y::Integer)
+    # TODO: implement
+end
+
+# TODO: implement ==(x::Integer, y::Rat)
+
+@test Rat(1, 2) == Rat(2, 4)
+@test Rat(1, 2) ≠ Rat(1, 3)
+@test Rat(2,2) == 1
+@test 1 == Rat(2,2)
+
+## TODO: implement +, -, *, and /, 
+
+@test Rat(1, 2) + Rat(1, 3) == Rat(5, 6)
+@test Rat(1, 3) - Rat(1, 2) == Rat(-1, 6)
+@test Rat(2, 3) * Rat(3, 4) == Rat(1, 2)
+@test Rat(2, 3) / Rat(3, 4) == Rat(8, 9)
 ```
+
+Templating is a way of letting fields take on different types.
+
+
+**Problem 2.2** Modify the above code so that `p` and `q` can be other types,
+for example, `Int16` or `BigInt`.
 
