@@ -33,6 +33,7 @@ and their usage in describing computational cost.
 
 ## Labs
 
+1. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb)
 
 ## Reading List
 
