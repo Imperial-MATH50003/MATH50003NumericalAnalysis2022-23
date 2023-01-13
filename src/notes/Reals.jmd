@@ -7,15 +7,10 @@ In this chapter, we introduce  the
 [IEEE Standard for Floating-Point Arithmetic](https://en.wikipedia.org/wiki/IEEE_754).
 There are multiplies ways of representing real numbers on a computer, as well as 
 the precise behaviour of operations such as addition, multiplication, etc.: one can use
-1. [Fixed-point arithmetic](https://en.wikipedia.org/wiki/Fixed-point_arithmetic): essentially representing a real number as
-integer where a decimal point is inserted at a fixed point. This turns out to be
-impractical in most applications, e.g., due to loss of relative accuracy for small numbers.
-2. [Floating-point arithmetic](https://en.wikipedia.org/wiki/Floating-point_arithmetic): 
-essentially scientific notation where an exponent is stored alongside
-a fixed number of digits. This is what is used in practice.
-3. [Level-index arithmetic](https://en.wikipedia.org/wiki/Symmetric_level-index_arithmetic):
-stores numbers as iterated exponents. This is the most beautiful mathematically but unfortunately
-is not as useful for most applications and is not implemented in hardware.
+
+1. [Fixed-point arithmetic](https://en.wikipedia.org/wiki/Fixed-point_arithmetic): essentially representing a real number as integer where a decimal point is inserted at a fixed point. This turns out to be impractical in most applications, e.g., due to loss of relative accuracy for small numbers.
+2. [Floating-point arithmetic](https://en.wikipedia.org/wiki/Floating-point_arithmetic): essentially scientific notation where an exponent is stored alongside a fixed number of digits. This is what is used in practice.
+3. [Level-index arithmetic](https://en.wikipedia.org/wiki/Symmetric_level-index_arithmetic): stores numbers as iterated exponents. This is the most beautiful mathematically but unfortunately is not as useful for most applications and is not implemented in hardware.
 
 Before the 1980s each processor had potentially a different representation for 
 floating-point numbers, as well as different behaviour for operations. 
@@ -24,23 +19,16 @@ processors so that algorithms would produce consistent and reliable results.
 
 This chapter may seem very low level for a mathematics course but there are
 two important reasons to understand the behaviour of floating-point numbers in details:
-1. Floating-point arithmetic is very precisely defined, and can even be used
-in rigorous computations as we shall see in the labs. But it is not exact
-and its important to understand how errors in computations can accumulate.
-3. Failure to understand floating-point arithmetic can cause catastrophic issues
-in practice, with the extreme example being the 
-[explosion of the Ariane 5 rocket](https://youtu.be/N6PWATvLQCY?t=86).
+1. Floating-point arithmetic is very precisely defined, and can even be used in rigorous computations as we shall see in the labs. But it is not exact and its important to understand how errors in computations can accumulate.
+2. Failure to understand floating-point arithmetic can cause catastrophic issues in practice, with the extreme example being the  [explosion of the Ariane 5 rocket](https://youtu.be/N6PWATvLQCY?t=86).
 
 
 In this chapter we discuss the following:
 
 1. Real numbers in binary: we discuss how binary digits can be used to represent real numbers.
-2. Floating-point numbers: Real numbers are stored on a computer with a finite number of bits. 
-There are three types of floating-point numbers: _normal numbers_, _subnormal numbers_, and _special numbers_.
-3. Arithmetic: Arithmetic operations in floating-point are exact up to rounding, and how the
-rounding mode can be set. This allows us to bound  errors computations.
-4. High-precision floating-point numbers: As an advanced (non-examinable) topic, we discuss how the precision of floating-point arithmetic can be increased arbitrary
-using `BigFloat`. 
+2. Floating-point numbers: Real numbers are stored on a computer with a finite number of bits.  There are three types of floating-point numbers: _normal numbers_, _subnormal numbers_, and _special numbers_.
+3. Arithmetic: Arithmetic operations in floating-point are exact up to rounding, and how the rounding mode can be set. This allows us to bound  errors computations.
+4. High-precision floating-point numbers: As an advanced (non-examinable) topic, we discuss how the precision of floating-point arithmetic can be increased arbitrary using `BigFloat`. 
 
 Before we begin, we load two external packages. SetRounding.jl allows us 
 to set the rounding mode of floating-point arithmetic. ColorBitstring.jl
