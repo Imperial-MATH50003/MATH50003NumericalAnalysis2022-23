@@ -31,6 +31,9 @@ and their usage in describing computational cost.
 
 ## Problem sheets
 
+1. [Integers and Reals](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1.ipynb)
+
+
 ## Labs
 
 1. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb)
