@@ -15,8 +15,11 @@ notebook("src/notes/Julia.jmd"; nkwds...)
 notebook("src/notes/Asymptotics.jmd"; nkwds...)
 
 
+# Part I
 notebook("src/notes/Integers.jmd"; nkwds...)
 notebook("src/notes/Reals.jmd"; nkwds...)
+notebook("src/notes/DividedDifferences.jmd"; nkwds...)
+notebook("src/notes/DualNumbers.jmd"; nkwds...)
 
 
 #####
@@ -37,8 +40,6 @@ notebook("src/labs/lab1.jmd"; lkwds...)
 
 notebook("src/SpectralTheorem.jmd"; nkwds...)
 
-
-notebook("src/Differentiation.jmd"; nkwds...)
 
 notebook("src/StructuredMatrices.jmd"; nkwds...)
 notebook("src/Decompositions.jmd"; nkwds...)

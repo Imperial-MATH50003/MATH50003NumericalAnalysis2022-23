@@ -16,6 +16,7 @@ and their usage in describing computational cost.
 
 1. [Integers](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Integers.ipynb): we discuss how computers represent integers using modular arithmetic.
 2. [Reals](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Reals.ipynb): we discuss how computers represent reals using IEEE floating-point arithmetic.
+3. [Divided Differences](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/DividedDifferences.ipynb): we discuss how we can approximate derivatives using floating point arithmetic, with error bounds.
 
 **II: Computing with matrices**
 
