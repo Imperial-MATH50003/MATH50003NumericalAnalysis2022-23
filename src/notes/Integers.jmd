@@ -40,12 +40,12 @@ $$
 $$
 
 The limitations this imposes on representing integers is substantial. 
-If we have an implementation of $+$, which we shall denote $⊕ₘ$, how can we possibly represent
+If we have an implementation of $+$, which we shall denote $⊕_m$, how can we possibly represent
 $m + 1$ in this implementation when the result is above the largest possible integer?
 
 The solution that is used is straightforward: the CPU uses modular arithmetic. E.g., we have
 $$
-(m-1) ⊕ₘ 1 = m\ ({\rm mod}\ m) = 0.
+(m-1) ⊕_m 1 = m\ ({\rm mod}\ m) = 0.
 $$
 In this chapter we discuss the implications of this approach and how it works with negative numbers.
 

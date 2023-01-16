@@ -45,27 +45,27 @@ using SetRounding, ColorBitstring
 Reals can also be presented in binary format, that is, a sequence of `0`s and `1`s alongside a decimal point:
 
 **Definition 1 (real binary format)**
-For $b_1,b_2,\ldots \in \{0,1\}$, Denote a non-negative real number in _binary format_ by:
+For $b_1,b_2,…\in \{0,1\}$, Denote a non-negative real number in _binary format_ by:
 $$
-(B_p \ldots B_0.b_1b_2b_3\ldots)_2 := (B_p \ldots B_0)_2 +  \sum_{k=1}^∞ {b_k \over 2^k}.
+(B_p …B_0.b_1b_2b_3…_2 := (B_p …B_0)_2 +  \sum_{k=1}^∞ {b_k \over 2^k}.
 $$
 
 **Example 1 (rational in binary)**
 Consider the number `1/3`.  In decimal recall that:
 $$
-1/3 = 0.3333\ldots =  \sum_{k=1}^\infty {3 \over 10^k}
+1/3 = 0.3333…=  \sum_{k=1}^∞ {3 \over 10^k}
 $$
 We will see that in binary
 $$
-1/3 = (0.010101\ldots)_2 = \sum_{k=1}^\infty {1 \over 2^{2k}}
+1/3 = (0.010101…_2 = \sum_{k=1}^∞ {1 \over 2^{2k}}
 $$
 Both results can be proven using the geometric series:
 $$
-\sum_{k=0}^\infty z^k = {1 \over 1 - z}
+\sum_{k=0}^∞ z^k = {1 \over 1 - z}
 $$
 provided $|z| < 1$. That is, with $z = {1 \over 4}$ we verify the binary expansion:
 $$
-\sum_{k=1}^\infty {1 \over 4^k} = {1 \over 1 - 1/4} - 1 = {1 \over 3}
+\sum_{k=1}^∞ {1 \over 4^k} = {1 \over 1 - 1/4} - 1 = {1 \over 3}
 $$
 A similar argument with $z = 1/10$ shows the decimal case.
 
@@ -85,11 +85,11 @@ $$
 The _normal numbers_
 $F^{\rm normal}_{σ,Q,S} ⊂ ℝ$ are
 $$
-F^{\rm normal}_{σ,Q,S} := \{\pm 2^{q-σ} \times (1.b_1b_2b_3\ldots b_S)_2 : 1 ≤ q < 2^Q-1 \}.
+F^{\rm normal}_{σ,Q,S} := \{± 2^{q-σ} × (1.b_1b_2b_3…b_S)_2 : 1 ≤ q < 2^Q-1 \}.
 $$
 The _sub-normal numbers_ $F^{\rm sub}_{σ,Q,S} ⊂ ℝ$ are
 $$
-F^{\rm sub}_{σ,Q,S} := \{\pm 2^{1-σ} \times (0.b_1b_2b_3\ldots b_S)_2\}.
+F^{\rm sub}_{σ,Q,S} := \{± 2^{1-σ} × (0.b_1b_2b_3…b_S)_2\}.
 $$
 The _special numbers_ $F^{\rm special} ⊄ ℝ$ are 
 $$
@@ -102,22 +102,22 @@ On the other hand, we can control errors effectively hence it is extremely usefu
 
 Floating-point numbers are stored in $1 + Q + S$ total number of bits, in the format
 $$
-sq_{Q-1}\ldots q_0 b_1 \ldots b_S
+sq_{Q-1}…q_0 b_1 …b_S
 $$
 The first bit ($s$) is the <span style="color:red">sign bit</span>: 0 means positive and 1 means
-negative. The bits $q_{Q-1}\ldots q_0$ are the <span style="color:green">exponent bits</span>:
+negative. The bits $q_{Q-1}…q_0$ are the <span style="color:green">exponent bits</span>:
 they are the binary digits of the unsigned integer $q$: 
 $$
-q = (q_{Q-1}\ldots q_0)_2.
+q = (q_{Q-1}…q_0)_2.
 $$
-Finally, the bits $b_1\ldots b_S$ are the <span style="color:blue">significand bits</span>.
+Finally, the bits $b_1…b_S$ are the <span style="color:blue">significand bits</span>.
 If $1 ≤ q < 2^Q-1$ then the bits represent the normal number
 $$
-x = \pm 2^{q-σ} \times (1.b_1b_2b_3\ldots b_S)_2.
+x = ± 2^{q-σ} × (1.b_1b_2b_3…b_S)_2.
 $$
 If $q = 0$ (i.e. all bits are 0) then the bits represent the sub-normal number
 $$
-x = \pm 2^{1-σ} \times (0.b_1b_2b_3\ldots b_S)_2.
+x = ± 2^{1-σ} × (0.b_1b_2b_3…b_S)_2.
 $$
 If $q = 2^Q-1$  (i.e. all bits are 1) then the bits represent a special number, discussed
 later.
@@ -158,7 +158,7 @@ and high accuracy is not necessarily helpful.
 **Example 2 (rational in `Float32`)** How is the number $1/3$ stored in `Float32`?
 Recall that
 $$
-1/3 = (0.010101\ldots)_2 = 2^{-2} (1.0101\ldots)_2 = 2^{125-127} (1.0101\ldots)_2
+1/3 = (0.010101…_2 = 2^{-2} (1.0101…_2 = 2^{125-127} (1.0101…_2
 $$
 and since $
 125 = (1111101)_2
@@ -167,7 +167,7 @@ $  the <span style="color:green">exponent bits</span> are <span style="color:gre
 For the significand we round the last bit to the nearest element of $F_{32}$, (this is explained in detail in
 the section on rounding), so we have
 $$
-1.010101010101010101010101\ldots \approx 1.01010101010101010101011 \in F_{32} 
+1.010101010101010101010101…\approx 1.01010101010101010101011 \in F_{32} 
 $$
 and the <span style="color:blue">significand bits</span> are <span style="color:blue">01010101010101010101011</span>.
 Thus the `Float32` bits for $1/3$ are:
@@ -206,7 +206,7 @@ $$
 where $|A| := \{|x| : x \in A \}$.
 The _largest (positive) normal number_ is 
 $$
-\max F_{σ,Q,S}^{\rm normal} = 2^{2^Q-2-σ} (1.11\ldots1)_2 = 2^{2^Q-2-σ} (2-ϵ_{\rm m})
+\max F_{σ,Q,S}^{\rm normal} = 2^{2^Q-2-σ} (1.11…)_2 = 2^{2^Q-2-σ} (2-ϵ_{\rm m})
 $$
 
 
@@ -237,7 +237,7 @@ Can you explain the bits?
 
 The special numbers extend the real line by adding $±∞$ but also a notion of "not-a-number" ${\rm NaN}$.
 Whenever the bits of $q$ of a floating-point number are all 1 then they represent an element of $F^{\rm special}$.
-If all $b_k=0$, then the number represents either $\pm\infty$, called `Inf` and `-Inf` for 64-bit floating-point numbers (or `Inf16`, `Inf32`
+If all $b_k=0$, then the number represents either $±∞$, called `Inf` and `-Inf` for 64-bit floating-point numbers (or `Inf16`, `Inf32`
 for 16-bit and 32-bit, respectively):
 ```julia
 printlnbits(Inf16)
