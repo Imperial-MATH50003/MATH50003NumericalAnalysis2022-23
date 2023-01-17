@@ -201,7 +201,7 @@ function tenthbitto1(x::Int32)
     ## TODO: change the 10th bit of `x` to 1
 end
 
-@test tenthbitto1(-Int32(100)) ≡ Int32(4194404)
+@test tenthbitto1(Int32(100)) ≡ Int32(4194404)
 @test tenthbitto1(-Int32(100000010)) ≡ Int32(-95805706)
 ```
 
