@@ -60,9 +60,9 @@ by writing `0b` followed by a sequence of bits:
 0b10111011101 # isa UInt16, the smallest type with at least 11 bits
 ```
 Or in base-16 using hexadecimal format (with digits `0–9a–f` following
-an `0x`):
+an `0x`), where each digit takes 4 bits to represent (since $2^4 = 16$):
 ```julia
-0xabcde # isa UInt32, the smallest type with at least 16*5 = 80 bits
+0xabcde # isa UInt32, the smallest type with at least 4*5 = 20 bits
 ```
 
 **Problem 1.2** Use binary format to create an `Int` corresponding to $(101101)_2$.
