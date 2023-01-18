@@ -32,7 +32,10 @@ notebook("src/sheets/sheet1.jmd"; pkwds...)
 # labs
 ####
 
-notebook("src/labs/lab1.jmd"; lkwds...)
+import Literate
+
+Literate.notebook("src/labs/lab1.jl"; outputdir="labs/")
+Literate.notebook("src/labs/lab2.jl"; outputdir="labs/")
 
 ####
 # OLD
