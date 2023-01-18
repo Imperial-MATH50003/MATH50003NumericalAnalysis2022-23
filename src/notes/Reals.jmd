@@ -384,7 +384,7 @@ a real number is close to a normal number:
 is the subset of real numbers that lies
 between the smallest and largest normal floating-point number:
 $$
-{\cal N}_{σ,Q,S} := \{x : \min |F_{σ,Q,S}| ≤ |x| ≤ \max F_{σ,Q,S} \}
+{\cal N}_{σ,Q,S} := \{x : \min |F_{σ,Q,S}^{\rm normal}| ≤ |x| ≤ \max F_{σ,Q,S}^{\rm normal} \}
 $$
 When $σ,Q,S$ are implied by context we use the notation ${\cal N}$.
 
