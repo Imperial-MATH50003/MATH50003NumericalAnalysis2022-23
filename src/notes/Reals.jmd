@@ -390,7 +390,7 @@ When $σ,Q,S$ are implied by context we use the notation ${\cal N}$.
 
 We can use machine epsilon to determine bounds on rounding:
 
-**Proposition 1 (rounding arithmetic)**
+**Proposition 1 (round bound)**
 If $x \in {\cal N}$ then 
 $$
 {\rm fl}^{\rm mode}(x) = x (1 + \delta_x^{\rm mode})

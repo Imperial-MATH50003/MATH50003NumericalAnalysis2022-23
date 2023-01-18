@@ -40,6 +40,11 @@ and their usage in describing computational cost.
 
 1. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb)
 
+## Lecture material
+
+1. Integers: [Notebook](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture1.ipynb)
+2. Floating Point: [Notebook](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture2.ipynb)
+
 ## Reading List
 
 1. Nicholas J. Higham, [Accuracy and Stability of Numerical Algorithms](https://epubs.siam.org/doi/book/10.1137/1.9780898718027?mobileUi=0), Chapters 1–3
