@@ -34,8 +34,8 @@ notebook("src/sheets/sheet1.jmd"; pkwds...)
 
 import Literate
 
-Literate.notebook("src/labs/lab1.jl"; outputdir="labs/")
-Literate.notebook("src/labs/lab2.jl"; outputdir="labs/")
+Literate.notebook("src/labs/lab1.jl", "labs/")
+Literate.notebook("src/labs/lab2.jl", "labs/")
 
 ####
 # OLD
