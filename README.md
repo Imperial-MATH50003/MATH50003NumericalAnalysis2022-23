@@ -31,12 +31,12 @@ and their usage in describing computational cost.
 3. [Practice final exam](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/exams/practicefinal.pdf)
 3. Final exam (pen-and-paper): TBA
 
-## Problem sheets
+## Problem sheets (pen-and-paper)
 
 1. [Integers and Reals](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1.ipynb)
 
 
-## Labs
+## Labs (Julia-based)
 
 1. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb)
 

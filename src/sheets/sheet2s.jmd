@@ -1,0 +1,172 @@
+# MATH50003 Numerical Analysis: Problem Sheet 2
+
+This week we look at other variants of finite-differences, including central differences and second-order
+finite-differences. We also investigate mathematical properties of dual numbers and extend their implementation to
+other functions. Finally, we see how dual numbers can be combined with Newton iteration for root finding.
+
+Problems are denoted A/B/C to indicate their difficulty.
+
+## 1. Finite-differences
+
+**Problem 1.1 (B)** Use Taylor's theorem to derive an error bound for central differences
+$$
+f'(x) ≈ {f(x + h) - f(x - h) \over 2h}.
+$$
+Find an error bound when implemented in floating point arithmetic, assuming that
+$$f^{\rm FP}(x) = f(x) + \delta_x$$
+where $|\delta_x| \leq c ϵ_{\rm m}$.
+
+**SOLUTION**
+
+By Taylor's theorem, the approximation around $x+h$ is
+$$f(x+h) = f(x) + f'(x)h + \frac{f''(x)}{2}h^2 + \frac{f'''(z_1)}{6}h^3,$$
+for some $z_1 \in (x, x+h)$ and similarly
+$$f(x-h) = f(x) + f'(x)(-h) + \frac{f''(x)}{2}h^2 - \frac{f'''(z_2)}{6}h^3,$$
+for some $z_2 \in (x-h, x)$.
+
+Subtracting the second expression from the first we obtain
+$$f(x+h)-f(x-h) = f'(x)(2h) + \frac{f'''(z_1)+f'''(z_2)}{6}h^3.$$
+Hence,
+
+$$ \frac{f(x+h)-f(x-h)}{2h} = f'(x)  + \underbrace{\frac{f'''(z_1)+f'''(z_2)}{12}h^2}_{δ_{\rm Taylor}}.$$
+
+Thus, the error can be bounded by
+$$\left|δ_{\rm Taylor}\right| ≤ {M \over 6} h^2,$$
+where
+$$
+M=\max_{y \in [x-h,x+h]}\left| f'''(y)\right|.
+$$
+
+In floating point we have 
+$$
+\begin{align*}
+(f^{\rm FP}(x + 2h) ⊖ f^{\rm FP}(x-2h)) ⊘ (2h) &= {f(x + h) +  δ_{x+h} - f(x-h) - δ_{x-h} \over 2h} (1 + δ_1) \\
+&= {f(x+h) - f(x-h) \over 2h} (1 + δ_1) + {δ_{x+h}- δ_{x-h} \over 2h} (1 + δ_1)
+\end{align*}
+$$
+Applying Taylor's theorem we get 
+$$
+(f^{\rm FP}(x + h) ⊖ f^{\rm FP}(x-h)) ⊘ (2h) = 
+f'(x) + \underbrace{f'(x) δ_1 + δ_{\rm Taylor} (1 + \delta_1) + {δ_{x+h}- δ_{x-h} \over 2h} (1 + δ_1)}_{δ_{x,h}^{\rm CD}}
+$$
+where
+$$
+|δ_{x,h}^{\rm CD}| ≤ {|f'(x)| \over 2} ϵ_{\rm m} + {M \over 3} h^2 + {2 c ϵ_{\rm m} \over h}
+$$
+
+**END**
+
+
+**Problem 1.2 (B)**
+Derive the error for central differences exactly for the different cases to explain the observed behaviour.
+
+**SOLUTION**
+
+```julia
+using Plots
+
+# define the functions
+f = x -> 1 + x + x^2
+g = x -> 1 + x/3 + x^2
+
+# define analytic first derivatives for comparison
+fp  = x -> 1 + 2 *x
+gp = x ->1/3 + 2 *x
+
+# central difference derivative approximation
+centraldiff(x, h, f) = (f(x + h) - f(x - h))/(2 *h)
+    
+# computes an error
+centraldifferror(x, h, f, fp) = abs(centraldiff(x, h, f) - fp(x))
+
+        
+#plotting f and g errors   
+x = 0.0 # some arbitrary point
+
+# helper function to avoid trying to take logs of 0 in plots
+nanabs(x) = iszero(x) ? NaN : abs(x)
+
+# We find the error for the derivative of f is 0 
+# (until we run into the errors for too small h we discussed in the lecture)
+h = 2.0 .^ (0:-1:-60)
+plot(nanabs.(centraldifferror.(x, h, f, fp)), yaxis=:log10, label="f")
+plot!(nanabs.(centraldifferror.(x, h, g, gp)), yaxis=:log10, label="g")
+```
+```julia
+h = 10.0 .^ (0:-1:-16)
+plot(nanabs.(centraldifferror.(x, h, f, fp)), yaxis=:log10, label="f")
+plot!(nanabs.(centraldifferror.(x, h, g, gp)), yaxis=:log10, label="g")
+```
+
+
+To compute the errors of the central difference approximation of $f'(x)$ we compute
+$$
+\begin{align*}
+\left| \frac{f(x+h)-f(x-h)}{2h} - f'(x) \right|
+&=\left| \frac{1 + (x+h) + (x+h)^2 - 1 - (x-h) - (x-h)^2}{2h} - (1+2x)\right| \\
+&=\left| \frac{2h + 4hx}{2h} - 1 -2x\right| = 0.
+\end{align*}
+$$
+As we can see, in this case the central difference approximation is exact. The errors we start observing for small step sizes are thus numerical in nature. The values of the function at $f(x+h)$ and $f(x-h)$ eventually become numerically indistinguishable and thus this finite difference approximation to the derivative incorrectly results in $0$.
+
+
+To compute the errors of the central difference approximation of $g'(x)$ we compute
+
+$$
+\begin{align*}
+\left| \frac{g(x+h)-g(x-h)}{2h} - g'(x) \right|&= \left| \frac{1 + \frac{(x+h)}{3} + (x+h)^2 - 1 - \frac{(x-h)}{3} - (x-h)^2}{2h} - \left(\frac{1}{3}+2x \right)\right| \\
+&=\left| \frac{1}{3} + 2x - \frac{1}{3} - 2x\right| = 0.
+\end{align*}
+$$
+
+
+**Problem 1.3 (A)** Use Taylor's theorem to derive an error bound on the second-order derivative approximation
+$$
+f''(x) ≈ {f(x+h) - 2f(x) + f(x-h) \over h^2}
+$$
+Find an error bound when implemented in floating point arithmetic, assuming that
+$$
+f^{\rm FP}(x) = f(x) + δ_x
+$$
+where $|δ_x| \leq c ϵ_{\rm m}$.
+
+**SOLUTION**
+
+Using the same two formulas as in 1.1 we have
+$$f(x+h) = f(x) + f'(x)h + \frac{f''(x)}{2}h^2 + \frac{f'''(z_1)}{6}h^3,$$
+for some $z_1 \in (x, x+h)$
+and
+$$f(x-h) = f(x) + f'(x)(-h) + \frac{f''(x)}{2}h^2 - \frac{f'''(z_2)}{6}h^3,$$
+for some $z_2 \in (x-h, x)$.
+
+Summing the two we obtain
+$$f(x+h) + f(x-h) = 2f(x) + f''(x)h^2 + \frac{f'''(z_1)}{6}h^3 - \frac{f'''(z_2)}{6}h^3.$$
+
+Thus,
+$$f''(x) = \frac{f(x+h) - 2f(x) + f(x-h)}{h^2} + \frac{f'''(z_2) - f'''(z_1)}{6}h.$$
+
+Hence, the error is 
+$$
+\left|f''(x) - \right| = \left|\frac{f'''(z_2) - f'''(z_1)}{6}h\right|≤ 2Ch ,
+$$
+where again
+$$C = \max_{y∈[x-h,x+h]}\left|\frac{f'''(y)}{6}\right|.$$
+
+In floating point arithmetic we assume $x + h = x ⊕ h$, $h$ is a power of $2$ and all computations are normal. 
+Then we have:
+$$
+f^{\rm FP}(x + h) ⊖ 2f^{\rm FP}(x) = (f(x+h) + δ_{x+h} - 2f(x) -2δ_x)(1+δ^1) = f(x+h) - 2f(x) + \underbrace{(f(x+h) - 2f(x))δ^1 + (δ_{x+h} - 2 δ_x)(1+δ^1)}_{δ^2}
+$$
+where $|δ^2| ≤ (3/2F + 4c) ϵ_m$, where $F = \sup_{x-h ≤ t ≤ x+h} |f(t)|$. Therefore
+$$
+(f^{\rm FP}(x + h) ⊖ 2f^{\rm FP}(x)) ⊕ f^{\rm FP}(x - h) = ((f(x+h) - 2f(x) + δ^2) + f(x-h) + δ_{x-h})(1+δ^3) = f(x+h) - 2f(x) + f(x-h) + \underbrace{(f(x+h) - 2f(x) + f(x-h)) δ^3 + (δ^2 + δ_{x-h})(1+δ^3)}_{δ^4}
+$$
+where $|δ^4| ≤ (5F + 10c)ϵ_{\rm m}$. Putting everything together we have
+$$
+{(f^{\rm FP}(x + h) ⊖ 2f^{\rm FP}(x)) ⊕ f^{\rm FP}(x - h) \over h} = {f(x+h) - 2f(x) + f(x-h) \over h^2} + {δ^4 \over h^2} = f''(x) + \frac{f'''(z_2) - f'''(z_1)}{6}h +  {δ^4 \over h^2} 
+$$
+that is the error is bounded by
+$$
+2Ch + (5F + 10c){ϵ_{\rm m} \over h^2}
+$$
+

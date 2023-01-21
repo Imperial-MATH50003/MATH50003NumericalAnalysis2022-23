@@ -1,0 +1,359 @@
+## 2. Dual numbers
+
+**Problem 2.1⋆ (C)** 
+Show that dual numbers $\mathbb{D}$ are a _commutative ring_, that is, for all $a,b,c \in \mathbb{D}$ the following are satisfied:
+1. _additive associativity_: $(a + b) + c = a + (b + c)$
+2. _additive commutativity_: $a + b = b + a$
+3. _additive identity_: There exists $0 ∈ \mathbb{D}$ such that $a + 0 = a$.
+4. _additive inverse_: There exists $-a$ such that $(-a) + a = 0$.
+5. _multiplicative associativity_: $(ab)c = a(bc)$
+6. _multiplictive commutativity_: $ab = ba$
+7. _multiplictive identity_: There exists $1 ∈ \mathbb{D}$ such that $1a= a$.
+8. _distributive_: $a(b+c) = ab + ac$
+
+**SOLUTION**
+In what follows we write $a = a_r + a_d ϵ$ and likewise for $b,c \in \mathbb{D}$.
+
+Additive associativity and commutativity and existence of additive inverse are both 
+immediate results of dual number addition reducing to element-wise real number addition. 
+Furthermore, by definition of addition on $\mathbb{D}$ the dual number $0+0 ϵ$ acts as the additive 
+identity since
+$$
+(a_r+a_dϵ)+(0+0ϵ) = (a_r+a_dϵ ).
+$$
+We explicitly prove multiplicative commutativity
+$$
+ab = (a_r+a_dϵ )(b_r+b_d ϵ ) = a_r b_r+(a_r b_d+a_d b_r)ϵ = b_r a_r+(b_r a_d+b_d a_r)ϵ = ba.
+$$
+We also explicitly prove multiplicative associativity:
+$$
+(ab)c = ((a_r b_r+(a_r b_d+a_d b_r) ϵ ) c = 
+a_r b_r c_r + ((a_r b_d + a_d b_r) c_r  + a_r b_r c_d) ϵ = 
+a_r b_r c_r + (a_r b_d c_r + a_d b_r c_r  + a_r b_r c_d) ϵ
+$$
+and
+$$
+a(bc) = a ((b_r c_r+(b_r c_d+b_d c_r) ϵ ) = a_r b_r c_r + (a_r b_d c_r + a_d b_r c_r  + a_r b_r c_d) ϵ.
+$$
+The number $1+0ϵ$ serves as the multiplicative identity. Note that for any dual number $a$, we have
+$$
+(1+0ϵ )(a_r + a_d ϵ ) = 1 a_r + (a_r 0 + 1 a_d) ϵ = a_r+a_d ϵ = a.
+$$
+Finally we show distributivity of multiplication:
+$$
+a(b+c) = a (b_r+c_r + (b_d+c_d)ϵ) = (a_r b_r + a_r c_r) + (a_r b_d+a_r c_d+ a_d b_r + a_d c_r) ϵ,
+$$
+$$
+ab + ac = a_r b_r + (a_d b_r + a_r b_d) ϵ + a_r c_r + (a_d c_r + a_r c_d) ϵ = (a_r b_r + a_r c_r) + (a_r b_d+a_r c_d+ a_d b_r + a_d c_r) ϵ.
+$$
+
+
+**Problem 2.2⋆ (C)** A _field_ is a commutative ring such that $0 ≠ 1$ and all nonzero elements have a multiplicative inverse, i.e.,
+there exists $a^{-1}$ such that $a a^{-1} = 1$. Why isn't $\mathbb{D}$ a field?
+
+**SOLUTION**
+
+Fields require that all nonzero elements have a unique multiplicative inverse. However, this is not the case for dual numbers. To give an explicit counter example, we show that there is no dual number $z$ which is the inverse of $0+ϵ$, i.e. a dual number $z$ such that
+$$
+\frac{(0+ϵ)}{(z_r+z_d ϵ)} = 1 + 0 ϵ.
+$$
+By appropriate multiplication with the conjugate we show that
+$$
+\frac{(0+ϵ)(z_r-z_d ϵ)}{(z_r+z_d ϵ)(z_r-z_d ϵ)} = \frac{z_r ϵ}{z_r^2} = \frac{ϵ}{z_r}.
+$$
+This proves that no choice of real part $z_r$ can reach the multiplicative identity $1+0 ϵ$ when starting from the number $0+ϵ$. More general results for zero real part dual numbers can also be proved.
+ 
+**Problem 2.3⋆ (B)** A _matrix representation_ of a ring are maps from a group/ring to matrices such that matrix addition and multiplication
+behave exactly like addition and multiplication of the ring. 
+That is, if $A$ and $B$ are elements of the ring and $ρ$ is a representation, then
+$$
+ρ(A + B) = ρ(A) + ρ(B) \hbox{ and } ρ(AB) = ρ(A)ρ(B).
+$$
+Show that the following are matrix representations of complex numbers and dual numbers (respectively):
+$\rho : a + b {\rm i} \mapsto \begin{pmatrix} a & b \\ -b & a \end{pmatrix},$
+
+$\rho_ϵ : a + b {\rm ϵ} \mapsto \begin{pmatrix} a & b \\ 0 & a \end{pmatrix}.$
+
+**SOLUTION**
+
+Let $A = a+bi$ and $B=c+di$ and $\rho$ be the map to their proposed matrix representations. First we check that addition complies with addition of complex numbers, that is 
+$(a+bi)+(c+di) = (a+c)+(b+d)i:$
+ 
+$\rho(A) + \rho(B) = \begin{pmatrix} a & b \\ -b & a \end{pmatrix} + \begin{pmatrix} c & d \\ -d & c \end{pmatrix} = \begin{pmatrix} a+c & b+d \\ -(b+d) & a+c \end{pmatrix} = \rho(A+B).$
+
+Next for multiplication we need $(a+bi)(c+di) = (ac-bd)+(bc+ad)i $:
+
+$\rho(A)\rho(B) = \begin{pmatrix} a & b \\ -b & a \end{pmatrix}\begin{pmatrix} c & d \\ -d & c \end{pmatrix} = \begin{pmatrix} ac-bd & bc+ad \\ -(bc+ad) & ac-bd \end{pmatrix} = \rho(AB)$
+
+Now we move on to dual numbers $A = a+b ϵ $ and $B=c+d ϵ$ and their matrix representation map $\rho_ϵ$: For addition of dual numbers $(a+bϵ )+(c+dϵ ) = (a+c) + (b+d) ϵ$:
+
+$\rho_ϵ(A) + \rho_ϵ(B) = \begin{pmatrix} a & b \\ 0 & a \end{pmatrix} + \begin{pmatrix} c & d \\ 0 & c \end{pmatrix} = \begin{pmatrix} a+c & b+d \\ 0 & a+c \end{pmatrix} = \rho_ϵ(A+B).$
+
+And finally for multiplication of dual numbers $(a+bϵ )(c+dϵ ) = ac+(ad+bc)ϵ$:
+
+$\rho_ϵ(A)\rho_ϵ(B) = \begin{pmatrix}a & b \\ 0 & a \end{pmatrix}\begin{pmatrix} c & d \\ 0 & c \end{pmatrix} = \begin{pmatrix} ac & ad+bc \\ 0 & ac \end{pmatrix} = \rho_ϵ(AB).$
+
+
+**Problem 2.4⋆ (C)** What is the correct definition of division on dual numbers, i.e.,
+$$
+(a + b ϵ )/(c + d ϵ ) = s + t ϵ
+$$
+for what choice of $s$ and $t$? Use dual numbers to compute the derivative of the following functions at $x = 0.1$:
+$$
+\exp(\exp x \cos x + \sin x), \prod_{k=1}^3 \left({x \over k}-1\right),\hbox{ and } f^{\rm s}_2(x) = {1 + {x - 1 \over 2 + {x-1 \over 2}}}
+$$
+
+**SOLUTION**
+
+As with complex numbers, division is easiest to understand by first multiplying with the conjugate, that is:
+$$
+\frac{a+bϵ}{c+dϵ} = \frac{(a+bϵ)(c-dϵ)}{(c+dϵ)(c-dϵ)}.
+$$
+Expanding the products and dropping terms with $ϵ^2$ then leaves us with the definition of division for dual numbers (where the denominator must have non-zero real part):
+$$
+\frac{a}{c} + \frac{bc - ad}{c^2}ϵ.
+$$ 
+Thus we have $s = \frac{a}{c}$ and $t = \frac{bc - ad}{c^2}$.
+
+We now compute the derivatives of the three functions by evaluating for $x = 0.1 + ϵ$.
+
+For the first function we have:
+$$
+\begin{align*}
+\exp(\exp(0.1 + ϵ)\cos(0.1+ϵ) + \sin(0.1+ϵ)) &=
+\exp((\exp(0.1) + ϵ\exp(0.1))(\cos(0.1)-\sin(0.1)ϵ) + \sin(0.1)+\cos(0.1)ϵ) \\
+&= \exp(\exp(0.1)\cos(0.1)+ \sin(0.1) + (\exp(0.1)(\cos(0.1)-\sin(0.1))+\cos(0.1))ϵ) \\
+&= \exp(\exp(0.1)\cos(0.1)+ \sin(0.1)) + \exp(\exp(0.1)\cos(0.1)+ \sin(0.1))\exp(0.1)(\cos(0.1)-\sin(0.1))+\cos(0.1))ϵ 
+\end{align*}
+$$
+therefore the derivative is the dual part
+$$
+\exp(\exp(0.1)\cos(0.1)+ \sin(0.1))(\exp(0.1)(\cos(0.1)-\sin(0.1))+\cos(0.1))
+$$
+
+For the second function we have:
+$$
+\begin{align*}
+ \left(0.1+ϵ-1\right) \left({0.1 + ϵ \over 2}-1\right)\left({0.1 + ϵ \over 3}-1\right)
+ &=\left(-0.9+ϵ\right) \left(-0.95 + ϵ/2\right)\left(-29/30 + ϵ/3\right) \\
+&=\left(171/200 -1.4ϵ\right)\left(-29/30 + ϵ/3\right)  \\
+&= -1653/2000 + 983ϵ/600
+\end{align*}
+$$
+Thus the derivative is $983/600$.
+
+For the third function we have:
+$$
+\begin{align*}
+{1 + {0.1+ϵ - 1 \over 2 + {0.1+ϵ-1 \over 2}}} &=  {1 + {-0.9+ϵ \over 1.55 + ϵ/2}}\\
+&= 1 -18/31 + 2ϵ/1.55^2
+\end{align*}
+$$
+Thus the derivative is $2/1.55^2$.
+
+**Problem 2.5 (C)** Add support for `cos`, `sin`, and `/` to the type `Dual`:
+```julia
+# Dual(a,b) represents a + b*ϵ
+struct Dual{T}
+    a::T
+    b::T
+end
+
+# Dual(a) represents a + 0*ϵ
+Dual(a::Real) = Dual(a, zero(a)) # for real numbers we use a + 0ϵ
+
+# Allow for a + b*ϵ syntax
+const ϵ = Dual(0, 1)
+
+import Base: +, *, -, /, ^, zero, exp, cos, sin, one
+
+# support polynomials like 1 + x, x - 1, 2x or x*2 by reducing to Dual
++(x::Real, y::Dual) = Dual(x) + y
++(x::Dual, y::Real) = x + Dual(y)
+-(x::Real, y::Dual) = Dual(x) - y
+-(x::Dual, y::Real) = x - Dual(y)
+*(x::Real, y::Dual) = Dual(x) * y
+*(x::Dual, y::Real) = x * Dual(y)
+
+# support x/2 (but not yet division of duals)
+/(x::Dual, k::Real) = Dual(x.a/k, x.b/k)
+
+# a simple recursive function to support x^2, x^3, etc.
+function ^(x::Dual, k::Integer)
+    if k < 0
+        error("Not implemented")
+    elseif k == 1
+        x
+    else
+        x^(k-1) * x
+    end
+end
+
+# support identity of type Dual
+one(x::Dual) = Dual(one(eltype(x.a)))
+
+# Algebraic operations for duals
+-(x::Dual) = Dual(-x.a, -x.b)
++(x::Dual, y::Dual) = Dual(x.a + y.a, x.b + y.b)
+-(x::Dual, y::Dual) = Dual(x.a - y.a, x.b - y.b)
+*(x::Dual, y::Dual) = Dual(x.a*y.a, x.a*y.b + x.b*y.a)
+
+exp(x::Dual) = Dual(exp(x.a), exp(x.a) * x.b)
+
+function cos(x::Dual)
+    # TODO: implement cos for Duals
+    ## SOLUTION
+    Dual(cos(x.a), -sin(x.a) * x.b)
+    ## END
+end
+
+function sin(x::Dual)
+    # TODO: implement sin for Duals
+    ## SOLUTION
+    Dual(sin(x.a), cos(x.a) * x.b)
+    ## END
+end
+
+function /(x::Dual, y::Dual)
+    # TODO: implement division for Duals
+    ## SOLUTION
+    if iszero(y.a)
+        error("Division for dual numbers is ill-defined when denonimator real part is zero.")
+    end
+    return Dual(x.a / y.a, (y.a * x.b - x.a * y.b) / y.a^2)
+    ## END
+end
+```
+
+**Problem 2.6 (B)** Use dual numbers to compute the derivatives to
+$$
+\exp(\exp x \cos x + \sin x), \prod_{k=1}^{1000} \left({x \over k}-1\right), \hbox{ and } f^{\rm s}_{1000}(x).
+$$
+Does your answer match (to 5 digits) Problem 1.4?
+
+**SOLUTION**
+
+With the previous problems solved, this is as simple as running
+```julia
+fdual = f(0.1+ϵ)
+fdual.b
+```
+```julia
+gdual = g(0.1+ϵ)
+gdual.b
+```
+```julia
+contdual = cont(1000,0.1+ϵ)
+contdual.b
+```
+
+## 3. Newton iteration
+
+Newton iteration is an algorithm for computed roots of a function $f$ using its derivative: given an initial guess $x_0$, one
+obtains a sequence of guesses via
+$$
+x_{k+1} = x_k - {f(x_k) \over f'(x_k)}
+$$
+
+**Problem 3.1 (B)** Use `Dual` to implement the following function which returns $x_n$:
+```julia
+function newton(f, x0, n)
+    ## TODO: compute x_n 
+    ## SOLUTION
+    xk = x0
+    for k = 1:n
+        fd = f(xk + ϵ)
+        xk = xk - fd.a / fd.b
+    end
+    return xk
+    ## END
+end
+```
+
+**SOLUTION**
+
+Here is a simple test case for the above function:
+```julia
+# example
+f_ex(x) = x^2-3
+n = 5
+x0 = 1
+# compute proposed root
+xn = newton(f_ex,x0,n) 
+# check that obtained point is an approximate root
+f_ex(xn)
+```
+
+**END**
+
+
+**Problem 3.2 (B)** Compute points $y$ such that $|f(y)| \leq 10^{-13}$ (i.e., approximate roots):
+$$
+\exp(\exp x \cos x + \sin x)-6\hbox{ and } \prod_{k=1}^{1000} \left({x \over k}-1\right) - {1 \over 2}
+$$
+(Hint: you may need to try different `x0` and `n` to get convergence. Plotting the function should give an
+indication of a good initial guess.)
+
+**SOLUTION**
+
+We can plot the functions on a few ranges to get an intuition
+```julia
+using Plots
+
+f1(x) = exp(exp(x)*cos(x) + sin(x)) - 6
+f2(x) = prod([x] ./ range(1,1000) .- 1) - 1/2
+
+plot(f1,-2,2,color="blue")
+plot!(x->0,color="red")
+```
+```julia
+plot(f2,0,2,color="blue")
+plot!(x->0,color="red") 
+```
+And then use our Newton iteration to compute approximate roots
+```julia
+rootf1 = newton(f1, 1.5, 5)
+f1(rootf1)
+```
+```julia
+rootf2 = newton(f2, 0.3, 8)
+f2(rootf2)
+```
+
+**Problem 3.3 (A)** Compute points $y$ such that $|f^{\rm s}_{1000}(y) - j| \leq 10^{-13}$ for $j = 1,2,3$. 
+Make a conjecture of what $f^{\rm s}_n(x)$ converges to as $n → ∞$. (Bonus problem: Prove your conjecture.)
+
+**SOLUTION**
+
+```julia
+xn = newton(x->cont(1000,x)-1.,0.5,10)
+cont(1000,xn)-1.
+```
+```julia
+xn = newton(x->cont(1000,x)-2.,0.5,10)
+cont(1000,xn)-2.
+```
+```julia
+xn = newton(x->cont(1000,x)-3.,0.5,10)
+cont(1000,xn)-3.
+```
+
+By plotting the function we can conjecture that the continued fraction converges to $\sqrt{x}$:
+```julia
+using Plots
+plot(x->cont(1000,x),0,10)
+plot!(x->sqrt(x))
+```
+There are a handful of ways to prove this conjecture. Here is one - start with
+
+$$ \sqrt{x}(1+\sqrt{x}) = \sqrt{x}+x,$$
+
+then extend the RHS by $0 = +1-1$ to also obtain the factor $1+\sqrt{x}$ there, resulting in
+
+$$ \sqrt{x}(1+\sqrt{x}) = (1+\sqrt{x})+x-1.$$
+
+Dividing through $(1+\sqrt{x})$ now yields
+
+$$ \sqrt{x} = 1 + \frac{x-1}{1+\sqrt{x}}.$$
+
+Note that we can now plug this equation into itself on the right hand side to obtain a recursive continued fraction for the square root function.
