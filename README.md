@@ -38,7 +38,7 @@ and their usage in describing computational cost.
 
 ## Labs (Julia-based)
 
-1. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb)
+1. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab1.jl))
 
 ## Lecture material
 
