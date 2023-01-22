@@ -106,7 +106,7 @@ Int8(2)^8;
 
 # -----
 
-# **Problem 2.2** Create a positive `Float16` whose exponent is $q = 156$ and has significand
+# **Problem 2.2** Create a positive `Float64` whose exponent is $q = 156$ and has significand
 # bits
 # $$
 # b_k = \begin{cases}
