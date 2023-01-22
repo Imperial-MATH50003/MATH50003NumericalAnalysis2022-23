@@ -129,6 +129,9 @@ function *(x::Interval, y::Interval)
     if 0 in x || 0 in y
         error("Multiplying with intervals containing 0 not supported.")
     end
+    if x.a > x.b || y.a > y.b
+        error("Empty intervals not supported.")
+    end
     a = setrounding(T, RoundDown) do
         ## TODO: lower bound
         ## SOLUTION
@@ -161,9 +164,9 @@ function *(x::Interval, y::Interval)
 end
 
 @test Interval(1.1, 1.2) * Interval(2.1, 3.1) ≡ Interval(2.31, 3.72)
-@test Interval(-1.1, -1.2) * Interval(2.1, 3.1) ≡ Interval(-3.4100000000000006, -2.5199999999999996)
+@test Interval(-1.2, -1.1) * Interval(2.1, 3.1) ≡ Interval(-3.72, -2.31)
 @test Interval(1.1, 1.2) * Interval(-2.1, -3.1) ≡ Interval(-2.52, -3.41)
-@test Interval(-1.1, -1.2) * Interval(-2.1, -3.1) ≡ Interval(3.7199999999999998, 2.3100000000000005)
+@test Interval(-1.2, -1.1) * Interval(-3.1, -2.1) ≡ Interval(2.31, 3.72)
 
 # -----
 
