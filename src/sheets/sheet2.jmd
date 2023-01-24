@@ -1,0 +1,108 @@
+# MATH50003 Numerical Analysis (2022–23)
+# Problem Sheet 2
+
+This problem sheet explores the bounding of floating point arithmetic errors,
+and shows how these can be used to bound errors in algorithms. 
+
+------------
+
+**Problem 1** Suppose $0 ≤ x < \min F_{σ,Q,S}^{\rm normal}$ (the _sub-normal range_).
+Show that rounding has guaranteed _absolute error_:
+$$
+\begin{align*}
+{\rm fl}^{\rm up}(x) &= x + δ_x^{\rm up} \\
+{\rm fl}^{\rm down}(x) &= x + δ_x^{\rm down} \\
+{\rm fl}^{\rm near}(x) &= x + δ_x^{\rm near} 
+\end{align*}
+$$
+where
+$$
+\begin{align*}
+|δ_x^{{\rm up}/{\rm down}}| ≤ 2^{1-σ-S} \\
+|δ_x^{{\rm near}}| ≤ 2^{-σ-S}
+\end{align*}
+$$
+
+
+
+------------
+
+**Problem 2.1** Suppose $|ϵ_i| ≤ ϵ$ and $n ϵ < 1$. Show that
+$$
+∏_{k=1}^n (1+ϵ_i) = 1+θ_n
+$$
+for some constant $θ_n$ satisfying
+$$
+|θ_n| ≤ \underbrace{n ϵ \over 1-nϵ}_{E_{n,ϵ}}
+$$
+Hint: use induction.
+
+
+
+**Problem 2.2** Show if $x_1,…,x_n ∈ F$ then
+$$
+x_1 ⊗ ⋯ ⊗ x_n = x_1 ⋯ x_n (1 + θ_n)
+$$
+where $|θ_n| ≤ E_{n,ϵ_{\rm m}/2}$, assuming $n ϵ_{\rm m} < 2$.
+You may assume all operations are within the normalised range.
+
+
+
+**Problem 2.3** Show if $x_1,…,x_n ∈ F$ then
+$$
+x_1 ⊕ ⋯ ⊕ x_n = x_1 +  ⋯ + x_n + σ_n
+$$
+where, for $M = Σ_{k=1}^n |x_k|$, $|σ_n| ≤ M E_{n,ϵ_{\rm m}/2},$ assuming $n ϵ_{\rm m} < 2$.
+You may assume all operations are within the normalised range.
+Hint: use Problem 2.1 to first write 
+$$
+x_1 ⊕ ⋯ ⊕ x_n = ∑_{j=1}^n x_j (1 + θ_j).
+$$
+
+
+
+
+-----
+
+**Problem 3.1** Consider the algorithm `exp_taylor_fast` from lectures:
+```julia
+function exp_taylor_fast(x, n)
+    ret = zero(x) # 0 of same type as x
+    summand = one(x)
+    for k = 0:n
+        ret += summand
+        summand *= x/(k+1)
+    end
+    ret
+end
+```
+Write this algorithm as a one-line mathematical function $\exp_n^{\rm t}(x)$ involving $⊕$, $⊘$, and $⊗$.
+
+
+
+**Problem 3.2** Show that
+$$
+\exp_n^{\rm t}(x) = ∑_{k=0}^{n-1} {x^k \over k!} + ε_n
+$$
+where
+$$
+|ε_n| ≤  \exp(|x|)  (2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2),
+$$
+assuming $n ϵ_{\rm m} < 2$. You may assume all operations are within the normalised range.
+Hint: combine Problem 2.2 and 2.3. 
+
+
+
+**Problem 3.3** For $x > 0$, find a  bound on the relative error $|ρ_n|$ where
+$$
+\exp_n^{\rm t}(x) =  (1 +  ρ_n) \exp x.
+$$
+Why does the bound break down when $x < 0$?
+
+
+
+**Problem 3.4** Give two reasons why the above error bound is not valid as $n → ∞$ if $F_{σ,Q,S}$ is fixed.
+If $S$ and $Q$ are allowed to depend on $n$ can we guarantee convergence to $\exp x$?
+
+
+

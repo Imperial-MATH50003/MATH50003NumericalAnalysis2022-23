@@ -27,6 +27,8 @@ notebook("src/notes/DualNumbers.jmd"; nkwds...)
 #####
 
 notebook("src/sheets/sheet1.jmd"; pkwds...)
+write("src/sheets/sheet2.jmd", replace(read("src/sheets/sheet2s.jmd", String), r"## SOLUTION(.*?)## END"s => ""))
+notebook("src/sheets/sheet2.jmd"; pkwds...)
 
 #####
 # labs

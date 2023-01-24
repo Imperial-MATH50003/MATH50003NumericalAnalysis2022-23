@@ -1,6 +1,45 @@
 **Problem 1.2 (B)** Implement central differences for $f(x) = 1 + x + x^2$ and $g(x) = 1 + x/3 + x^2$. 
 Plot the errors for `h = 2.0 .^ (0:-1:-60)` and `h = 10.0 .^ (0:-1:-16)`. 
-Derive the error exactly for the different cases to explain the observed behaviour.
+
+
+```julia
+using Plots
+
+# define the functions
+f = x -> 1 + x + x^2
+g = x -> 1 + x/3 + x^2
+
+# define analytic first derivatives for comparison
+fp  = x -> 1 + 2 *x
+gp = x ->1/3 + 2 *x
+
+# central difference derivative approximation
+centraldiff(x, h, f) = (f(x + h) - f(x - h))/(2 *h)
+    
+# computes an error
+centraldifferror(x, h, f, fp) = abs(centraldiff(x, h, f) - fp(x))
+
+        
+#plotting f and g errors   
+x = 0.0 # some arbitrary point
+
+# helper function to avoid trying to take logs of 0 in plots
+nanabs(x) = iszero(x) ? NaN : abs(x)
+
+# We find the error for the derivative of f is 0 
+# (until we run into the errors for too small h we discussed in the lecture)
+h = 2.0 .^ (0:-1:-60)
+plot(nanabs.(centraldifferror.(x, h, f, fp)), yaxis=:log10, label="f")
+plot!(nanabs.(centraldifferror.(x, h, g, gp)), yaxis=:log10, label="g")
+```
+```julia
+h = 10.0 .^ (0:-1:-16)
+plot(nanabs.(centraldifferror.(x, h, f, fp)), yaxis=:log10, label="f")
+plot!(nanabs.(centraldifferror.(x, h, g, gp)), yaxis=:log10, label="g")
+```
+    
+    
+
 
     **Problem 1.4 (B)** Use finite-differences, central differences, and second-order finite-differences to approximate to 5-digits the first and second 
 derivatives to the following functions

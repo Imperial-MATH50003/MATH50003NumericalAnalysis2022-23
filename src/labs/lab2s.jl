@@ -193,7 +193,7 @@ end
 # ## SOLUTION
 # From the Taylor remainder theorem we know the error is
 # $$
-# {f^{(k+1)}(ξ) \over (k+1)!} |x|^{k+1} \leq {3 \over (k+1)!}
+# {f^{(n+1)}(ξ) \over (n+1)!} |x|^{n+1} ≤ {3 \over (n+1)!}
 # $$
 # Thus by widening the computation by this error we ensure that we have
 # captured the error by truncating the Taylor series.
