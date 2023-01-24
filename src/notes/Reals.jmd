@@ -318,7 +318,8 @@ it recognises `1f0/3` can be computed at compile time, but failed to recognise t
 was changed. 
 
 In IEEE arithmetic, the arithmetic operations `+`, `-`, `*`, `/` are defined by the property
-that they are exact up to rounding.  Mathematically we denote these operations as follows:
+that they are exact up to rounding.  Mathematically we denote these operations as 
+$⊕, ⊖, ⊗, ⊘ : F ⊗ F → F$ as follows:
 $$
 \begin{align*}
 x ⊕ y &:= {\rm fl}(x+y) \\
@@ -328,9 +329,15 @@ x ⊘ y &:= {\rm fl}(x / y)
 \end{align*}
 $$
 Note also that  `^` and `sqrt` are similarly exact up to rounding.
+Also, note that when we convert a Julia command with constants specified by decimal expansions
+we first round the constants to floats, e.g., `1.1 + 0.1` is actually reduced to
+$$
+{\rm fl}(1.1) ⊕ {\rm fl}(0.1)
+$$
+This includes the case where the constants are integers (which are normally exactly floats
+but may be rounded if extremely large).
 
-
-**Example 5 (decimal is not exact)** `1.1+0.1` gives a different result than `1.2`:
+**Example 5 (decimal is not exact)** The Julia command `1.1+0.1` gives a different result than `1.2`:
 ```julia
 x = 1.1
 y = 0.1
