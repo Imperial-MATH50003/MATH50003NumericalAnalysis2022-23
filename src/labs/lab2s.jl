@@ -165,7 +165,7 @@ end
 
 @test Interval(1.1, 1.2) * Interval(2.1, 3.1) ≡ Interval(2.31, 3.72)
 @test Interval(-1.2, -1.1) * Interval(2.1, 3.1) ≡ Interval(-3.72, -2.31)
-@test Interval(1.1, 1.2) * Interval(-2.1, -3.1) ≡ Interval(-2.52, -3.41)
+@test Interval(1.1, 1.2) * Interval(-3.1, -2.1) ≡ Interval(-3.72, -2.31)
 @test Interval(-1.2, -1.1) * Interval(-3.1, -2.1) ≡ Interval(2.31, 3.72)
 
 # -----
