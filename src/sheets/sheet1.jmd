@@ -4,6 +4,8 @@
 This problem sheet tests the representation of numbers on the computer, using
 modular and floating point arithmetic.
 
+Please complete the problems using pen-and-paper, though some can be verified using Julia.
+
 **Problem 1** With 8-bit signed integers, what are the bits for the following: $10, 120, -10$.
 
 

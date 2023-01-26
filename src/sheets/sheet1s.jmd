@@ -1,0 +1,340 @@
+# MATH50003 (2022–23)
+# Problem Sheet 1
+
+This problem sheet tests the representation of numbers on the computer, using
+modular and floating point arithmetic.
+
+Please complete the problems using pen-and-paper, though some can be verified using Julia.
+
+**Problem 1** With 8-bit signed integers, what are the bits for the following: $10, 120, -10$.
+
+**SOLUTION**
+We can find the binary digits by repeatedly subtracting the largest power of 2 less than a number
+until we reach 0, e.g. $10 - 2^3 - 2 = 0$
+implies $10 = (1010)_2$.
+Thus the bits are:
+```julia
+using ColorBitstring
+printlnbits(Int8(10))
+```
+Similarly,
+$$
+120 = 2^6 + 2^5 + 2^4 + 2^3 = (1111000)_2
+$$
+Thus the bits are (meant to be deduced by hand but we use Julia to confirm):
+```julia
+printlnbits(Int8(120))
+```
+For negative numbers we perform the same trick but adding $2^p$ to make it positive, e.g.,
+$$
+-10 = 2^8 - 10 ({\rm mod 2^8}) = 246 = 2^7 + 2^6 + 2^5 + 2^4 + 2^2 + 2 = (11110110)_2
+$$
+This the bits are:
+```julia
+printlnbits(Int8(-10))
+```
+**END**
+
+**Problem 2** What is $π$ to 5 binary places? Hint: recall that $π ≈ 3.14$.
+
+**SOLUTION**
+Note that
+```julia
+3 + 1/8  + 1/64
+```
+which has the binary representation $(11.001001)_2$.
+Indeed:
+```julia
+printbits(Float16(π))
+```
+Instead of simply guessing the above representation we can instead continuously subtract the largest powers 2 which do not result in a negative number. For $\pi$ the procedure then finds that we can write
+$$ \pi - 1*2^1 - 1*2^0 - 1*2^{-3} - 1*2^{-6} ...$$
+**END**
+
+**Problem 3** What are the single precision $F_{32}$ (`Float32`) floating point representations for the following: 
+$$
+2, 31, 32, 23/4, (23/4)\times 2^{100}
+$$
+
+**SOLUTION**
+Recall that we have `σ,Q,S = 127,8,23`. Thus we write
+$$
+2 = 2^{128-127} * (1.00000000000000000000000)_2
+$$
+The exponent bits are those of
+$$
+128 = 2^7 = (10000000)_2
+$$
+Hence we get
+```julia
+printlnbits(2f0)
+```
+We write
+$$
+31 = (11111)_2 = 2^{131-127} * (1.1111)_2
+$$
+And note that $131 = (10000011)_2$ Hence we have:
+```julia
+printlnbits(31f0)
+```
+On the other hand,
+$$
+32 = (100000)_2 = 2^{132-127}
+$$
+and $132 = (10000100)_2$ hence:
+```julia
+printlnbits(32f0)
+```
+Note that
+$$
+23/4 = 2^{-2} * (10111)_2 = 2^{129-127} * (1.0111)_2
+$$
+and $129 = (10000001)_2$ hence we get:
+```julia
+printlnbits(23f0/4)
+```
+Finally,
+$$
+23/4 * 2^{100} = 2^{229-127} * (1.0111)_2
+$$
+and $229 = (11100101)_2$ giving us:
+```julia
+printlnbits(23f0/4 * 2f0^100)
+```
+**END**
+
+
+**Problem 4** Let $m(y) = \min\{x \in F_{32} : x > y \}$ be the smallest single precision number
+greater than $y$. What is $m(2) - 2$ and $m(1024) - 1024$? 
+
+**SOLUTION**
+The next float after $2$ is $2 * (1 + 2^{-23})$ hence we get $m(2) - 2 = 2^{-22}$:
+```julia
+nextfloat(2f0) - 2, 2^(-22)
+```
+similarly, for $1024 = 2^{10}$ we find that the difference $m(1024) - 1024$ is $2^{10-23} = 2^{-13}$:
+```julia
+ nextfloat(1024f0) - 1024, 2^(-13)
+```
+**END**
+
+
+**Problem 5** Suppose $x = 1.25$ and consider 16-bit floating point arithmetic ($F_{16}$). 
+What is the error in approximating $x$ by the nearest float point number ${\rm fl}(x)$?
+What is the error in approximating $2x$, $x/2$, $x + 2$ and $x - 2$ by $2 \otimes x$, $x \oslash 2$, $x ⊕ 2$ and $x \ominus 2$?
+
+**SOLUTION**
+None of these computations have errors since they are all exactly representable as floating point numbers.
+**END**
+
+**Problem 6** For what floating point numbers is $x ⊘ 2 ≠ x/2$ and $x ⊕ 2 ≠ x + 2$?
+
+**SOLUTION**
+
+Consider a normal $x = 2^{q-σ} (1.b_1\ldots b_S)_2$.
+Provided $q > 1$  we have
+$$
+x ⊘ 2 = x/2 = 2^{q-σ-1} (1.b_1\ldots b_S)_2
+$$
+However, if $q = 1$ we lose a bit as we shift:
+$$
+x ⊘ 2 = 2^{1-σ} (0.b_1\ldots b_{S-1})_2
+$$
+and the property will be satisfy if $b_S = 1$.
+Similarily if we are sub-normal, $x = 2^{1-σ} (0.b_1\ldots b_S)_2$ and
+we have
+$$
+x ⊘ 2 = 2^{1-σ} (0.0b_1\ldots b_{S-1})_2
+$$
+and the property will be satisfy if $b_S = 1$.
+(Or `NaN`.)
+
+Here are two examples:
+```julia
+# normal number with q = 1 and last bit 1
+x = reinterpret(Float16, parse(UInt16, "0000010000000011"; base=2))
+x/2 == Float64(x)/2 # Float64 can exactly represent x/2
+```
+```julia
+# sub-normal number with q = 1 and last bit 1
+x = reinterpret(Float16, parse(UInt16, "0000000000000011"; base=2))
+x/2 == Float64(x)/2 # Float64 can exactly represent x/2
+```
+
+For the second part, Similar to the next problem,
+we see that the property holds true if $|x| < 2^{S+2}-1$, 
+as otherwise:
+```julia
+x = Float16(2)^(12)-1 # bits 0110110000000000
+x+2 == x
+```
+We see this is sharp:
+```julia
+y = prevfloat(x)
+y+2 == y
+```
+
+**END**
+
+
+**Problem 7** What are the exact bits for $1 ⊘ 5$, $1 ⊘ 5 ⊕ 1$ computed
+using  half-precision arithmetic (`Float16`) (using default rounding)?
+
+**SOLUTION**
+
+From Problem 2.1 in Lab 2 we know that
+$$
+1/5 = 2^{-3} * (1.10011001100…)_2 ≈ 2^{-3} * (1.1001100110)_2
+$$
+where the $≈$ is rounded to the nearest 10 bits (in this case rounded down).
+This can be shown using Geometric series:
+$$
+\begin{align*}
+(0.00110011001100…)_2 &= (2^{-3} + 2^{-4})(1.00010001000…)_2 =  (2^{-3} + 2^{-4}) \sum_{k=0}^∞ {1 \over 16^k} \\
+&= {2^{-3} + 2^{-4} \over 1 - {1\over 2^4}} = {3 \over 15} = {1 \over 5}
+\end{align*}
+$$
+
+
+We write $-3 = 12 - 15$
+hence we have $q = 12 = (01100)_2$. 
+so  we get the bits:
+```julia
+printbits(Float16(1)/5)
+```
+
+Adding `1` we get:
+$$
+1 + 2^{-3} * (1.1001100110)_2 = (1.001100110011)_2 ≈ (1.0011001101)_2 
+$$
+Here we write the exponent as $0 = 15 - 15$ where $q = 15 = (01111)_2$. 
+Thus we get:
+```julia
+printbits(1 + Float16(1)/5)
+```
+
+**END**
+
+**Problem 8** Explain why the following does not return `1`. Can you compute the bits explicitly?
+```julia
+Float16(0.1) / (Float16(1.1) - 1)
+```
+
+**SOLUTION**
+
+Writing $10 = 2^3 (1.01)_2$ we have
+$$
+\rm{fl}(10^{100}) = \rm{fl}(2^{300} (1 + 2^{-4})^{100}) = 2^{300} (1.b_1 \ldots b_{52})_2
+$$
+where the bits $b_k$ are not relevant. We then have:
+$$
+\rm{fl}(10^{100}) ⊕ 1 = \rm{fl}(2^{300} [(1.b_1 \ldots b_{52})_2 + 2^{-300}]) = \rm{fl}(10^{100})
+$$
+since $2^{-300}$ is below the necessary precision.
+
+The largest floating point number satisfying the condition is $y = 2^{53} - 1$, since
+$S = 52$. First note $2^{53}$ does not satisfy the condition:
+```julia
+x = 2.0^53
+x + 1 == x
+```
+We can however successfully create the previsous float $2^{53} -1$ by subtracting
+(Explain why this works while `x+1` fails):
+```julia
+y = x - 1
+printlnbits(x)
+printlnbits(y)
+```
+And this satisfies:
+```julia
+y + 1 ≠ y
+```
+**END**
+
+
+**Problem 9** Find a bound on the _absolute error_ in terms of a constant times machine epsilon
+$ϵ_{\rm m}$ for the following computations
+$$
+\begin{align*}
+(1.1 * 1.2) &+ 1.3 \\
+(1.1 - 1) &/ 0.1 
+\end{align*}
+$$
+implemented using floating point arithmetic (with any precision). That is, each number is rounded
+first using ${\rm fl}$ and each operation is replaced by its floating point analogues $⊕, ⊗, ⊖, ⊘$.
+
+
+**SOLUTION**
+
+The first problem is very similar to what we saw in lecture. Write 
+$$
+({\rm fl}(1.1)⊗ {\rm fl}(1.2)) ⊕ {\rm fl}(1.3) = ( 1.1(1 + δ_1)1.2(1+δ_2)(1+δ_3) + 1.3(1+δ_4))(1+δ_5)
+$$
+We first write
+$$
+1.1(1 + δ_1)1.2(1+δ_2)(1+δ_3) = 1.32( 1+ δ_6)
+$$
+where
+$$
+|δ_6| \leq |δ_1| + |δ_2| + |δ_3| + |δ_1| |δ_2| + |δ_1| |δ_3| + |δ_2| |δ_3|+ |δ_1| |δ_2| |δ_3| \leq 4 ϵ_{\rm m}
+$$
+Then we have
+$$
+1.32 (1 + δ_6) + 1.3 (1 + δ_4) = 2.62 + \underbrace{1.32 δ_6 + 1.3δ_4}_{δ_7}
+$$
+where
+$$
+|δ_7| ≤ 7 ϵ_{\rm m}
+$$
+Finally,
+$$
+(2.62 + δ_7)(1+δ_5) = 2.62 + \underbrace{δ_7 + 2.62δ_5 + δ_7 δ_5}_{δ_8}
+$$
+where
+$$
+|δ_8| ≤ 10 ϵ_{\rm m}
+$$
+
+
+
+For the second part, we do:
+$$
+({\rm fl}(1.1) ⊖ 1) ⊘ {\rm fl}(0.1) = {(1.1 (1 + δ_1) - 1)(1 + δ_2) \over 0.1 (1 + δ_3)} (1 + δ_4)
+$$
+Write
+$$
+{1 \over 1 + δ_3} = 1 + \delta_5
+$$
+where
+$$
+|δ_5| \leq \left| {\delta_3 \over 1 + \delta_3} \right| \leq  {ϵ_{\rm m} \over 2} {1 \over 1 - 1/2} \leq ϵ_{\rm m}
+$$
+using the fact that $|\delta_3| < 1/2$.
+Further write
+$$
+(1 + δ_5)(1 + δ_4) = 1 + δ_6
+$$
+where
+$$
+|δ_6| \leq |δ_5| + |δ_4| + |δ_5| |δ_4| \leq 2ϵ_{\rm m}
+$$
+We also write
+$$
+{(1.1 (1 + δ_1) - 1)(1 + δ_2) \over 0.1} = 1 + \underbrace{11δ_1 + δ_2 + 11δ_1δ_2}_{δ_7}
+$$
+where
+$$
+|δ_7| ≤ 12 ϵ_{\rm m}
+$$
+Then we get 
+$$
+({\rm fl}(1.1) ⊖ 1) ⊘ {\rm fl}(0.1) = (1 + δ_7) (1 + δ_6) =  1 + δ_7 + δ_6 + δ_6 δ_7
+$$
+and the error is bounded by:
+$$
+(12 + 2 + 34) ϵ_{\rm m} = 48 ϵ_{\rm m}
+$$
+This is quite pessimistic but still captures that we are on the order of $ϵ_{\rm m}$.
+
+## 
+END

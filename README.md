@@ -33,12 +33,12 @@ and their usage in describing computational cost.
 
 ## Problem sheets (pen-and-paper)
 
-1. [Integers and Reals](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1.ipynb)
+1. [Integers and Reals](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1.ipynb) ([Solutions](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1s.ipynb))
 
 
 ## Labs (Julia-based)
 
-1. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab1.jl))
+1. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab1.jl)) ([Solutions](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1s.ipynb))
 2. [Interval Arithmetic](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab2.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab2.jl))
 
 ## Lecture material
