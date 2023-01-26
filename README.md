@@ -34,6 +34,7 @@ and their usage in describing computational cost.
 ## Problem sheets (pen-and-paper)
 
 1. [Integers and Reals](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1.ipynb) ([Solutions](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1s.ipynb))
+1. [Bounding Errors](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet2.ipynb)
 
 
 ## Labs (Julia-based)
