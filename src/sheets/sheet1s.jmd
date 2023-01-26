@@ -4,9 +4,11 @@
 This problem sheet tests the representation of numbers on the computer, using
 modular and floating point arithmetic.
 
+Please complete the problems using pen-and-paper, though some can be verified using Julia.
+
 **Problem 1** With 8-bit signed integers, what are the bits for the following: $10, 120, -10$.
 
-## SOLUTION
+**SOLUTION**
 We can find the binary digits by repeatedly subtracting the largest power of 2 less than a number
 until we reach 0, e.g. $10 - 2^3 - 2 = 0$
 implies $10 = (1010)_2$.
@@ -31,11 +33,11 @@ This the bits are:
 ```julia
 printlnbits(Int8(-10))
 ```
-## END
+**END**
 
 **Problem 2** What is $π$ to 5 binary places? Hint: recall that $π ≈ 3.14$.
 
-## SOLUTION
+**SOLUTION**
 Note that
 ```julia
 3 + 1/8  + 1/64
@@ -47,14 +49,13 @@ printbits(Float16(π))
 ```
 Instead of simply guessing the above representation we can instead continuously subtract the largest powers 2 which do not result in a negative number. For $\pi$ the procedure then finds that we can write
 $$ \pi - 1*2^1 - 1*2^0 - 1*2^{-3} - 1*2^{-6} ...$$
-## END
+**END**
 
 **Problem 3** What are the single precision $F_{32}$ (`Float32`) floating point representations for the following: 
 $$
 2, 31, 32, 23/4, (23/4)\times 2^{100}
 $$
 
-## SOLUTION
 **SOLUTION**
 Recall that we have `σ,Q,S = 127,8,23`. Thus we write
 $$
@@ -100,13 +101,13 @@ and $229 = (11100101)_2$ giving us:
 ```julia
 printlnbits(23f0/4 * 2f0^100)
 ```
-##
+**END**
 
 
 **Problem 4** Let $m(y) = \min\{x \in F_{32} : x > y \}$ be the smallest single precision number
 greater than $y$. What is $m(2) - 2$ and $m(1024) - 1024$? 
 
-## SOLUTION
+**SOLUTION**
 The next float after $2$ is $2 * (1 + 2^{-23})$ hence we get $m(2) - 2 = 2^{-22}$:
 ```julia
 nextfloat(2f0) - 2, 2^(-22)
@@ -115,20 +116,20 @@ similarly, for $1024 = 2^{10}$ we find that the difference $m(1024) - 1024$ is $
 ```julia
  nextfloat(1024f0) - 1024, 2^(-13)
 ```
-## END
+**END**
 
 
 **Problem 5** Suppose $x = 1.25$ and consider 16-bit floating point arithmetic ($F_{16}$). 
 What is the error in approximating $x$ by the nearest float point number ${\rm fl}(x)$?
 What is the error in approximating $2x$, $x/2$, $x + 2$ and $x - 2$ by $2 \otimes x$, $x \oslash 2$, $x ⊕ 2$ and $x \ominus 2$?
 
-## SOLUTION
+**SOLUTION**
 None of these computations have errors since they are all exactly representable as floating point numbers.
-## END
+**END**
 
 **Problem 6** For what floating point numbers is $x ⊘ 2 ≠ x/2$ and $x ⊕ 2 ≠ x + 2$?
 
-## SOLUTION
+**SOLUTION**
 
 Consider a normal $x = 2^{q-σ} (1.b_1\ldots b_S)_2$.
 Provided $q > 1$  we have
@@ -173,13 +174,13 @@ y = prevfloat(x)
 y+2 == y
 ```
 
-## END
+**END**
 
 
 **Problem 7** What are the exact bits for $1 ⊘ 5$, $1 ⊘ 5 ⊕ 1$ computed
 using  half-precision arithmetic (`Float16`) (using default rounding)?
 
-## SOLUTION
+**SOLUTION**
 
 From Problem 2.1 in Lab 2 we know that
 $$
@@ -212,14 +213,12 @@ Thus we get:
 printbits(1 + Float16(1)/5)
 ```
 
-## END
+**END**
 
 **Problem 8** Explain why the following does not return `1`. Can you compute the bits explicitly?
 ```julia
 Float16(0.1) / (Float16(1.1) - 1)
 ```
-
-## SOLUTION
 
 **SOLUTION**
 
@@ -250,7 +249,7 @@ And this satisfies:
 ```julia
 y + 1 ≠ y
 ```
-## END
+**END**
 
 
 **Problem 9** Find a bound on the _absolute error_ in terms of a constant times machine epsilon
@@ -265,7 +264,7 @@ implemented using floating point arithmetic (with any precision). That is, each 
 first using ${\rm fl}$ and each operation is replaced by its floating point analogues $⊕, ⊗, ⊖, ⊘$.
 
 
-## SOLUTION
+**SOLUTION**
 
 The first problem is very similar to what we saw in lecture. Write 
 $$
