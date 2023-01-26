@@ -28,8 +28,9 @@ notebook("src/notes/DualNumbers.jmd"; nkwds...)
 
 notebook("src/sheets/sheet1.jmd"; pkwds...)
 notebook("src/sheets/sheet1s.jmd"; pkwds...)
-write("src/sheets/sheet2.jmd", replace(read("src/sheets/sheet2s.jmd", String), r"## SOLUTION(.*?)## END"s => ""))
+write("src/sheets/sheet2.jmd", replace(read("src/sheets/sheet2s.jmd", String), r"\*\*SOLUTION\*\*(.*?)\*\*END\*\*"s => ""))
 notebook("src/sheets/sheet2.jmd"; pkwds...)
+notebook("src/sheets/sheet2s.jmd"; pkwds...)
 
 #####
 # labs

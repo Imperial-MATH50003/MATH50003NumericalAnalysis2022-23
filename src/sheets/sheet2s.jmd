@@ -4,6 +4,9 @@
 This problem sheet explores the bounding of floating point arithmetic errors,
 and shows how these can be used to bound errors in algorithms. 
 
+Please complete the problems using pen-and-paper, though some can be verified using Julia.
+
+
 ------------
 
 **Problem 1** Suppose $0 ≤ x < \min F_{σ,Q,S}^{\rm normal}$ (the _sub-normal range_).
@@ -23,9 +26,35 @@ $$
 \end{align*}
 $$
 
-## SOLUTION
+**SOLUTION**
 
-## END
+For
+$$
+x = 2^{1-σ} * (0.b_1b_2…)_2
+$$
+we have
+$$
+x_- = {\rm fl}^{\rm down}(x) = 2^{1-σ} * (0.b_1…b_S)_2, x_h := x_- + 2^{-σ-S}, x_+ = {\rm fl}^{\rm up}(x) = x_+ + 2^{1-σ-S}
+$$
+Therefore
+$$
+\begin{align*}
+x -  {\rm fl}^{\rm down}(x) &= x - x_- ≤ x_+ - x_- = 2^{1-σ-S}\\
+{\rm fl}^{\rm up}(x) - x &= x_+ - x ≤ x_+ - x_- = 2^{1-σ-S}
+\end{align*}
+$$
+If ${\rm fl}(x) = {\rm fl}(x)^{\rm down}(x)$ then  $x_- ≤ x ≤ x_h$ and
+$$
+x - {\rm fl}(x) ≤ x_h - x_- = 2^{-σ-S}.
+$$
+If ${\rm fl}(x) = {\rm fl}(x)^{\rm up}(x)$ then  $x_h ≤ x ≤ x_+$ and
+$$
+{\rm fl}(x) - x ≤ x_+ - x_h = 2^{-σ-S}.
+$$
+
+
+
+**END**
 
 ------------
 
@@ -39,7 +68,7 @@ $$
 $$
 Hint: use induction.
 
-## SOLUTION
+**SOLUTION**
 
 $$
 ∏_{k=1}^{n+1} (1+ϵ_i) ∏_{k=1}^n (1+ϵ_i) (1+ϵ_{n+1}) = (1+θ_n)(1+ϵ_{n+1}) = 1 + \underbrace{θ_n + ϵ_{n+1} + θ_nϵ_{n+1}}_{θ_{n+1}}
@@ -53,7 +82,7 @@ $$
 \end{align*}
 $$
 
-## END
+**END**
 
 **Problem 2.2** Show if $x_1,…,x_n ∈ F$ then
 $$
@@ -62,7 +91,7 @@ $$
 where $|θ_n| ≤ E_{n,ϵ_{\rm m}/2}$, assuming $n ϵ_{\rm m} < 2$.
 You may assume all operations are within the normalised range.
 
-## SOLUTION
+**SOLUTION**
 
 We can expand out:
 $$
@@ -70,7 +99,7 @@ x_1 ⊗ ⋯ ⊗ x_n = (⋯((x_1 x_2)(1+δ_1) x_3(1+δ_2)⋯ x_n(1+δ_n)) = x_1 �
 $$
 where $|δ_k| ≤ ϵ_{\rm m}/2$. The result then follows from the previous result.
 
-## END
+**END**
 
 **Problem 2.3** Show if $x_1,…,x_n ∈ F$ then
 $$
@@ -84,7 +113,7 @@ x_1 ⊕ ⋯ ⊕ x_n = ∑_{j=1}^n x_j (1 + θ_j).
 $$
 
 
-## SOLUTION
+**SOLUTION**
 
 Using Problem 2.1 we write:
 $$
@@ -98,13 +127,13 @@ $$
 $$
 Thus we have 
 $$
-∑_{j=1}^n x_j (1 + θ_j)= ∑_{j=1}^n x_j + \undebrace{∑_{j=1}^n x_j θ_j}_{σ_n}
+∑_{j=1}^n x_j (1 + θ_j)= ∑_{j=1}^n x_j + \underbrace{∑_{j=1}^n x_j θ_j}_{σ_n}
 $$
 where $|σ_n| ≤ M E_{n,ϵ_{\rm m}/2}$.
 ∎
 
 
-## END
+**END**
 
 -----
 
@@ -121,13 +150,22 @@ function exp_taylor_fast(x, n)
 end
 ```
 Write this algorithm as a one-line mathematical function $\exp_n^{\rm t}(x)$ involving $⊕$, $⊘$, and $⊗$.
+You may find it convenient to use the notation:
+$$
+\begin{align*}
+⨁_{k=1}^n x_k &:= x_1 ⊕ ⋯ ⊕ x_n = (⋯((x_1 ⊕ x_2) ⊕ x_3)⋯ ⊕ x_{n-1}) ⊕ x_n \\
+⨂_{k=1}^n x_k &:= x_1 ⊗ ⋯ ⊗ x_n = (⋯((x_1 ⊗ x_2) ⊗ x_3)⋯ ⊗ x_{n-1}) ⊗ x_n \\
+\end{align*}
+$$
 
-## SOLUTION
+**SOLUTION**
 $$
-\exp_n^{\rm t}(x) := 1 ⊕ x ⊕ (x ⊗ (x ⊘ 2) ⊕ x) ⊗ ((x ⊘ 2) ⊗ (x ⊘ 3)) ⊕ ⋯ ⊕ (x ⊗ ⋯ ⊗ (x ⊘ n))
-1 ⊕ ⨁_{k=1}^n ⨂_{j=1}^k (x ⊘ j)
+\begin{align*}
+\exp_n^{\rm t}(x) &:= 1 ⊗ x ⊗ (x ⊗ (x ⊘ 2) ⊕ x) ⊗ ((x ⊘ 2) ⊗ (x ⊘ 3)) ⊕ ⋯ ⊕ (x ⊗ ⋯ ⊗ (x ⊘ n)) \\
+&= 1 ⊕ ⨁_{k=1}^n ⨂_{j=1}^k (x ⊘ j)
+\end{align*}
 $$
-## END
+**END**
 
 **Problem 3.2** Show that
 $$
@@ -140,7 +178,7 @@ $$
 assuming $n ϵ_{\rm m} < 2$. You may assume all operations are within the normalised range.
 Hint: combine Problem 2.2 and 2.3. 
 
-## SOLUTION
+**SOLUTION**
 
 From Problem 2.2 we have
 $$
@@ -167,7 +205,7 @@ $$
 |ε_n|  ≤ (2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2)  \exp|x|
 $$
 
-## END
+**END**
 
 **Problem 3.3** For $x > 0$, find a  bound on the relative error $|ρ_n|$ where
 $$
@@ -175,7 +213,7 @@ $$
 $$
 Why does the bound break down when $x < 0$?
 
-## SOLUTION
+**SOLUTION**
 
 We use Taylor's remainder theorem to write:
 $$
@@ -183,7 +221,7 @@ $$
 $$
 for $t ∈ [0,x]$. Thus we have
 $$
-\exp_n^{\rm t}(x) = \exp x  + \underbrace{\exp x  (2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2) - \exp t {x^n \over n!}}_{\tilde ε_n}
+\exp_n^{\rm t}(x) = \exp x  + \underbrace{\exp(x)  (2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2) - \exp(t) {x^n \over n!}}_{\tilde ε_n}
 $$
 where
 $$
@@ -191,18 +229,18 @@ $$
 $$
 Dividing through by $\exp x$ we have
 $$
-|ρ_n| = \exp{-x} |\tilde ε_n| ≤ 2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2 + {|x|^{n+1} \over (n+1)!}.
+|ρ_n| = \exp(-x) |\tilde ε_n| ≤ 2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2 + {|x|^{n+1} \over (n+1)!}.
 $$
 
 The expression breaks down because $\exp|x| ≠ \exp x$ hence one gets an error bound that grows
 exponentially as $x → -∞$.
 
-## END
+**END**
 
 **Problem 3.4** Give two reasons why the above error bound is not valid as $n → ∞$ if $F_{σ,Q,S}$ is fixed.
 If $S$ and $Q$ are allowed to depend on $n$ can we guarantee convergence to $\exp x$?
 
-## SOLUTION
+**SOLUTION**
 
 1. $x^k / k!$ is eventually a sub-normal number so the assumption on normalised range is not valid.
 2. If $n > 2/ϵ_{\rm m}$ the conditions of the theorem are not met.
@@ -210,5 +248,5 @@ If $S$ and $Q$ are allowed to depend on $n$ can we guarantee convergence to $\ex
 Yes: if we grow $Q$ sufficiently fast then we will never reach a sub-normal number, and $ϵ_{\rm m} = S^{-n}$
 will become suffiently small that $ϵ_{\rm m} n < 2$. In this case our error estimate goes to 0 as $n → ∞$.
 
-## END
+**END**
 

@@ -4,6 +4,9 @@
 This problem sheet explores the bounding of floating point arithmetic errors,
 and shows how these can be used to bound errors in algorithms. 
 
+Please complete the problems using pen-and-paper, though some can be verified using Julia.
+
+
 ------------
 
 **Problem 1** Suppose $0 ≤ x < \min F_{σ,Q,S}^{\rm normal}$ (the _sub-normal range_).
@@ -77,6 +80,13 @@ function exp_taylor_fast(x, n)
 end
 ```
 Write this algorithm as a one-line mathematical function $\exp_n^{\rm t}(x)$ involving $⊕$, $⊘$, and $⊗$.
+You may find it convenient to use the notation:
+$$
+\begin{align*}
+⨁_{k=1}^n x_k &:= x_1 ⊕ ⋯ ⊕ x_n = (⋯((x_1 ⊕ x_2) ⊕ x_3)⋯ ⊕ x_{n-1}) ⊕ x_n \\
+⨂_{k=1}^n x_k &:= x_1 ⊗ ⋯ ⊗ x_n = (⋯((x_1 ⊗ x_2) ⊗ x_3)⋯ ⊗ x_{n-1}) ⊗ x_n \\
+\end{align*}
+$$
 
 
 
