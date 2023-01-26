@@ -27,6 +27,7 @@ notebook("src/notes/DualNumbers.jmd"; nkwds...)
 #####
 
 notebook("src/sheets/sheet1.jmd"; pkwds...)
+notebook("src/sheets/sheet1s.jmd"; pkwds...)
 
 #####
 # labs
