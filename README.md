@@ -9,16 +9,16 @@ Office hour: Mondays 11am, Huxley 6M40
 
 **Background material**
 
-  A. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Julia.ipynb): we introduce  the basic features of the Julia language. \
-  B. [Asymptotics and Computational Cost](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Asymptotics.ipynb): we review Big-O, little-o and asymptotic to notation,
+  A. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/A.Julia.ipynb): we introduce  the basic features of the Julia language. \
+  B. [Asymptotics and Computational Cost](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/B.Asymptotics.ipynb): we review Big-O, little-o and asymptotic to notation,
 and their usage in describing computational cost.
 
 **I: Computing with numbers**
 
-1. [Integers](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Integers.ipynb): we discuss how computers represent integers using modular arithmetic.
-2. [Reals](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/Reals.ipynb): we discuss how computers represent reals using IEEE floating-point arithmetic.
-3. [Divided Differences](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/DividedDifferences.ipynb): we discuss how we can approximate derivatives using floating point arithmetic, with error bounds.
-4. [Dual Numbers](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/DualNumbers.ipynb): we discuss how a special commutative ring, _dual numbers_,
+1. [Integers](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.1.Integers.ipynb): we discuss how computers represent integers using modular arithmetic.
+2. [Reals](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.2.Reals.ipynb): we discuss how computers represent reals using IEEE floating-point arithmetic.
+3. [Divided Differences](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.3.DividedDifferences.ipynb): we discuss how we can approximate derivatives using floating point arithmetic, with error bounds.
+4. [Dual Numbers](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.4.DualNumbers.ipynb): we discuss how a special commutative ring, _dual numbers_,
 which are defined similar to complex numbers,
 facilitate fast and accurate computation of derivatives.
 

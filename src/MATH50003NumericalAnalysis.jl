@@ -11,15 +11,15 @@ eskwds = (out_path="exams/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyt
 # notes
 ##
 
-notebook("src/notes/Julia.jmd"; nkwds...)
-notebook("src/notes/Asymptotics.jmd"; nkwds...)
+notebook("src/notes/A.Julia.jmd"; nkwds...)
+notebook("src/notes/B.Asymptotics.jmd"; nkwds...)
 
 
 # Part I
-notebook("src/notes/Integers.jmd"; nkwds...)
-notebook("src/notes/Reals.jmd"; nkwds...)
-notebook("src/notes/DividedDifferences.jmd"; nkwds...)
-notebook("src/notes/DualNumbers.jmd"; nkwds...)
+notebook("src/notes/I.1.Integers.jmd"; nkwds...)
+notebook("src/notes/I.2.Reals.jmd"; nkwds...)
+notebook("src/notes/I.3.DividedDifferences.jmd"; nkwds...)
+notebook("src/notes/I.4.DualNumbers.jmd"; nkwds...)
 
 
 #####
