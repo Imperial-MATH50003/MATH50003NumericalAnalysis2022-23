@@ -161,7 +161,7 @@ $$
 **SOLUTION**
 $$
 \begin{align*}
-\exp_n^{\rm t}(x) &:= 1 ⊗ x ⊗ (x ⊗ (x ⊘ 2) ⊕ x) ⊗ ((x ⊘ 2) ⊗ (x ⊘ 3)) ⊕ ⋯ ⊕ (x ⊗ ⋯ ⊗ (x ⊘ n)) \\
+\exp_n^{\rm t}(x) &:= 1 ⊕ x ⊕ (x ⊗ (x ⊘ 2)) ⊕ (x ⊗ (x ⊘ 2) ⊗ (x ⊘ 3)) ⊕ ⋯ ⊕ (x ⊗ ⋯ ⊗ (x ⊘ n)) \\
 &= 1 ⊕ ⨁_{k=1}^n ⨂_{j=1}^k (x ⊘ j)
 \end{align*}
 $$
