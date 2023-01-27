@@ -34,7 +34,7 @@ x = 2^{1-σ} * (0.b_1b_2…)_2
 $$
 we have
 $$
-x_- = {\rm fl}^{\rm down}(x) = 2^{1-σ} * (0.b_1…b_S)_2, x_h := x_- + 2^{-σ-S}, x_+ = {\rm fl}^{\rm up}(x) = x_+ + 2^{1-σ-S}
+x_- = {\rm fl}^{\rm down}(x) = 2^{1-σ} * (0.b_1…b_S)_2, x_h := x_- + 2^{-σ-S}, x_+ = {\rm fl}^{\rm up}(x) = x_- + 2^{1-σ-S}
 $$
 Therefore
 $$
