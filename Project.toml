@@ -1,4 +1,5 @@
 [deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
 ColorBitstring = "ce91de38-7578-4b98-aebb-6a5df05791d6"
 IJulia = "7073ff75-c697-5162-941a-fcdaad2a7d2a"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"

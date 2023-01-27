@@ -51,6 +51,8 @@ facilitate fast and accurate computation of derivatives.
 
 1. Integers: [Notebook](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture1.ipynb)
 2. Floating Point: [Notebook](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture2.ipynb)
+3. Arithmetic: [Notebook](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture3.ipynb)
+4. Bounding Errors: [Notebook](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture4.ipynb)
 
 ## Reading List
 
@@ -60,8 +62,8 @@ facilitate fast and accurate computation of derivatives.
 3. Lloyd N. Trefethen, [Approximation Theory and Approximation Practice](https://people.maths.ox.ac.uk/trefethen/ATAP/ATAPfirst6chapters.pdf), Chapters 1–4, 17–19
 4. [The Julia Documentation](https://docs.julialang.org)
 5. [The Julia–Matlab–Python Cheatsheet](https://cheatsheets.quantecon.org)
-6. [Think Julia](https://benlauwens.github.io/ThinkJulia.jl/latest/book)
-
+6. Ben Lauwens, [Think Julia](https://benlauwens.github.io/ThinkJulia.jl/latest/book)
+7. David A. Ham, [Just enough Git to get by](https://object-oriented-python.github.io/a2_git.html)
 
 ## What is numerical analysis? 
 
