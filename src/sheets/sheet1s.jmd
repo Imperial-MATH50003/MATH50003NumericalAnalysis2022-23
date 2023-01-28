@@ -131,20 +131,20 @@ None of these computations have errors since they are all exactly representable 
 
 **SOLUTION**
 
-Consider a normal $x = 2^{q-σ} (1.b_1\ldots b_S)_2$.
+Consider a normal $x = 2^{q-σ} (1.b_1… b_S)_2$.
 Provided $q > 1$  we have
 $$
-x ⊘ 2 = x/2 = 2^{q-σ-1} (1.b_1\ldots b_S)_2
+x ⊘ 2 = x/2 = 2^{q-σ-1} (1.b_1… b_S)_2
 $$
 However, if $q = 1$ we lose a bit as we shift:
 $$
-x ⊘ 2 = 2^{1-σ} (0.b_1\ldots b_{S-1})_2
+x ⊘ 2 = 2^{1-σ} (0.b_1… b_{S-1})_2
 $$
 and the property will be satisfy if $b_S = 1$.
-Similarily if we are sub-normal, $x = 2^{1-σ} (0.b_1\ldots b_S)_2$ and
+Similarily if we are sub-normal, $x = 2^{1-σ} (0.b_1… b_S)_2$ and
 we have
 $$
-x ⊘ 2 = 2^{1-σ} (0.0b_1\ldots b_{S-1})_2
+x ⊘ 2 = 2^{1-σ} (0.0b_1… b_{S-1})_2
 $$
 and the property will be satisfy if $b_S = 1$.
 (Or `NaN`.)
@@ -221,34 +221,45 @@ Float16(0.1) / (Float16(1.1) - 1)
 ```
 
 **SOLUTION**
+Note that
+$$
+{1 \over 10} = {1 \over 2} {1 \over 5} = 2^{-4} * (1.10011001100…)_2
+$$
+hence we have 
+$$
+{\rm fl}({1 \over 10}) = 2^{-4} * (1.1001100110)_2
+$$
+and
+$$
+{\rm fl}(1 + {1 \over 10}) ={\rm fl}(1.0001100110011…) = (1.0001100110)_2
+$$
+Thus
+$$
+{\rm fl}(1.1) ⊖ 1 = (0.0001100110)_2 = 2^{-4} (1.1001100000)_2
+$$
+and hence we get
+$$
+{\rm fl}(0.1) ⊘ ({\rm fl}(1.1) ⊖ 1)= {\rm fl}({(1.1001100110)_2 \over (1.1001100000)_2}) ≠ 1
+$$
+To compute the bits explicitly, write $y = (1.10011)_2$ and divide through to get:
+$$
+{(1.1001100110)_2 \over (1.10011)_2} = 1 + {2^{-8} \over y} + {2^{-9} \over y}
+$$
+We then have
+$$
+y^{-1} = {32 \over 51} = 0.627… = (0.101…)_2
+$$
+Hence
+$$
+1 + {2^{-8} \over y} + {2^{-9} \over y} = 1 + (2^{-9} + 2^{-11} + \cdots) + (2^{-10} + \cdots) = (1.00000000111…)_2
+$$
+Therefore we round up (the $…$ is not exactly zero but if it was it would be a tie and we would
+round up anyways to get a zero last bit) and get:
+```julia
+printlnbits(Float16(0.1) / (Float16(1.1) - 1))
+```
 
-Writing $10 = 2^3 (1.01)_2$ we have
-$$
-\rm{fl}(10^{100}) = \rm{fl}(2^{300} (1 + 2^{-4})^{100}) = 2^{300} (1.b_1 \ldots b_{52})_2
-$$
-where the bits $b_k$ are not relevant. We then have:
-$$
-\rm{fl}(10^{100}) ⊕ 1 = \rm{fl}(2^{300} [(1.b_1 \ldots b_{52})_2 + 2^{-300}]) = \rm{fl}(10^{100})
-$$
-since $2^{-300}$ is below the necessary precision.
 
-The largest floating point number satisfying the condition is $y = 2^{53} - 1$, since
-$S = 52$. First note $2^{53}$ does not satisfy the condition:
-```julia
-x = 2.0^53
-x + 1 == x
-```
-We can however successfully create the previsous float $2^{53} -1$ by subtracting
-(Explain why this works while `x+1` fails):
-```julia
-y = x - 1
-printlnbits(x)
-printlnbits(y)
-```
-And this satisfies:
-```julia
-y + 1 ≠ y
-```
 **END**
 
 
