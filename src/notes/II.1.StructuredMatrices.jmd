@@ -1,0 +1,266 @@
+# II.1 Matrices
+
+We have seen how algebraic operations (`+`, `-`, `*`, `/`) are
+well-defined for floating point numbers. Now we see how this allows us
+to do (approximate) linear algebra operations on matrices. 
+
+A matrix can be stored in different formats. Here we consider the following structures:
+
+
+1. _Dense_: This can be considered unstructured, where we need to store all entries in a
+vector or matrix. Matrix multiplication reduces directly to standard algebraic operations. 
+Solving linear systems with dense matrices will be discussed later.
+2. _Triangular_: If a matrix is upper or lower triangular, we can immediately invert using
+back-substitution. In practice we store a dense matrix and ignore the upper/lower entries.
+3. _Banded_: If a matrix is zero apart from entries a fixed distance from  the diagonal it is
+called banded and this allows for more efficient algorithms. We discuss diagonal, 
+tridiagonal and bidiagonal matrices.
+
+In the next chapter we consider orthogonal matrices.
+
+
+```julia
+using LinearAlgebra, Plots, BenchmarkTools
+```
+
+
+## 1. Dense vectors and matrices
+
+A `Vector` of a primitive type (like `Int` or `Float64`) is stored
+consecutively in memory. E.g. if we have a `Vector{Int8}` of length
+`n` then it is stored as `8n` bits (`n` bytes) in a row.
+A  `Matrix` is stored consecutively in memory, going down column-by-
+column. That is,
+```julia
+A = [1 2;
+     3 4;
+     5 6]
+```
+Is actually stored equivalently to a length `6` vector:
+```julia
+vec(A)
+```
+This is known as _column-major_ format.
+
+**Remark** Note that transposing `A` is done lazyily and so `A'`
+stores the entries by row. That is, `A'` is stored in 
+_row-major_ format.
+
+
+Matrix-vector multiplication works as expected:
+```julia
+x = [7, 8]
+A*x
+```
+
+Note there are two ways this can be implemented: either the traditional definition,
+going row-by-row:
+$$
+\begin{bmatrix} \sum_{j=1}^n a_{1,j} x_j \\ \vdots \\ \sum_{j=1}^n a_{m,j} x_j \end{bmatrix}
+$$
+or going column-by-column:
+$$
+x_1 𝐚_1  + \cdots + x_n 𝐚_n
+$$
+It is easy to implement either version of matrix-multiplication in terms of the algebraic operations 
+we have learned, in this case just using integer arithmetic:
+```julia
+# go row-by-row
+function mul_rows(A, x)
+    m,n = size(A)
+    # promote_type type finds a type that is compatible with both types, eltype gives the type of the elements of a vector / matrix
+    c = zeros(promote_type(eltype(x),eltype(A)), m)
+    for k = 1:m, j = 1:n
+        c[k] += A[k, j] * x[j]
+    end
+    c
+end
+
+# go column-by-column
+function mul(A, x)
+    m,n = size(A)
+    # promote_type type finds a type that is compatible with both types, eltype gives the type of the elements of a vector / matrix
+    c = zeros(promote_type(eltype(x),eltype(A)), m)
+    for j = 1:n, k = 1:m
+        c[k] += A[k, j] * x[j]
+    end
+    c
+end
+
+mul_rows(A, x), mul(A, x)
+```
+
+Either implementation will be $O(mn)$ operations. However, the implementation 
+`mul` accesses the entries of `A` going down the column,
+which happens to be _significantly faster_ than `mul_rows`, due to accessing
+memory of `A` in order. We can see this by measuring the time it takes using `@btime`:
+```julia
+n = 1000
+A = randn(n,n) # create n x n matrix with random normal entries
+x = randn(n) # create length n vector with random normal entries
+
+@btime mul_rows(A,x)
+@btime mul(A,x)
+@btime A*x; # built-in, high performance implementation. USE THIS in practice
+```
+Here `ms` means milliseconds (`0.001 = 10^(-3)` seconds) and `μs` means microseconds (`0.000001 = 10^(-6)` seconds).
+So we observe that `mul` is roughly 3x faster than `mul_rows`, while the optimised `*` is roughly 5x faster than `mul`.
+
+
+**Remark (advanced)** For floating point types, `A*x` is implemented in BLAS which is generally multi-threaded
+and is not identical to `mul(A,x)`, that is, some inputs will differ in how the computations
+are rounded.
+
+
+Note that the rules of arithmetic apply here: matrix multiplication with floats
+will incur round-off error (the precise details of which are subject to the implementation):
+
+```julia
+A = [1.4 0.4;
+     2.0 1/2]
+A * [1, -1] # First entry has round-off error, but 2nd entry is exact
+```
+And integer arithmetic will be prone to overflow:
+```julia
+A = fill(Int8(2^6), 2, 2) # make a matrix whose entries are all equal to 2^6
+A * Int8[1,1] # we have overflowed and get a negative number -2^7
+```
+
+
+Solving a linear system is done using `\`:
+```julia
+A = [1 2 3;
+     1 2 4;
+     3 7 8]
+b = [10; 11; 12]
+A \ b
+```
+Despite the answer being integer-valued, 
+here we see that it resorted to using floating point arithmetic,
+incurring rounding error. 
+But it is "accurate to (roughly) 16-digits".
+As we shall see, the way solving a linear system works is we first write `A` as a
+product of simpler matrices, e.g., a product of triangular matrices.
+
+**Remark (advanced)** For floating point types, `A \ x` is implemented in LAPACK, which
+like BLAS is generally multi-threaded and in fact different machines may round differently.
+
+
+## 2. Triangular matrices
+
+Triangular matrices are represented by dense square matrices where the entries below the
+diagonal
+are ignored:
+```julia
+A = [1 2 3;
+     4 5 6;
+     7 8 9]
+U = UpperTriangular(A)
+```
+We can see that `U` is storing all the entries of `A`:
+```julia
+U.data
+```
+Similarly we can create a lower triangular matrix by ignoring the entries above the diagonal:
+```julia
+L = LowerTriangular(A)
+```
+
+If we know a matrix is triangular we can do matrix-vector multiplication in roughly half
+the number of operations. 
+Moreover, we can easily invert matrices. 
+Consider a simple 3×3 example, which can be solved with `\`:
+```julia
+b = [5,6,7]
+x = U \ b
+```
+Behind the seens, `\` is doing back-substitution: considering the last row, we have all
+zeros apart from the last column so we know that `x[3]` must be equal to:
+```julia
+b[3] / U[3,3]
+```
+Once we know `x[3]`, the second row states `U[2,2]*x[2] + U[2,3]*x[3] == b[2]`, rearranging
+we get that `x[2]` must be:
+```julia
+(b[2] - U[2,3]*x[3])/U[2,2]
+```
+Finally, the first row states `U[1,1]*x[1] + U[1,2]*x[2] + U[1,3]*x[3] == b[1]` i.e.
+`x[1]` is equal to
+```julia
+(b[1] - U[1,2]*x[2] - U[1,3]*x[3])/U[1,1]
+```
+
+More generally, we can solve the upper-triangular system
+$$
+\begin{bmatrix}
+u_{11} & \cdots & u_{1n} \\ & \ddots & \vdots \\ && u_{nn}
+\end{bmatrix} \begin{bmatrix} x_1 \\ \vdots \\ x_n \end{bmatrix} = 
+\begin{bmatrix} b_1 \\ \vdots \\ b_n \end{bmatrix}
+$$
+by computing $x_n, x_{n-1}, \ldots, x_1$ by the back-substitution formula:
+$$
+x_k = {b_k - \sum_{j=k+1}^n u_{kj} x_j \over u_{kk}}
+$$
+
+
+
+The problem sheet will explore implementing this method, as well
+as forward substitution for inverting lower triangular matrices. The cost of multiplying and solving linear systems with a
+triangular matrix is $O(n^2)$.
+
+
+## 3. Banded matrices
+
+A _banded matrix_ is zero off a prescribed number of diagonals. 
+We call the number of (potentially) non-zero diagonals the _bandwidths_:
+
+
+**Definition (bandwidths)** A matrix $A$ has _lower-bandwidth_ $l$ if 
+$A[k,j] = 0$ for all $k-j > l$ and _upper-bandwidth_ $u$ if
+$A[k,j] = 0$ for all $j-k > u$. We say that it has _strictly lower-bandwidth_ $l$
+if it has lower-bandwidth $l$ and there exists a $j$ such that $A[j+l,j] \neq 0$.
+We say that it has _strictly upper-bandwidth_ $u$
+if it has upper-bandwidth $u$ and there exists a $k$ such that $A[k,k+u] \neq 0$.
+
+
+### Diagonal
+
+**Definition (Diagonal)** _Diagonal matrices_ are square matrices with bandwidths $l = u = 0$.
+
+
+Diagonal matrices in Julia are stored as a vector containing the diagonal entries:
+```julia
+x = [1,2,3]
+D = Diagonal(x)
+```
+It is clear that we can perform diagonal-vector multiplications and solve linear systems involving diagonal matrices efficiently
+(in $O(n)$ operations).
+
+### Bidiagonal
+
+**Definition (Bidiagonal)** If a square matrix has bandwidths $(l,u) = (1,0)$ it is _lower-bidiagonal_ and
+if it has bandwidths $(l,u) = (0,1)$ it is _upper-bidiagonal_. 
+
+We can create Bidiagonal matrices in Julia by specifying the diagonal and off-diagonal:
+
+```julia
+Bidiagonal([1,2,3], [4,5], :L)
+```
+```julia
+Bidiagonal([1,2,3], [4,5], :U)
+```
+
+Multiplication and solving linear systems with Bidiagonal systems is also $O(n)$ operations, using the standard
+multiplications/back-substitution algorithms but being careful in the loops to only access the non-zero entries. 
+
+
+### Tridiagonal
+
+**Definition (Tridiagonal)** If a square matrix has bandwidths $l = u = 1$ it is _tridiagonal_.
+
+Julia has a type `Tridiagonal` for representing a tridiagonal matrix from its sub-diagonal, diagonal, and super-diagonal:
+```julia
+Tridiagonal([1,2], [3,4,5], [6,7])
+```
+Tridiagonal matrices will come up in second-order differential equations and orthogonal polynomials.
+We will later see how linear systems involving tridiagonal matrices can be solved in $O(n)$ operations.

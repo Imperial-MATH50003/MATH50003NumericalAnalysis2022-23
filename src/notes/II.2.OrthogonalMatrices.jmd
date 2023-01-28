@@ -1,0 +1,355 @@
+# II.2 Orthonal Matrices
+
+3. _Permutation_: A permutation matrix permutes the rows of a vector. 
+4. _Orthogonal_: An orthogonal matrix $Q$ satisfies $Q^⊤ Q = I$, in other words, they are
+very easy to invert. We discuss the special cases of simple rotations and reflections.
+
+
+
+## 4. Permutation Matrices
+
+
+
+Permutation matrices are matrices that represent the action of permuting the entries of a vector,
+that is, matrix representations of the symmetric group $S_n$, acting on $ℝ^n$.
+Recall every $σ \in S_n$ is a bijection between $\{1,2,\ldots,n\}$ and itself.
+We can write a permutation $σ$ in _Cauchy notation_:
+$$
+\begin{pmatrix}
+ 1 & 2 & 3 & \cdots & n \cr
+ σ_1 & σ_2 & σ_3 & \cdots & σ_n
+ \end{pmatrix}
+$$
+where $\{σ_1,\ldots,σ_n\} = \{1,2,\ldots,n\}$ (that is, each integer appears precisely once).
+We denote the _inverse permutation_ by $σ^{-1}$, which can be constructed by swapping the rows of
+the Cauchy notation and reordering.
+
+We can encode a permutation in vector $\mathbf σ = [σ_1,\ldots,σ_n]^⊤$. 
+This induces an action on a vector (using indexing notation)
+$$
+𝐯[\mathbf σ] = \begin{bmatrix}v_{σ_1}\\ \vdots \\ v_{σ_n} \end{bmatrix}
+$$
+
+
+**Example (permutation of a vector)** 
+Consider the permutation $σ$ given by
+$$
+\begin{pmatrix}
+ 1 & 2 & 3 & 4 & 5 \cr
+ 1 & 4 & 2 & 5 & 3
+ \end{pmatrix}
+$$
+We can apply it to a vector:
+```julia
+σ = [1, 4, 2, 5, 3]
+v = [6, 7, 8, 9, 10]
+v[σ] # we permutate entries of v
+```
+Its inverse permutation $σ^{-1}$ has Cauchy notation coming from swapping the rows of
+the Cauchy notation of $σ$ and sorting:
+$$
+\begin{pmatrix}
+ 1 & 4 & 2 & 5 & 3 \cr
+ 1 & 2 & 3 & 4 & 5
+ \end{pmatrix} \rightarrow \begin{pmatrix}
+ 1 & 2 & 4 & 3 & 5 \cr
+ 1 & 3 & 2 & 5 & 4
+ \end{pmatrix} 
+$$
+Julia has the function `invperm` for computing the vector that encodes
+the inverse permutation:
+And indeed:
+```julia
+σ⁻¹ = invperm(σ) # note that ⁻¹ are just unicode characters in the variable name
+```
+And indeed permuting the entries by `σ` and then by `σ⁻¹` returns us
+to our original vector:
+```julia
+v[σ][σ⁻¹] # permuting by σ and then σⁱ gets us back
+```
+
+
+
+Note that the operator
+$$
+P_σ(𝐯) = 𝐯[\mathbf σ]
+$$
+is linear in $𝐯$, therefore, we can identify it with a matrix whose action is:
+$$
+P_σ \begin{bmatrix} v_1\\ \vdots \\ v_n \end{bmatrix} = \begin{bmatrix}v_{σ_1} \\ \vdots \\ v_{σ_n}  \end{bmatrix}.
+$$
+The entries of this matrix are
+$$
+P_σ[k,j] = 𝐞_k^⊤ P_σ 𝐞_j = 𝐞_k^⊤ 𝐞_{σ^{-1}_j} = δ_{k,σ^{-1}_j} = δ_{σ_k,j}
+$$
+where $δ_{k,j}$ is the _Kronecker delta_:
+$$
+δ_{k,j} := \begin{cases} 1 & k = j \\
+                        0 & \hbox{otherwise}
+                        \end{cases}.
+$$
+
+
+This construction motivates the following definition:
+
+**Definition (permutation matrix)** $P \in ℝ^{n × n}$ is a permutation matrix if it is equal to
+the identity matrix with its rows permuted.
+
+**Example (5×5 permutation matrix)**
+We can construct the permutation representation for $σ$ as above as follows:
+```julia
+P = I(5)[σ,:]
+```
+And indeed, we see its action is as expected:
+```julia
+P * v
+```
+
+**Remark (advanced)** Note that `P` is a special type `SparseMatrixCSC`. This is used
+to represent a matrix by storing only the non-zero entries as well as their location.
+This is an important data type in high-performance scientific computing, but we will not
+be using general sparse matrices in this module.
+
+**Proposition (permutation matrix inverse)** 
+Let $P_σ$ be a permutation matrix corresponding to the permutation $σ$. Then
+$$
+P_σ^⊤ = P_{σ^{-1}} = P_σ^{-1}
+$$
+That is, $P_σ$ is _orthogonal_:
+$$
+P_σ^⊤ P_σ = P_σ P_σ^⊤ = I.
+$$
+
+**Proof**
+
+We prove orthogonality via:
+$$
+𝐞_k^⊤ P_σ^⊤ P_σ 𝐞_j = (P_σ 𝐞_k)^⊤ P_σ 𝐞_j = 𝐞_{σ^{-1}_k}^⊤ 𝐞_{σ^{-1}_j} = δ_{k,j}
+$$
+This shows $P_σ^⊤ P_σ = I$ and hence $P_σ^{-1} = P_σ^⊤$. 
+
+∎
+
+
+Permutation matrices are examples of sparse matrices that can be very easily inverted. 
+
+
+
+## 4. Orthogonal matrices
+
+
+**Definition (orthogonal matrix)** A square matrix is _orthogonal_ if its inverse is its transpose:
+$$
+Q^⊤ Q = QQ^⊤ = I.
+$$
+
+We have already seen an example of an orthogonal matrices (permutation matrices). 
+Here we discuss two important special cases: simple rotations and reflections.
+
+### Simple rotations
+
+
+**Definition (simple rotation)**
+A 2×2 _rotation matrix_ through angle $θ$ is
+$$
+Q_θ := \begin{bmatrix} \cos \theta & -\sin \theta \cr \sin \theta & \cos \theta \end{bmatrix}
+$$
+
+In what follows we use the following for writing the angle of a vector:
+
+**Definition (two-arg arctan)** The two-argument arctan function gives the angle `θ` through the point
+$[a,b]^\top$, i.e., 
+$$
+\sqrt{a^2 + b^2} \begin{bmatrix} \cos θ \\ \sin θ \end{bmatrix} =  \begin{bmatrix} a \\ b \end{bmatrix}
+$$
+It can be defined in terms of the standard arctan as follows:
+$$
+{\rm atan}(b,a) := \begin{cases} {\rm atan}{b \over a} & a > 0 \\
+                            {\rm atan}{b \over a} + π & a < 0\hbox{ and }b >0 \\
+                            {\rm atan}{b \over a} - π & a < 0\hbox{ and }b < 0 \\
+                            π/2 & a = 0\hbox{ and }b >0 \\
+                            -π/2 & a = 0\hbox{ and }b < 0 
+                            \end{cases}
+$$ 
+
+This is available in Julia:
+```julia
+atan(-1,-2) # angle through [-2,-1]
+```
+
+
+We can rotate an arbitrary vector to the unit axis. Interestingly it only requires
+basic algebraic functions (no trigonometric functions):
+
+
+
+**Proposition (rotation of a vector)** 
+The matrix
+$$Q = {1 \over \sqrt{a^2 + b^2}}\begin{bmatrix}
+ a & b \cr -b & a
+\end{bmatrix}
+$$
+is a rotation matrix satisfying
+$$
+Q \begin{bmatrix} a \\ b \end{bmatrix} = \sqrt{a^2 + b^2} \begin{bmatrix} 1 \\ 0 \end{bmatrix}
+$$
+
+**Proof** 
+
+The last equation is trivial so the only question is that it is a rotation matrix.
+Define $θ = -{\rm atan}(b, a)$. By definition of the two-arg arctan we have
+$$
+\begin{bmatrix}
+\cos θ & -\sin θ \\
+\sin θ &\cos θ
+\end{bmatrix} = \begin{bmatrix}
+\cos(-θ) & \sin(-θ) \\
+-\sin(-θ) & \cos(-θ)
+\end{bmatrix} = {1\over \sqrt{a^2 + b^2}} \begin{bmatrix} a  & b \\ -b &a \end{bmatrix}.
+$$
+
+∎
+
+
+
+
+### Reflections
+
+In addition to rotations, another type of orthognal matrix are reflections:
+
+**Definition (reflection matrix)** 
+Given a vector $𝐯$ satisfying $\|𝐯\|=1$, the reflection matrix is the orthogonal matrix
+$$
+Q_𝐯 \triangleq I - 2 𝐯 𝐯^⊤
+$$
+
+These are reflections in the direction of $𝐯$. We can show this as follows:
+
+**Proposition** $Q_𝐯$ satisfies:
+1. Symmetry: $Q_𝐯 = Q_𝐯^⊤$
+2. Orthogonality: $Q_𝐯^⊤ Q_𝐯 = I$
+2. $𝐯$ is an eigenvector of $Q_𝐯$ with eigenvalue $-1$
+4. $Q_𝐯$ is a rank-1 perturbation of $I$
+3. $\det Q_𝐯 = -1$
+
+
+**Proof**
+
+Property 1 follows immediately. Property 2 follows from
+$$
+Q_𝐯^⊤ Q_𝐯 = Q_𝐯^2 = I - 4 𝐯 𝐯^⊤ + 4 𝐯 𝐯^⊤ 𝐯 𝐯^⊤ = I
+$$
+Property 3 follows since
+$$
+Q_𝐯 𝐯 = -𝐯
+$$
+Property 4 follows since $𝐯 𝐯^⊤$ is a rank-1 matrix as all rows are linear combinations of each other.
+To see property 5, note there is a dimension $n-1$ space $W$ orthogonal to $𝐯$, that is, for all
+$𝐰 \in W$ we have $𝐰^⊤ 𝐯 = 0$, which implies that
+$$
+Q_𝐯 𝐰 = 𝐰
+$$
+In other words, $1$ is an eigenvalue with multiplicity $n-1$ and $-1$ is an eigenvalue with multiplicity 1,
+and thus the product of the eigenvalues is $-1$.
+
+∎
+
+
+
+**Example (reflection through 2-vector)** Consider reflection through $𝐱 = [1,2]^\top$. 
+We first need to normalise $𝐱$:
+$$
+𝐯 = {𝐱 \over \|𝐱\|} = \begin{bmatrix} {1 \over \sqrt{5}} \\ {2 \over \sqrt{5}} \end{bmatrix}
+$$
+Note this indeed has unit norm:
+$$
+\|𝐯\|^2 = {1 \over 5} + {4 \over 5} = 1.
+$$
+Thus the reflection matrix is:
+$$
+Q_𝐯 = I - 2 𝐯 𝐯^⊤ = \begin{bmatrix}1 \\ & 1 \end{bmatrix} - {2 \over 5} \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}
+ =  {1 \over 5} \begin{bmatrix} 3 & -4 \\ -4 & -3 \end{bmatrix}
+$$
+Indeed it is symmetric, and orthogonal. It sends $𝐱$ to $-𝐱$:
+$$
+Q_𝐯 𝐱 = {1 \over 5} \begin{bmatrix}3 - 8 \\ -4 - 6 \end{bmatrix} = -𝐱
+$$
+Any vector orthogonal to $𝐱$, like $𝐲 = [-2,1]^\top$, is left fixed:
+$$
+Q_𝐯 𝐲 = {1 \over 5} \begin{bmatrix}-6 -4 \\ 8 - 3 \end{bmatrix} = 𝐲
+$$
+
+
+Note that _building_ the matrix $Q_𝐯$ will be expensive ($O(n^2)$ operations), but we can apply
+$Q_𝐯$ to a vector in $O(n)$ operations using the expression:
+$$
+Q_𝐯 𝐱 = 𝐱 - 2 𝐯 (𝐯^⊤ 𝐱).
+$$
+
+
+Just as rotations can be used to rotate vectors to be aligned with coordinate axis, so can reflections,
+but in this case it works for vectors in $ℝ^n$, not just $ℝ^2$:
+
+**Definition (Householder reflection)** For a given vector
+$𝐱$, define the Householder reflection
+$$
+Q_𝐱^{±,\rm H} := Q_𝐰
+$$
+for $𝐲 = ∓ \|𝐱\| 𝐞_1 + 𝐱$ and $𝐰 = {𝐲 \over \|𝐲\|}$.
+The default choice in sign is:
+$$
+Q_𝐱^{\rm H} := Q_𝐱^{-\hbox{sign}(x_1),\rm H}.
+$$
+
+**Lemma (Householder reflection)**
+$$
+Q_𝐱^{±,\rm H} 𝐱 = ±\|𝐱\| 𝐞_1
+$$
+
+**Proof**
+Note that
+$$
+\begin{align*}
+\| 𝐲 \|^2 &= 2\|𝐱\|^2 ∓ 2 \|𝐱\| x_1, \\
+𝐲^⊤ 𝐱 &= \|𝐱\|^2 ∓  \|𝐱\| x_1
+\end{align*}
+$$
+where $x_1 = 𝐞_1^\top 𝐱$. Therefore:
+$$
+Q_𝐱^{±,\rm H} 𝐱  =  (I - 2 𝐰 𝐰^⊤) 𝐱 = 𝐱 - 2 {𝐲  \|𝐱\|  \over \|𝐲\|^2} (\|𝐱\|∓x_1) = 𝐱 - 𝐲 =  ±\|𝐱\| 𝐞_1.
+$$
+
+∎
+
+Why do we choose the the opposite sign of $x_1$ for the default reflection? For stability.
+We demonstrate the reason for this by numerical example. Consider $𝐱 = [1,h]$, i.e., a small perturbation
+from $𝐞_1$. If we reflect to $\hbox{norm}(𝐱)𝐞_1$ we see a numerical problem:
+```julia
+h = 10.0^(-10)
+x = [1,h]
+y = -norm(x)*[1,0] + x
+w = y/norm(y)
+Q = I-2w*w'
+Q*x
+```
+It didn't work! Even worse is if `h = 0`:
+```julia
+h = 0
+x = [1,h]
+y = -norm(x)*[1,0] + x
+w = y/norm(y)
+Q = I-2w*w'
+Q*x
+```
+This is because `y` has large relative error due to cancellation
+from floating point errors in computing the first entry `x[1] - norm(x)`. 
+(Or has norm zero if `h=0`.)
+We avoid this cancellation by using the default choice:
+```julia
+h = 10.0^(-10)
+x = [1,h]
+y = sign(x[1])*norm(x)*[1,0] + x
+w = y/norm(y)
+Q = I-2w*w'
+Q*x
+```
