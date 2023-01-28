@@ -1,16 +1,51 @@
 # MATH50003 Numerical Analysis (2022–23)
 # Problem Sheet 3
 
-This problem sheet explores the error in using divided differences. 
+This problem sheet explores the error in using divided differences and using dual numbers.
 
 Please complete the problems using pen-and-paper, though some can be verified using Julia.
+
+-----
+**Problem 1** Suppose our floating point approximation $f^{\rm FP} : F → F$  has _relative accuracy_:
+$$
+f^{\rm FP}(x) = f(x) (1 + δ_x^{\rm r})
+$$
+where
+$$
+|δ_x^{\rm r}| ≤ c ϵ_{\rm m}.
+$$
+Suppose further that $f(0) = f^{\rm FP}(0) = 0$ and assume that
+$f'(0) ≠ 0$. Show that divided differences achieves relative accuracy:
+$$
+{f^{\rm FP}(h) \over h} = f'(0) (1 + ε_h)
+$$
+where
+$$
+|ε_h| ≤ {M \over 2 f'(0)} h (1 + c ϵ_{\rm m} )  + c ϵ_{\rm m} 
+$$
+for $M = \sup_{0 ≤ t ≤ h} |f''(t)|$.
+
+**SOLUTION**
+
+$$
+\begin{align*}
+{f^{\rm FP}(h) \over h} &= {f(h) \over h}(1 + δ_x^{\rm r})
+= (f'(0) + f''(t)/2 h)(1 + δ_x^{\rm r}) =
+f'(0) (1 + f''(t)/(2f'(0)))(1 + δ_x^{\rm r}) \\
+&= f'(0) (1 + \underbrace{f''(t)/(2f'(0)) + δ_x^{\rm r} + f''(t)/(2f'(0))δ_x^{\rm r}}_{ε_h})
+\end{align*}
+$$
+where $t ∈ [0,h]$. 
+The bound follows.
+
+**END**
 
 -------
 
 
-**Problem 1.1** Use Taylor's theorem to derive an error bound for central differences
+**Problem 2.1** Use Taylor's theorem to derive an (absolute) error bound for central differences
 $$
-f'(x) ≈ {f(x + h) - f(x - h) \over 2h}.
+\left|f'(x) - {f(x + h) - f(x - h) \over 2h}\right|
 $$
 in terms of 
 $$
@@ -33,33 +68,34 @@ Hence,
 $$ \frac{f(x+h)-f(x-h)}{2h} = f'(x)  + \underbrace{\frac{f'''(z_1)+f'''(z_2)}{12}h^2}_{δ_{\rm Taylor}}.$$
 
 Thus, the error can be bounded by
-$$\left|δ_{\rm Taylor}\right| ≤ {M \over 6} h^2,$$
-where
-$$
-M=\max_{y ∈ [x-h,x+h]}\left| f'''(y)\right|.
-$$
+$$\left|δ_{\rm Taylor}\right| ≤ {M \over 6} h^2.$$
 
 **END**
 
-**Problem 1.2**
-Find an error bound when implemented in floating point arithmetic, assuming that
-$$f^{\rm FP}(x) = f(x) + \delta_x$$
-where $|\delta_x| \leq c ϵ_{\rm m}$. You may assume all operations result in numbers
-in the normalised range.
+**Problem 2.2**
+Assume that
+$$f^{\rm FP}(x) = f(x) + δ_x^f$$
+where $|δ_x^f| \leq c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm CD}$ satisfying
+$$
+{f^{\rm FP}(x+h) ⊖ f^{\rm FP}(x-h) \over  2h} = f'(x) + δ_{x,h}^{\rm CD}
+$$
+find a bound on $|δ_{x,h}^{\rm CD}|$ in terms of $M$.
+ You may assume all operations result in numbers
+in the normalised range and $h = 2^{-n}$.
 
 **SOLUTION**
 
 In floating point we have 
 $$
 \begin{align*}
-(f^{\rm FP}(x + 2h) ⊖ f^{\rm FP}(x-2h)) ⊘ (2h) &= {f(x + h) +  δ_{x+h} - f(x-h) - δ_{x-h} \over 2h} (1 + δ_1) \\
+(f^{\rm FP}(x + 2h) ⊖ f^{\rm FP}(x-2h)) / (2h) &= {f(x + h) +  δ_{x+h} - f(x-h) - δ_{x-h} \over 2h} (1 + δ_1) \\
 &= {f(x+h) - f(x-h) \over 2h} (1 + δ_1) + {δ_{x+h}- δ_{x-h} \over 2h} (1 + δ_1)
 \end{align*}
 $$
 Applying Taylor's theorem we get 
 $$
 (f^{\rm FP}(x + h) ⊖ f^{\rm FP}(x-h)) ⊘ (2h) = 
-f'(x) + \underbrace{f'(x) δ_1 + δ_{\rm Taylor} (1 + \delta_1) + {δ_{x+h}- δ_{x-h} \over 2h} (1 + δ_1)}_{δ_{x,h}^{\rm CD}}
+f'(x) + \underbrace{f'(x) δ_1 + δ_{\rm Taylor} (1 + δ_1) + {δ_{x+h}- δ_{x-h} \over 2h} (1 + δ_1)}_{δ_{x,h}^{\rm CD}}
 $$
 where
 $$
@@ -68,42 +104,11 @@ $$
 
 **END**
 
-
-**Problem 1.3**
-Derive the error for central differences exactly for the different cases to explain the observed behaviour.
-
-**SOLUTION**
-
-To compute the errors of the central difference approximation of $f'(x)$ we compute
-$$
-\begin{align*}
-\left| \frac{f(x+h)-f(x-h)}{2h} - f'(x) \right|
-&=\left| \frac{1 + (x+h) + (x+h)^2 - 1 - (x-h) - (x-h)^2}{2h} - (1+2x)\right| \\
-&=\left| \frac{2h + 4hx}{2h} - 1 -2x\right| = 0.
-\end{align*}
-$$
-As we can see, in this case the central difference approximation is exact. 
-The errors we start observing for small step sizes are thus numerical in nature. 
-The values of the function at $f(x+h)$ and $f(x-h)$ eventually become numerically indistinguishable 
-and thus this finite difference approximation to the derivative incorrectly results in $0$.
-
-
-To compute the errors of the central difference approximation of $g'(x)$ we compute
-
-$$
-\begin{align*}
-\left| \frac{g(x+h)-g(x-h)}{2h} - g'(x) \right|&= \left| \frac{1 + \frac{(x+h)}{3} + (x+h)^2 - 1 - \frac{(x-h)}{3} - (x-h)^2}{2h} - \left(\frac{1}{3}+2x \right)\right| \\
-&=\left| \frac{1}{3} + 2x - \frac{1}{3} - 2x\right| = 0.
-\end{align*}
-$$
-**END**
-
-
 -----
 
-**Problem 2.1** Use Taylor's theorem to derive an error bound on the second-order derivative approximation
+**Problem 3.1** Use Taylor's theorem to derive an (absolute) error bound on the second-order derivative approximation
 $$
-f''(x) ≈ {f(x+h) - 2f(x) + f(x-h) \over h^2}
+\left|f''(x) - {f(x+h) - 2f(x) + f(x-h) \over h^2} \right|
 $$
 in terms of 
 $$
@@ -126,43 +131,55 @@ $$f''(x) = \frac{f(x+h) - 2f(x) + f(x-h)}{h^2} + \frac{f'''(z_2) - f'''(z_1)}{6}
 
 Hence, the error is 
 $$
-\left|f''(x) - \right| = \left|\frac{f'''(z_2) - f'''(z_1)}{6}h\right|≤ 2Ch ,
+\left|f''(x) - {f(x+h) - 2f(x) + f(x-h) \over h^2} \right| = \left|\frac{f'''(z_2) - f'''(z_1)}{6}h\right|≤ {Mh \over 3}.
 $$
-where again
-$$C = \max_{y∈[x-h,x+h]}\left|\frac{f'''(y)}{6}\right|.$$
+
+
 **END**
 
-**Problem 2.2** Find an error bound when implemented in floating point arithmetic, assuming that
+**Problem 3.2** Assume that
+$$f^{\rm FP}(x) = f(x) + δ_x^f$$
+where $|δ_x^f| \leq c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm 2D}$ satisfying
 $$
-f^{\rm FP}(x) = f(x) + δ_x
+(f^{\rm FP}(x+h) ⊖ 2f^{\rm FP}(x) ⊕ f^{\rm FP}(x-h)) / h = f''(x) + δ_{x,h}^{\rm 2D}
 $$
-where $|δ_x| \leq c ϵ_{\rm m}$.
+find a bound on $|δ_{x,h}^{\rm 2D}|$ in terms of $M$ and $F = \sup_{x-h ≤ t ≤ x+h} |f(t)|$.
+ You may assume all operations result in numbers
+in the normalised range and $h = 2^{-n}$.
 
 **SOLUTION**
 
-In floating point arithmetic we assume $x + h = x ⊕ h$, $h$ is a power of $2$ and all computations are normal. 
-Then we have:
+We have
 $$
-f^{\rm FP}(x + h) ⊖ 2f^{\rm FP}(x) = (f(x+h) + δ_{x+h} - 2f(x) -2δ_x)(1+δ^1) = f(x+h) - 2f(x) + \underbrace{(f(x+h) - 2f(x))δ^1 + (δ_{x+h} - 2 δ_x)(1+δ^1)}_{δ^2}
+\begin{align*}
+f^{\rm FP}(x + h) ⊖ 2f^{\rm FP}(x) &= (f(x+h) + δ_{x+h} - 2f(x) -2δ_x^f)(1+δ_1) \\
+&= f(x+h) - 2f(x) + \underbrace{(f(x+h) - 2f(x))δ_1 + (δ_{x+h} - 2 δ_x^f)(1+δ_1)}_{δ_2}
+\end{align*}
 $$
-where $|δ^2| ≤ (3/2F + 4c) ϵ_m$, where $F = \sup_{x-h ≤ t ≤ x+h} |f(t)|$. Therefore
+where $|δ_2| ≤ (3/2F + 4c) ϵ_m$. Therefore
 $$
-(f^{\rm FP}(x + h) ⊖ 2f^{\rm FP}(x)) ⊕ f^{\rm FP}(x - h) = ((f(x+h) - 2f(x) + δ^2) + f(x-h) + δ_{x-h})(1+δ^3) = f(x+h) - 2f(x) + f(x-h) + \underbrace{(f(x+h) - 2f(x) + f(x-h)) δ^3 + (δ^2 + δ_{x-h})(1+δ^3)}_{δ^4}
+\begin{align*}
+(f^{\rm FP}(x + h) ⊖ 2f^{\rm FP}(x)) ⊕ f^{\rm FP}(x - h) &= ((f(x+h) - 2f(x) + δ_2) + f(x-h) + δ_{x-h})(1+δ_3) \\
+&= f(x+h) - 2f(x) + f(x-h) + \underbrace{(f(x+h) - 2f(x) + f(x-h)) δ_3 + (δ_2 + δ_{x-h})(1+δ_3)}_{δ_4}
+\end{align*}
 $$
-where $|δ^4| ≤ (5F + 10c)ϵ_{\rm m}$. Putting everything together we have
+where $|δ_4| ≤ (5F + 10c)ϵ_{\rm m}$. Putting everything together we have
 $$
-{(f^{\rm FP}(x + h) ⊖ 2f^{\rm FP}(x)) ⊕ f^{\rm FP}(x - h) \over h} = {f(x+h) - 2f(x) + f(x-h) \over h^2} + {δ^4 \over h^2} = f''(x) + \frac{f'''(z_2) - f'''(z_1)}{6}h +  {δ^4 \over h^2} 
+\begin{align*}
+{(f^{\rm FP}(x + h) ⊖ 2f^{\rm FP}(x)) ⊕ f^{\rm FP}(x - h) \over h} &= {f(x+h) - 2f(x) + f(x-h) \over h^2} + {δ_4 \over h^2} \\
+&= f''(x) + \frac{f'''(z_2) - f'''(z_1)}{6}h +  {δ_4 \over h^2} 
+\end{align*}
 $$
 that is the error is bounded by
 $$
-2Ch + (5F + 10c){ϵ_{\rm m} \over h^2}
+{Mh \over 3} + (5F + 10c){ϵ_{\rm m} \over h^2}
 $$
 
 **END**
 
------
+------
 
-**Problem 3.1** 
+**Problem 4.1** 
 Show that dual numbers $𝔻$ are a _commutative ring_, that is, for all $a,b,c ∈ 𝔻$ the following are satisfied:
 1. _additive associativity_: $(a + b) + c = a + (b + c)$
 2. _additive commutativity_: $a + b = b + a$
@@ -211,7 +228,7 @@ $$
 
 **END**
 
-**Problem 3.2 (C)** A _field_ is a commutative ring such that $0 ≠ 1$ and all nonzero elements have a multiplicative inverse, i.e.,
+**Problem 4.2** A _field_ is a commutative ring such that $0 ≠ 1$ and all nonzero elements have a multiplicative inverse, i.e.,
 there exists $a^{-1}$ such that $a a^{-1} = 1$. Why isn't $𝔻$ a field?
 
 **SOLUTION**
@@ -228,53 +245,13 @@ This proves that no choice of real part $z_r$ can reach the multiplicative ident
 
 **END**
  
-
------
-
-**Problem 4** A _matrix representation_ of a ring are maps from a group/ring to matrices such that matrix addition and multiplication
-behave exactly like addition and multiplication of the ring. 
-That is, if $A$ and $B$ are elements of the ring and $ρ$ is a representation, then
-$$
-ρ(A + B) = ρ(A) + ρ(B) \hbox{ and } ρ(AB) = ρ(A)ρ(B).
-$$
-Show that the following are matrix representations of complex numbers and dual numbers (respectively):
-$$
-\begin{align*}
-ρ_{\rm c}(a + b {\rm i}) &= \begin{pmatrix} a & b \\ -b & a \end{pmatrix}, \\
-ρ_ϵ(a + b {\rm ϵ}) &= \begin{pmatrix} a & b \\ 0 & a \end{pmatrix}.
-\end{align*}
-$$
-
-**SOLUTION**
-
-Let $A = a+bi$ and $B=c+di$ and $ρ$ be the map to their proposed matrix representations. First we check that addition complies with addition of complex numbers, that is 
-$(a+bi)+(c+di) = (a+c)+(b+d)i:$
- 
-$ρ(A) + ρ(B) = \begin{pmatrix} a & b \\ -b & a \end{pmatrix} + \begin{pmatrix} c & d \\ -d & c \end{pmatrix} = \begin{pmatrix} a+c & b+d \\ -(b+d) & a+c \end{pmatrix} = ρ(A+B).$
-
-Next for multiplication we need $(a+bi)(c+di) = (ac-bd)+(bc+ad)i $:
-
-$ρ(A)ρ(B) = \begin{pmatrix} a & b \\ -b & a \end{pmatrix}\begin{pmatrix} c & d \\ -d & c \end{pmatrix} = \begin{pmatrix} ac-bd & bc+ad \\ -(bc+ad) & ac-bd \end{pmatrix} = ρ(AB)$
-
-Now we move on to dual numbers $A = a+b ϵ $ and $B=c+d ϵ$ and their matrix representation map $ρ_ϵ$: For addition of dual numbers $(a+bϵ )+(c+dϵ ) = (a+c) + (b+d) ϵ$:
-
-$ρ_ϵ(A) + ρ_ϵ(B) = \begin{pmatrix} a & b \\ 0 & a \end{pmatrix} + \begin{pmatrix} c & d \\ 0 & c \end{pmatrix} = \begin{pmatrix} a+c & b+d \\ 0 & a+c \end{pmatrix} = ρ_ϵ(A+B).$
-
-And finally for multiplication of dual numbers $(a+bϵ )(c+dϵ ) = ac+(ad+bc)ϵ$:
-
-$ρ_ϵ(A)ρ_ϵ(B) = \begin{pmatrix}a & b \\ 0 & a \end{pmatrix}\begin{pmatrix} c & d \\ 0 & c \end{pmatrix} = \begin{pmatrix} ac & ad+bc \\ 0 & ac \end{pmatrix} = ρ_ϵ(AB).$
-
-**END**
 -------
 
-**Problem 5 (C)** What is the correct definition of division on dual numbers, i.e.,
+**Problem 5** What is the correct definition of division on dual numbers, i.e.,
 $$
 (a + b ϵ )/(c + d ϵ ) = s + t ϵ
 $$
-for what choice of $s$ and $t$? Use dual numbers to compute the derivative of the following functions at $x = 0.1$:
-$$
-\exp(\exp x \cos x + \sin x), \prod_{k=1}^3 \left({x \over k}-1\right),\hbox{ and } f^{\rm s}_2(x) = {1 + {x - 1 \over 2 + {x-1 \over 2}}}
-$$
+for what choice of $s$ and $t$? 
 
 **SOLUTION**
 
@@ -289,6 +266,18 @@ $$
 Thus we have $s = \frac{a}{c}$ and $t = \frac{bc - ad}{c^2}$.
 
 We now compute the derivatives of the three functions by evaluating for $x = 0.1 + ϵ$.
+
+
+
+**END**
+
+------
+**Problem 6** Use dual numbers to compute the derivative of the following functions at $x = 0.1$:
+$$
+\exp(\exp x \cos x + \sin x), \prod_{k=1}^3 \left({x \over k}-1\right),\hbox{ and } f^{\rm s}_2(x) = {1 + {x - 1 \over 2 + {x-1 \over 2}}}
+$$
+
+**SOLUTION**
 
 For the first function we have:
 $$
@@ -323,7 +312,5 @@ $$
 \end{align*}
 $$
 Thus the derivative is $2/1.55^2$.
-
-
 
 **END**
