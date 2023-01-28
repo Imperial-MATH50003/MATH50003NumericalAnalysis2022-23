@@ -123,3 +123,354 @@ cos.(k .+ j')
 broadcast((k,j) -> cos(k+j), 1:5, (1:6)')
 
 ## END
+
+
+# MATH50003 Numerical Analysis: Problem 3
+
+This problem sheet explores implementation of triangular solves,
+supporting a matrix with two super-diagonals, as well as
+permutation and Householder reflections that can be applied to a vector in
+$O(n)$ complexity.
+
+Questions marked with a ⋆ are meant to be completed without using a computer.
+Problems are denoted A/B/C to indicate their difficulty.
+
+
+```julia
+using LinearAlgebra, Test
+
+# We will override these functions below
+import Base: getindex, setindex!, size, *, \
+```
+
+## 1. Dense Matrices
+
+**Problem 1.1 (C)** Show that `A*x` is not
+implemented as `mul(A, x)` from the lecture notes
+by finding a `Float64` example  where the bits do not match.
+
+**SOLUTION**
+
+First we have to define `mul(A, x)` as in the lecture notes:
+```julia
+function mul(A, x)
+    m,n = size(A)
+    c = zeros(eltype(x), m) # eltype is the type of the elements of a vector/matrix
+    for j = 1:n, k = 1:m
+        c[k] += A[k, j] * x[j]
+    end
+    c
+end
+```
+Then we can easily find examples, in fact we can write a function that searches for examples:
+```julia
+using ColorBitstring
+
+function findblasmuldifference(n,l)
+	for j = 1:n
+		A = randn(l,l)
+		x = rand(l)
+		if A*x != mul(A,x) 
+			return (A,x)
+		end
+	end
+end
+
+n = 100 # number of attempts
+l = 10 # size of objects
+(A,x) = findblasmuldifference(n,l) # find a difference
+
+println("Bits of obtained A*x")
+printlnbits.(A*x);
+println("Bits of obtained mul(A,x)")
+printlnbits.(mul(A,x));
+println("Difference vector between the two solutions:")
+println(A*x-mul(A,x))
+
+```
+
+
+## 2. Triangular Matrices
+
+**Problem 2.1 (B)** Complete the following functions for solving linear systems with
+triangular systems by implementing back and forward-substitution:
+```julia
+function ldiv(U::UpperTriangular, b)
+    n = size(U,1)
+    
+    if length(b) != n
+        error("The system is not compatible")
+    end
+        
+    x = zeros(n)  # the solution vector
+    ## TODO: populate x using back-substitution
+end
+
+function ldiv(U::LowerTriangular, b)
+    n = size(U,1)
+    
+    if length(b) != n
+        error("The system is not compatible")
+    end
+        
+    x = zeros(n)  # the solution vector
+    ## TODO: populate x using forward-substitution
+end
+```
+
+**SOLUTION**
+
+```julia
+function ldiv(U::UpperTriangular, b)
+    n = size(U,1)
+    
+    if length(b) != n
+        error("The system is not compatible")
+    end
+        
+    x = zeros(n)  # the solution vector
+    
+    for k = n:-1:1  # start with k=n, then k=n-1, ...
+        r = b[k]  # dummy variable
+        for j = k+1:n
+            r -= U[k,j]*x[j] # equivalent to r = r-U[k,j]*x[j]
+        end
+        x[k] = r/U[k,k]
+    end
+    x
+end
+
+function ldiv(U::LowerTriangular, b)
+    n = size(U,1)
+    
+    if length(b) != n
+        error("The system is not compatible")
+    end
+        
+    x = zeros(n)  # the solution vector
+
+    for k = 1:n  # start with k=1
+        r = b[k]  # dummy variable
+        for j = 1:k-1
+            r -= U[k,j]*x[j]
+        end
+        x[k] = r/U[k,k]
+    end
+    x
+end
+```
+
+Here is an example:
+```julia
+x = [1,2,3,4]
+Ldense = [1 0 0 0; 2 3 0 0; 4 5 6 0; 7 8 9 10]
+Ltriang = LowerTriangular(Ldense)
+```
+```julia
+Ldense\x-ldiv(Ltriang,x)
+```
+
+
+
+**Problem 2.2⋆ (B)** Given $𝐱 \in \mathbb{R}^n$, find a lower triangular matrix of the form
+$$
+L = I - 2 𝐯 𝐞_1^⊤
+$$
+such that:
+$$
+L 𝐱 = x_1 𝐞_1.
+$$
+What does $L𝐲$ equal if $𝐲  ∈ ℝ^n$ satisfies $y_1 = 𝐞_1^⊤ 𝐲 = 0$?
+
+**SOLUTION**
+
+By straightforward computation we find
+
+$$Lx = x - 2 𝐯 𝐞_1^⊤x = x - 2 𝐯 x_1$$
+
+and thus we find such a lower triangular $L$ by choosing $v_1 = 0$ and $v_k = \frac{x_k}{2 x_1}$ for $k=2..n$ and $x_1 \neq 0$.
+
+## 3. Banded matrices
+
+**Problem 3.1 (C)** Complete the implementation of `UpperTridiagonal` which represents a banded matrix with
+bandwidths $(l,u) = (0,2)$:
+```julia
+struct UpperTridiagonal{T} <: AbstractMatrix{T}
+    d::Vector{T}   # diagonal entries
+    du::Vector{T}  # super-diagonal enries
+    du2::Vector{T} # second-super-diagonal entries
+end
+
+size(U::UpperTridiagonal) = (length(U.d),length(U.d))
+
+function getindex(U::UpperTridiagonal, k::Int, j::Int)
+    d,du,du2 = U.d,U.du,U.du2
+    # TODO: return U[k,j]
+end
+
+function setindex!(U::UpperTridiagonal, v, k::Int, j::Int)
+    d,du,du2 = U.d,U.du,U.du2
+    if j > k+2
+        error("Cannot modify off-band")
+    end
+
+    # TODO: modify d,du,du2 so that U[k,j] == v
+
+    U # by convention we return the matrix
+end
+```
+
+**SOLUTION**
+
+
+```julia
+struct UpperTridiagonal{T} <: AbstractMatrix{T}
+    d::Vector{T}   # diagonal entries
+    du::Vector{T}  # super-diagonal enries
+    du2::Vector{T} # second-super-diagonal entries
+end
+
+size(U::UpperTridiagonal) = (length(U.d),length(U.d))
+
+function getindex(U::UpperTridiagonal, k::Int, j::Int)
+    d,du,du2 = U.d,U.du,U.du2
+
+    if j == k+2
+    	return U.du2[k]    
+    elseif j == k+1
+    	return U.du[k]
+    elseif j == k
+    	return U.d[k]
+    else # off band entries are zero
+    	return zero(eltype(U))
+    end
+end
+
+function setindex!(U::UpperTridiagonal, v, k::Int, j::Int)
+    d,du,du2 = U.d,U.du,U.du2
+    if (j > k+2)||(j<k)
+        error("Cannot modify off-band")
+    end
+
+    if j == k+2
+    	U.du2[k] = v  
+    elseif j == k+1
+    	U.du[k] = v
+    elseif j == k
+    	U.d[k] = v
+    end
+
+    U # by convention we return the matrix
+end
+```
+
+We can check that the above methods to read and write entries work:
+
+```julia
+A = UpperTridiagonal([1,2,3,4], [1,2,3], [1,2])
+```
+```julia
+A[1,1] = 2
+A
+```
+
+**Problem 3.2 (B)** Complete the following implementations of `*` and `\` for `UpperTridiagonal` so that
+they take only $O(n)$ operations.
+```julia
+function *(U::UpperTridiagonal, x::AbstractVector)
+    T = promote_type(eltype(U), eltype(x)) # make a type that contains both the element type of U and x
+    b = zeros(T, size(U,1)) # returned vector
+    # TODO: populate b so that U*x == b (up to rounding)
+end
+
+function \(U::UpperTridiagonal, b::AbstractVector)
+    T = promote_type(eltype(U), eltype(b)) # make a type that contains both the element type of U and b
+    x = zeros(T, size(U,2)) # returned vector
+    # TODO: populate x so that U*x == b (up to rounding)
+end
+```
+
+**SOLUTION**
+```julia
+function *(U::UpperTridiagonal, x::AbstractVector)
+    T = promote_type(eltype(U), eltype(x)) # make a type that contains both the element type of U and x
+    b = zeros(T, size(U,1)) # returned vector
+    n = size(U)[1]
+    for k = 1:n-2
+    	b[k] = dot(U[k,k:k+2],x[k:k+2])
+    end
+    # the last two rows need a bit more care
+    b[n-1] = dot(U[n-1,n-1:n],x[n-1:n])
+    b[n] = U[n,n]*x[n]
+    return b
+end
+
+function \(U::UpperTridiagonal, b::AbstractVector)
+    T = promote_type(eltype(U), eltype(b)) # make a type that contains both the element type of U and b
+    x = zeros(T, size(U,2)) # returned vector
+    n = size(U)[1]
+    
+    if length(b) != n
+        error("The system is not compatible")
+    end
+    
+    for k = n:-1:1  # start with k=n, then k=n-1, ...
+        r = b[k]  # dummy variable
+        for j = k+1:min(k+3,n)
+            r -= U[k,j]*x[j]
+        end
+        x[k] = r/U[k,k]
+    end
+    x
+end
+```
+
+And here is an example of what we have implemented in action:
+
+```julia
+Abanded = UpperTridiagonal([1.1,2.2,3.3,4.4], [1.9,2.8,3.7], [1.5,2.4])
+Adense = Matrix(Abanded) # one of many easy ways to convert to dense storage
+
+Adense == Abanded
+```
+
+```julia
+x = [5.2,3/4,2/3,9.1415]
+Adense*x
+```
+
+```julia
+Abanded*x
+```
+
+```julia
+Adense\x
+```
+
+```julia
+Abanded\x
+```
+
+And just for fun, let's do a larger scale dense speed comparison
+```julia
+using BenchmarkTools
+n = 10000
+Abanded = UpperTridiagonal(rand(n),rand(n-1),rand(n-2))
+Adense = Matrix(Abanded) # one of many easy ways to convert to dense storage
+x = rand(n)
+
+@btime Adense*x;
+
+```
+```julia
+@btime Abanded*x;
+
+```
+```julia
+@btime Adense\x;
+
+```
+```julia
+@btime Abanded\x;
+
+```
