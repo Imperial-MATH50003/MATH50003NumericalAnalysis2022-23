@@ -189,8 +189,8 @@ sig = 2.0^(-52) * parse(Int, ret; base=2)
 # its bits.
 
 ## SOLUTION
-## sign is 1, exponent is 00001 and significand is all zeros
-reinterpret(Float16, 0b0000010000000000)
+## sign is + so sign bit is 0, exponent is 00000 and significand is all zeros apart from a 1:
+reinterpret(Float16, 0b0000000000000001) # == nextfloat(Float16(0))
 ## END
 
 # -----
