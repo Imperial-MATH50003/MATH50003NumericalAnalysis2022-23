@@ -43,7 +43,7 @@ address of the second entry is `k + sizeof(T)`.
 **Remark (advanced)** We can actually experiment with this
 (NEVER DO THIS IN PRACTICE!!), beginning with an 8-bit type:
 ```julia
-a = Int8[2 4 5]
+a = Int8[2, 4, 5]
 p = pointer(a) # pointer(a) returns memory address of the first entry, which is the displayed hex number
 # We can think of a pointer as simply a UInt64 alongside a Type to interpret what is stored
 ```
@@ -61,7 +61,7 @@ Base.unsafe_load(p) # loads data at `p+1`, which is second entry of the vector
 ```
 For other types we need to increment the address by the size of the type:
 ```julia
-a = [2.0 1.3 1.4]
+a = [2.0, 1.3, 1.4]
 p = pointer(a)
 Base.unsafe_load(p + 8) # sizeof(Float64) == 8
 ```
@@ -256,7 +256,7 @@ x = [10, 11, 12]
 Moreover, we can easily invert matrices. 
 Consider a simple 3×3 example, which can be solved with `\`:
 ```julia
-b = [5,6,7]
+b = [5, 6, 7]
 x = U \ b # Excercise: why does this return a float vector?
 ```
 Behind the seens, `\` is doing back-substitution: considering the last row, we have all

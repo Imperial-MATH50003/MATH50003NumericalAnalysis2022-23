@@ -131,20 +131,20 @@ None of these computations have errors since they are all exactly representable 
 
 **SOLUTION**
 
-Consider a normal $x = 2^{q-σ} (1.b_1… b_S)_2$.
+Consider a normal $x = ±2^{q-σ} (1.b_1… b_S)_2$.
 Provided $q > 1$  we have
 $$
-x ⊘ 2 = x/2 = 2^{q-σ-1} (1.b_1… b_S)_2
+x ⊘ 2 = x/2 = ±2^{q-σ-1} (1.b_1… b_S)_2
 $$
 However, if $q = 1$ we lose a bit as we shift:
 $$
-x ⊘ 2 = 2^{1-σ} (0.b_1… b_{S-1})_2
+x ⊘ 2 = ±2^{1-σ} (0.b_1… b_{S-1})_2
 $$
 and the property will be satisfy if $b_S = 1$.
-Similarily if we are sub-normal, $x = 2^{1-σ} (0.b_1… b_S)_2$ and
+Similarily if we are sub-normal, $x = ±2^{1-σ} (0.b_1… b_S)_2$ and
 we have
 $$
-x ⊘ 2 = 2^{1-σ} (0.0b_1… b_{S-1})_2
+x ⊘ 2 = ±2^{1-σ} (0.0b_1… b_{S-1})_2
 $$
 and the property will be satisfy if $b_S = 1$.
 (Or `NaN`.)

@@ -86,7 +86,7 @@ $$
 
 **Problem 2.2** Show if $x_1,…,x_n ∈ F$ then
 $$
-x_1 ⊗ ⋯ ⊗ x_n = x_1 ⋯ x_n (1 + θ_n)
+x_1 ⊗ ⋯ ⊗ x_n = x_1 ⋯ x_n (1 + θ_{n-1})
 $$
 where $|θ_n| ≤ E_{n,ϵ_{\rm m}/2}$, assuming $n ϵ_{\rm m} < 2$.
 You may assume all operations are within the normalised range.
@@ -105,11 +105,11 @@ where $|δ_k| ≤ ϵ_{\rm m}/2$. The result then follows from the previous resu
 $$
 x_1 ⊕ ⋯ ⊕ x_n = x_1 +  ⋯ + x_n + σ_n
 $$
-where, for $M = Σ_{k=1}^n |x_k|$, $|σ_n| ≤ M E_{n,ϵ_{\rm m}/2},$ assuming $n ϵ_{\rm m} < 2$.
+where, for $M = Σ_{k=1}^n |x_k|$, $|σ_n| ≤ M E_{n-1,ϵ_{\rm m}/2},$ assuming $n ϵ_{\rm m} < 2$.
 You may assume all operations are within the normalised range.
 Hint: use Problem 2.1 to first write 
 $$
-x_1 ⊕ ⋯ ⊕ x_n = ∑_{j=1}^n x_j (1 + θ_j).
+x_1 ⊕ ⋯ ⊕ x_n = x_1(1+θ_{n-1}) + ∑_{j=2}^n x_j (1 + θ_{n-j+1}).
 $$
 
 
@@ -119,17 +119,17 @@ Using Problem 2.1 we write:
 $$
 (⋯((x_1 + x_2)(1+δ_1) + x_3)(1+δ_2)⋯+x_n)(1+δ_{n-1})
 = x_1 ∏_{k=1}^{n-1} (1+δ_k) +  ∑_{j=2}^n x_j ∏_{k=j-1}^{n-1} (1+δ_j)
-= ∑_{j=1}^n x_j (1 + θ_j)
+= x_1(1+θ_{n-1}) + ∑_{j=2}^n x_j (1 + θ_{n-j+1})
 $$
-where $θ_1 = θ_2$ and for $j = 2,…,n$ we have
+where we have for $j = 2,…,n$
 $$
-|θ_j| ≤ E_{n-j+1,ϵ_{\rm m}/2} ≤ E_{n,ϵ_{\rm m}/2}.
+|θ_{n-j+1}| ≤ E_{n-j+1,ϵ_{\rm m}/2} ≤ E_{n-1,ϵ_{\rm m}/2}.
 $$
 Thus we have 
 $$
-∑_{j=1}^n x_j (1 + θ_j)= ∑_{j=1}^n x_j + \underbrace{∑_{j=1}^n x_j θ_j}_{σ_n}
+∑_{j=1}^n x_j (1 + θ_{n-j+1})= ∑_{j=1}^n x_j + \underbrace{∑_{j=1}^n x_j θ_{n-j+1}}_{σ_n}
 $$
-where $|σ_n| ≤ M E_{n,ϵ_{\rm m}/2}$.
+where $|σ_n| ≤ M E_{n-1,ϵ_{\rm m}/2}$.
 ∎
 
 
@@ -175,22 +175,22 @@ where
 $$
 |ε_n| ≤  \exp(|x|)  (2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2),
 $$
-assuming $n ϵ_{\rm m} < 2$. You may assume all operations are within the normalised range.
+assuming $n ϵ_{\rm m} < 1$. You may assume all operations are within the normalised range.
 Hint: combine Problem 2.2 and 2.3. 
 
 **SOLUTION**
 
 From Problem 2.2 we have
 $$
-x_k := ⨂_{j=1}^k (x ⊘ j) = ⨂_{j=1}^k (x/j)(1+δ_j) = (1+θ_k) {x^k \over k!}
+x_k := ⨂_{j=1}^k (x ⊘ j) = ⨂_{j=1}^k (x/j)(1+δ_j) = (1 + θ_{2k-1}) {x^k \over k!}
 $$
-where
+where 
 $$
-|θ_k| ≤ E_{k,ϵ_{\rm m}/2} ≤ E_{n,ϵ_{\rm m}/2}.
+|θ_{2k-1}| ≤ E_{2k-1,ϵ_{\rm m}/2} ≤ E_{2n,ϵ_{\rm m}/2} = 2E_{n,ϵ_{\rm m}}.
 $$
 Note that
 $$
-M := ∑_{k=0}^{n-1} |x_k| ≤ ∑_{k=0}^{n-1} (1+|θ_k|) {|x|^k  \over k!} ≤ \left(1 + E_{n,ϵ_{\rm m}/2}\right) \exp|x|.
+M := ∑_{k=0}^{n-1} |x_k| ≤ ∑_{k=0}^{n-1} (1+|θ_{2k-1}|) {|x|^k  \over k!} ≤ \left(1 + 2E_{n,ϵ_{\rm m}}\right) \exp|x|.
 $$
 Then from Problem 2.3 we have
 $$
