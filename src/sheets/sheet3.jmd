@@ -30,11 +30,11 @@ for $M = \sup_{0 ≤ t ≤ h} |f''(t)|$.
 -------
 
 
-**Problem 2.1** Use Taylor's theorem to derive an (absolute) error bound for central differences
+**Problem 2.1** For
 $$
-\left|f'(x) - {f(x + h) - f(x - h) \over 2h}\right|
+{f(x + h) - f(x - h) \over 2h} = f'(x) + δ_{x,h}^{\rm T},
 $$
-in terms of 
+bound the absolute error $|δ_{x,h}^{\rm T}|$ in terms of 
 $$
 M = \max_{y ∈ [x-h,x+h]}\left| f'''(y)\right|.
 $$
@@ -44,23 +44,23 @@ $$
 **Problem 2.2**
 Assume that
 $$f^{\rm FP}(x) = f(x) + δ_x^f$$
-where $|δ_x^f| \leq c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm CD}$ satisfying
+where $|δ_x^f| ≤ c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm CD}$ satisfying
 $$
 {f^{\rm FP}(x+h) ⊖ f^{\rm FP}(x-h) \over  2h} = f'(x) + δ_{x,h}^{\rm CD}
 $$
 find a bound on $|δ_{x,h}^{\rm CD}|$ in terms of $M$.
  You may assume all operations result in numbers
-in the normalised range and $h = 2^{-n}$.
+in the normalised range, $h = 2^{-n}$, $x ⊕ h  = x+ h$ and $x ⊖ h = x-h$.
 
 
 
 -----
 
-**Problem 3.1** Use Taylor's theorem to derive an (absolute) error bound on the second-order derivative approximation
+**Problem 3.1**  For the second-order derivative approximation
 $$
-\left|f''(x) - {f(x+h) - 2f(x) + f(x-h) \over h^2} \right|
+{f(x+h) - 2f(x) + f(x-h) \over h^2} = f''(x) + δ_{x,h}^{\rm T}
 $$
-in terms of 
+bound the absolute error $|δ_{x,h}^{\rm T}|$ in terms of 
 $$
 M = \max_{y∈[x-h,x+h]}\left|f'''(y)\right|.
 $$
@@ -69,19 +69,19 @@ $$
 
 **Problem 3.2** Assume that
 $$f^{\rm FP}(x) = f(x) + δ_x^f$$
-where $|δ_x^f| \leq c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm 2D}$ satisfying
+where $|δ_x^f| ≤ c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm 2D}$ satisfying
 $$
 (f^{\rm FP}(x+h) ⊖ 2f^{\rm FP}(x) ⊕ f^{\rm FP}(x-h)) / h = f''(x) + δ_{x,h}^{\rm 2D}
 $$
 find a bound on $|δ_{x,h}^{\rm 2D}|$ in terms of $M$ and $F = \sup_{x-h ≤ t ≤ x+h} |f(t)|$.
  You may assume all operations result in numbers
-in the normalised range and $h = 2^{-n}$.
+in the normalised range, $h = 2^{-n}$, $x ⊕ h  = x+ h$ and $x ⊖ h = x-h$.
 
 
 
 ------
 
-**Problem 4.1** 
+**Problem 4** 
 Show that dual numbers $𝔻$ are a _commutative ring_, that is, for all $a,b,c ∈ 𝔻$ the following are satisfied:
 1. _additive associativity_: $(a + b) + c = a + (b + c)$
 2. _additive commutativity_: $a + b = b + a$
@@ -94,20 +94,22 @@ Show that dual numbers $𝔻$ are a _commutative ring_, that is, for all $a,b,c 
 
 
 
-**Problem 4.2** A _field_ is a commutative ring such that $0 ≠ 1$ and all nonzero elements have a multiplicative inverse, i.e.,
-there exists $a^{-1}$ such that $a a^{-1} = 1$. Why isn't $𝔻$ a field?
 
-
- 
 -------
 
-**Problem 5** What is the correct definition of division on dual numbers, i.e.,
+**Problem 5.1** What is the correct definition of division on dual numbers, i.e.,
 $$
 (a + b ϵ )/(c + d ϵ ) = s + t ϵ
 $$
 for what choice of $s$ and $t$? 
 
 
+
+**Problem 5.2** A _field_ is a commutative ring such that $0 ≠ 1$ and all nonzero elements have a multiplicative inverse, i.e.,
+there exists $a^{-1}$ such that $a a^{-1} = 1$. Can we use Problem 5.1 to define $a^{-1} := 1/a$ to make $𝔻$ a field? Why or why not?
+
+
+ 
 
 ------
 **Problem 6** Use dual numbers to compute the derivative of the following functions at $x = 0.1$:

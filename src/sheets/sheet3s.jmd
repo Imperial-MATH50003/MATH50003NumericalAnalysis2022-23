@@ -43,11 +43,11 @@ The bound follows.
 -------
 
 
-**Problem 2.1** Use Taylor's theorem to derive an (absolute) error bound for central differences
+**Problem 2.1** For
 $$
-\left|f'(x) - {f(x + h) - f(x - h) \over 2h}\right|
+{f(x + h) - f(x - h) \over 2h} = f'(x) + δ_{x,h}^{\rm T},
 $$
-in terms of 
+bound the absolute error $|δ_{x,h}^{\rm T}|$ in terms of 
 $$
 M = \max_{y ∈ [x-h,x+h]}\left| f'''(y)\right|.
 $$
@@ -65,37 +65,37 @@ Subtracting the second expression from the first we obtain
 $$f(x+h)-f(x-h) = f'(x)(2h) + \frac{f'''(z_1)+f'''(z_2)}{6}h^3.$$
 Hence,
 
-$$ \frac{f(x+h)-f(x-h)}{2h} = f'(x)  + \underbrace{\frac{f'''(z_1)+f'''(z_2)}{12}h^2}_{δ_{\rm Taylor}}.$$
+$$ \frac{f(x+h)-f(x-h)}{2h} = f'(x)  + \underbrace{\frac{f'''(z_1)+f'''(z_2)}{12}h^2}_{δ_{x,h}^{\rm T}}.$$
 
 Thus, the error can be bounded by
-$$\left|δ_{\rm Taylor}\right| ≤ {M \over 6} h^2.$$
+$$\left|δ_{x,h}^{\rm T}\right| ≤ {M \over 6} h^2.$$
 
 **END**
 
 **Problem 2.2**
 Assume that
 $$f^{\rm FP}(x) = f(x) + δ_x^f$$
-where $|δ_x^f| \leq c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm CD}$ satisfying
+where $|δ_x^f| ≤ c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm CD}$ satisfying
 $$
 {f^{\rm FP}(x+h) ⊖ f^{\rm FP}(x-h) \over  2h} = f'(x) + δ_{x,h}^{\rm CD}
 $$
 find a bound on $|δ_{x,h}^{\rm CD}|$ in terms of $M$.
  You may assume all operations result in numbers
-in the normalised range and $h = 2^{-n}$.
+in the normalised range, $h = 2^{-n}$, $x ⊕ h  = x+ h$ and $x ⊖ h = x-h$.
 
 **SOLUTION**
 
 In floating point we have 
 $$
 \begin{align*}
-(f^{\rm FP}(x + 2h) ⊖ f^{\rm FP}(x-2h)) / (2h) &= {f(x + h) +  δ_{x+h} - f(x-h) - δ_{x-h} \over 2h} (1 + δ_1) \\
+{f^{\rm FP}(x + 2h) ⊖ f^{\rm FP}(x-2h) \over 2h} &= {f(x + h) +  δ_{x+h} - f(x-h) - δ_{x-h} \over 2h} (1 + δ_1) \\
 &= {f(x+h) - f(x-h) \over 2h} (1 + δ_1) + {δ_{x+h}- δ_{x-h} \over 2h} (1 + δ_1)
 \end{align*}
 $$
 Applying Taylor's theorem we get 
 $$
 (f^{\rm FP}(x + h) ⊖ f^{\rm FP}(x-h)) ⊘ (2h) = 
-f'(x) + \underbrace{f'(x) δ_1 + δ_{\rm Taylor} (1 + δ_1) + {δ_{x+h}- δ_{x-h} \over 2h} (1 + δ_1)}_{δ_{x,h}^{\rm CD}}
+f'(x) + \underbrace{f'(x) δ_1 + δ_{x,h}^{\rm T} (1 + δ_1) + {δ_{x+h}- δ_{x-h} \over 2h} (1 + δ_1)}_{δ_{x,h}^{\rm CD}}
 $$
 where
 $$
@@ -106,11 +106,11 @@ $$
 
 -----
 
-**Problem 3.1** Use Taylor's theorem to derive an (absolute) error bound on the second-order derivative approximation
+**Problem 3.1**  For the second-order derivative approximation
 $$
-\left|f''(x) - {f(x+h) - 2f(x) + f(x-h) \over h^2} \right|
+{f(x+h) - 2f(x) + f(x-h) \over h^2} = f''(x) + δ_{x,h}^{\rm T}
 $$
-in terms of 
+bound the absolute error $|δ_{x,h}^{\rm T}|$ in terms of 
 $$
 M = \max_{y∈[x-h,x+h]}\left|f'''(y)\right|.
 $$
@@ -131,7 +131,7 @@ $$f''(x) = \frac{f(x+h) - 2f(x) + f(x-h)}{h^2} + \frac{f'''(z_2) - f'''(z_1)}{6}
 
 Hence, the error is 
 $$
-\left|f''(x) - {f(x+h) - 2f(x) + f(x-h) \over h^2} \right| = \left|\frac{f'''(z_2) - f'''(z_1)}{6}h\right|≤ {Mh \over 3}.
+|δ_{x,h}^{\rm T}| = \left|f''(x) - {f(x+h) - 2f(x) + f(x-h) \over h^2} \right| = \left|\frac{f'''(z_2) - f'''(z_1)}{6}h\right|≤ {Mh \over 3}.
 $$
 
 
@@ -139,13 +139,13 @@ $$
 
 **Problem 3.2** Assume that
 $$f^{\rm FP}(x) = f(x) + δ_x^f$$
-where $|δ_x^f| \leq c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm 2D}$ satisfying
+where $|δ_x^f| ≤ c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm 2D}$ satisfying
 $$
 (f^{\rm FP}(x+h) ⊖ 2f^{\rm FP}(x) ⊕ f^{\rm FP}(x-h)) / h = f''(x) + δ_{x,h}^{\rm 2D}
 $$
 find a bound on $|δ_{x,h}^{\rm 2D}|$ in terms of $M$ and $F = \sup_{x-h ≤ t ≤ x+h} |f(t)|$.
  You may assume all operations result in numbers
-in the normalised range and $h = 2^{-n}$.
+in the normalised range, $h = 2^{-n}$, $x ⊕ h  = x+ h$ and $x ⊖ h = x-h$.
 
 **SOLUTION**
 
@@ -179,7 +179,7 @@ $$
 
 ------
 
-**Problem 4.1** 
+**Problem 4** 
 Show that dual numbers $𝔻$ are a _commutative ring_, that is, for all $a,b,c ∈ 𝔻$ the following are satisfied:
 1. _additive associativity_: $(a + b) + c = a + (b + c)$
 2. _additive commutativity_: $a + b = b + a$
@@ -228,26 +228,10 @@ $$
 
 **END**
 
-**Problem 4.2** A _field_ is a commutative ring such that $0 ≠ 1$ and all nonzero elements have a multiplicative inverse, i.e.,
-there exists $a^{-1}$ such that $a a^{-1} = 1$. Why isn't $𝔻$ a field?
 
-**SOLUTION**
-
-Fields require that all nonzero elements have a unique multiplicative inverse. However, this is not the case for dual numbers. To give an explicit counter example, we show that there is no dual number $z$ which is the inverse of $0+ϵ$, i.e. a dual number $z$ such that
-$$
-\frac{(0+ϵ)}{(z_r+z_d ϵ)} = 1 + 0 ϵ.
-$$
-By appropriate multiplication with the conjugate we show that
-$$
-\frac{(0+ϵ)(z_r-z_d ϵ)}{(z_r+z_d ϵ)(z_r-z_d ϵ)} = \frac{z_r ϵ}{z_r^2} = \frac{ϵ}{z_r}.
-$$
-This proves that no choice of real part $z_r$ can reach the multiplicative identity $1+0 ϵ$ when starting from the number $0+ϵ$. More general results for zero real part dual numbers can also be proved.
-
-**END**
- 
 -------
 
-**Problem 5** What is the correct definition of division on dual numbers, i.e.,
+**Problem 5.1** What is the correct definition of division on dual numbers, i.e.,
 $$
 (a + b ϵ )/(c + d ϵ ) = s + t ϵ
 $$
@@ -270,6 +254,24 @@ We now compute the derivatives of the three functions by evaluating for $x = 0.1
 
 
 **END**
+
+**Problem 5.2** A _field_ is a commutative ring such that $0 ≠ 1$ and all nonzero elements have a multiplicative inverse, i.e.,
+there exists $a^{-1}$ such that $a a^{-1} = 1$. Can we use Problem 5.1 to define $a^{-1} := 1/a$ to make $𝔻$ a field? Why or why not?
+
+**SOLUTION**
+
+Fields require that all nonzero elements have a unique multiplicative inverse. However, this is not the case for dual numbers. To give an explicit counter example, we show that there is no dual number $z$ which is the inverse of $0+ϵ$, i.e. a dual number $z$ such that
+$$
+\frac{(0+ϵ)}{(z_r+z_d ϵ)} = 1 + 0 ϵ.
+$$
+By appropriate multiplication with the conjugate we show that
+$$
+\frac{(0+ϵ)(z_r-z_d ϵ)}{(z_r+z_d ϵ)(z_r-z_d ϵ)} = \frac{z_r ϵ}{z_r^2} = \frac{ϵ}{z_r}.
+$$
+This proves that no choice of real part $z_r$ can reach the multiplicative identity $1+0 ϵ$ when starting from the number $0+ϵ$. More general results for zero real part dual numbers can also be proved.
+
+**END**
+ 
 
 ------
 **Problem 6** Use dual numbers to compute the derivative of the following functions at $x = 0.1$:
