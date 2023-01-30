@@ -1,0 +1,1 @@
+**Problem** True or false: `mul_rows(A, x)` and `mul_cols(A, x)` will always return the same result if the input is floating point?
