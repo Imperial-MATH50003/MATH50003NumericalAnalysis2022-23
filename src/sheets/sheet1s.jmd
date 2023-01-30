@@ -131,20 +131,20 @@ None of these computations have errors since they are all exactly representable 
 
 **SOLUTION**
 
-Consider a normal $x = 2^{q-σ} (1.b_1… b_S)_2$.
+Consider a normal $x = ±2^{q-σ} (1.b_1… b_S)_2$.
 Provided $q > 1$  we have
 $$
-x ⊘ 2 = x/2 = 2^{q-σ-1} (1.b_1… b_S)_2
+x ⊘ 2 = x/2 = ±2^{q-σ-1} (1.b_1… b_S)_2
 $$
 However, if $q = 1$ we lose a bit as we shift:
 $$
-x ⊘ 2 = 2^{1-σ} (0.b_1… b_{S-1})_2
+x ⊘ 2 = ±2^{1-σ} (0.b_1… b_{S-1})_2
 $$
 and the property will be satisfy if $b_S = 1$.
-Similarily if we are sub-normal, $x = 2^{1-σ} (0.b_1… b_S)_2$ and
+Similarily if we are sub-normal, $x = ±2^{1-σ} (0.b_1… b_S)_2$ and
 we have
 $$
-x ⊘ 2 = 2^{1-σ} (0.0b_1… b_{S-1})_2
+x ⊘ 2 = ±2^{1-σ} (0.0b_1… b_{S-1})_2
 $$
 and the property will be satisfy if $b_S = 1$.
 (Or `NaN`.)
@@ -152,27 +152,99 @@ and the property will be satisfy if $b_S = 1$.
 Here are two examples:
 ```julia
 # normal number with q = 1 and last bit 1
-x = reinterpret(Float16, parse(UInt16, "0000010000000011"; base=2))
-x/2 == Float64(x)/2 # Float64 can exactly represent x/2
-```
-```julia
+x = reinterpret(Float16, 0b0000010000000011)
+@test x/2 ≠ Float64(x)/2 # Float64 can exactly represent x/2
+# normal number with q = 1 and last bit 0
+x = reinterpret(Float16, 0b0000010000000010)
+@test x/2 == Float64(x)/2
 # sub-normal number with q = 1 and last bit 1
-x = reinterpret(Float16, parse(UInt16, "0000000000000011"; base=2))
-x/2 == Float64(x)/2 # Float64 can exactly represent x/2
+x = reinterpret(Float16, 0b0000000000000011)
+@test x/2 ≠ Float64(x)/2 # Float64 can exactly represent x/2
+# sub-normal number with q = 1 and last bit 0
+x = reinterpret(Float16, 0b0000000000000010)
+@test x/2 == Float64(x)/2 # Float64 can exactly represent x/2
+
 ```
 
-For the second part, Similar to the next problem,
-we see that the property holds true if $|x| < 2^{S+2}-1$, 
-as otherwise:
+For the second part, first assume $x > 0$ and  write
+$$
+x = 2^j (1.b_1…b_S)_2
+$$
+Lets begin with the case $j = 0$. We then get:
+$$
+2 ⊕ x = {\rm fl}(2(1.1b_1…b_S)_2) = 2+x
+$$
+if and only if $b_S = 0$:
 ```julia
-x = Float16(2)^(12)-1 # bits 0110110000000000
-x+2 == x
+x =reinterpret(Float16, 0b0011110000000010) # b_S = 0
+@test x+2 == Float64(x)+2
+x =reinterpret(Float16, 0b0011110000000011) # b_S = 1
+@test x+2 ≠ Float64(x)+2
 ```
-We see this is sharp:
+If $j < 0$ then we have
+$$
+2 ⊗ x = {\rm fl}(2(1.\underbrace{0…0}_{-j\hbox{  zeros}}1b_1…b_S)_2)
+$$
+hence we need $b_{S-j} = ⋯ = b_S =0$:
 ```julia
-y = prevfloat(x)
-y+2 == y
+# this has j = -1
+x =reinterpret(Float16, 0b0011100000000100) # b_S = B_{S-1} = 0
+@test x+2 == Float64(x)+2
+x =reinterpret(Float16, 0b0011100000000110) # b_S = 0, B_{S-1} ≠ 0
+@test x+2 ≠ Float64(x)+2
 ```
+
+If $j = 1$ then $b_S = 0$ iff $x ⊕ 2 = x$ as we are incrementing the exponent and
+shifting the significand.
+If $1 < j < S+2$ then $b_{k} = 0$ for some $1 ≤ k ≤ j-1$ implies that $x ⊕ 2 = x$.
+Otherwise if $b_1 = ⋯ = b_{j-1} = 1$ then $b_S = 0$ iff $x ⊕ 2 = x$ 
+as we are incrementing the exponent and
+shifting the significand.
+If $j ≥ S+2$ then 
+$$
+x + 2 = 2^j (1.b_1…b_S\underbrace{0…0}_{j-S-2\hbox{ times}} 10)_2
+$$ 
+and when rounded the trailing $10$ will be removed.
+(Of course `Inf + 2 == Inf` and `NaN + 2 == NaN` as well.)
+
+
+Now consider $x < 0$ and it helps to write $2 = (1.111111…)_2$.
+If $j = 0$ define $b̃_k = 1 - b_k$ (that is, $1$ if $b_k = 0$ and $0$ otherwise.)
+Then we have
+$$
+2 + x = (0.b̃_1…b̃_S1111…)_2 = (0.b̃_1…b̃_S)_2 + 2^{-S} ∈ F
+$$
+as we have at most $S$ non-zero bits after the first decimal point. 
+If $j = -1$ we have
+$$
+2 + x = 1.0b̃_1…b̃_S1111… = (1.0b̃_1…b̃_S)_2 + 2^{-1-S}
+$$
+and $b̃_S = 1$ (i.e. $b_S = 0$) iff $2+x = 2 ⊕ x$ (since then the the last bit is zero).
+Similarly, if $ j < -1$ we have
+$$
+2 + x = 1.\underbrace{1…1}_{-j-1\hbox{  times}}0b̃_1…b̃_S1111… = (1.\underbrace{1…1}_{-j-1\hbox{  times}}0b̃_1…b̃_S)_2 + 2^{-j-S}
+$$
+and $b̃_{S+j+1} = ⋯ = b̃_S = 1$ (i.e. $b_{S+j+1} = ⋯ = b_S = 0$) iff $2+x = 2 ⊕ x$.
+For $j = 1$ we have
+$$
+2 ⊕ x = -{\rm fl}((1b_1.b_2…b_S)_2 - (10)_2) = -{\rm fl}(b_1.b_2…b_S)_2 = -b_1.b_2…b_S = 2 + x.
+$$
+For $j = 2$ and $b_1 = 1$ we have
+$$
+2 ⊕ x = -{\rm fl}((11b_2.b_3…b_S)_2 - (10)_2) = (10b_2.b_3…b_S)_2 = 2 + x
+$$
+where if $b_1 = 0$ we have
+$$
+2 ⊕ x = -{\rm fl}((10b_2.b_3…b_S)_2 - (10)_2) = (1b_2.b_3…b_S)_2 = 2 + x.
+$$
+By similar arguments, whenever $2 ≤ j ≤ S + 1$ we have $2 ⊕ x = 2 + x$. 
+If $j = S + 2$ the only case where $2 ⊕ x = 2+x$ is if $x = 2^{S+2}$:
+$$
+2 ⊕ x = -{\rm fl}((1\underbrace{0…0}_{S\hbox{  zeros}}00)_2 - (10)_2) = -{\rm fl}((\underbrace{1…1}_{S-1\hbox{  ones}}10)_2) = 2^{S+2} (1.\underbrace{1…1}_{S\hbox{  ones}})_2 = 2 + x.
+$$
+If $j ≥ S+3$  we then have $2 ⊕ x ≠ 2 + x$.
+
+Finally, if $x = 0$ then $x ⊕ 2 = {\rm fl}(2) = 2$.
 
 **END**
 
@@ -347,5 +419,4 @@ $$
 $$
 This is quite pessimistic but still captures that we are on the order of $ϵ_{\rm m}$.
 
-## 
-END
+**END**

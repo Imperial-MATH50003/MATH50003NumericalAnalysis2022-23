@@ -24,6 +24,8 @@ facilitate fast and accurate computation of derivatives.
 
 **II: Computing with matrices**
 
+1. [Structured Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.1.StructuredMatrices.ipynb): we discuss types of structured matrices (dense, triangular, and banded).
+
 **III: Computing with functions**
 
 ## Assessment
@@ -36,23 +38,23 @@ facilitate fast and accurate computation of derivatives.
 
 ## Problem sheets (pen-and-paper)
 
-1. [Integers and Reals](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1.ipynb) ([Solutions](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1s.ipynb))
-1. [Bounding Errors](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet2.ipynb)
+1. [Integers and Reals](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1s.ipynb))
+1. [Bounding Errors](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet2.ipynb)
 
 
 ## Labs (Julia-based)
 
-1. [Introduction to Julia](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab1.jl)) ([Solutions](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1s.ipynb))
-2. [Interval Arithmetic](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab2.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab2.jl))
-2. [Divided Differences and Dual Numbers](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab3.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab3.jl))
+1. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab1.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1s.ipynb))
+2. [Interval Arithmetic](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab2.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab2.jl))
+2. [Divided Differences and Dual Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab3.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab3.jl))
 
 
 ## Lecture material
 
-1. Integers: [Notebook](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture1.ipynb)
-2. Floating Point: [Notebook](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture2.ipynb)
-3. Arithmetic: [Notebook](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture3.ipynb)
-4. Bounding Errors: [Notebook](https://nbviewer.org/github/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture4.ipynb)
+1. Integers: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture1.ipynb)
+2. Floating Point: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture2.ipynb)
+3. Arithmetic: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture3.ipynb)
+4. Bounding Errors: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture4.ipynb)
 
 ## Reading List
 

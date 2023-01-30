@@ -44,7 +44,7 @@ Hint: use induction.
 
 **Problem 2.2** Show if $x_1,…,x_n ∈ F$ then
 $$
-x_1 ⊗ ⋯ ⊗ x_n = x_1 ⋯ x_n (1 + θ_n)
+x_1 ⊗ ⋯ ⊗ x_n = x_1 ⋯ x_n (1 + θ_{n-1})
 $$
 where $|θ_n| ≤ E_{n,ϵ_{\rm m}/2}$, assuming $n ϵ_{\rm m} < 2$.
 You may assume all operations are within the normalised range.
@@ -55,11 +55,11 @@ You may assume all operations are within the normalised range.
 $$
 x_1 ⊕ ⋯ ⊕ x_n = x_1 +  ⋯ + x_n + σ_n
 $$
-where, for $M = Σ_{k=1}^n |x_k|$, $|σ_n| ≤ M E_{n,ϵ_{\rm m}/2},$ assuming $n ϵ_{\rm m} < 2$.
+where, for $M = Σ_{k=1}^n |x_k|$, $|σ_n| ≤ M E_{n-1,ϵ_{\rm m}/2},$ assuming $n ϵ_{\rm m} < 2$.
 You may assume all operations are within the normalised range.
 Hint: use Problem 2.1 to first write 
 $$
-x_1 ⊕ ⋯ ⊕ x_n = ∑_{j=1}^n x_j (1 + θ_j).
+x_1 ⊕ ⋯ ⊕ x_n = x_1(1+θ_{n-1}) + ∑_{j=2}^n x_j (1 + θ_{n-j+1}).
 $$
 
 
@@ -98,8 +98,8 @@ where
 $$
 |ε_n| ≤  \exp(|x|)  (2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2),
 $$
-assuming $n ϵ_{\rm m} < 2$. You may assume all operations are within the normalised range.
-Hint: combine Problem 2.2 and 2.3. 
+assuming $n ϵ_{\rm m} < 1$. You may assume all operations are within the normalised range.
+Hint: combine Problem 2.2 and 2.3 and note that $E_{k,ϵ_{\rm m}/2} ≤ E_{j,ϵ_{\rm m}/2}$ when $k ≤ j$.
 
 
 
