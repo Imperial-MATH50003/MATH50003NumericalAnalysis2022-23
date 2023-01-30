@@ -34,6 +34,9 @@ notebook("src/sheets/sheet1s.jmd"; pkwds...)
 write("src/sheets/sheet2.jmd", replace(read("src/sheets/sheet2s.jmd", String), r"\*\*SOLUTION\*\*(.*?)\*\*END\*\*"s => ""))
 notebook("src/sheets/sheet2.jmd"; pkwds...)
 notebook("src/sheets/sheet2s.jmd"; pkwds...)
+write("src/sheets/sheet3.jmd", replace(read("src/sheets/sheet3s.jmd", String), r"\*\*SOLUTION\*\*(.*?)\*\*END\*\*"s => ""))
+notebook("src/sheets/sheet3.jmd"; pkwds...)
+notebook("src/sheets/sheet3s.jmd"; pkwds...)
 
 #####
 # labs

@@ -1,0 +1,119 @@
+# MATH50003 Numerical Analysis (2022–23)
+# Problem Sheet 3
+
+This problem sheet explores the error in using divided differences and using dual numbers.
+
+Please complete the problems using pen-and-paper, though some can be verified using Julia.
+
+-----
+**Problem 1** Suppose our floating point approximation $f^{\rm FP} : F → F$  has _relative accuracy_:
+$$
+f^{\rm FP}(x) = f(x) (1 + δ_x^{\rm r})
+$$
+where
+$$
+|δ_x^{\rm r}| ≤ c ϵ_{\rm m}.
+$$
+Suppose further that $f(0) = f^{\rm FP}(0) = 0$ and assume that
+$f'(0) ≠ 0$. Show that divided differences achieves relative accuracy:
+$$
+{f^{\rm FP}(h) \over h} = f'(0) (1 + ε_h)
+$$
+where
+$$
+|ε_h| ≤ {M \over 2 f'(0)} h (1 + c ϵ_{\rm m} )  + c ϵ_{\rm m} 
+$$
+for $M = \sup_{0 ≤ t ≤ h} |f''(t)|$.
+
+
+
+-------
+
+
+**Problem 2.1** For
+$$
+{f(x + h) - f(x - h) \over 2h} = f'(x) + δ_{x,h}^{\rm T},
+$$
+bound the absolute error $|δ_{x,h}^{\rm T}|$ in terms of 
+$$
+M = \max_{y ∈ [x-h,x+h]}\left| f'''(y)\right|.
+$$
+
+
+
+**Problem 2.2**
+Assume that
+$$f^{\rm FP}(x) = f(x) + δ_x^f$$
+where $|δ_x^f| ≤ c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm CD}$ satisfying
+$$
+{f^{\rm FP}(x+h) ⊖ f^{\rm FP}(x-h) \over  2h} = f'(x) + δ_{x,h}^{\rm CD}
+$$
+find a bound on $|δ_{x,h}^{\rm CD}|$ in terms of $M$.
+ You may assume all operations result in numbers
+in the normalised range, $h = 2^{-n}$, $x ⊕ h  = x+ h$ and $x ⊖ h = x-h$.
+
+
+
+-----
+
+**Problem 3.1**  For the second-order derivative approximation
+$$
+{f(x+h) - 2f(x) + f(x-h) \over h^2} = f''(x) + δ_{x,h}^{\rm T}
+$$
+bound the absolute error $|δ_{x,h}^{\rm T}|$ in terms of 
+$$
+M = \max_{y∈[x-h,x+h]}\left|f'''(y)\right|.
+$$
+
+
+
+**Problem 3.2** Assume that
+$$f^{\rm FP}(x) = f(x) + δ_x^f$$
+where $|δ_x^f| ≤ c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm 2D}$ satisfying
+$$
+(f^{\rm FP}(x+h) ⊖ 2f^{\rm FP}(x) ⊕ f^{\rm FP}(x-h)) / h = f''(x) + δ_{x,h}^{\rm 2D}
+$$
+find a bound on $|δ_{x,h}^{\rm 2D}|$ in terms of $M$ and $F = \sup_{x-h ≤ t ≤ x+h} |f(t)|$.
+ You may assume all operations result in numbers
+in the normalised range, $h = 2^{-n}$, $x ⊕ h  = x+ h$ and $x ⊖ h = x-h$.
+
+
+
+------
+
+**Problem 4** 
+Show that dual numbers $𝔻$ are a _commutative ring_, that is, for all $a,b,c ∈ 𝔻$ the following are satisfied:
+1. _additive associativity_: $(a + b) + c = a + (b + c)$
+2. _additive commutativity_: $a + b = b + a$
+3. _additive identity_: There exists $0 ∈ 𝔻$ such that $a + 0 = a$.
+4. _additive inverse_: There exists $-a$ such that $(-a) + a = 0$.
+5. _multiplicative associativity_: $(ab)c = a(bc)$
+6. _multiplictive commutativity_: $ab = ba$
+7. _multiplictive identity_: There exists $1 ∈ 𝔻$ such that $1a= a$.
+8. _distributive_: $a(b+c) = ab + ac$
+
+
+
+
+-------
+
+**Problem 5.1** What is the correct definition of division on dual numbers, i.e.,
+$$
+(a + b ϵ )/(c + d ϵ ) = s + t ϵ
+$$
+for what choice of $s$ and $t$? 
+
+
+
+**Problem 5.2** A _field_ is a commutative ring such that $0 ≠ 1$ and all nonzero elements have a multiplicative inverse, i.e.,
+there exists $a^{-1}$ such that $a a^{-1} = 1$. Can we use Problem 5.1 to define $a^{-1} := 1/a$ to make $𝔻$ a field? Why or why not?
+
+
+ 
+
+------
+**Problem 6** Use dual numbers to compute the derivative of the following functions at $x = 0.1$:
+$$
+\exp(\exp x \cos x + \sin x), \prod_{k=1}^3 \left({x \over k}-1\right),\hbox{ and } f^{\rm s}_2(x) = {1 + {x - 1 \over 2 + {x-1 \over 2}}}
+$$
+
