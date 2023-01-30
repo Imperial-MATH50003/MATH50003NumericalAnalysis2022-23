@@ -173,10 +173,10 @@ $$
 $$
 where
 $$
-|ε_n| ≤  \exp(|x|)  (2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2),
+|ε_n| ≤  \exp(|x|)  (2E_{2n,ϵ_{\rm m}/2} + E_{2n,ϵ_{\rm m}/2}^2),
 $$
 assuming $n ϵ_{\rm m} < 1$. You may assume all operations are within the normalised range.
-Hint: combine Problem 2.2 and 2.3. 
+Hint: combine Problem 2.2 and 2.3 and note that $E_{k,ϵ_{\rm m}/2} ≤ E_{j,ϵ_{\rm m}/2}$ when $k ≤ j$.
 
 **SOLUTION**
 
@@ -186,23 +186,23 @@ x_k := ⨂_{j=1}^k (x ⊘ j) = ⨂_{j=1}^k (x/j)(1+δ_j) = (1 + θ_{2k-1}) {x^k 
 $$
 where 
 $$
-|θ_{2k-1}| ≤ E_{2k-1,ϵ_{\rm m}/2} ≤ E_{2n,ϵ_{\rm m}/2} = 2E_{n,ϵ_{\rm m}}.
+|θ_{2k-1}| ≤ E_{2k-1,ϵ_{\rm m}/2} ≤ E_{2n,ϵ_{\rm m}/2}.
 $$
 Note that
 $$
-M := ∑_{k=0}^{n-1} |x_k| ≤ ∑_{k=0}^{n-1} (1+|θ_{2k-1}|) {|x|^k  \over k!} ≤ \left(1 + 2E_{n,ϵ_{\rm m}}\right) \exp|x|.
+M := ∑_{k=0}^{n-1} |x_k| ≤ ∑_{k=0}^{n-1} (1+|θ_{2k-1}|) {|x|^k  \over k!} ≤ (1 + E_{2n,ϵ_{\rm m}/2}) \exp|x|.
 $$
 Then from Problem 2.3 we have
 $$
-⊕_{k=0}^{n-1} x_k = ∑_{k=1}^n x_k + σ_n = ∑_{k=0}^{n-1} {x^k \over k!} +\underbrace{∑_{k=0}^{n-1} θ_k {x^k \over k!} + σ_n}_{ε_n}
+⊕_{k=0}^{n-1} x_k = ∑_{k=0}^{n-1} x_k + σ_n = ∑_{k=0}^{n-1} {x^k \over k!} +\underbrace{∑_{k=0}^{n-1} θ_{2k-1} {x^k \over k!} + σ_n}_{ε_n}
 $$
 for
 $$
-|σ_n|  ≤ (E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2)  \exp|x|.
+|σ_n|  ≤ M E_{n-1,ϵ_{\rm m}/2} ≤ (E_{2n,ϵ_{\rm m}/2} + E_{2n,ϵ_{\rm m}/2}^2)  \exp|x|.
 $$
 Thus
 $$
-|ε_n|  ≤ (2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2)  \exp|x|
+|ε_n|  ≤ (E_{2n,ϵ_{\rm m}/2}^2 + 2E_{2n,ϵ_{\rm m}/2})  \exp|x|
 $$
 
 **END**
