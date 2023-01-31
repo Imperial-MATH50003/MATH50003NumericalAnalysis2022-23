@@ -237,14 +237,14 @@ the number of operations by skipping over the entries we know are zero:
 **Algorithm 3 (upper-triangular matrix-vector multiplication by columns)**
 ```julia
 function mul_cols(U::UpperTriangular, x)
-    m,n = size(U)
+    n = size(U,1)
     # promote_type type finds a type that is compatible with both types, eltype gives the type of the elements of a vector / matrix
     T = promote_type(eltype(x),eltype(U))
-    c = zeros(T, m) # the returned vector, begins of all zeros
+    b = zeros(T, n) # the returned vector, begins of all zeros
     for j = 1:n, k = 1:j # k = 1:j instead of 1:m since we know U[k,j] = 0 if k > j.
-        c[k] += U[k, j] * x[j]
+        b[k] += U[k, j] * x[j]
     end
-    c
+    b
 end
 
 x = [10, 11, 12]
