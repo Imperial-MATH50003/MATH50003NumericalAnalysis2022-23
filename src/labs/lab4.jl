@@ -22,121 +22,26 @@ import Base: getindex, setindex!, size, *, \
 # **Problem 1.1** Create a vector of length 5 whose entries are `Int` which is
 # zero in all entries. Hint: use `zeros`, `fill`, or a comprehension.
 
-## SOLUTION
-## Here are 3 solutions:
-## 1. `zeros`
 
-zeros(Int, 5)
-
-## 2. `fill`
-
-fill(0, 5)
-
-## 3. Comprehension
-
-[0 for k=1:5]
-
-
-## END
 
 # **Problem 1.2** Create a 5×6 matrix whose entries are `Int` which is
 # one in all entries. Hint: use a for-loop, `ones`, `fill`, or a comprehension.
 
-## SOLUTION
 
-## 1. For-loop:
-
-ret = zeros(Int, 5, 6)
-for k=1:5, j=1:6
-    ret[k,j] = 1
-end
-ret
-
-## 2. Ones:
-
-ones(Int, 5, 6)
-
-## 3. Fill:
-
-fill(1, 5, 6)
-
-## 4. Comprehension:
-
-[1 for k=1:5, j=1:6]
-
-
-## END
 
 # **Problem 1.3** Create a 1 × 5 `Matrix{Int}` with entries `A[k,j] = j`. Hint: use a for-loop or a comprehension.
 
 
-## SOLUTION
 
-## 1. For-loop
-
-A = zeros(Int, 1, 5)
-for j = 1:5
-    A[1,j] = j
-end
-
-## 2. Comprehension
-
-[j for k=1:1, j=1:5]
-
-## 3. convert transpose:
-
-## Note: (1:5)' is a "row-vector" which behaves differently than a matrix
-Matrix((1:5)')
-
-
-## END
 
 # **Problem 1.4** Create a vector of length 5 whose entries are `Float64`
 # approximations of `exp(-k)`. Hint: one use a for-loop or broadcasting `f.(x)` notation.
 
-## SOLUTION
 
-## 1. For-loop
-v = zeros(5) # defaults to Float64
-for k = 1:5
-    v[k] = exp(-k)
-end
-
-## 2. Broadcast:
-exp.(-(1:5))
-
-## 3. Explicit broadcsat:
-broadcast(k -> exp(-k), 1:5)
-
-## 4. Comprehension:
-[exp(-k) for k=1:5]
-
-
-## END
 
 # **Problem 1.5** Create a 5 × 6 matrix `A` whose entries `A[k,j] == cos(k+j)`.
 
-## SOLUTION
 
-#  1. For-loop:
-
-A = zeros(5,6)
-for k = 1:5, j = 1:6
-    A[k,j] = cos(k+j)
-end
-A
-
-# 2. Broadcasting:
-
-k = 1:5
-j = 1:6
-cos.(k .+ j')
-
-# 3. Broadcasting (explicit):
-
-broadcast((k,j) -> cos(k+j), 1:5, (1:6)')
-
-## END
 
 
 
@@ -147,45 +52,7 @@ broadcast((k,j) -> cos(k+j), 1:5, (1:6)')
 # implemented as `mul_cols(A, x)` from the lecture notes
 # by finding a `Float64` example  where the bits do not match.
 
-## SOLUTION
 
-# First we have to define `mul_cols(A, x)` as in the lecture notes:
-
-function mul_cols(A, x)
-    m,n = size(A)
-    c = zeros(eltype(x), m) # eltype is the type of the elements of a vector/matrix
-    for j = 1:n, k = 1:m
-        c[k] += A[k, j] * x[j]
-    end
-    c
-end
-
-## Then we can easily find examples, in fact we can write a function that searches for examples:
-
-using ColorBitstring
-
-function findblasmuldifference(n, l)
-	for j = 1:n
-		A = randn(l,l)
-		x = rand(l)
-		if A*x != mul_cols(A,x) 
-			return (A,x)
-		end
-	end
-end
-
-n = 100 # number of attempts
-l = 10 # size of objects
-A,x = findblasmuldifference(n,l) # find a difference
-
-println("Bits of obtained A*x")
-printlnbits.(A*x);
-println("Bits of obtained mul_cols(A,x)")
-printlnbits.(mul_cols(A,x));
-println("Difference vector between the two solutions:")
-println(A*x-mul_cols(A,x))
-
-## END
 
 # ## 3. Triangular Matrices
 
@@ -202,18 +69,14 @@ function mul_cols(L::LowerTriangular, x)
     b = zeros(T,n) # the returned vector, begins of all zeros
 
     ## TODO: populate b so that L*x == b
-    ## SOLUTION
-    for j = 1:n, k = j:n
-        b[k] += L[k, j] * x[j]
-    end
-    ## END
+    
 
     b
 end
 
 L = LowerTriangular(randn(5,5))
 x = randn(5)
-@test L*x == mul_cols(L, x)
+@test_broken L*x == mul_cols(L, x)
 
 
 # **Problem 3.2** Complete the following function for solving linear systems with
@@ -229,22 +92,14 @@ function ldiv(L::LowerTriangular, b)
         
     x = zeros(n)  # the solution vector
     ## TODO: populate x using forward-substitution so that L*x ≈ b
-    ## SOLUTION
-    for k = 1:n  # start with k = 1
-        r = b[k]  # dummy variable
-        for j = 1:k-1
-            r -= L[k,j]*x[j]
-        end
-        x[k] = r/L[k,k]
-    end
-    ## END
+    
     x
 end
 
 
 L = LowerTriangular(randn(5,5))
 b = randn(5)
-@test L\b ≈ ldiv(L, b)
+@test_broken L\b ≈ ldiv(L, b)
 
 
 # ## 4. Banded matrices
@@ -265,17 +120,7 @@ size(U::UpperTridiagonal) = (length(U.d),length(U.d))
 function getindex(U::UpperTridiagonal, k::Int, j::Int)
     d,du,du2 = U.d,U.du,U.du2
     ## TODO: return U[k,j]
-    ## SOLUTION
-    if j == k+2
-    	return U.du2[k]    
-    elseif j == k+1
-    	return U.du[k]
-    elseif j == k
-    	return U.d[k]
-    else # off band entries are zero
-    	return zero(eltype(U))
-    end
-    ## END
+    
 end
 
 ## setindex!(U, v, k, j) gets called when we write (U[k,j] = v).
@@ -286,20 +131,12 @@ function setindex!(U::UpperTridiagonal, v, k::Int, j::Int)
     end
 
     ## TODO: modify d,du,du2 so that U[k,j] == v
-    ## SOLUTION
-    if j == k+2
-    	du2[k] = v  
-    elseif j == k+1
-    	du[k] = v
-    elseif j == k
-    	d[k] = v
-    end
-    ## END
+    
     U # by convention we return the matrix
 end
 
 U = UpperTridiagonal([1,2,3,4,5], [1,2,3,4], [1,2,3])
-@test U == [1 1 1 0 0;
+@test_broken U == [1 1 1 0 0;
             0 2 2 2 0;
             0 0 3 3 3;
             0 0 0 4 4;
@@ -316,11 +153,7 @@ function *(U::UpperTridiagonal, x::AbstractVector)
     T = promote_type(eltype(x),eltype(U))
     b = zeros(T, n) # the returned vector, begins of all zeros
     ## TODO: populate b so that U*x == b (up to rounding)
-    ## SOLUTION
-    for j = 1:n, k = max(j-2,1):j
-        b[k] += U[k, j] * x[j]
-    end
-    ## END
+    
     b
 end
 
@@ -334,16 +167,7 @@ function \(U::UpperTridiagonal, b::AbstractVector)
         
     x = zeros(T, n)  # the solution vector
     ## TODO: populate x so that U*x ≈ b
-    ## SOLUTION
-    for k = n:-1:1  # start with k=n, then k=n-1, ...
-        r = b[k]  # dummy variable
-        for j = k+1:min(n, k+2)
-            r -= U[k,j]*x[j] # equivalent to r = r - U[k,j]*x[j]
-        end
-        ## after this for loop, r = b[k] - ∑_{j=k+1}^n U[k,j]x[j]  
-        x[k] = r/U[k,k]
-    end
-    ## END
+    
     x
 end
 
@@ -352,5 +176,5 @@ U = UpperTridiagonal(ones(n), fill(0.5,n-1), fill(0.1,n-2))
 x = ones(n)
 b = [fill(1.6,n-2); 1.5; 1] # exact result
 ## note following should take much less than a second
-@test U*x == b
-@test U\b == x
+@test_broken U*x == b
+@test_broken U\b == x
