@@ -1,4 +1,4 @@
-# # MATH50003 (2022–23)
+# # MATH50003 Numerical Analysis (2022–23)
 # # Lab 3: Divided differences and dual numbers
 #
 # This lab explores different discretisations for first and higher derivatives.

@@ -1,20 +1,38 @@
+# # MATH50003 Numerical Analysis (2022–23)
+# # Lab 4: Structured Matrices
 
-# ## 1. Array creation and broadcasting
+# This lab explores the basics of arrays (matrices and vectors)
+# in Julia. We also investigate implementation of triangular solves,
+# supporting a matrix with two super-diagonals.
+
+# Note in programming there are often different ways to do the same thing.
+# so some of the hints suggest multiple ways to solve the same problem.
+# Remember you can use `?` to discover the functions mentioned in the hints.
+
+
+using LinearAlgebra, Test
+
+## We will override these functions below
+import Base: getindex, setindex!, size, *, \
+
+
+
+# ## 1. Array creation
 
 # **Problem 1.1** Create a vector of length 5 whose entries are `Int` which is
-# zero in all entries. (3 solutions: using `zeros`, `fill`, or a comprehension.)
+# zero in all entries. Hint: use `zeros`, `fill`, or a comprehension.
 
 ## SOLUTION
-# Here are 3 solutions:
-# 1. `zeros`
+## Here are 3 solutions:
+## 1. `zeros`
 
 zeros(Int, 5)
 
-# 2. `fill`
+## 2. `fill`
 
 fill(0, 5)
 
-# 3. Comprehension
+## 3. Comprehension
 
 [0 for k=1:5]
 
@@ -22,11 +40,11 @@ fill(0, 5)
 ## END
 
 # **Problem 1.2** Create a 5×6 matrix whose entries are `Int` which is
-# one in all entries. (4 solutions: using a for-loop, `ones``, `fill`, or a comprehension.) 
+# one in all entries. Hint: use a for-loop, `ones`, `fill`, or a comprehension.
 
 ## SOLUTION
 
-# 1. For-loop:
+## 1. For-loop:
 
 ret = zeros(Int, 5, 6)
 for k=1:5, j=1:6
@@ -34,38 +52,38 @@ for k=1:5, j=1:6
 end
 ret
 
-# 2. Ones:
+## 2. Ones:
 
 ones(Int, 5, 6)
 
-# 3. Fill:
+## 3. Fill:
 
 fill(1, 5, 6)
 
-# 4. Comprehension
+## 4. Comprehension:
 
 [1 for k=1:5, j=1:6]
 
 
 ## END
 
-# **Problem 1.3** Create a 1 × 5 `Matrix{Int}` with entries `A[k,j] = j`. (2 solutions: a for-loop or a compregension.)
+# **Problem 1.3** Create a 1 × 5 `Matrix{Int}` with entries `A[k,j] = j`. Hint: use a for-loop or a comprehension.
 
 
 ## SOLUTION
 
-# 1. For-loop
+## 1. For-loop
 
 A = zeros(Int, 1, 5)
 for j = 1:5
     A[1,j] = j
 end
 
-# 2. Comprehension
+## 2. Comprehension
 
 [j for k=1:1, j=1:5]
 
-# 3. convert transpose:
+## 3. convert transpose:
 
 ## Note: (1:5)' is a "row-vector" which behaves differently than a matrix
 Matrix((1:5)')
@@ -74,30 +92,25 @@ Matrix((1:5)')
 ## END
 
 # **Problem 1.4** Create a vector of length 5 whose entries are `Float64`
-# approximations of `exp(-k)`. (Two solutions: one using a for loop and
-# one using broadcasting.)
+# approximations of `exp(-k)`. Hint: one use a for-loop or broadcasting `f.(x)` notation.
 
 ## SOLUTION
 
-1. For-loop
-```julia
+## 1. For-loop
 v = zeros(5) # defaults to Float64
 for k = 1:5
     v[k] = exp(-k)
 end
-```
-2. Broadcast:
-```julia
+
+## 2. Broadcast:
 exp.(-(1:5))
-```
-3. Explicit broadcsat:
-```julia
+
+## 3. Explicit broadcsat:
 broadcast(k -> exp(-k), 1:5)
-```
-4. Comprehension:
-```julia
+
+## 4. Comprehension:
 [exp(-k) for k=1:5]
-```
+
 
 ## END
 
@@ -126,35 +139,19 @@ broadcast((k,j) -> cos(k+j), 1:5, (1:6)')
 ## END
 
 
-# MATH50003 Numerical Analysis: Problem 3
 
-This problem sheet explores implementation of triangular solves,
-supporting a matrix with two super-diagonals, as well as
-permutation and Householder reflections that can be applied to a vector in
-$O(n)$ complexity.
-
-Questions marked with a ⋆ are meant to be completed without using a computer.
-Problems are denoted A/B/C to indicate their difficulty.
+# ## 2. Dense Matrices
 
 
-```julia
-using LinearAlgebra, Test
+# **Problem 2.1** Show that `A*x` is not
+# implemented as `mul_cols(A, x)` from the lecture notes
+# by finding a `Float64` example  where the bits do not match.
 
-# We will override these functions below
-import Base: getindex, setindex!, size, *, \
-```
+## SOLUTION
 
-## 1. Dense Matrices
+# First we have to define `mul_cols(A, x)` as in the lecture notes:
 
-**Problem 1.1 (C)** Show that `A*x` is not
-implemented as `mul(A, x)` from the lecture notes
-by finding a `Float64` example  where the bits do not match.
-
-**SOLUTION**
-
-First we have to define `mul(A, x)` as in the lecture notes:
-```julia
-function mul(A, x)
+function mul_cols(A, x)
     m,n = size(A)
     c = zeros(eltype(x), m) # eltype is the type of the elements of a vector/matrix
     for j = 1:n, k = 1:m
@@ -162,9 +159,9 @@ function mul(A, x)
     end
     c
 end
-```
-Then we can easily find examples, in fact we can write a function that searches for examples:
-```julia
+
+## Then we can easily find examples, in fact we can write a function that searches for examples:
+
 using ColorBitstring
 
 function findblasmuldifference(n,l)
@@ -188,155 +185,83 @@ printlnbits.(mul(A,x));
 println("Difference vector between the two solutions:")
 println(A*x-mul(A,x))
 
-```
 
 
-## 2. Triangular Matrices
+## 3. Triangular Matrices
 
-**Problem 2.1 (B)** Complete the following functions for solving linear systems with
-triangular systems by implementing back and forward-substitution:
-```julia
-function ldiv(U::UpperTriangular, b)
-    n = size(U,1)
-    
-    if length(b) != n
-        error("The system is not compatible")
+# **Problem 3.1** Complete the following function for lower triangular matrix-vector
+# multiplication without ever accessing the zero entries of `L` above the diagonal.
+
+function mul_cols(L::LowerTriangular, x)
+    n = size(L,1)
+
+    ## promote_type type finds a type that is compatible with both types, eltype gives the type of the elements of a vector / matrix
+    T = promote_type(eltype(x),eltype(L))
+    b = zeros(T,n) # the returned vector, begins of all zeros
+
+    ## TODO: populate b so that L*x == b
+    ## SOLUTION
+    for j = 1:n, k = j:n
+        b[k] += L[k, j] * x[j]
     end
-        
-    x = zeros(n)  # the solution vector
-    ## TODO: populate x using back-substitution
+    ## END
+
+    b
 end
 
-function ldiv(U::LowerTriangular, b)
-    n = size(U,1)
+L = LowerTriangular(randn(5,5))
+x = randn(5)
+@test L*x == mul_cols(L, x)
+
+
+# **Problem 3.1** Complete the following function for solving linear systems with
+# lower triangular systems by implementing forward-substitution.
+
+
+function ldiv(L::LowerTriangular, b)
+    n = size(L,1)
     
     if length(b) != n
         error("The system is not compatible")
     end
         
     x = zeros(n)  # the solution vector
-    ## TODO: populate x using forward-substitution
-end
-```
-
-**SOLUTION**
-
-
-```julia
-function ldiv(U::UpperTriangular, b)
-    n = size(U,1)
-    
-    if length(b) != n
-        error("The system is not compatible")
-    end
-        
-    x = zeros(n)  # the solution vector
-    
-    for k = n:-1:1  # start with k=n, then k=n-1, ...
-        r = b[k]  # dummy variable
-        for j = k+1:n
-            r -= U[k,j]*x[j] # equivalent to r = r-U[k,j]*x[j]
-        end
-        x[k] = r/U[k,k]
-    end
-    x
-end
-
-function ldiv(U::LowerTriangular, b)
-    n = size(U,1)
-    
-    if length(b) != n
-        error("The system is not compatible")
-    end
-        
-    x = zeros(n)  # the solution vector
-
-    for k = 1:n  # start with k=1
+    ## TODO: populate x using forward-substitution so that L*x ≈ b
+    for k = 1:n  # start with k = 1
         r = b[k]  # dummy variable
         for j = 1:k-1
-            r -= U[k,j]*x[j]
+            r -= L[k,j]*x[j]
         end
-        x[k] = r/U[k,k]
+        x[k] = r/L[k,k]
     end
     x
 end
-```
-
-Here is an example:
-```julia
-x = [1,2,3,4]
-Ldense = [1 0 0 0; 2 3 0 0; 4 5 6 0; 7 8 9 10]
-Ltriang = LowerTriangular(Ldense)
-```
-```julia
-Ldense\x-ldiv(Ltriang,x)
-```
 
 
+L = LowerTriangular(randn(5,5))
+b = randn(5)
+@test L\b ≈ ldiv(L, b)
 
-**Problem 2.2⋆ (B)** Given $𝐱 \in \mathbb{R}^n$, find a lower triangular matrix of the form
-$$
-L = I - 2 𝐯 𝐞_1^⊤
-$$
-such that:
-$$
-L 𝐱 = x_1 𝐞_1.
-$$
-What does $L𝐲$ equal if $𝐲  ∈ ℝ^n$ satisfies $y_1 = 𝐞_1^⊤ 𝐲 = 0$?
 
-**SOLUTION**
+## 4. Banded matrices
 
-By straightforward computation we find
+# **Problem 4.1** Complete the implementation of `UpperTridiagonal` which represents a banded matrix with
+# bandwidths $(l,u) = (0,2)$:
 
-$$Lx = x - 2 𝐯 𝐞_1^⊤x = x - 2 𝐯 x_1$$
-
-and thus we find such a lower triangular $L$ by choosing $v_1 = 0$ and $v_k = \frac{x_k}{2 x_1}$ for $k=2..n$ and $x_1 \neq 0$.
-
-## 3. Banded matrices
-
-**Problem 3.1 (C)** Complete the implementation of `UpperTridiagonal` which represents a banded matrix with
-bandwidths $(l,u) = (0,2)$:
-```julia
 struct UpperTridiagonal{T} <: AbstractMatrix{T}
-    d::Vector{T}   # diagonal entries
-    du::Vector{T}  # super-diagonal enries
-    du2::Vector{T} # second-super-diagonal entries
+    d::Vector{T}   # diagonal entries: d[k] == U[k,k]
+    du::Vector{T}  # super-diagonal enries: du[k] == U[k,k+1]
+    du2::Vector{T} # second-super-diagonal entries: du2[k] == U[k,k+2]
 end
 
 size(U::UpperTridiagonal) = (length(U.d),length(U.d))
 
+## getindex(U, k, j) is another way to write U[k,j].
+## This function will therefore be called when we call U[k,j]
 function getindex(U::UpperTridiagonal, k::Int, j::Int)
     d,du,du2 = U.d,U.du,U.du2
-    # TODO: return U[k,j]
-end
-
-function setindex!(U::UpperTridiagonal, v, k::Int, j::Int)
-    d,du,du2 = U.d,U.du,U.du2
-    if j > k+2
-        error("Cannot modify off-band")
-    end
-
-    # TODO: modify d,du,du2 so that U[k,j] == v
-
-    U # by convention we return the matrix
-end
-```
-
-**SOLUTION**
-
-
-```julia
-struct UpperTridiagonal{T} <: AbstractMatrix{T}
-    d::Vector{T}   # diagonal entries
-    du::Vector{T}  # super-diagonal enries
-    du2::Vector{T} # second-super-diagonal entries
-end
-
-size(U::UpperTridiagonal) = (length(U.d),length(U.d))
-
-function getindex(U::UpperTridiagonal, k::Int, j::Int)
-    d,du,du2 = U.d,U.du,U.du2
-
+    ## TODO: return U[k,j]
+    ## SOLUTION
     if j == k+2
     	return U.du2[k]    
     elseif j == k+1
@@ -346,133 +271,80 @@ function getindex(U::UpperTridiagonal, k::Int, j::Int)
     else # off band entries are zero
     	return zero(eltype(U))
     end
+    ## END
 end
 
+## setindex!(U, v, k, j) gets called when we write (U[k,j] = v).
 function setindex!(U::UpperTridiagonal, v, k::Int, j::Int)
     d,du,du2 = U.d,U.du,U.du2
-    if (j > k+2)||(j<k)
+    if j > k+2 || j < k
         error("Cannot modify off-band")
     end
 
+    ## TODO: modify d,du,du2 so that U[k,j] == v
+    ## SOLUTION
     if j == k+2
-    	U.du2[k] = v  
+    	du2[k] = v  
     elseif j == k+1
-    	U.du[k] = v
+    	du[k] = v
     elseif j == k
-    	U.d[k] = v
+    	d[k] = v
     end
-
+    ## END
     U # by convention we return the matrix
 end
-```
 
-We can check that the above methods to read and write entries work:
+U = UpperTridiagonal([1,2,3,4,5], [1,2,3,4], [1,2,3])
+@test U == [1 1 1 0 0;
+            0 2 2 2 0;
+            0 0 3 3 3;
+            0 0 0 4 4;
+            0 0 0 0 5]
 
-```julia
-A = UpperTridiagonal([1,2,3,4], [1,2,3], [1,2])
-```
-```julia
-A[1,1] = 2
-A
-```
 
-**Problem 3.2 (B)** Complete the following implementations of `*` and `\` for `UpperTridiagonal` so that
-they take only $O(n)$ operations.
-```julia
+
+# **Problem 4.2** Complete the following implementations of `*` and `\` for `UpperTridiagonal` so that
+# they take only $O(n)$ operations.
+
 function *(U::UpperTridiagonal, x::AbstractVector)
-    T = promote_type(eltype(U), eltype(x)) # make a type that contains both the element type of U and x
-    b = zeros(T, size(U,1)) # returned vector
-    # TODO: populate b so that U*x == b (up to rounding)
-end
-
-function \(U::UpperTridiagonal, b::AbstractVector)
-    T = promote_type(eltype(U), eltype(b)) # make a type that contains both the element type of U and b
-    x = zeros(T, size(U,2)) # returned vector
-    # TODO: populate x so that U*x == b (up to rounding)
-end
-```
-
-**SOLUTION**
-```julia
-function *(U::UpperTridiagonal, x::AbstractVector)
-    T = promote_type(eltype(U), eltype(x)) # make a type that contains both the element type of U and x
-    b = zeros(T, size(U,1)) # returned vector
-    n = size(U)[1]
-    for k = 1:n-2
-    	b[k] = dot(U[k,k:k+2],x[k:k+2])
+    n = size(U,1)
+    # promote_type type finds a type that is compatible with both types, eltype gives the type of the elements of a vector / matrix
+    T = promote_type(eltype(x),eltype(U))
+    b = zeros(T, n) # the returned vector, begins of all zeros
+    ## TODO: populate b so that U*x == b (up to rounding)
+    ## SOLUTION
+    for j = 1:n, k = max(j-2,1):j
+        b[k] += U[k, j] * x[j]
     end
-    # the last two rows need a bit more care
-    b[n-1] = dot(U[n-1,n-1:n],x[n-1:n])
-    b[n] = U[n,n]*x[n]
-    return b
+    ## END
+    b
 end
 
 function \(U::UpperTridiagonal, b::AbstractVector)
-    T = promote_type(eltype(U), eltype(b)) # make a type that contains both the element type of U and b
-    x = zeros(T, size(U,2)) # returned vector
-    n = size(U)[1]
+    n = size(U,1)
     
     if length(b) != n
         error("The system is not compatible")
     end
-    
+        
+    x = zeros(n)  # the solution vector
+    ## SOLUTION
     for k = n:-1:1  # start with k=n, then k=n-1, ...
         r = b[k]  # dummy variable
-        for j = k+1:min(k+3,n)
-            r -= U[k,j]*x[j]
+        for j = k+1:min(n, k+2)
+            r -= U[k,j]*x[j] # equivalent to r = r - U[k,j]*x[j]
         end
+        # after this for loop, r = b[k] - ∑_{j=k+1}^n U[k,j]x[j]  
         x[k] = r/U[k,k]
     end
+    ## END
     x
 end
-```
 
-And here is an example of what we have implemented in action:
-
-```julia
-Abanded = UpperTridiagonal([1.1,2.2,3.3,4.4], [1.9,2.8,3.7], [1.5,2.4])
-Adense = Matrix(Abanded) # one of many easy ways to convert to dense storage
-
-Adense == Abanded
-```
-
-```julia
-x = [5.2,3/4,2/3,9.1415]
-Adense*x
-```
-
-```julia
-Abanded*x
-```
-
-```julia
-Adense\x
-```
-
-```julia
-Abanded\x
-```
-
-And just for fun, let's do a larger scale dense speed comparison
-```julia
-using BenchmarkTools
-n = 10000
-Abanded = UpperTridiagonal(rand(n),rand(n-1),rand(n-2))
-Adense = Matrix(Abanded) # one of many easy ways to convert to dense storage
-x = rand(n)
-
-@btime Adense*x;
-
-```
-```julia
-@btime Abanded*x;
-
-```
-```julia
-@btime Adense\x;
-
-```
-```julia
-@btime Abanded\x;
-
-```
+n = 1_000_000 # under-scores are like commas: so this is a million: 1,000,000
+U = UpperTridiagonal(ones(n), fill(0.5,n-1), fill(0.1,n-2))
+x = ones(n)
+b = [fill(1.6,n-2); 1.5; 1] # exact result
+# note following should take much less than a second
+@test U*x == b
+@test U\b == x
