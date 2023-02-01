@@ -105,7 +105,7 @@ function mul_cols(L::LowerTriangular, x)
     T = promote_type(eltype(x),eltype(L))
     b = zeros(T,n) # the returned vector, begins of all zeros
 
-    ## TODO: populate b so that L*x == b
+    ## TODO: populate b so that L*x ≈ b
     
 
     b
@@ -113,7 +113,7 @@ end
 
 L = LowerTriangular(randn(5,5))
 x = randn(5)
-@test_broken L*x == mul_cols(L, x)
+@test_broken L*x ≈ mul_cols(L, x)
 
 
 # **Problem 3.2** Complete the following function for solving linear systems with
@@ -210,7 +210,7 @@ function *(U::UpperTridiagonal, x::AbstractVector)
     ## promote_type type finds a type that is compatible with both types, eltype gives the type of the elements of a vector / matrix
     T = promote_type(eltype(x),eltype(U))
     b = zeros(T, n) # the returned vector, begins of all zeros
-    ## TODO: populate b so that U*x == b (up to rounding)
+    ## TODO: populate b so that U*x ≈ b (up to rounding)
     
     b
 end
@@ -234,5 +234,5 @@ U = UpperTridiagonal(ones(n), fill(0.5,n-1), fill(0.1,n-2))
 x = ones(n)
 b = [fill(1.6,n-2); 1.5; 1] # exact result
 ## note following should take much less than a second
-@test_broken U*x == b
-@test_broken U\b == x
+@test_broken U*x ≈ b
+@test_broken U\b ≈ x

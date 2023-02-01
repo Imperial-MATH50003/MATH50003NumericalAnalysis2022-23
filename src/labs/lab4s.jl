@@ -227,7 +227,7 @@ function mul_cols(L::LowerTriangular, x)
     T = promote_type(eltype(x),eltype(L))
     b = zeros(T,n) # the returned vector, begins of all zeros
 
-    ## TODO: populate b so that L*x == b
+    ## TODO: populate b so that L*x ≈ b
     ## SOLUTION
     for j = 1:n, k = j:n
         b[k] += L[k, j] * x[j]
@@ -239,7 +239,7 @@ end
 
 L = LowerTriangular(randn(5,5))
 x = randn(5)
-@test L*x == mul_cols(L, x)
+@test L*x ≈ mul_cols(L, x)
 
 
 # **Problem 3.2** Complete the following function for solving linear systems with
@@ -362,7 +362,7 @@ function *(U::UpperTridiagonal, x::AbstractVector)
     ## promote_type type finds a type that is compatible with both types, eltype gives the type of the elements of a vector / matrix
     T = promote_type(eltype(x),eltype(U))
     b = zeros(T, n) # the returned vector, begins of all zeros
-    ## TODO: populate b so that U*x == b (up to rounding)
+    ## TODO: populate b so that U*x ≈ b (up to rounding)
     ## SOLUTION
     for j = 1:n, k = max(j-2,1):j
         b[k] += U[k, j] * x[j]
@@ -399,5 +399,5 @@ U = UpperTridiagonal(ones(n), fill(0.5,n-1), fill(0.1,n-2))
 x = ones(n)
 b = [fill(1.6,n-2); 1.5; 1] # exact result
 ## note following should take much less than a second
-@test U*x == b
-@test U\b == x
+@test U*x ≈ b
+@test U\b ≈ x
