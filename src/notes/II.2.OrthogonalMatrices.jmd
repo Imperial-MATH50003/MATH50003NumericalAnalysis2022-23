@@ -1,12 +1,42 @@
 # II.2 Orthonal Matrices
 
-3. _Permutation_: A permutation matrix permutes the rows of a vector. 
-4. _Orthogonal_: An orthogonal matrix $Q$ satisfies $Q^⊤ Q = I$, in other words, they are
+A very important class of matrices are _orthogonal_ and _unitary_ matrices:
+
+**Definition 1 (orthogonal matrix)** A square real matrix is _orthogonal_ if its inverse is its transpose:
+$$
+O(n) = \{Q ∈ ℝ^{n × n} : Q^⊤Q = I \}
+$$
+A square complex matrix is _unitary_ if its inverse is its adjoint:
+$$
+U(n) = \{Q ∈ ℂ^{n × n} : Q^⋆Q = I \}.
+$$
+Here the adjoint is the same as the conjugate-transpose: $Q^⋆ := Q̄^⊤$. 
+
+
+Note that $O(n) ⊂ U(n)$ as for real matrices $Q^⋆ = Q^⊤$. Because in either case $Q^{-1} = Q^⋆$ we also have
+$Q Q^⋆ = I$ (which for real matrices is $Q Q^⊤ = I$). These matrices are particularly important for
+numerical linear algebra for a number of reasons:
+
+1. They are norm-preserving for any vector $𝐱 ∈ ℂ^n$ we have
+$\|Q 𝐱 \| = \| 𝐱\|$ where $\| 𝐱 \|^2 := ∑_{k=1}^n x_k^2$ (i.e. the 2-norm).
+2. They are trivially invertible (just take the transpose).
+3. They are generally "stable": errors are controlled.
+
+On a computer there are multiple ways of representing orthogonal/unitary matrices,
+and it is almost never to store a dense matrix storing the entries. We shall therefore
+investigate three important classes:
+
+1. _Permutation_: A permutation matrix permutes the rows of a vector and is a representation of the symmetric group.
+2. _Rotations_: The simple rotations are also known as $2 × 2$ special orthogonal matrices ($SO(2)$)  and correspond to rotations in 2D.
+3. _Reflections_: 
+
+
+_Orthogonal_: An orthogonal matrix $Q$ satisfies $Q^⊤ Q = I$, in other words, they are
 very easy to invert. We discuss the special cases of simple rotations and reflections.
 
 
 
-## 4. Permutation Matrices
+## 1. Permutation Matrices
 
 
 
@@ -135,24 +165,14 @@ Permutation matrices are examples of sparse matrices that can be very easily inv
 
 
 
-## 4. Orthogonal matrices
+## 2. Rotations
 
-
-**Definition (orthogonal matrix)** A square matrix is _orthogonal_ if its inverse is its transpose:
-$$
-Q^⊤ Q = QQ^⊤ = I.
-$$
-
-We have already seen an example of an orthogonal matrices (permutation matrices). 
-Here we discuss two important special cases: simple rotations and reflections.
-
-### Simple rotations
 
 
 **Definition (simple rotation)**
 A 2×2 _rotation matrix_ through angle $θ$ is
 $$
-Q_θ := \begin{bmatrix} \cos \theta & -\sin \theta \cr \sin \theta & \cos \theta \end{bmatrix}
+Q_θ := \begin{bmatrix} \cos θ & -\sin θ \cr \sin θ & \cos θ \end{bmatrix}
 $$
 
 In what follows we use the following for writing the angle of a vector:
@@ -213,7 +233,7 @@ $$
 
 
 
-### Reflections
+## 3. Reflections
 
 In addition to rotations, another type of orthognal matrix are reflections:
 
