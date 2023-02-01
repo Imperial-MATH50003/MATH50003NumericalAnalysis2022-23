@@ -343,7 +343,7 @@ x = 1.1
 y = 0.1
 x + y - 1.2 # Not Zero?!?
 ```
-This is because ${\rm fl}(1.1) ≠ 1+1/10$ and ${\rm fl}(1.1) ≠ 1/10$ since their
+This is because ${\rm fl}(1.1) ≠ 1+1/10$ and ${\rm fl}(0.1) ≠ 1/10$ since their
 expansion in _binary_ is not finite, but rather:
 $$
 \begin{align*}
@@ -354,16 +354,16 @@ $$
 $$
 Thus when we add them we get
 $$
-{\rm fl}(1.1) + {\rm fl}(1.1) = (1.0011001100110011001100110011001100110011001100110011\red{1010})_2
+{\rm fl}(1.1) + {\rm fl}(0.1) = (1.0011001100110011001100110011001100110011001100110011\red{1010})_2
 $$
 where the red digits indicate those beyond the 52 representable in $F_{54}$. In this case we round up and
 get
 $$
-{\rm fl}(1.1) ⊕ {\rm fl}(1.1) = (1.0011001100110011001100110011001100110011001100110100)_2
+{\rm fl}(1.1) ⊕ {\rm fl}(0.1) = (1.0011001100110011001100110011001100110011001100110100)_2
 $$
 On the other hand,
 $$
-{\rm fl}(1.2) = (1.011001100110011001100110011001100110011001100110011)_2
+{\rm fl}(1.2) = (1.0011001100110011001100110011001100110011001100110011)_2
 $$
 which differs by 1 bit.
 
