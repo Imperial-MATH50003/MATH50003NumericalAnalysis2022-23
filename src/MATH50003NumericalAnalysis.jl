@@ -23,6 +23,7 @@ notebook("src/notes/I.4.DualNumbers.jmd"; nkwds...)
 
 # Part II
 notebook("src/notes/II.1.StructuredMatrices.jmd"; nkwds...)
+notebook("src/notes/II.2.OrthogonalMatrices.jmd"; nkwds...)
 
 
 #####

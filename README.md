@@ -25,6 +25,7 @@ facilitate fast and accurate computation of derivatives.
 **II: Computing with matrices**
 
 1. [Structured Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.1.StructuredMatrices.ipynb): we discuss types of structured matrices (dense, triangular, and banded).
+2. [Orthogonal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.2.OrthogonalMatrices.ipynb): we discuss types of orthogonal matrices (permutations, rotations, and reflections).
 
 **III: Computing with functions**
 
