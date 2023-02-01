@@ -19,6 +19,24 @@ import Base: getindex, setindex!, size, *, \
 
 # ## 1. Array creation
 
+# One can create arrays in multiple ways. For example, the function `zeros(Int, 10)` creates
+# a 10-element `Vector` whose entries are all `zero(Int) == 0`. Or `fill(x, 10)` creates a 
+# 10-element `Vector` whose entries are all equal to `x`. Or you can use a comprehension:
+# for example `[k^2 for k = 1:10]` creates a vector whose entries are `[1^2, 2^2, …, 10^2]`.
+# This also works for matrices: `zeros(Int, 10, 5)` creates a 10 × 5 matrix of all zeros,
+# and `[k^2 + j for k=1:3, j=1:4]` creates the following:
+
+[k^2 + j for k=1:3, j=1:4]
+
+# Note sometimes it is best to create a vector/matrix and populate it. For example, the
+# previous matrix could also been constructed as follows:
+
+A = zeros(Int, 3, 4)
+for k = 1:3, j = 1:4
+    A[k,j] = k^2 + j
+end
+A
+
 # **Problem 1.1** Create a vector of length 5 whose entries are `Int` which is
 # zero in all entries. Hint: use `zeros`, `fill`, or a comprehension.
 
@@ -47,14 +65,33 @@ import Base: getindex, setindex!, size, *, \
 
 # ## 2. Dense Matrices
 
+# The following problem compares the behaviour of `mul_cols` defined in lectures
 
-# **Problem 2.1** Show that `A*x` is not
+function mul_cols(A, x)
+    m,n = size(A)
+    c = zeros(eltype(x), m) # eltype is the type of the elements of a vector/matrix
+    for j = 1:n, k = 1:m
+        c[k] += A[k, j] * x[j]
+    end
+    c
+end
+
+# to the inbuilt matrix-vector multiplication operation `A*x`. The point is that
+# sometimes the choice of algorithm, despite being mathematically equivalent, can change the exact results
+# when using floating point.
+
+# **Problem 2** Show that `A*x` is not
 # implemented as `mul_cols(A, x)` from the lecture notes
 # by finding a `Float64` example  where the bits do not match.
+# Hint: either guess-and-check, perhaps using `randn(n,n)` to make a random `n × n` matrix.
+
 
 
 
 # ## 3. Triangular Matrices
+
+# In lectures we covered algorithms involving upper-triangular matrices. Here we want to implement
+# the lower-triangular analogues.
 
 # **Problem 3.1** Complete the following function for lower triangular matrix-vector
 # multiplication without ever accessing the zero entries of `L` above the diagonal.
@@ -104,8 +141,9 @@ b = randn(5)
 
 # ## 4. Banded matrices
 
-# **Problem 4.1** Complete the implementation of `UpperTridiagonal` which represents a banded matrix with
-# bandwidths $(l,u) = (0,2)$:
+# Banded matrices are very important in differential equations and enable much faster algorithms. 
+# Here we look at banded upper triangular matrices by implementing a type that encodes this
+# property:
 
 struct UpperTridiagonal{T} <: AbstractMatrix{T}
     d::Vector{T}   # diagonal entries: d[k] == U[k,k]
@@ -113,7 +151,18 @@ struct UpperTridiagonal{T} <: AbstractMatrix{T}
     du2::Vector{T} # second-super-diagonal entries: du2[k] == U[k,k+2]
 end
 
+# This uses the notation `<: AbstractMatrix{T}`: this tells Julia that our type is in fact a matrix.
+# In order for it to behave a matrix we have to overload the function `size` for our type to return
+# the dimensions (in this case we just use the length of the diagonal):
+
 size(U::UpperTridiagonal) = (length(U.d),length(U.d))
+
+# Julia still doesn't know what the entries of the matrix are. To do this we need to overload `getindex`.
+# We also overload `setindex!` to allow changing the non-zero entries.
+
+# **Problem 4.1** Complete the implementation of `UpperTridiagonal` which represents a banded matrix with
+# bandwidths $(l,u) = (0,2)$ by overloading `getindex` and `setindex!`. Return zero (of the same type as the other entries)
+# if we are off the bands.
 
 ## getindex(U, k, j) is another way to write U[k,j].
 ## This function will therefore be called when we call U[k,j]
@@ -142,10 +191,19 @@ U = UpperTridiagonal([1,2,3,4,5], [1,2,3,4], [1,2,3])
             0 0 0 4 4;
             0 0 0 0 5]
 
+U[3,4] = 2
+@test_broken U == [1 1 1 0 0;
+            0 2 2 2 0;
+            0 0 3 2 3;
+            0 0 0 4 4;
+            0 0 0 0 5]
+
+
 
 
 # **Problem 4.2** Complete the following implementations of `*` and `\` for `UpperTridiagonal` so that
-# they take only $O(n)$ operations.
+# they take only $O(n)$ operations. Hint: the function `max(a,b)` returns the larger of `a` or `b`
+# and `min(a,b)` returns the smaller. They may help to avoid accessing zeros.
 
 function *(U::UpperTridiagonal, x::AbstractVector)
     n = size(U,1)

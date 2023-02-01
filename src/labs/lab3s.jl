@@ -31,6 +31,11 @@ nanabs(x) = iszero(x) ? NaN : abs(x)
 # **Problem 1** Implement central differences
 # for $f(x) = 1 + x + x^2$ and $g(x) = 1 + x/3 + x^2$, approximating the derivative at $x = 0$.
 # Plot the absolute errors for `h = 2.0 .^ (0:-1:-60)` and `h = 10.0 .^ (0:-1:-16)`.
+#
+# Hint: the easiest way to do this is the copy the code from lectures/notes for forward differences,
+# and replace the line `f.(h) .- f(0) ./ h` with the equivalent for central differences.
+# Note that `f.(h)` is broadcast notation so creates a vector containing `[f(h[1]),…,f(h[end])]`.
+# Thus that expression creates a vector containing `[(f(h[1])-f(0))/h[1], …, (f(h[end])-f(0))/h[end]]`.
 
 ## SOLUTION
 
@@ -131,7 +136,7 @@ divideddiffsecond(x, cbrt(ϵ_m), x->cont(1000,x)))
 
 # ----
 
-# **Problem 3.1** Add support for `cos`, `sin`, and `/` to the type `Dual`:
+# We now extend our implementation of `Dual` which we began in lectures/notes as follows:
 
 ## Dual(a,b) represents a + b*ϵ
 struct Dual{T}
@@ -145,6 +150,7 @@ Dual(a::Real) = Dual(a, zero(a)) # for real numbers we use a + 0ϵ
 ## Allow for a + b*ϵ syntax
 const ϵ = Dual(0, 1)
 
+## import the functions which we wish to overload
 import Base: +, *, -, /, ^, zero, exp, cos, sin, one
 
 ## support polynomials like 1 + x, x - 1, 2x or x*2 by reducing to Dual
@@ -179,6 +185,9 @@ one(x::Dual) = Dual(one(eltype(x.a)))
 *(x::Dual, y::Dual) = Dual(x.a*y.a, x.a*y.b + x.b*y.a)
 
 exp(x::Dual) = Dual(exp(x.a), exp(x.a) * x.b)
+
+# **Problem 3.1** Add support for `cos`, `sin`, and `/` to the type `Dual`
+# by replacing the `# TODO`s in the below code.
 
 function cos(x::Dual)
     ## TODO: implement cos for Duals
