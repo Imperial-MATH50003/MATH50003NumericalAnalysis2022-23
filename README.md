@@ -11,7 +11,8 @@ Office hour: Mondays 11am, Huxley 6M40
 
   A. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/A.Julia.ipynb): we introduce  the basic features of the Julia language. \
   B. [Asymptotics and Computational Cost](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/B.Asymptotics.ipynb): we review Big-O, little-o and asymptotic to notation,
-and their usage in describing computational cost.
+and their usage in describing computational cost. \
+  C. [Adjoints and Normal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/C.Adjoint.ipynb): we review complex inner-products, adjoints, normal matrices, and the spectral theorem.
 
 **I: Computing with numbers**
 
