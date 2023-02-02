@@ -13,6 +13,7 @@ eskwds = (out_path="exams/", jupyter_path="$(homedir())/.julia/conda/3/bin/jupyt
 
 notebook("src/notes/A.Julia.jmd"; nkwds...)
 notebook("src/notes/B.Asymptotics.jmd"; nkwds...)
+notebook("src/notes/C.SpectralTheorem.jmd"; nkwds...)
 
 
 # Part I

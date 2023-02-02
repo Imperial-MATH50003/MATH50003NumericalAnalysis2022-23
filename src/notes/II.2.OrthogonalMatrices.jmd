@@ -22,6 +22,8 @@ $\|Q 𝐱 \| = \| 𝐱\|$ where $\| 𝐱 \|^2 := ∑_{k=1}^n x_k^2$ (i.e. the 2-
 2. All eigenvalues are $±1$ and hence $\det Q = ±1$.
 2. They are trivially invertible (just take the transpose).
 3. They are generally "stable": errors are controlled.
+4. They are _normal matrices_: they commute with their adjoint ($Q Q^⋆ = Q Q^⋆$). See Chapter C for
+why this is important. 
 
 On a computer there are multiple ways of representing orthogonal/unitary matrices,
 and it is almost never to store a dense matrix storing the entries. We shall therefore
