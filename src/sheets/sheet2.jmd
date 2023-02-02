@@ -30,9 +30,9 @@ $$
 
 ------------
 
-**Problem 2.1** Suppose $|ϵ_i| ≤ ϵ$ and $n ϵ < 1$. Show that
+**Problem 2.1** Suppose $|ϵ_k| ≤ ϵ$ and $n ϵ < 1$. Show that
 $$
-∏_{k=1}^n (1+ϵ_i) = 1+θ_n
+∏_{k=1}^n (1+ϵ_k) = 1+θ_n
 $$
 for some constant $θ_n$ satisfying
 $$
@@ -96,7 +96,7 @@ $$
 $$
 where
 $$
-|ε_n| ≤  \exp(|x|)  (2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2),
+|ε_n| ≤  \exp(|x|)  (2E_{2n,ϵ_{\rm m}/2} + E_{2n,ϵ_{\rm m}/2}^2),
 $$
 assuming $n ϵ_{\rm m} < 1$. You may assume all operations are within the normalised range.
 Hint: combine Problem 2.2 and 2.3 and note that $E_{k,ϵ_{\rm m}/2} ≤ E_{j,ϵ_{\rm m}/2}$ when $k ≤ j$.

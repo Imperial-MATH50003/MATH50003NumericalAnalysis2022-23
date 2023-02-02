@@ -58,9 +58,9 @@ $$
 
 ------------
 
-**Problem 2.1** Suppose $|ϵ_i| ≤ ϵ$ and $n ϵ < 1$. Show that
+**Problem 2.1** Suppose $|ϵ_k| ≤ ϵ$ and $n ϵ < 1$. Show that
 $$
-∏_{k=1}^n (1+ϵ_i) = 1+θ_n
+∏_{k=1}^n (1+ϵ_k) = 1+θ_n
 $$
 for some constant $θ_n$ satisfying
 $$
@@ -71,7 +71,7 @@ Hint: use induction.
 **SOLUTION**
 
 $$
-∏_{k=1}^{n+1} (1+ϵ_i) = ∏_{k=1}^n (1+ϵ_i) (1+ϵ_{n+1}) = (1+θ_n)(1+ϵ_{n+1}) = 1 + \underbrace{θ_n + ϵ_{n+1} + θ_nϵ_{n+1}}_{θ_{n+1}}
+∏_{k=1}^{n+1} (1+ϵ_k) = ∏_{k=1}^n (1+ϵ_k) (1+ϵ_{n+1}) = (1+θ_n)(1+ϵ_{n+1}) = 1 + \underbrace{θ_n + ϵ_{n+1} + θ_nϵ_{n+1}}_{θ_{n+1}}
 $$
 where
 $$
