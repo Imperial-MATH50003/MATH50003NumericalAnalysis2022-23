@@ -92,7 +92,7 @@ $$
 
 **Problem 3.2** Show that
 $$
-\exp_n^{\rm t}(x) = ∑_{k=0}^{n-1} {x^k \over k!} + ε_n
+\exp_n^{\rm t}(x) = ∑_{k=0}^n {x^k \over k!} + ε_n
 $$
 where
 $$

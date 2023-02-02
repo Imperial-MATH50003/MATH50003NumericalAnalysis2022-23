@@ -169,7 +169,7 @@ $$
 
 **Problem 3.2** Show that
 $$
-\exp_n^{\rm t}(x) = ∑_{k=0}^{n-1} {x^k \over k!} + ε_n
+\exp_n^{\rm t}(x) = ∑_{k=0}^n {x^k \over k!} + ε_n
 $$
 where
 $$
@@ -184,21 +184,25 @@ From Problem 2.2 we have
 $$
 x_k := ⨂_{j=1}^k (x ⊘ j) = ⨂_{j=1}^k (x/j)(1+δ_j) = (1 + θ_{2k-1}) {x^k \over k!}
 $$
-where 
+where $θ_{2k-1}$ are some constants (the subscript denotes the number of terms in the expansion)
+satisfying
 $$
 |θ_{2k-1}| ≤ E_{2k-1,ϵ_{\rm m}/2} ≤ E_{2n,ϵ_{\rm m}/2}.
 $$
+(We use the convention $x_0 := 1$ and $θ_{-1} := 0$.)
 Note that
 $$
-M := ∑_{k=0}^{n-1} |x_k| ≤ ∑_{k=0}^{n-1} (1+|θ_{2k-1}|) {|x|^k  \over k!} ≤ (1 + E_{2n,ϵ_{\rm m}/2}) \exp|x|.
+M := ∑_{k=0}^n |x_k| ≤ ∑_{k=0}^n (1+|θ_{2k-1}|) {|x|^k  \over k!} 
+≤ \max_k (1+|θ_{2k-1}|) ∑_{k=0}^n  {|x|^k  \over k!}
+≤ (1 + E_{2n,ϵ_{\rm m}/2}) \exp|x|.
 $$
 Then from Problem 2.3 we have
 $$
-⊕_{k=0}^{n-1} x_k = ∑_{k=0}^{n-1} x_k + σ_n = ∑_{k=0}^{n-1} {x^k \over k!} +\underbrace{∑_{k=0}^{n-1} θ_{2k-1} {x^k \over k!} + σ_n}_{ε_n}
+⊕_{k=0}^n x_k = ∑_{k=0}^n x_k + σ_{n+1} = ∑_{k=0}^n {x^k \over k!} +\underbrace{∑_{k=0}^n θ_{2k-1} {x^k \over k!} + σ_{n+1}}_{ε_n}
 $$
 for
 $$
-|σ_n|  ≤ M E_{n-1,ϵ_{\rm m}/2} ≤ (E_{2n,ϵ_{\rm m}/2} + E_{2n,ϵ_{\rm m}/2}^2)  \exp|x|.
+|σ_{n+1}|  ≤ M E_{n,ϵ_{\rm m}/2} ≤ (E_{2n,ϵ_{\rm m}/2} + E_{2n,ϵ_{\rm m}/2}^2)  \exp|x|.
 $$
 Thus
 $$
