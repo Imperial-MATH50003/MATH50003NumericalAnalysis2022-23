@@ -93,7 +93,12 @@ $$
 $$
 ∎
 
-**Problem 3.3** Explain why an orthogonal matrix $Q$ must be equal to $I$ if all its eigenvalues are 1.
+**Problem 3.3** Show that $Q ∈ U(n)$ is a normal matrix (that it commutes with its adjoint).
+
+**Problem 3.4** 
+Explain why  $Q ∈ U(n)$ must be equal to $I$ if all its eigenvalues are 1.
+Hint: use the spectral theorem, which says that any normal matrix is diagonalisable
+with unitary eigenvectors (see 
 
 **SOLUTION**
 
