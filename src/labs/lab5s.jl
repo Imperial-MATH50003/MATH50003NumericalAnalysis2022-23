@@ -1,75 +1,4 @@
 
-## 4. Permutations
-
-**Problem 4.1⋆ (C)** What are the permutation matrices corresponding to the following permutations?
-$$
-\begin{pmatrix}
-1 & 2 & 3 \\
-3 & 2 & 1
-\end{pmatrix}, \begin{pmatrix}
-1 & 2 & 3 & 4 & 5 & 6\\
-2 & 1 & 4 & 3 & 6 & 5
-\end{pmatrix}.
-$$
-
-**SOLUTION**
-
-Let $\sigma=\begin{pmatrix}1 & 2 & 3 \\ 3 & 2 & 1\end{pmatrix}$ and $\tau=\begin{pmatrix}1 & 2 & 3 & 4 & 5 & 6\\ 2 & 1 & 4 & 3 & 6 & 5\end{pmatrix}$. There are two ways to construct $P_\sigma$ and $P_\tau$.
-
-- Column by column:
-  $$P_\sigma=
-  \left(\mathbf{e}_{\sigma_1^{-1}}\middle|\mathbf{e}_{\sigma_2^{-1}}\middle|\mathbf{e}_{\sigma_3^{-1}}\right)=
-  \left(\mathbf{e}_3\middle|\mathbf{e}_2\middle|\mathbf{e}_1\right)$$
-  $$P_\tau=
-  \left(\mathbf{e}_{\tau_1^{-1}}\middle|\mathbf{e}_{\tau_2^{-1}}\middle|\mathbf{e}_{\tau_3^{-1}}\middle|\mathbf{e}_{\tau_4^{-1}}\middle|\mathbf{e}_{\tau_5^{-1}}\middle|\mathbf{e}_{\tau_6^{-1}}\right)=
-  \left(\mathbf{e}_2\middle|\mathbf{e}_1\middle|\mathbf{e}_4\middle|\mathbf{e}_3\middle|\mathbf{e}_6\middle|\mathbf{e}_5\right)$$
-- Row by row:
-  $$P_\sigma=I[\mathbf{\sigma},:]=
-  \begin{pmatrix}
-  I[\sigma_1,:]\\
-  I[\sigma_2,:]\\
-  I[\sigma_3,:]
-  \end{pmatrix}=
-  \begin{pmatrix}
-  I[3,:]\\
-  I[2,:]\\
-  I[1,:]
-  \end{pmatrix}$$
-  $$P_\tau=I[\mathbf{\tau},:]=
-  \begin{pmatrix}
-  I[\tau_1,:]\\
-  I[\tau_2,:]\\
-  I[\tau_3,:]\\
-  I[\tau_4,:]\\
-  I[\tau_5,:]\\
-  I[\tau_6,:]\\
-  \end{pmatrix}=
-  \begin{pmatrix}
-  I[2,:]\\
-  I[1,:]\\
-  I[4,:]\\
-  I[3,:]\\
-  I[6,:]\\
-  I[5,:]\\
-  \end{pmatrix}$$
-
-Either way, we have
-$$P_\sigma=
-\begin{pmatrix}
-0 & 0 & 1\\ 
-0 & 1 & 0\\ 
-1 & 0 & 0
-\end{pmatrix}
-\qquad\text{and}\qquad
-P_\tau=
-\begin{pmatrix}
-0 & 1 & 0 & 0 & 0 & 0 \\
-1 & 0 & 0 & 0 & 0 & 0 \\
-0 & 0 & 0 & 1 & 0 & 0 \\
-0 & 0 & 1 & 0 & 0 & 0 \\
-0 & 0 & 0 & 0 & 0 & 1 \\
-0 & 0 & 0 & 0 & 1 & 0
-\end{pmatrix}$$
 
 **Problem 4.2 (B)** Complete the implementation of a type representing
 permutation matrices that supports `P[k,j]` and such that `*` takes $O(n)$ operations.
@@ -118,39 +47,6 @@ for n = 10 .^ (1:7)
 end
 ```
 
-## 5. Orthogonal matrices
-
-**Problem 5.1⋆ (C)** Show that orthogonal matrices preserve the 2-norm of vectors:
-$$
-\|Q 𝐯\| = \|𝐯\|.
-$$
-
-**SOLUTION**
-$$
-\|Q 𝐯\|^2 = (Q 𝐯)^⊤ Q 𝐯 = 𝐯^⊤ Q^⊤ Q 𝐯 = 𝐯^⊤  𝐯 = \|𝐯\|^2
-$$
-∎
-
-**Problem 5.2⋆ (B)** Show that the eigenvalues $λ$ of an orthogonal matrix $Q$ are
-on the unit circle: $|λ| = 1$.
-
-**SOLUTION**
-Let $𝐯$ be a unit eigenvector corresponding to $λ$: $Q 𝐯 = λ 𝐯$ with $\|𝐯\| = 1$. Then
-$$
-1 = \| 𝐯 \| = \|Q 𝐯 \| =  \| λ 𝐯 \| = |λ|.
-$$
-∎
-
-**Problem 5.3⋆ (A)** Explain why an orthogonal matrix $Q$ must be equal to $I$ if all its eigenvalues are 1.
-
-**SOLUTION**
-
-Note that $Q$ is normal ($Q^⊤ Q = I$) and therefore by the spectral theorem for 
-normal matrices we have
-$$
-Q = Q̃ Λ Q̃^⋆ = Q̃ Q̃^⋆ = I
-$$
-since $Q̃$ is unitary. 
 
 **Problem 5.4 (B)** Complete the implementation of a type representing
 reflections that supports `Q[k,j]` and such that `*` takes $O(n)$ operations.
