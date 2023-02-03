@@ -32,7 +32,7 @@ $$
 
 ## 2. Adjoints
 
-**Definition 2 (adjoint)** An adjoint of a matrix $A ∈ ℂ^{m × n}$ is the unique matrix
+**Definition 2 (adjoint)** Given an inner product, an adjoint of a matrix $A ∈ ℂ^{m × n}$ is the unique matrix
 $A^⋆$ satisfying
 $$
 ⟨𝐱, A𝐲⟩ = ⟨Ā 𝐱, 𝐲⟩
@@ -50,7 +50,10 @@ $$
 ∎
 
 
+In this module we will assume the standard inner product (unless otherwise stated), that is,
+we will only use the standard adjoint $A^⋆ = Ā^⊤$.
 Note if $A = A^⋆$ a matrix is called _Hermitian_. If it is real it is also called _Symmetric_.
+
 
 ## 3. Normal matrices
 
