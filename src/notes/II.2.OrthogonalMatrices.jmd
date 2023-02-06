@@ -19,7 +19,8 @@ numerical linear algebra for a number of reasons (we'll explore these properties
 
 1. They are norm-preserving: for any vector $𝐱 ∈ ℂ^n$ we have
 $\|Q 𝐱 \| = \| 𝐱\|$ where $\| 𝐱 \|^2 := ∑_{k=1}^n x_k^2$ (i.e. the 2-norm).
-2. All eigenvalues are $±1$ and hence $\det Q = ±1$.
+2. All eigenvalues have absolute value equal to $1$
+3. For $Q ∈ O(n)$,  $\det Q = ±1$.
 2. They are trivially invertible (just take the transpose).
 3. They are generally "stable": errors are controlled.
 4. They are _normal matrices_: they commute with their adjoint ($Q Q^⋆ = Q Q^⋆$). See Chapter C for
