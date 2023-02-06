@@ -1,0 +1,89 @@
+# MATH50003 Numerical Analysis (2022–23)
+# Problem Sheet 4
+
+This problem sheet concerns matrix multiplication, permutation matrices, and properties of orthogonal/unitary matrices.
+
+
+
+**Problem 1.1** True or false: `mul_rows(A, x)` and `mul_cols(A, x)` from the lectures/notes 
+will always return the exact same result if the input are floating point? Explain your answer.
+
+
+
+**Problem 1.2** Express the vector that `mul_rows(A, x)` returns in terms of $⨁_{j=1}^n$ and $⊗$,
+using the notation $A_{k,j}$ for the $k,j$ entry of $A$ and $x_j$ for the $j$-th entry of $𝐱$,
+where   $A ∈ F_{σ,Q,S}^{m × n}$ and $𝐱 ∈ F_{σ,Q,S}^n$.
+
+
+
+**Problem 1.3** Show when implemented in floating point arithmetic for $A ∈ F_{σ,Q,S}^{m × n}$ and $𝐱 ∈ F_{σ,Q,S}^n$ that
+$$
+\hbox{\tt mul\_rows}(A, 𝐱) = A 𝐱 + \mathbf{δ} 
+$$
+where
+$$
+\| δ \|_∞ ≤ 2 \|A\|_∞ \| 𝐱 \|_∞ E_{n-1,ϵ_{\rm m}/2}
+$$
+and
+$$
+E_{n,ε} := {n ε\over 1-nε},
+$$
+assuming that $n ϵ_{\rm m} < 2$. 
+We use the notation (to be discussed in detail later):
+$$
+\|A \|_∞ := \max_k ∑_{j=1}^n |a_{kj}|, \|𝐱\|_∞ := \max_k |x_k|. 
+$$
+You may assume all operations are in the normalised range and
+use Problem 2.3 from PS2.
+
+
+
+
+
+------
+
+**Problem 2** What are the permutation matrices corresponding to the following permutations?
+$$
+\begin{pmatrix}
+1 & 2 & 3 \\
+3 & 2 & 1
+\end{pmatrix}, \begin{pmatrix}
+1 & 2 & 3 & 4 & 5 & 6\\
+2 & 1 & 4 & 3 & 6 & 5
+\end{pmatrix}.
+$$
+
+
+
+-------
+
+**Problem 3.1** Show for a unitary matrix $Q ∈ U(n)$ and a vector $𝐱 ∈ ℂ^n$ that multiplication by $Q$ preserve the 2-norm:
+$$
+\|Q 𝐱\| = \|𝐱\|.
+$$
+
+
+
+**Problem 3.2** Show that the eigenvalues $λ$ of a unitary matrix $Q$ are
+on the unit circle: $|λ| = 1$. Hint: recall for any eigenvalue $λ$ that there exists a unit vector
+$𝐯 ∈ ℂ^n$ (satisfying $\| 𝐯 \| = 1$). Combine this with Problem 3.1.
+
+
+
+**Problem 3.3** Show for an orthogonal matrix $Q ∈ O(n)$ that $\det Q = ±1$.
+Give an example of $Q ∈ U(n)$ such that $\det Q ≠ ±1$.
+Hint: recall for any real matrices $A$ and $B$ that $\det A = \det A^⊤$ and
+$\det(AB) = \det A \det B$.
+
+
+
+
+**Problem 3.4** Show that $Q ∈ U(n)$ is a normal matrix (that it commutes with its adjoint).
+
+
+
+**Problem 3.5** 
+Explain why  $Q ∈ U(n)$ must be equal to $I$ if all its eigenvalues are 1.
+Hint: use the spectral theorem, which says that any normal matrix is diagonalisable
+with unitary eigenvectors (see notes on C. Adjoints and Normal Matrices).
+
