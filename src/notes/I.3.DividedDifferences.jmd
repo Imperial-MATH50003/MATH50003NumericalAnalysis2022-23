@@ -127,11 +127,12 @@ examples, we can understand why we see very different behaviour.
 
 
 **Example 1 (convergence(?) of divided differences)** Consider differentiating $f(x) = 1 + x + x^2$ at 0 with $h = 2^{-n}$.
-We consider 3 different cases with different behaviour, where $S$ is the number of significand bits: 
+We consider 4 different cases with different behaviour, where $S$ is the number of significand bits: 
 
 1. $0 ≤ n ≤ S/2$
 2. $S/2 < n ≤ S$
-3. $S ≤ n$
+3. $S ≤ n < S + σ$
+4. $S + σ ≤ n$
 
 Note that $f^{\rm FP}(0) = f(0) = 1$. Thus we wish to understand the error in approximating $f'(0) = 1$ by
 $$
@@ -163,10 +164,13 @@ $$
 $$
 We have actually performed better than true real arithmetic and converged without a limit!
 
-_Case 3_ ($n > S$): If we take $n$ too large, then $1 ⊕ h = 1$ and we have $f^{\rm FP}(h) = 1$, that is and 
+_Case 3_ ($S < n <  σ + S$): If we take $n$ too large, then $1 ⊕ h = 1$ and we have $f^{\rm FP}(h) = 1$, that is and 
 $$
 (f^{\rm FP}(h) ⊖ 1) ⊘ h = 0 \neq f'(0)
 $$
+
+_Case 4_ ($σ + S ≤ n$): In this case $h = 2^{-n}$ is rounded to zero
+and hence we get $NaN$.
 
 **Example 2 (divergence of divided differences)** Consider differentiating $g(x) = 1 + x/3 + x^2$ at 0 with $h = 2^{-n}$
 and assume $n$ is even for simplicity and consider half-precision with $S = 10$.
@@ -193,7 +197,7 @@ $$
 Thus the error grows exponentially with $n$. 
 
 
-If $n ≥ S$ then $1 ⊕ (h ⊘ 3) = 1$ and we have
+If $S ≤ n <  σ + S$ then $1 ⊕ (h ⊘ 3) = 1$ and we have
 $$
 (g^{\rm FP}(h) ⊖ 1) ⊘ h = 0
 $$
