@@ -1,12 +1,21 @@
+# # MATH50003 Numerical Analysis (2022–23)
+# # Lab 5: Orthogonal Matrices
 
+# This lab explores orthogonal matrices, including permutations and reflections.
+# We will construct special types to capture the structure of these orthogonal operations,
+# With the goal of implementing fast matrix*vector and matrix\vector operations.
 
-**Problem 4.2 (B)** Complete the implementation of a type representing
-permutation matrices that supports `P[k,j]` and such that `*` takes $O(n)$ operations.
-```julia
+# ------
+
+# **Problem 1** Complete the implementation of a type representing
+# permutation matrices that supports `P[k,j]` and such that `*` takes $O(n)$ operations.
+
 using LinearAlgebra, Test
+import Base: getindex, *, size, \
 
 struct PermutationMatrix <: AbstractMatrix{Int}
     p::Vector{Int} # represents the permutation whose action is v[p]
+    ## This is an internal constructor: allows us to check validity of the input.
     function PermutationMatrix(p::Vector)
         sort(p) == 1:length(p) || error("input is not a valid permutation")
         new(p)
@@ -16,44 +25,59 @@ end
 function size(P::PermutationMatrix)
     (length(P.p),length(P.p))
 end
+using LinearAlgebra, Test
+import Base: getindex, *, size, \
+
+struct PermutationMatrix <: AbstractMatrix{Int}
+    p::Vector{Int} # represents the permutation whose action is v[p]
+    ## This is an internal constructor: allows us to check validity of the input.
+    function PermutationMatrix(p::Vector)
+        sort(p) == 1:length(p) || error("input is not a valid permutation")
+        new(p)
+    end
+end
+
+function size(P::PermutationMatrix)
+    (length(P.p),length(P.p))
+end
+
+## getindex(P, k, j) is a synonym for P[k,j]
 function getindex(P::PermutationMatrix, k::Int, j::Int)
-    # P.p[k] == j ? 1 : 0 
+    ## TODO: Implement P[k,j]
+    ## SOLUTION
+    ## P.p[k] == j ? 1 : 0 
     if P.p[k] == j
         1
     else 
         0
     end
+    ## END
 end
 function *(P::PermutationMatrix, x::AbstractVector)
+    ## TODO: return a vector whose entries are permuted according to P.p
+    ## SOLUTION
     x[P.p]
+    ## END
 end
 
-# If your code is correct, this "unit test" will succeed
+## If your code is correct, this "unit test" will succeed
 p = [1, 4, 2, 5, 3]
 P = PermutationMatrix(p)
 @test P == I(5)[p,:]
-```
 
-The following codes show that `*` takes $O(n)$ of both time and space.
-```julia
-using BenchmarkTools, Random
-x=0 # for some reason, an error "UndefVarError: x not defined" will occur without this line. p and P are previously defined so they work fine.
-for n = 10 .^ (1:7)
-    print("n = ", n)
-    p = randperm(n)
-    P = PermutationMatrix(p)
-    x = randn(n)
-    @btime P*x
-end
-```
+n = 1_000_000
+p = Vector(n:-1:1) # makes a Vector corresponding to [n,n-1,…,1]
+P = PermutationMatrix(p)
+x = randn(n)
+@test P*x == x[p]
 
 
-**Problem 5.4 (B)** Complete the implementation of a type representing
-reflections that supports `Q[k,j]` and such that `*` takes $O(n)$ operations.
-```julia
-using LinearAlgebra, Test
+# -------
 
-# Represents I - 2v*v'
+# **Problem 2.1** Complete the implementation of a type representing
+# reflections that supports `Q[k,j]` and such that `*` takes $O(n)$ operations.
+
+## Represents I - 2v*v'
 struct Reflection{T} <: AbstractMatrix{T}
     v::Vector{T}
 end
@@ -63,39 +87,41 @@ Reflection(x::Vector{T}) where T = Reflection{T}(x/norm(x))
 function size(Q::Reflection)
     (length(Q.v),length(Q.v))
 end
+# getindex(Q, k, j) is synonym for Q[k,j]
 function getindex(Q::Reflection, k::Int, j::Int)
-    (k == j) - 2Q.v[k]*Q.v[j] # note true is treated like 1 and false like 0
+    ## TODO: implement Q[k,j] == (I - 2v*v')[k,j] but using O(1) operations
+    ## SOLUTION
+    if k == j
+        1 - 2Q.v[k]*Q.v[j]
+    else
+        - 2Q.v[k]*Q.v[j]
+    end
+    ## END
 end
 function *(Q::Reflection, x::AbstractVector)
+    ## TODO: implement Q*x, equivalent to (I - 2v*v')*x but using only O(n) operations
+    ## SOLUTION
     x - 2*Q.v * dot(Q.v,x) # (Q.v'*x) also works instead of dot
+    ## END
 end
 
 # If your code is correct, these "unit tests" will succeed
-x = randn(5)
+n = 1_000_000
+x = randn(n) + im*randn(n)
 Q = Reflection(x)
 v = x/norm(x)
 @test Q == I-2v*v'
 @test Q*v ≈ -v
 @test Q'Q ≈ I
-```
 
-The following codes show that `*` takes $O(n)$ of both time and space.
-```julia
-using BenchmarkTools, Random
-for n = 10 .^ (1:7)
-    print("n = ", n)
-    x = randn(n)
-    Q = Reflection(x)
-    v = randn(n)
-    @btime Q*v
-end
-```
 
-**Problem 5.5 (C)** Complete the following implementation of a Housholder reflection  so that the
-unit tests pass. Here `s == true` means the Householder reflection is sent to the positive axis and `s == false` is the negative axis.
 
-```julia
+# **Problem 2.2** Complete the following implementation of a Housholder reflection  so that the
+# unit tests pass. Here `s == true` means the Householder reflection is sent to the positive axis and `s == false` is the negative axis.
+
 function householderreflection(s::Bool, x::AbstractVector)
+    ## TODO: return a `Reflection` corresponding to a Householder reflection
+    ## SOLUTION
     y = copy(x) # don't modify `x`
     if s
         y[1] -= norm(x)
@@ -103,6 +129,7 @@ function householderreflection(s::Bool, x::AbstractVector)
         y[1] += norm(x)
     end
     Reflection(y)
+    ## END
 end
 
 x = randn(5)
@@ -113,93 +140,61 @@ Q = householderreflection(true, x)
 Q = householderreflection(false, x)
 @test Q isa Reflection
 @test Q*x ≈ [-norm(x);zeros(eltype(x),length(x)-1)]
-```
 
-**Problem 5.6⋆ (A)** Consider a Householder reflection with $𝐱 = [1,h]$
-with $h = 2^{-n}$. What is the floating point error in
-computing $𝐲 = ∓ \|𝐱\| 𝐞_1 + 𝐱$ for each choice of sign.
 
-**SOLUTION**
+# ---------
 
-Since $\|𝐱\|=\sqrt{1+h^2}$, we have $𝐲=[1∓\sqrt{1+h^2},h]$. We note first that $h^{fp}$ and $(h^2)^{fp}$ are exact due to the choice of $h$, so we only need to discuss the floating error in computing $1\mp\sqrt{1+h^2}$.
+# **Problem 3**
+# Complete the definition of `Reflections` which supports a sequence of reflections,
+# that is,
+# $$
+# Q = Q_{𝐯_1} ⋯ Q_{𝐯_n}
+# $$
+# where the vectors are stored as a matrix `V` whose $j$-th column is $𝐯_j$, and
+# $$
+# Q_{𝐯_j} = I - 2 𝐯_j 𝐯_j^⊤.
+# $$
 
-Numerically, let the length of the significand be $S$, then
-$$
-1\oplus h^2=
-\begin{cases}
-1+h^2 & n\le S/2 \\
-1 & n>S/2
-\end{cases}
-=1+h^2+\delta_1
-$$
-where $|\delta_1|\le \frac{\epsilon_m}{2}$.
 
-$+$ PLUS $+$
-
-Since $\sqrt{1\oplus h^2}^{fp}>0$, we know that
-$$\begin{split}
-1\oplus\sqrt{1\oplus h^2}^{fp}=&(1+\delta_2)(1+\sqrt{1\oplus h^2}^{fp})\\
-=&(1+\delta_2)(1+\sqrt{1+h^2+\delta_1}(1+\delta_3))
-\end{split}$$
-where $|\delta_2|,|\delta_3|\le \frac{\epsilon_m}{2}$. Then
-$$\begin{split}
-\frac{1\oplus\sqrt{1\oplus h^2}^{fp}}{1+\sqrt{1+h^2}}=&(1+\delta_2)\left(1+\frac{\sqrt{1+h^2+\delta_1}(1+\delta_3)-\sqrt{1+h^2}}{1+\sqrt{1+h^2}}\right)\\
-=&(1+\delta_2)\left(1+\frac{(1+\delta_3)(\sqrt{1+h^2+\delta_1}-\sqrt{1+h^2})+\delta_3\sqrt{1+h^2}}{1+\sqrt{1+h^2}}\right)\\
-\approx &(1+\delta_2)\left(1+\frac{\delta_1}{2(1+\sqrt{1+h^2})\sqrt{1+h^2}}+\delta_3\frac{\sqrt{1+h^2}}{1+\sqrt{1+h^2}}\right)
-\end{split}$$
-and we can bound the relative error by
-$$|\delta_2|+|\delta_1|\frac{1}{2(1+\sqrt{1+h^2})\sqrt{1+h^2}}+|\delta_3|\frac{\sqrt{1+h^2}}{1+\sqrt{1+h^2}}\le |\delta_2|+\frac{|\delta_1|}{4}+\frac{3|\delta_3|}{4}\le \epsilon_m.$$
-
-In conclusion, it's very accurate to compute $1+\sqrt{1+h^2}$. Let us verify this:
-```julia
-using Plots
-S = precision(Float64)-1;
-relative_error = zeros(S)
-for n = 1:S
-    h = 2.0^(-n)
-    exact = 1+sqrt(1+BigFloat(h)^2)
-    numerical = 1+sqrt(1+h^2)
-    relative_error[n] = abs(numerical-exact)/exact
+struct Reflections{T} <: AbstractMatrix{T}
+    V::Matrix{T}
 end
-println(eps())
-maximum(relative_error)
-```
 
-$-$ MINUS $-$
+size(Q::Reflections) = (size(Q.V,1), size(Q.V,1))
 
-If $n>S/2$, then $1\ominus\sqrt{1\oplus h^2}^{fp}=1\ominus\sqrt{1}^{fp}=1\ominus 1=0$ so the relative error is 100%.
 
-If $n\le S/2$ but not too small, $1\oplus h^2$ is exactly $1+h^2$ but $\sqrt{1+h^2}^{fp}$ can have rounding error. Expand $\sqrt{1+h^2}$ into Taylor series:
-$$\sqrt{1+h^2}=1+\frac{1}{2}h^2-\frac{1}{8}h^4+\frac{1}{16}h^6-O(h^8)=1+2^{-2n-1}-2^{-4n-3}+2^{-6n-4}-O(2^{-8n})$$
-so
-$$\sqrt{1+h^2}^{fp}=
-\begin{cases}
-1 & n=S/2\\
-1+\frac{1}{2}h^2 & \frac{S-3}{4}\le n<S/2\\
-1+\frac{1}{2}h^2-\frac{1}{8}h^4 & \frac{S-4}{6}\le n<\frac{S-3}{4}\\
-\vdots & \vdots
-\end{cases}$$
-where we can conclude that the absolute error is approximately $\frac{1}{2}h^2,\frac{1}{8}h^4,\frac{1}{16}h^6,\dots$ for each stage when $h$ is small. Keeping in mind that $1-\sqrt{1+h^2}\approx -\frac{1}{2}h^2$ when $h$ is small, the relative error is approximately $1, \frac{1}{4}h^2,\frac{1}{8}h^4,\dots$ for each stage. Special note: the relative error is exactly 1 in the first stage when $n=S/2$.
+function *(Q::Reflections, x::AbstractVector)
+    T = promote_type(eltype(Q), eltype(x))
+    r = Vector{T}(x) # convert x to a vector of type T
+    # TODO: Apply Q in O(mn) operations by applying
+    # the reflection corresponding to each column of Q.V to r
+    
+    ## SOLUTION
+    m,n = size(Q.V)
+    for j = n:-1:1
+        r = Reflection(Q.V[:, j]) * r
+    end
+    ## END
 
-If $n$ is so small that $\sqrt{1+h^2}$ is noticably larger than 1, the absolute error can be bounded by $\frac{\epsilon_m}{2}$ so the relative error is bounded by $\frac{\epsilon_m}{2(\sqrt{1+h^2}-1)}\approx \frac{\epsilon_m}{h^2}$.
-
-Let us verify these conclusions:
-```julia
-using Plots
-S=precision(Float64)-1;
-relative_error=zeros(S)
-for n=1:S
-    h=2.0^(-n)
-    exact=1-sqrt(1+BigFloat(h)^2)
-    numerical=1-sqrt(1+h^2)
-    relative_error[n]=-abs(numerical-exact)/exact
+    r
 end
-plot(1:S,log2.(relative_error), xlabel="n", ylabel="relative error (log2)")
-```
 
-From this plot we can clearly identify the 3 phases:
-1. When $n$ is very small, the relative error grows smoothly with $n$;
-2. When $n$ is neither too large nor too small, the relative error has jumps at around $S/2=26$, $(S-3)/4=12.25$, $(S-4)/6=8$. In each stage, the slope is as predicted. For example, the first stage from $S/2$ to $(S-3)/4$ has relative error of $\frac{1}{4}h^2$, hence the slope is -2 between 13 and 25.
-3. When $n\ge S/2$, the relative error is 100%;
+function getindex(Q::Reflections, k::Int, j::Int)
+    # TODO: Return Q[k,j] in O(mn) operations (hint: use *)
 
-The transition point between phase 1 and 2 is at the stage for $O(h^8)$ of relative error from phase 2 which meets $\frac{\epsilon_m}{h^2}$ from phase 1.
+    ## SOLUTION
+    T = eltype(Q.V)
+    m,n = size(Q)
+    ej = zeros(T, m)
+    ej[j] = one(T)
+    return (Q*ej)[k]
+    ## END
+end
+
+Y = randn(5,3)
+V = Y * Diagonal([1/norm(Y[:,j]) for j=1:3])
+Q = Reflections(V)
+@test Q ≈ (I - 2V[:,1]*V[:,1]')*(I - 2V[:,2]*V[:,2]')*(I - 2V[:,3]*V[:,3]')
+@test Q'Q ≈ I
+
+
