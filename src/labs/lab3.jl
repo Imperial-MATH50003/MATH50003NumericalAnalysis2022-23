@@ -1,4 +1,4 @@
-# # MATH50003 (2022–23)
+# # MATH50003 Numerical Analysis (2022–23)
 # # Lab 3: Divided differences and dual numbers
 #
 # This lab explores different discretisations for first and higher derivatives.
@@ -21,7 +21,14 @@
 using Plots, Test
 ## helper function to avoid trying to take logs of 0 in plots
 ## use in plots below
-nanabs(x) = iszero(x) ? NaN : abs(x)
+## Here COND ? EXPR1 : EXPR2
+## is another way to write
+## if COND
+##     EXPR1
+## else
+##     EXPR2
+## end
+nanabs = x -> iszero(x) ? NaN : abs(x)
 
 
 # --------
@@ -31,6 +38,11 @@ nanabs(x) = iszero(x) ? NaN : abs(x)
 # **Problem 1** Implement central differences
 # for $f(x) = 1 + x + x^2$ and $g(x) = 1 + x/3 + x^2$, approximating the derivative at $x = 0$.
 # Plot the absolute errors for `h = 2.0 .^ (0:-1:-60)` and `h = 10.0 .^ (0:-1:-16)`.
+#
+# Hint: the easiest way to do this is the copy the code from lectures/notes for forward differences,
+# and replace the line `f.(h) .- f(0) ./ h` with the equivalent for central differences.
+# Note that `f.(h)` is broadcast notation so creates a vector containing `[f(h[1]),…,f(h[end])]`.
+# Thus that expression creates a vector containing `[(f(h[1])-f(0))/h[1], …, (f(h[end])-f(0))/h[end]]`.
 
 
 
@@ -55,7 +67,7 @@ nanabs(x) = iszero(x) ? NaN : abs(x)
 
 # ----
 
-# **Problem 3.1** Add support for `cos`, `sin`, and `/` to the type `Dual`:
+# We now extend our implementation of `Dual` which we began in lectures/notes as follows:
 
 ## Dual(a,b) represents a + b*ϵ
 struct Dual{T}
@@ -69,6 +81,7 @@ Dual(a::Real) = Dual(a, zero(a)) # for real numbers we use a + 0ϵ
 ## Allow for a + b*ϵ syntax
 const ϵ = Dual(0, 1)
 
+## import the functions which we wish to overload
 import Base: +, *, -, /, ^, zero, exp, cos, sin, one
 
 ## support polynomials like 1 + x, x - 1, 2x or x*2 by reducing to Dual
@@ -103,6 +116,9 @@ one(x::Dual) = Dual(one(eltype(x.a)))
 *(x::Dual, y::Dual) = Dual(x.a*y.a, x.a*y.b + x.b*y.a)
 
 exp(x::Dual) = Dual(exp(x.a), exp(x.a) * x.b)
+
+# **Problem 3.1** Add support for `cos`, `sin`, and `/` to the type `Dual`
+# by replacing the `# TODO`s in the below code.
 
 function cos(x::Dual)
     ## TODO: implement cos for Duals

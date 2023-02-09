@@ -21,7 +21,14 @@
 using Plots, Test
 ## helper function to avoid trying to take logs of 0 in plots
 ## use in plots below
-nanabs(x) = iszero(x) ? NaN : abs(x)
+## Here COND ? EXPR1 : EXPR2
+## is another way to write
+## if COND
+##     EXPR1
+## else
+##     EXPR2
+## end
+nanabs = x -> iszero(x) ? NaN : abs(x)
 
 
 # --------
