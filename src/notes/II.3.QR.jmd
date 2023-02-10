@@ -1,0 +1,455 @@
+# II.3 QR factorisation
+
+Let $A ∈ ℂ^{m × n}$ be a rectangular or square matrix such that $m ≥ n$ (i.e. more rows then columns).
+In this chapter we consider two closely related factorisations:
+
+1. The _QR factorisation_
+$$
+A = Q R = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_m \end{bmatrix}}_{Q ∈ U(m)} \underbrace{\begin{bmatrix} × & ⋯ & × \\ & ⋱ & ⋮ \\ && × \\ &&0 \\ &&⋮ \\ && 0 \end{bmatrix}}_{R ∈ ℂ^{m × n}}
+$$
+where $Q$ is unitary (i.e., $Q ∈ U(m)$, satisfying $Q^⋆Q = I$, with columns $𝐪_j ∈ ℂ^m$) and $R$ is _right triangular_, which means it 
+is only nonzero on or to the right of the diagonal.
+
+2. The _reduced QR factorisation_
+$$
+A = Q̂ R̂ = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_n \end{bmatrix}}_{ Q̂ ∈ ℂ^{m × n}} \underbrace{\begin{bmatrix} × & ⋯ & × \\ & ⋱ & ⋮ \\ && ×  \end{bmatrix}}_{R̂ ∈ ℂ^{n × n}}
+$$
+where $Q$ has orthogonal columns ($Q^⋆ Q = I$, $𝐪_j ∈ ℂ^m$) and $R̂$ is upper triangular.
+
+Note for a square matrix the reduced QR factorisation is equivalent to the QR factorisation, in which case $R$ is _upper triangular_.
+The importance of these decomposition for square matrices is that their component pieces are easy to invert:
+$$
+A = QR \qquad ⇒ \qquad A^{-1}𝐛 = R^{-1} Q^⊤ 𝐛
+$$
+and we saw in the last two chapters that triangular and orthogonal matrices are easy to invert when applied to a vector $𝐛$,
+e.g., using forward/back-substitution.
+
+For rectangular matrices we will see that they lead to efficient solutions to the _least squares problem_: find
+$𝐱$ that minimizes the 2-norm
+$$
+\| A 𝐱 - 𝐛 \|.
+$$
+Note in the rectangular case the QR decomposition contains within it the reduced QR decomposition:
+$$
+A = QR = \begin{bmatrix} Q̂ | 𝐪_{n+1} | ⋯ | 𝐪_m \end{bmatrix} \begin{bmatrix} R̂ \\  𝟎_{m-n × n} \end{bmatrix} = Q̂ R̂.
+$$
+
+
+
+
+In this lecture we discuss the followng:
+
+1. QR and least squares: We discuss the QR decomposition and its usage in solving least squares problems.
+2. Reduced QR and Gram–Schmidt: We discuss computation of the Reduced QR decomposition using Gram–Schmidt.
+3. Householder reflections and QR: We discuss computing the  QR decomposition using Householder reflections.
+
+```julia
+using LinearAlgebra, Plots, BenchmarkTools
+```
+
+## 1. QR and least squares
+
+Here we consider rectangular matrices with more rows than columns. Given $A ∈ ℂ^{m × n}$ and $𝐛 ∈ ℂ^m$,
+least squares consists of finding a vector $𝐱 ∈ ℂ^n$ that minimises the 2-norm:
+$
+\| A 𝐱 - 𝐛 \|
+$.
+
+
+**Theorem 1 (least squares via QR)** Suppose $A ∈ ℂ^{m × n}$ has full rank. Given a QR decomposition $A = Q R$
+then
+$$
+𝐱 = R̂^{-1} Q̂^⊤ 𝐛
+$$
+minimises $\| A 𝐱 - 𝐛 \|$. 
+
+**Proof**
+
+The norm-preserving property (see PS4 Q3.1) of unitary matrices tells us
+$$
+\| A 𝐱 - 𝐛 \| = \| Q R 𝐱 - 𝐛 \| = \| Q (R 𝐱 - Q^⋆ 𝐛) \| = \| R 𝐱 - Q^⋆ 𝐛 \| = \left \| 
+\begin{bmatrix} R̂ \\ 𝟎_{m-n × n} \end{bmatrix} 𝐱 - \begin{bmatrix} Q̂^⊤ \\ 𝐪_{n+1}^⊤ \\ ⋮ \\ 𝐪_m^⊤ \end{bmatrix}     𝐛 \right \|
+$$
+Now note that the rows $k > n$ are independent of $𝐱$ and are a fixed contribution. Thus to minimise this norm it suffices to
+drop them and minimise:
+$$
+\| R̂ 𝐱 - Q̂^⊤ 𝐛 \|
+$$
+This norm is minimised if it is zero. Provided the column rank of $A$ is full, $R̂$ will be invertible (Exercise: why is this?).
+
+∎
+
+
+**Example 1 (quadratic fit)** Suppose we want to fit noisy data by a quadratic
+$$
+p(x) = p₀ + p₁ x + p₂ x^2
+$$
+That is, we want to choose $p₀,p₁,p₂$ at data samples $x_1, …, x_m$ so that the following is true:
+$$
+p₀ + p₁ x_k + p₂ x_k^2 ≈ f_k
+$$
+where $f_k$ are given by data. We can reinterpret this as a least squares problem: minimise the norm
+$$
+\left\| \begin{bmatrix} 1 & x_1 & x_1^2 \\ ⋮ & ⋮ & ⋮ \\ 1 & x_m & x_m^2 \end{bmatrix}
+\begin{bmatrix} p₀ \\ p₁ \\ p₂ \end{bmatrix} - \begin{bmatrix} f_1 \\ ⋮ \\ f_m \end{bmatrix} \right \|
+$$
+We can solve this using the QR decomposition:
+```julia
+m,n = 100,3
+
+x = range(0,1; length=m) # 100 points
+f = 2 .+ x .+ 2x.^2 .+ 0.1 .* randn.() # Noisy quadratic
+
+A = x .^ (0:2)'  # 100 x 3 matrix, equivalent to [ones(m) x x.^2]
+Q,R̂ = qr(A)
+Q̂ = Q[:,1:n] # Q represents full orthogonal matrix so we take first 3 columns
+
+p₀,p₁,p₂ = R̂ \ Q̂'f
+```
+We can visualise the fit:
+```julia
+p = x -> p₀ + p₁*x + p₂*x^2
+
+scatter(x, f; label="samples", legend=:bottomright)
+plot!(x, p.(x); label="quadratic")
+```
+Note that `\` with a rectangular system does least squares by default:
+```julia
+A \ f
+```
+
+
+## 2. Reduced QR and Gram–Schmidt
+
+
+How do we compute the QR decomposition? We begin with a method
+you may have seen before in another guise. Write
+$$
+A = \begin{bmatrix} 𝐚_1 | ⋯ | 𝐚_n \end{bmatrix}
+$$
+where $𝐚_k ∈  ℂ^m$ and assume they are linearly independent ($A$ has full column rank).
+
+
+**Proposition 1 (Column spaces match)** Suppose $A = Q̂  R̂$ where $Q̂ = [𝐪_1,…,𝐪_n]$
+has orthogonal columns and $R̂$ is upper-triangular, and $A$ has full rank.
+Then the first $j$ columns of
+$Q̂$ span the same space as the first $j$ columns of $A$:
+$$
+\hbox{span}(𝐚_1,…,𝐚_j) = \hbox{span}(𝐪_1,…,𝐪_j).
+$$
+
+**Proof***
+
+Because $A$ has full rank we know $R̂$ is invertible, i.e. its diagonal entries do not vanish: $r_{jj} ≠ 0$.
+If $𝐯 ∈ \hbox{span}(𝐚_1,…,𝐚_j)$ we have for $𝐜 ∈ ℂ^j$
+$$
+𝐯 = \begin{bmatrix} 𝐚_1 | ⋯ | 𝐚_j \end{bmatrix} 𝐜 = 
+\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_j \end{bmatrix}  R̂[1:j,1:j] 𝐜 ∈ \hbox{span}(𝐪_1,…,𝐪_j)
+$$
+ while if $𝐰 ∈ \hbox{span}(𝐪_1,…,𝐪_j)$ we have for $𝐝 ∈ ℝ^j$
+$$
+𝐰 = \begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_j \end{bmatrix} 𝐝  =  \begin{bmatrix} 𝐚_1 | ⋯ | 𝐚_j \end{bmatrix} R̂[1:j,1:j]^{-1} 𝐝 ∈  \hbox{span}(𝐚_1,…,𝐚_j).
+$$
+
+∎
+
+ 
+It is possible to find $Q̂$ and $R̂$ the  using the _Gram–Schmidt algorithm_.
+We construct it column-by-column:
+
+**Algorithm 1 (Gram–Schmidt)** For $j = 1, 2, …, n$ define
+$$
+\begin{align*}
+𝐯_j &:= 𝐚_j - ∑_{k=1}^{j-1} \underbrace{𝐪_k^⋆ 𝐚_j}_{r_{kj}} 𝐪_k \\
+r_{jj} &:= {\|𝐯_j\|} \\
+𝐪_j &:= {𝐯_j \over r_{jj}}
+\end{align*}
+$$
+
+**Theorem 2 (Gram–Schmidt and reduced QR)** Define $𝐪_j$ and $r_{kj}$ as in Algorithm 1
+(with $r_{kj} = 0$ if $k > j$). Then a reduced QR decomposition is given by:
+$$
+A = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_n \end{bmatrix}}_{ Q̂ ∈ ℂ^{m × n}} \underbrace{\begin{bmatrix} r_{11} & ⋯ & r_{1n} \\ & ⋱ & ⋮ \\ && r_{nn}  \end{bmatrix}}_{R̂ ∈ ℂ^{n × n}}
+$$
+
+**Proof**
+
+We first show that $Q̂$ has orthogonal columns. Assume that $𝐪_ℓ^⋆ 𝐪_k = δ_{ℓk}$ for $k,ℓ < j$. 
+For $ℓ < j$ we then have
+$$
+𝐪_ℓ^⋆ 𝐯_j = 𝐪_ℓ^⋆ 𝐚_j - ∑_{k=1}^{j-1}  𝐪_ℓ^⋆𝐪_k 𝐪_k^⋆ 𝐚_j = 0
+$$
+hence $𝐪_ℓ^⋆ 𝐪_j = 0$ and indeed $Q̂$ has orthogonal columns. Further: from the definition of $𝐯_j$ we find
+$$
+𝐚_j = 𝐯_j + ∑_{k=1}^{j-1} r_{kj} 𝐪_k = ∑_{k=1}^j r_{kj} 𝐪_k  = Q̂ R̂ 𝐞_j
+$$
+
+∎
+
+### Gram–Schmidt in action
+
+We are going to compute the reduced QR of a random matrix
+```julia
+m,n = 5,4
+A = randn(m,n)
+Q,R̂ = qr(A)
+Q̂ = Q[:,1:n]
+```
+The first column of `Q̂` is indeed a normalised first column of `A`:
+```julia
+R = zeros(n,n)
+Q = zeros(m,n)
+R[1,1] = norm(A[:,1])
+Q[:,1] = A[:,1]/R[1,1]
+```
+We now determine the next entries as
+```julia
+R[1,2] = Q[:,1]'A[:,2]
+v = A[:,2] - Q[:,1]*R[1,2]
+R[2,2] = norm(v)
+Q[:,2] = v/R[2,2]
+```
+And the third column is then:
+```julia
+R[1,3] = Q[:,1]'A[:,3]
+R[2,3] = Q[:,2]'A[:,3]
+v = A[:,3] - Q[:,1:2]*R[1:2,3]
+R[3,3] = norm(v)
+Q[:,3] = v/R[3,3]
+```
+(Note the signs may not necessarily match.)
+
+We can clean this up as a simple algorithm:
+```julia
+function gramschmidt(A)
+    m,n = size(A)
+    m ≥ n || error("Not supported")
+    R = zeros(n,n)
+    Q = zeros(m,n)
+    for j = 1:n
+        for k = 1:j-1
+            R[k,j] = Q[:,k]'*A[:,j]
+        end
+        v = A[:,j] - Q[:,1:j-1]*R[1:j-1,j]
+        R[j,j] = norm(v)
+        Q[:,j] = v/R[j,j]
+    end
+    Q,R
+end
+
+Q,R = gramschmidt(A)
+norm(A - Q*R)
+```
+
+
+### Complexity and stability
+
+We see within the `for j = 1:n` loop that we have $O(mj)$ operations. Thus the 
+total complexity is $O(m n^2)$ operations.
+
+
+Unfortunately, the Gram–Schmidt algorithm is _unstable_: the rounding errors when implemented in floating point
+accumulate in a way that we lose orthogonality:
+```julia
+A = randn(300,300)
+Q,R = gramschmidt(A)
+norm(Q'Q-I)
+```
+
+## 3. Householder reflections and QR
+
+As an alternative, we will consider using Householder reflections to introduce zeros below
+the diagonal.
+Thus, if Gram–Schmidt is a process of _triangular orthogonalisation_ (using triangular matrices
+to orthogonalise), Householder reflections is a process of _orthogonal triangularisation_ 
+(using orthogonal matrices to triangularise).
+
+Consider multiplication by the Householder reflection corresponding to the first column,
+that is, for
+$$
+Q_1 := Q_{𝐚_1}^{\rm H},
+$$
+consider
+$$
+Q_1 A = \begin{bmatrix} × & × & ⋯ & × \\
+& × & ⋯ & × \\
+                    & ⋮ & ⋱ & ⋮ \\
+                    & × & ⋯ & × \end{bmatrix} = 
+\begin{bmatrix} r_{11} & r_{12} & ⋯ & r_{1n} \\ 
+& 𝐚_2^1 & ⋯ & 𝐚_n^1   \end{bmatrix}
+$$
+where 
+$$
+r_{1j} :=  (Q_1 𝐚_j)[1] \qquad \hbox{and} \qquad 𝐚_j^1 := (Q_1 𝐚_j)[2:m],
+$$
+noting $r_{11} = -\hbox{sign}(a_{11})\|𝐚_1\|$ and all entries of $𝐚_1^1$ are zero (thus not included).
+That is, we have made the first column triangular.
+
+But now consider
+$$
+Q_2 := \begin{bmatrix} 1  \\ & Q_{𝐚_2^1}^{\rm H} \end{bmatrix} = Q_{\begin{bmatrix} 0 \\ 𝐚_2^1 \end{bmatrix}}^H
+$$
+so that
+$$
+Q_2 Q_1A = \begin{bmatrix} × & × & × & ⋯ & × \\
+& × & ×  & ⋯ & × \\
+                    && ⋮ & ⋱ & ⋮ \\
+                    && × & ⋯ & × \end{bmatrix}  =  \begin{bmatrix} r_{11} & r_{12} & r_{13} & ⋯ & r_{1n} \\ 
+    & r_{22} & r_{23} & ⋯ & r_{2n} \\
+&& 𝐚_3^2 & ⋯ & 𝐚_n^2   \end{bmatrix}
+$$
+where 
+$$
+r_{2j} :=  (Q_2 𝐚_j^1)[1] \qquad \hbox{and} \qquad 𝐚_j^2 := (Q_2 𝐚_j^1)[2:m-1]
+$$
+Thus the first two columns are triangular. 
+
+The inductive construction is thus clear.
+
+**Algorithm 2 (QR via Householder)**
+For $j = 1,2, …,n$ and $k = 1, …, j$, define
+$$
+\begin{align*}
+Q_j &:= \begin{bmatrix} I_{j-1 × j-1}  \\ & Q_{(𝐚_j^{j-1})[j:m] }^{±,\rm H} \end{bmatrix} \\
+𝐚_j^k &:= Q_k ⋯ Q_1 𝐚_j \\
+r_{kj} &:= (𝐚_j^j)[k]
+\end{align*}
+$$
+
+**Theorem 3 (Householder QR)** 
+For $Q_k$ defined in Algorithm 2 we have 
+$$
+A = \underbrace{Q_1⋯Q_n}_Q R
+$$
+
+**Proof**
+
+Note for $Q := Q_1⋯Q_n$ we have using the Hermitian property of $Q_j$
+$$
+Q^⋆ = Q_n^⋆⋯Q_1^⋆ = Q_n ⋯ Q_1
+$$
+We have by the properties of Householder reflections
+$$
+𝐚_j^j = Q_j 𝐚_j^{j-1} = \begin{bmatrix} (𝐚_j^{j-1})[1:j-1] \\  \| (𝐚_j^{j-1})[j:m]\| 𝐞_1 \end{bmatrix}
+$$
+As $Q_{j+1}, …, Q_n$ all leave the first $j$ entries fixed we know that
+$$
+𝐚_j^{j} = 𝐚_j^{j+1} = ⋯ = 𝐚_j^{n}
+$$
+It follows that
+$$
+Q^⋆ A = Q_n ⋯ Q_1 A = [𝐚_1^n  | ⋯ | 𝐚_n^n] = [𝐚_1^1 | 𝐚_2^2  | ⋯ | 𝐚_n^n] = R
+$$
+is right-triangular.
+
+∎
+
+The implementation is clearer. We do a naive implementation here:
+```julia
+function householderreflection(x)
+    y = copy(x)
+    # we cannot use sign(x[1]) in case x[1] == 0
+    y[1] += (x[1] ≥ 0 ? 1 : -1)*norm(x) 
+    w = y/norm(y)
+    I - 2*w*w'
+end
+function householderqr(A)
+    m,n = size(A)
+    R = copy(A)
+    Q = Matrix(1.0I, m, m)
+    for j = 1:n
+        Qⱼ = householderreflection(R[j:end,j])
+        R[j:end,:] = Qⱼ*R[j:end,:]
+        Q[:,j:end] = Q[:,j:end]*Qⱼ
+    end
+    Q,R
+end
+
+m,n = 7,5
+A = randn(m, n)
+Q,R = householderqr(A)
+Q*R ≈ A
+```
+Note because we are forming a full matrix representation of each Householder
+reflection this is a slow algorithm, taking $O(n^4)$ operations. The problem sheet
+will consider a better implementation that takes $O(n^3)$ operations.
+
+
+**Example 2** We will now do an example by hand. Consider the $4 × 3$ matrix
+$$
+A = \begin{bmatrix} 
+4 & 2 & -1 \\ 
+0 & 15 & 18 \\
+-2 & -4 & -4 \\
+-2 & -4 & -10
+\end{bmatrix}
+$$
+For the first column we have
+$$
+Q_1 = I - {1 \over 12} \begin{bmatrix} 4 \\ 0 \\ -2 \\ -2 \end{bmatrix} \begin{bmatrix} 4 & 0 & -2 & -2 \end{bmatrix} =
+{1 \over 3} \begin{bmatrix}
+-1 & 0 & 2 & 2 \\
+0 & 3 & 0 & 0 \\
+2 & 0 & 2 & -1 \\
+2 & 0 & -1 &2
+\end{bmatrix}
+$$
+so that
+$$
+Q_1 A = \begin{bmatrix} -3 & -6 & -9 \\
+ & 15 & 18 \\
+  & 0 & 0 \\
+& 0 & -6
+\end{bmatrix}
+$$
+In this example the next column is already upper-triangular,
+but because of our choice of reflection we will end up swapping the sign, that is
+$$
+Q_2 = \begin{bmatrix} 1 \\ & -1 \\ && 1 \\ &&& 1 \end{bmatrix}
+$$
+so that
+$$
+Q_2 Q_1 A = \begin{bmatrix} -3 & -6 & -9 \\
+ & -15 & -18 \\
+  & 0 & 0 \\
+& 0 & -6
+\end{bmatrix}
+$$
+The final reflection is
+$$
+Q_3 = \begin{bmatrix} I_{2 × 2} \\ &  I - \begin{bmatrix} 1 \\ -1 \end{bmatrix} \begin{bmatrix} 1 & -1 \end{bmatrix} 
+\end{bmatrix} = \begin{bmatrix} å1 \\ & 1 \\ & & 0 & 1 \\ & & 1 & 0 \end{bmatrix}
+$$
+giving us
+$$
+Q_3 Q_2 Q_1 A = \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
+ & -15 & -18 \\
+  &  & -6 \\
+&  & 0
+\end{bmatrix}}_R
+$$
+That is,
+$$
+A = Q_1 Q_2 Q_3 R = \underbrace{{1 \over 3} \begin{bmatrix}
+-1 & 0 & 2 & 2 \\
+0 & 3 & 0 & 0 \\
+2 & 0 & -1 & 2 \\
+2 & 0 & 2 &-1
+\end{bmatrix}}_Q \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
+ & -15 & -18 \\
+  &  & -6 \\
+&  & 0
+\end{bmatrix}}_R = \underbrace{{1 \over 3} \begin{bmatrix}
+-1 & 0 & 2  \\
+0 & 3 & 0  \\
+2 & 0 & -1  \\
+2 & 0 & 2 
+\end{bmatrix}}_Q̂  \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
+ & -15 & -18 \\
+  &  & -6 
+\end{bmatrix}}_R̂
+$$
+
+
+
+
