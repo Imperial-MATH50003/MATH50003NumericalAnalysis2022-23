@@ -5,21 +5,21 @@ In this chapter we consider two closely related factorisations:
 
 1. The _QR factorisation_
 $$
-A = Q R = \underbrace{\begin{bmatrix} 𝐪_1 | \cdots | 𝐪_m \end{bmatrix}}_{Q ∈ U(m)} \underbrace{\begin{bmatrix} × & \cdots & × \\ & ⋱ & ⋮ \\ && × \\ &&0 \\ &&⋮ \\ && 0 \end{bmatrix}}_{R ∈ ℂ^{m × n}}
+A = Q R = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_m \end{bmatrix}}_{Q ∈ U(m)} \underbrace{\begin{bmatrix} × & ⋯ & × \\ & ⋱ & ⋮ \\ && × \\ &&0 \\ &&⋮ \\ && 0 \end{bmatrix}}_{R ∈ ℂ^{m × n}}
 $$
 where $Q$ is unitary (i.e., $Q ∈ U(m)$, satisfying $Q^⋆Q = I$, with columns $𝐪_j ∈ ℂ^m$) and $R$ is _right triangular_, which means it 
 is only nonzero on or to the right of the diagonal.
 
 2. The _reduced QR factorisation_
 $$
-A = Q̂ R̂ = \underbrace{\begin{bmatrix} 𝐪_1 | \cdots | 𝐪_n \end{bmatrix}}_{ Q̂ ∈ ℂ^{m × n}} \underbrace{\begin{bmatrix} × & \cdots & × \\ & ⋱ & ⋮ \\ && ×  \end{bmatrix}}_{R̂ ∈ ℂ^{n × n}}
+A = Q̂ R̂ = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_n \end{bmatrix}}_{ Q̂ ∈ ℂ^{m × n}} \underbrace{\begin{bmatrix} × & ⋯ & × \\ & ⋱ & ⋮ \\ && ×  \end{bmatrix}}_{R̂ ∈ ℂ^{n × n}}
 $$
 where $Q$ has orthogonal columns ($Q^⋆ Q = I$, $𝐪_j ∈ ℂ^m$) and $R̂$ is upper triangular.
 
 Note for a square matrix the reduced QR factorisation is equivalent to the QR factorisation, in which case $R$ is _upper triangular_.
 The importance of these decomposition for square matrices is that their component pieces are easy to invert:
 $$
-A = QR &\Rightarrow\qquad A^{-1}𝐛 = R^{-1} Q^\top 𝐛
+A = QR \qquad ⇒ \qquad A^{-1}𝐛 = R^{-1} Q^⊤ 𝐛
 $$
 and we saw in the last two chapters that triangular and orthogonal matrices are easy to invert when applied to a vector $𝐛$,
 e.g., using forward/back-substitution.
@@ -29,7 +29,7 @@ $𝐱$ that minimizes the 2-norm
 $$
 \| A 𝐱 - 𝐛 \|.
 $$
-Note in this case the QR decomposition contains within it the reduced QR decomposition:
+Note in the rectangular case the QR decomposition contains within it the reduced QR decomposition:
 $$
 A = QR = \begin{bmatrix} Q̂ | 𝐪_{n+1} | ⋯ | 𝐪_m \end{bmatrix} \begin{bmatrix} R̂ \\  𝟎_{m-n × n} \end{bmatrix} = Q̂ R̂.
 $$
@@ -41,7 +41,7 @@ In this lecture we discuss the followng:
 
 1. QR and least squares: We discuss the QR decomposition and its usage in solving least squares problems.
 2. Reduced QR and Gram–Schmidt: We discuss computation of the Reduced QR decomposition using Gram–Schmidt.
-3. Householder reflections and QR: We discuss comuting the  QR decomposition using Householder reflections.
+3. Householder reflections and QR: We discuss computing the  QR decomposition using Householder reflections.
 
 ```julia
 using LinearAlgebra, Plots, BenchmarkTools
@@ -75,15 +75,16 @@ drop them and minimise:
 $$
 \| R̂ 𝐱 - Q̂^⊤ 𝐛 \|
 $$
-This norm is minimisable if it is zero. Provided the column rank of $A$ is full, $R̂$ will be invertible (Exercise: why is this?).
-Thus we have the solution
+This norm is minimised if it is zero. Provided the column rank of $A$ is full, $R̂$ will be invertible (Exercise: why is this?).
+
+∎
 
 
-**Example (quadratic fit)** Suppose we want to fit noisy data by a quadratic
+**Example 1 (quadratic fit)** Suppose we want to fit noisy data by a quadratic
 $$
 p(x) = p₀ + p₁ x + p₂ x^2
 $$
-That is, we want to choose $p₀,p₁,p₂$ at data samples $x_1, \ldots, x_m$ so that the following is true:
+That is, we want to choose $p₀,p₁,p₂$ at data samples $x_1, …, x_m$ so that the following is true:
 $$
 p₀ + p₁ x_k + p₂ x_k^2 ≈ f_k
 $$
@@ -124,73 +125,66 @@ A \ f
 How do we compute the QR decomposition? We begin with a method
 you may have seen before in another guise. Write
 $$
-A = \begin{bmatrix} 𝐚_1 | \dots | 𝐚_n \end{bmatrix}
+A = \begin{bmatrix} 𝐚_1 | ⋯ | 𝐚_n \end{bmatrix}
 $$
-where $𝐚_k \in  ℝ^m$ and assume they are linearly independent ($A$ has full column rank).
-Note that the column span of the first $j$ columns of $A$
-will be the same as the first $j$ columns of $Q̂$, as
-$R̂$ must be non-singular:
+where $𝐚_k ∈  ℂ^m$ and assume they are linearly independent ($A$ has full column rank).
+
+
+**Proposition 1 (Column spaces match)** Suppose $A = Q̂  R̂$ where $Q̂ = [𝐪_1,…,𝐪_n]$
+has orthogonal columns and $R̂$ is upper-triangular, and $A$ has full rank.
+Then the first $j$ columns of
+$Q̂$ span the same space as the first $j$ columns of $A$:
 $$
-\hbox{span}(𝐚_1,\ldots,𝐚_j) = \hbox{span}(𝐪_1,\ldots,𝐪_j)
+\hbox{span}(𝐚_1,…,𝐚_j) = \hbox{span}(𝐪_1,…,𝐪_j).
 $$
-In other words: the columns of $Q̂$ are an orthogonal basis
-of the column span of $A$.
-To see this note that since `R̂` is triangular we have
+
+**Proof***
+
+Because $A$ has full rank we know $R̂$ is invertible, i.e. its diagonal entries do not vanish: $r_{jj} ≠ 0$.
+If $𝐯 ∈ \hbox{span}(𝐚_1,…,𝐚_j)$ we have for $𝐜 ∈ ℂ^j$
 $$
-\begin{bmatrix} 𝐚_1 | \dots | 𝐚_j \end{bmatrix} = \begin{bmatrix} 𝐪_1 | \dots | 𝐪_j \end{bmatrix}  R̂[1:j,1:j]
+𝐯 = \begin{bmatrix} 𝐚_1 | ⋯ | 𝐚_j \end{bmatrix} 𝐜 = 
+\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_j \end{bmatrix}  R̂[1:j,1:j] 𝐜 ∈ \hbox{span}(𝐪_1,…,𝐪_j)
 $$
-for all $j$. That is, if $𝐯 ∈ \hbox{span}(𝐚_1,\ldots,𝐚_j)$ we have for $𝐜 ∈ ℝ^j$
+ while if $𝐰 ∈ \hbox{span}(𝐪_1,…,𝐪_j)$ we have for $𝐝 ∈ ℝ^j$
 $$
-𝐯 = \begin{bmatrix} 𝐚_1 | \dots | 𝐚_j \end{bmatrix} 𝐜 = \begin{bmatrix} 𝐪_1 | \dots | 𝐪_j \end{bmatrix}  R̂[1:j,1:j] 𝐜 ∈ \hbox{span}(𝐪_1,\ldots,𝐪_j)
+𝐰 = \begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_j \end{bmatrix} 𝐝  =  \begin{bmatrix} 𝐚_1 | ⋯ | 𝐚_j \end{bmatrix} R̂[1:j,1:j]^{-1} 𝐝 ∈  \hbox{span}(𝐚_1,…,𝐚_j).
 $$
- while if $𝐰 ∈ \hbox{span}(𝐪_1,\ldots,𝐪_j)$ we have for $𝐝 ∈ ℝ^j$
-$$
-𝐰 = \begin{bmatrix} 𝐪_1 | \dots | 𝐪_j \end{bmatrix} 𝐝  =  \begin{bmatrix} 𝐚_1 | \dots | 𝐚_j \end{bmatrix} R̂[1:j,1:j]^{-1} 𝐝 ∈  \hbox{span}(𝐚_1,\ldots,𝐚_j).
-$$
+
+∎
 
  
-It is possible to find an orthogonal basis using the _Gram–Schmidt algorithm_,
-We construct it via induction:
-assume that
-$$
-\hbox{span}(𝐚_1,\ldots,𝐚_{j-1}) = \hbox{span}(𝐪_1,\ldots,𝐪_{j-1})
-$$
-where $𝐪_1,\ldots,𝐪_{j-1}$ are orthogonal:
-$$
-𝐪_k^\top 𝐪_ℓ = δ_{kℓ} = \begin{cases} 1 & k = ℓ \\
-                                            0 & \hbox{otherwise} \end{cases}.
-$$
-for $k,ℓ < j$.
-Define
-$$
-𝐯_j := 𝐚_j - \sum_{k=1}^{j-1} \underbrace{𝐪_k^\top 𝐚_j}_{r_{kj}} 𝐪_k
-$$
-so that for $k < j$
-$$
-𝐪_k^\top 𝐯_j = 𝐪_k^\top 𝐚_j - \sum_{k=1}^{j-1} \underbrace{𝐪_k^\top 𝐚_j}_{r_{kj}} 𝐪_k^\top 𝐪_k = 0.
-$$
-Then we define
-$$
-𝐪_j := {𝐯_j \over \|𝐯_j\|}.
-$$
-which sastisfies $𝐪_k^\top 𝐪_j =δ_{kj}$ for $k \leq j$.
+It is possible to find $Q̂$ and $R̂$ the  using the _Gram–Schmidt algorithm_.
+We construct it column-by-column:
 
-We now reinterpret this construction as a reduced QR decomposition.
-Define
-$
-r_{jj} := {\|𝐯_j\|}
-$
-Then rearrange the definition we have
+**Algorithm 1 (Gram–Schmidt)** For $j = 1, 2, …, n$ define
 $$
-𝐚_j = \begin{bmatrix} 𝐪_1|\cdots|𝐪_j \end{bmatrix} \begin{bmatrix} r_{1j} \\ ⋮ \\ r_{jj} \end{bmatrix}
+\begin{align*}
+𝐯_j &:= 𝐚_j - ∑_{k=1}^{j-1} \underbrace{𝐪_k^⋆ 𝐚_j}_{r_{kj}} 𝐪_k \\
+r_{jj} &:= {\|𝐯_j\|} \\
+𝐪_j &:= {𝐯_j \over r_{jj}}
+\end{align*}
 $$
-Thus
+
+**Theorem 2 (Gram–Schmidt and reduced QR)** Define $𝐪_j$ and $r_{kj}$ as in Algorithm 1
+(with $r_{kj} = 0$ if $k > j$). Then a reduced QR decomposition is given by:
 $$
-\begin{bmatrix} 𝐚_1|\cdots|𝐚_j \end{bmatrix} 
-\begin{bmatrix} r_{11} & \cdots & r_{1j} \\ & ⋱ & ⋮ \\ && r_{jj} \end{bmatrix}
+A = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_n \end{bmatrix}}_{ Q̂ ∈ ℂ^{m × n}} \underbrace{\begin{bmatrix} r_{11} & ⋯ & r_{1n} \\ & ⋱ & ⋮ \\ && r_{nn}  \end{bmatrix}}_{R̂ ∈ ℂ^{n × n}}
 $$
-That is, we are computing the reduced QR decomposition column-by-column. 
-Running this algorithm to $j = n$ completes the decomposition.
+
+**Proof**
+
+We first show that $Q̂$ has orthogonal columns. Assume that $𝐪_ℓ^⋆ 𝐪_k = δ_{ℓk}$ for $k,ℓ < j$. 
+For $ℓ < j$ we then have
+$$
+𝐪_ℓ^⋆ 𝐯_j = 𝐪_ℓ^⋆ 𝐚_j - ∑_{k=1}^{j-1}  𝐪_ℓ^⋆𝐪_k 𝐪_k^⋆ 𝐚_j = 0
+$$
+hence $𝐪_ℓ^⋆ 𝐪_j = 0$ and indeed $Q̂$ has orthogonal columns. Further: from the definition of $𝐯_j$ we find
+$$
+𝐚_j = 𝐯_j + ∑_{k=1}^{j-1} r_{kj} 𝐪_k = ∑_{k=1}^j r_{kj} 𝐪_k  = Q̂ R̂ 𝐞_j
+$$
+
+∎
 
 ### Gram–Schmidt in action
 
@@ -277,12 +271,12 @@ Q_1 := Q_{𝐚_1}^{\rm H},
 $$
 consider
 $$
-Q_1 A = \begin{bmatrix} × & × & \cdots & × \\
-& × & \cdots & × \\
+Q_1 A = \begin{bmatrix} × & × & ⋯ & × \\
+& × & ⋯ & × \\
                     & ⋮ & ⋱ & ⋮ \\
-                    & × & \cdots & × \end{bmatrix} = 
-\begin{bmatrix} r_{11} & r_{12} & \cdots & r_{1n} \\ 
-& 𝐚_2^1 & \cdots & 𝐚_n^1   \end{bmatrix}
+                    & × & ⋯ & × \end{bmatrix} = 
+\begin{bmatrix} r_{11} & r_{12} & ⋯ & r_{1n} \\ 
+& 𝐚_2^1 & ⋯ & 𝐚_n^1   \end{bmatrix}
 $$
 where 
 $$
@@ -297,12 +291,12 @@ Q_2 := \begin{bmatrix} 1  \\ & Q_{𝐚_2^1}^{\rm H} \end{bmatrix} = Q_{\begin{bm
 $$
 so that
 $$
-Q_2 Q_1A = \begin{bmatrix} × & × & × & \cdots & × \\
-& × & ×  & \cdots & × \\
+Q_2 Q_1A = \begin{bmatrix} × & × & × & ⋯ & × \\
+& × & ×  & ⋯ & × \\
                     && ⋮ & ⋱ & ⋮ \\
-                    && × & \cdots & × \end{bmatrix}  =  \begin{bmatrix} r_{11} & r_{12} & r_{13} & \cdots & r_{1n} \\ 
-    & r_{22} & r_{23} & \cdots & r_{2n} \\
-&& 𝐚_3^2 & \cdots & 𝐚_n^2   \end{bmatrix}
+                    && × & ⋯ & × \end{bmatrix}  =  \begin{bmatrix} r_{11} & r_{12} & r_{13} & ⋯ & r_{1n} \\ 
+    & r_{22} & r_{23} & ⋯ & r_{2n} \\
+&& 𝐚_3^2 & ⋯ & 𝐚_n^2   \end{bmatrix}
 $$
 where 
 $$
@@ -310,27 +304,47 @@ r_{2j} :=  (Q_2 𝐚_j^1)[1] \qquad \hbox{and} \qquad 𝐚_j^2 := (Q_2 𝐚_j^1)
 $$
 Thus the first two columns are triangular. 
 
-The inductive construction is thus clear. If we define $𝐚_j^0 := 𝐚_j$ we
-have the construction
+The inductive construction is thus clear.
+
+**Algorithm 2 (QR via Householder)**
+For $j = 1,2, …,n$ and $k = 1, …, j$, define
 $$
 \begin{align*}
-Q_j &:= \begin{bmatrix} I_{j-1 × j-1}  \\ & Q_{𝐚_j^j}^{±,\rm H} \end{bmatrix} \\
-𝐚_j^k &:= (Q_k 𝐚_j^{k-1})[2:m-k+1] \\
-r_{kj} &:= (Q_k 𝐚_j^{k-1})[1]
+Q_j &:= \begin{bmatrix} I_{j-1 × j-1}  \\ & Q_{(𝐚_j^{j-1})[j:m] }^{±,\rm H} \end{bmatrix} \\
+𝐚_j^k &:= Q_k ⋯ Q_1 𝐚_j \\
+r_{kj} &:= (𝐚_j^j)[k]
 \end{align*}
 $$
-Then
+
+**Theorem 3 (Householder QR)** 
+For $Q_k$ defined in Algorithm 2 we have 
 $$
-Q_n \cdots Q_1 A = \underbrace{\begin{bmatrix} 
-r_{11} & \cdots & r_{1n} \\ & ⋱ & ⋮\\
-                                        && r_{nn} \\&& 0 \\ && ⋮ \\ && 0 \end{bmatrix}}_R
-$$
-i.e.
-$$
-A = \underbrace{Q_1 \cdots Q_n}_Q R.
+A = \underbrace{Q_1⋯Q_n}_Q R
 $$
 
-The implementation is cleaner. We do a naive implementation here:
+**Proof**
+
+Note for $Q := Q_1⋯Q_n$ we have using the Hermitian property of $Q_j$
+$$
+Q^⋆ = Q_n^⋆⋯Q_1^⋆ = Q_n ⋯ Q_1
+$$
+We have by the properties of Householder reflections
+$$
+𝐚_j^j = Q_j 𝐚_j^{j-1} = \begin{bmatrix} (𝐚_j^{j-1})[1:j-1] \\  \| (𝐚_j^{j-1})[j:m]\| 𝐞_1 \end{bmatrix}
+$$
+As $Q_{j+1}, …, Q_n$ all leave the first $j$ entries fixed we know that
+$$
+𝐚_j^{j} = 𝐚_j^{j+1} = ⋯ = 𝐚_j^{n}
+$$
+It follows that
+$$
+Q^⋆ A = Q_n ⋯ Q_1 A = [𝐚_1^n  | ⋯ | 𝐚_n^n] = [𝐚_1^1 | 𝐚_2^2  | ⋯ | 𝐚_n^n] = R
+$$
+is right-triangular.
+
+∎
+
+The implementation is clearer. We do a naive implementation here:
 ```julia
 function householderreflection(x)
     y = copy(x)
@@ -361,7 +375,7 @@ reflection this is a slow algorithm, taking $O(n^4)$ operations. The problem she
 will consider a better implementation that takes $O(n^3)$ operations.
 
 
-**Example** We will now do an example by hand. Consider the $4 × 3$ matrix
+**Example 2** We will now do an example by hand. Consider the $4 × 3$ matrix
 $$
 A = \begin{bmatrix} 
 4 & 2 & -1 \\ 
