@@ -1,88 +1,200 @@
-**Problem 5.6⋆ (A)** Consider a Householder reflection with $𝐱 = [1,h]$
-with $h = 2^{-n}$. What is the floating point error in
-computing $𝐲 = ∓ \|𝐱\| 𝐞_1 + 𝐱$ for each choice of sign.
+# MATH50003 Numerical Analysis (2022–23)
+# Problem Sheet 5
+
+This problem sheet concerns Given's rotations, Householder reflections and QR factorisations.
+
+-----
+
+**Problem 1.1** Consider the vectors
+$$
+𝐚 = \begin{bmatrix} 1 \\ 2 \\ 2 \end{bmatrix}\qquad\hbox{and}\qquad  𝐛 = \begin{bmatrix} 1 \\ 2{\rm i} \\ 2 \end{bmatrix}.
+$$
+Use reflections to determine the entries of orthogonal/unitary matrices $Q_1, Q_2, Q_3$ such that
+$$
+Q_1 𝐚 = \begin{bmatrix} 3 \\ 0 \\ 0 \end{bmatrix}, Q_2 𝐚 = \begin{bmatrix} -3 \\ 0 \\ 0 \end{bmatrix},
+Q_3 𝐛 = \begin{bmatrix} \sqrt{3} \\ 0 \\ 0 \end{bmatrix}
+$$
 
 **SOLUTION**
 
-Since $\|𝐱\|=\sqrt{1+h^2}$, we have $𝐲=[1∓\sqrt{1+h^2},h]$. We note first that $h^{fp}$ and $(h^2)^{fp}$ are exact due to the choice of $h$, so we only need to discuss the floating error in computing $1\mp\sqrt{1+h^2}$.
-
-Numerically, let the length of the significand be $S$, then
+For $Q_1$: we have
 $$
-1\oplus h^2=
-\begin{cases}
-1+h^2 & n\le S/2 \\
-1 & n>S/2
-\end{cases}
-=1+h^2+\delta_1
+\begin{align*}
+𝐲 = 𝐚 - \| 𝐚\| 𝐞_1 =  \begin{bmatrix} -2 \\ 2 \\ 2 \end{bmatrix} \\
+𝐰 = {𝐲 \over \|𝐲\|} = {1 \over \sqrt{3}} \begin{bmatrix} -1 \\ 1 \\ 1 \end{bmatrix} \\
+Q_1 = Q_{𝐰} = I - {2 \over 3} \begin{bmatrix} -1 \\ 1 \\ 1 \end{bmatrix}  [-1 1 1] = 
+I - {2 \over 3} \begin{bmatrix} 1 & -1 & -1 \\ -1 1 1 \\ -1 1 1 \end{bmatrix} \\
+&={1 \over 3} \begin{bmatrix} 1 & 2 & 2 \\ 2 1 -2 \\ 2 -2 1 \end{bmatrix} 
+\end{align*}
 $$
-where $|\delta_1|\le \frac{\epsilon_m}{2}$.
 
-$+$ PLUS $+$
+For $Q_2$: we have
+$$
+\begin{align*}
+𝐲 = 𝐚 + \| 𝐚\| 𝐞_1 =  \begin{bmatrix} 4 \\ 2 \\ 2 \end{bmatrix} \\
+𝐰 = {𝐲 \over \|𝐲\|} = {1 \over \sqrt{6}} \begin{bmatrix} 2 \\ 1 \\ 1 \end{bmatrix} \\
+Q_1 = Q_{𝐰} = I - {1 \over 3} \begin{bmatrix} 2 \\ 1 \\ 1 \end{bmatrix}  [2 1 1] = 
+I - {1 \over 3} \begin{bmatrix} 4 & 2 & 2 \\ 2 1 1 \\ 2 1 1 \end{bmatrix} \\
+&={1 \over 3} \begin{bmatrix} -1 & -2 & -2 \\ -2 2 -1 \\ -2 -1 2 \end{bmatrix} 
+\end{align*}
+$$
 
-Since $\sqrt{1\oplus h^2}^{fp}>0$, we know that
-$$\begin{split}
-1\oplus\sqrt{1\oplus h^2}^{fp}=&(1+\delta_2)(1+\sqrt{1\oplus h^2}^{fp})\\
-=&(1+\delta_2)(1+\sqrt{1+h^2+\delta_1}(1+\delta_3))
-\end{split}$$
-where $|\delta_2|,|\delta_3|\le \frac{\epsilon_m}{2}$. Then
-$$\begin{split}
-\frac{1\oplus\sqrt{1\oplus h^2}^{fp}}{1+\sqrt{1+h^2}}=&(1+\delta_2)\left(1+\frac{\sqrt{1+h^2+\delta_1}(1+\delta_3)-\sqrt{1+h^2}}{1+\sqrt{1+h^2}}\right)\\
-=&(1+\delta_2)\left(1+\frac{(1+\delta_3)(\sqrt{1+h^2+\delta_1}-\sqrt{1+h^2})+\delta_3\sqrt{1+h^2}}{1+\sqrt{1+h^2}}\right)\\
-\approx &(1+\delta_2)\left(1+\frac{\delta_1}{2(1+\sqrt{1+h^2})\sqrt{1+h^2}}+\delta_3\frac{\sqrt{1+h^2}}{1+\sqrt{1+h^2}}\right)
-\end{split}$$
-and we can bound the relative error by
-$$|\delta_2|+|\delta_1|\frac{1}{2(1+\sqrt{1+h^2})\sqrt{1+h^2}}+|\delta_3|\frac{\sqrt{1+h^2}}{1+\sqrt{1+h^2}}\le |\delta_2|+\frac{|\delta_1|}{4}+\frac{3|\delta_3|}{4}\le \epsilon_m.$$
+For $Q_3$ we just need to be careful to conjugate:
+$$
+\begin{align*}
+𝐲 = 𝐛 - \| 𝐛\| 𝐞_1 =  \begin{bmatrix} -2 \\ 2{\rm i} \\ 2 \end{bmatrix} \\
+𝐰 = {𝐲 \over \|𝐲\|} = {1 \over \sqrt{3}} \begin{bmatrix} -1 \\ {\rm i} \\ 1 \end{bmatrix} \\
+Q_1 = Q_{𝐰} = I - {2 \over 3} \begin{bmatrix} -1 \\ {\rm i} \\ 1 \end{bmatrix}  [-1 -{\rm i} 1] = 
+I - {2 \over 3} \begin{bmatrix} 1 & {\rm i} & -1 \\ -{\rm i} 1 {\rm i} \\ -1 -{\rm i} 1 \end{bmatrix} \\
+&={1 \over 3} \begin{bmatrix} 1 & -2{\rm i} & 2 \\ 2{\rm i} 1 -2{\rm i} \\ 2 2{\rm i} 1 \end{bmatrix} 
+\end{align*}
+$$
 
-In conclusion, it's very accurate to compute $1+\sqrt{1+h^2}$. Let us verify this:
-```julia
-using Plots
-S = precision(Float64)-1;
-relative_error = zeros(S)
-for n = 1:S
-    h = 2.0^(-n)
-    exact = 1+sqrt(1+BigFloat(h)^2)
-    numerical = 1+sqrt(1+h^2)
-    relative_error[n] = abs(numerical-exact)/exact
-end
-println(eps())
-maximum(relative_error)
-```
 
-$-$ MINUS $-$
 
-If $n>S/2$, then $1\ominus\sqrt{1\oplus h^2}^{fp}=1\ominus\sqrt{1}^{fp}=1\ominus 1=0$ so the relative error is 100%.
+**END**
 
-If $n\le S/2$ but not too small, $1\oplus h^2$ is exactly $1+h^2$ but $\sqrt{1+h^2}^{fp}$ can have rounding error. Expand $\sqrt{1+h^2}$ into Taylor series:
-$$\sqrt{1+h^2}=1+\frac{1}{2}h^2-\frac{1}{8}h^4+\frac{1}{16}h^6-O(h^8)=1+2^{-2n-1}-2^{-4n-3}+2^{-6n-4}-O(2^{-8n})$$
-so
-$$\sqrt{1+h^2}^{fp}=
-\begin{cases}
-1 & n=S/2\\
-1+\frac{1}{2}h^2 & \frac{S-3}{4}\le n<S/2\\
-1+\frac{1}{2}h^2-\frac{1}{8}h^4 & \frac{S-4}{6}\le n<\frac{S-3}{4}\\
-\vdots & \vdots
-\end{cases}$$
-where we can conclude that the absolute error is approximately $\frac{1}{2}h^2,\frac{1}{8}h^4,\frac{1}{16}h^6,\dots$ for each stage when $h$ is small. Keeping in mind that $1-\sqrt{1+h^2}\approx -\frac{1}{2}h^2$ when $h$ is small, the relative error is approximately $1, \frac{1}{4}h^2,\frac{1}{8}h^4,\dots$ for each stage. Special note: the relative error is exactly 1 in the first stage when $n=S/2$.
+**Problem 1.2** What simple rotation matrices $Q_1,Q_2 ∈ SO(2)$ have the property that:
+$$
+Q_1 \begin{bmatrix} 1 \\ 2 \end{bmatrix} =\begin{bmatrix} \sqrt{5} \\ 0 \end{bmatrix},  Q_2 \begin{bmatrix} \sqrt{5} \\ 2 \end{bmatrix} =  \begin{bmatrix} 3 \\ 0 \end{bmatrix}
+$$
 
-If $n$ is so small that $\sqrt{1+h^2}$ is noticably larger than 1, the absolute error can be bounded by $\frac{\epsilon_m}{2}$ so the relative error is bounded by $\frac{\epsilon_m}{2(\sqrt{1+h^2}-1)}\approx \frac{\epsilon_m}{h^2}$.
+**Problem 1.3** Find an orthogonal matrix that is a product of two simple rotations but
+acting on two different subspaces:
+$$
+Q  = \underbrace{\begin{bmatrix} \cos θ_2 & & -\sin θ_2  \\ & 1 \\
+\sin θ_2  & & \cos θ_2  \end{bmatrix}}_{Q_2} \underbrace{\begin{bmatrix} \cos θ_1 & -\sin θ_1  \\ \sin θ_1 & \cos θ_1 \\ && 1 \end{bmatrix}}_{Q_1}
+$$
+so that
+$$
+\|Q 𝐚 \| = \begin{bmatrix} \|𝐚\| \\ 0 \\ 0 \end{bmatrix}.
+$$
+Hint: you do not need to determine $θ_1, θ_2$, instead you can write the entries of  $Q_1, Q_2$ 
+directly using just square-roots. 
 
-Let us verify these conclusions:
-```julia
-using Plots
-S=precision(Float64)-1;
-relative_error=zeros(S)
-for n=1:S
-    h=2.0^(-n)
-    exact=1-sqrt(1+BigFloat(h)^2)
-    numerical=1-sqrt(1+h^2)
-    relative_error[n]=-abs(numerical-exact)/exact
-end
-plot(1:S,log2.(relative_error), xlabel="n", ylabel="relative error (log2)")
-```
+**SOLUTION**
 
-From this plot we can clearly identify the 3 phases:
-1. When $n$ is very small, the relative error grows smoothly with $n$;
-2. When $n$ is neither too large nor too small, the relative error has jumps at around $S/2=26$, $(S-3)/4=12.25$, $(S-4)/6=8$. In each stage, the slope is as predicted. For example, the first stage from $S/2$ to $(S-3)/4$ has relative error of $\frac{1}{4}h^2$, hence the slope is -2 between 13 and 25.
-3. When $n\ge S/2$, the relative error is 100%;
+We use $Q_1$ to introduce a 0 in the second entry by rotating the vector $[1,2]$:
+$$
+Q_1 =  \begin{bmatrix} 1/\sqrt{5}  & 2/\sqrt{5} \\ -2/\sqrt{5} & 1/\sqrt{5} \\ && 1 \end{bmatrix}
+$$
+so that
+$$
+Q_1 𝐚 = \begin{bmatrix} \sqrt{5} \\ 0 \\ 2 \end{bmatrix}.
+$$
+Now we use the matrix that rotates the vector $[\sqrt{5},2]$ whose norm is $3$ to deduce the entries
+$$
+Q_2 = \begin{bmatrix} \sqrt{5}/3 & & 2/3  \\ & 1 \\
+-2/3  & & \sqrt{5}/3  \end{bmatrix}
+$$
+so that
+$$
+Q_2 Q_1 = \begin{bmatrix} 1/3 & 2/3 & 2/3 \\ -2/\sqrt{5} & 1/\sqrt{5} & \\ -2/(3\sqrt{5}) & -4/(3\sqrt{5}) & \sqrt{5}/3
+$$
 
-The transition point between phase 1 and 2 is at the stage for $O(h^8)$ of relative error from phase 2 which meets $\frac{\epsilon_m}{h^2}$ from phase 1.
+
+**END**
+
+------
+
+**Problem 2.1** Show that every matrix $A ∈ ℝ^{m × n}$ has a  QR factorisation such that the diagonal of $R$ is non-negative.
+Make sure to include the case of more columns than rows (i.e. $m < n$). You may use the fact from lectures that a QR factorisation
+exists (but not necessarily with positive diagonals) whenever $m ≥ n$.
+
+**SOLUTION**
+
+We first show for $m < n$ that a QR decomposition exists. Writing
+$$
+A = [𝐚_1 | ⋯ | 𝐚_n]
+$$
+and let $A = [𝐚_1 | ⋯ | 𝐚_m] = Q R_m$. It follows that $R := Q^⋆ A$ is right-triangular.
+
+We can write:
+$$
+D = \begin{bmatrix} \sign(r_{11}) \\ & ⋱  \\ && \sign(r_{pp}) \end{bmatrix}
+$$
+where $p = \min(m,n)$ and we define $\sign(0) = 1$. Note that $D^⊤ D = I$. Thus we can write:
+$A = Q R = Q D D R$
+where $(QD)$ is orthogonal and $DR$ is upper-triangular with positive entries.
+
+
+**END**
+
+**Problem 2.2** Show that the QR factorisation of a square invertible matrix $A ∈ ℝ^{n × n}$ is unique,
+provided that the diagonal of $R$ is positive. You may use Problem 3.5 from PS4, which
+states that an orthogonal matrix whose eigenvalues are all 1 must be equal to the identity.
+Hint: a product of two orthogonal matrices is also orthogonal.
+
+**SOLUTION**
+
+Assume there is a second factorisation also with positive diagonal
+$$
+A = QR = Q̃  R̃
+$$
+Then we know
+$$
+Q^⊤ Q̃  = R R̃^{-1}
+$$
+Note $Q^⊤ Q̃ $ is orthogonal, and $R R̃^{-1}$ has positive eigenvalues (the diagonal), hence all $m$ eigenvalues of
+$Q^⊤ Q̃ $ are 1. This means that $Q^⊤ Q̃  = I$ and hence $Q̃ = Q$, which then implies $R̃ = R$.∎
+**END**
+
+-------
+
+**Problem 3.1** Show that if $U$ is triangular and normal ($U^⋆ U = U U^⋆$) then it is diagonal.
+
+**SOLUTION**
+Note
+$$
+|u_{11}|^2 = 𝐞_1^⊤ U^⋆ U 𝐞_1 = 𝐞_1^⊤ U U^⋆ 𝐞_1 = ∑_{j = 1}^n |u_{1j}|^2
+$$
+which implies that $u_{1j} = 0$ for $j ≠ 1$. Writing
+$$
+U = \begin{bmatrix} u_{11} & \\ Ũ \end{bmatrix}
+$$
+we note that
+$$
+\begin{bmatrix} |u_{11}|^2 & \\ Ũ Ũ^⋆ \end{bmatrix} = U U^⋆ = U U^⋆ = \begin{bmatrix} |u_{11}|^2 & \\ Ũ^⋆ Ũ \end{bmatrix}
+$$
+hence $Ũ$ is also normal. The result follows from induction.
+
+**END**
+
+
+**Problem 3.2** Show that every matrix $A ∈ ℂ^{n × n}$ has a _Schur decomposition_: it can be written
+as
+$$
+A = Q U Q^⋆
+$$
+where $U$ is upper-triangular with the eigenvalues of $A$ on the diagonal. Hint: you may use the Jordan canonical form
+$$
+A = V J V^{-1}
+$$
+where $J$ is upper-triangular with eigenvalues of $A$ on the diagonal.
+
+**SOLUTION**
+
+Write $V = QR$  so that
+$$
+A = V J V^{-1} = Q \underbrace{R J R^{-1}}_U Q^⋆
+$$
+Because conjugation with $Q$ is a similarity transformation we know the eigenvalues of $U$ are the same as $A$.
+
+**END**
+
+**Problem 3.3** Prove the spectral theorem for normal matrices: for every normal matrix $A ∈ ℂ^{n × n}$
+ there exists a unitary matrix $Q$ such that
+$$
+A = Q Λ Q^⋆
+$$
+where $Λ$ is diagonal.
+
+**SOLUTION**
+
+We know we have a Schur decomposition $A = Q U Q^⋆$ so need to show that $U$ is diagonal. Note that:
+$$
+Q U^⋆ U Q^⋆ = A^⋆ A =  A A^⋆ = Q U U^⋆ Q^⋆
+$$
+hene we have $U^⋆ U = U U^⋆$.  The result thus follows from Problem 3.1.
+
+**END**
