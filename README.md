@@ -72,6 +72,8 @@ the PLU and Cholesky factorisations, as well as symmetric positive definite matr
 4. Bounding Errors: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture4.ipynb)
 5. Divided Differences: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture5.ipynb)
 6. Dual Numbers: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture6.ipynb)
+7. Structured Matrices: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture7.ipynb)
+8. Orthogonal Matrices: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture8.ipynb)
 
 
 
