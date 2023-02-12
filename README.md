@@ -70,6 +70,8 @@ the PLU and Cholesky factorisations, as well as symmetric positive definite matr
 2. Floating Point: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture2.ipynb)
 3. Arithmetic: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture3.ipynb)
 4. Bounding Errors: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture4.ipynb)
+4. Dual Numbers: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture6.ipynb)
+
 
 ## Reading List
 
