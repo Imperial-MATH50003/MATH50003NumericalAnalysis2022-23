@@ -59,7 +59,7 @@ $.
 **Theorem 1 (least squares via QR)** Suppose $A ∈ ℂ^{m × n}$ has full rank. Given a QR decomposition $A = Q R$
 then
 $$
-𝐱 = R̂^{-1} Q̂^⊤ 𝐛
+𝐱 = R̂^{-1} Q̂^⋆ 𝐛
 $$
 minimises $\| A 𝐱 - 𝐛 \|$. 
 
@@ -68,12 +68,12 @@ minimises $\| A 𝐱 - 𝐛 \|$.
 The norm-preserving property (see PS4 Q3.1) of unitary matrices tells us
 $$
 \| A 𝐱 - 𝐛 \| = \| Q R 𝐱 - 𝐛 \| = \| Q (R 𝐱 - Q^⋆ 𝐛) \| = \| R 𝐱 - Q^⋆ 𝐛 \| = \left \| 
-\begin{bmatrix} R̂ \\ 𝟎_{m-n × n} \end{bmatrix} 𝐱 - \begin{bmatrix} Q̂^⊤ \\ 𝐪_{n+1}^⊤ \\ ⋮ \\ 𝐪_m^⊤ \end{bmatrix}     𝐛 \right \|
+\begin{bmatrix} R̂ \\ 𝟎_{m-n × n} \end{bmatrix} 𝐱 - \begin{bmatrix} Q̂^⋆ \\ 𝐪_{n+1}^⋆ \\ ⋮ \\ 𝐪_m^⋆ \end{bmatrix}     𝐛 \right \|
 $$
 Now note that the rows $k > n$ are independent of $𝐱$ and are a fixed contribution. Thus to minimise this norm it suffices to
 drop them and minimise:
 $$
-\| R̂ 𝐱 - Q̂^⊤ 𝐛 \|
+\| R̂ 𝐱 - Q̂^⋆ 𝐛 \|
 $$
 This norm is minimised if it is zero. Provided the column rank of $A$ is full, $R̂$ will be invertible (Exercise: why is this?).
 

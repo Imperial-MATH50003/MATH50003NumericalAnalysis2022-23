@@ -337,19 +337,19 @@ $$
 Just as rotations can be used to rotate vectors to be aligned with coordinate axis, so can reflections,
 but in this case it works for vectors in $ℂ^n$, not just $ℝ^2$:
 
-**Definition 6 (Householder reflection)** For a given vector
-$𝐱 ∈ ℂ^n$, define the Householder reflection
+**Definition 6 (Householder reflection, real case)** For a given vector
+$𝐱 ∈ ℝ^n$, define the Householder reflection
 $$
 Q_𝐱^{±,\rm H} := Q_𝐰
 $$
 for $𝐲 = ∓ \|𝐱\| 𝐞_1 + 𝐱$ and $𝐰 = {𝐲 \over \|𝐲\|}$.
-When $𝐱 ∈ ℝ^n$, the default choice in sign is:
+The default choice in sign is:
 $$
 Q_𝐱^{\rm H} := Q_𝐱^{-\hbox{sign}(x_1),\rm H}.
 $$
 
 
-**Lemma 1 (Householder reflection maps to axis)** For $𝐱 ∈ ℂ^n$,
+**Lemma 1 (Householder reflection maps to axis)** For $𝐱 ∈ ℝ^n$,
 $$
 Q_𝐱^{±,\rm H} 𝐱 = ±\|𝐱\| 𝐞_1
 $$
@@ -364,7 +364,7 @@ $$
 $$
 where $x_1 = 𝐞_1^⊤ 𝐱$. Therefore:
 $$
-Q_𝐱^{±,\rm H} 𝐱  =  (I - 2 𝐰 𝐰^⋆) 𝐱 = 𝐱 - 2 {𝐲  \|𝐱\|  \over \|𝐲\|^2} (\|𝐱\|∓x_1) = 𝐱 - 𝐲 =  ±\|𝐱\| 𝐞_1.
+Q_𝐱^{±,\rm H} 𝐱  =  (I - 2 𝐰 𝐰^⊤) 𝐱 = 𝐱 - 2 {𝐲  \|𝐱\|  \over \|𝐲\|^2} (\|𝐱\|∓x_1) = 𝐱 - 𝐲 =  ±\|𝐱\| 𝐞_1.
 $$
 
 ∎
@@ -401,3 +401,34 @@ w = y/norm(y)
 Q = I - 2w*w'
 Q*x
 ```
+
+We can extend this definition for complexes:
+
+**Definition 7 (Householder reflection, complex case)** For a given vector
+$𝐱 ∈ ℂ^n$, define the Householder reflection as
+$$
+Q_𝐱^{\rm H} := Q_𝐰
+$$
+for $𝐲 = α \|𝐱\| 𝐞_1 + 𝐱$ and $𝐰 = {𝐲 \over \|𝐲\|}$, where $α = {\rm e}^{{\rm i} \arg x_1}$. 
+
+
+**Lemma 2 (Householder reflection maps to axis, complex case)** For $𝐱 ∈ ℂ^n$,
+$$
+Q_𝐱^{\rm H} 𝐱 = -α \|𝐱\| 𝐞_1
+$$
+
+**Proof**
+Note that $ᾱ x_1 = {\rm e}^{-{\rm i} \arg x_1} x_1 = |x_1|$.  Now we have
+$$
+\begin{align*}
+\| 𝐲 \|^2 &= (α \|𝐱\| 𝐞_1 + 𝐱)^⋆(α \|𝐱\| 𝐞_1 + 𝐱) = |α|\| 𝐱 \|^2 + \| 𝐱 \|  α x̄_1 + ᾱ x_1 \| 𝐱 \| + \| 𝐱 \|^2 \\
+&= 2\| 𝐱 \|^2 + 2|x_1| \| 𝐱 \| \\
+𝐲^⋆ 𝐱 &= ᾱ x_1 \| 𝐱 \| + \|𝐱 \|^2 = \|𝐱 \|^2 + |x_1| \| 𝐱 \|
+\end{align*}
+$$
+Therefore:
+$$
+Q_𝐱^{\rm H} 𝐱  =  (I - 2 𝐰 𝐰^⋆) 𝐱 = 𝐱 - 2 {𝐲    \over \|𝐲\|^2} (\|𝐱 \|^2 + |x_1| \|𝐱 \|) = 𝐱 - 𝐲 =  -α \|𝐱\| 𝐞_1.
+$$
+
+∎
