@@ -249,7 +249,7 @@ $$
 P_{n-1}\cdots P_{j+1} L_j = \tilde L_j P_{n-1}\cdots P_{j+1}.
 $$
 where $\tilde L_j ∈ {\cal L}_j$.
-The entries of $L$ are then again the negative of the entries below the diagonal of $L_{n-1}, \tilde L_{n-2}, \ldots,\tilde L_1$.
+The entries of $L$ are then again the negative of the entries below the diagonal of $L_{n-1}, \tilde L_{n-2}, …,\tilde L_1$.
 
 
 Writing
@@ -367,7 +367,7 @@ then its diagonal entries are positive: $a_{kk} > 0$.
 
 
 **Theorem 1 (subslice pos. def.)** If $A ∈ ℝ^{n × n}$ is positive definite
-and $𝐤 ∈ \{1,\ldots,n\}^m$ is a vector of $m$ integers where any integer appears only once,
+and $𝐤 ∈ \{1,…,n\}^m$ is a vector of $m$ integers where any integer appears only once,
  then $A[𝐤,𝐤] ∈ ℝ^{m × m}$ is also
 positive definite.
 
@@ -412,7 +412,7 @@ satisfies $A = L L^⊤$.
 ∎
 
 
-N1te hidden in this proof is a simple algorithm form computing the Cholesky factorisation.
+Note hidden in this proof is a simple algorithm form computing the Cholesky factorisation.
 We define
 $$
 \begin{align*}
