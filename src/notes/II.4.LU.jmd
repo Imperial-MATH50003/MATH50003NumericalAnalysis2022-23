@@ -1,29 +1,31 @@
 # II.4 PLU and Cholesky factorisations
 
-In this chapter we consider the following factorisations for square real matrices $A ∈ ℝ^{n × n}$:
-1. We first consider the _PLU factorisation_:
+In this chapter we consider the following factorisations for square real invetible  matrices $A ∈ ℝ^{n × n}$:
+1. The _LU factorisation_:
+$ A = LU$ where $L$ is lower triangular and $U$ is upper triangular. This is equivalent to Gaussian elimination without pivoting,
+so may not exist (e.g. if $A[1,1] = 0$).
+1. The _PLU factorisation_:
 $
 A = P^⊤ LU
 $
-where $P$ is a permutation matrix, $L$ is lower triangular and $U$ is upper triangular.
+where $P$ is a permutation matrix, $L$ is lower triangular and $U$ is upper triangular. This is equivalent to Gaussian elimination with pivoting.
+It always exists but may in extremely rare cases be unstable. 
 2. For a square, _symmetric positive definite_ ($𝐱^⊤ A 𝐱 > 0$ for all $𝐱 ∈ ℝ^n$, $𝐱 ≠ 0$) 
-matrix the PLU decompostion has a special form which is called the _Cholesky factorisation_:
+matrix the LU decompostion has a special form which is called the _Cholesky factorisation_:
 $
 A = L L^⊤
-$
+$.
 3. We also discuss timing and stability of the different factorisations.
 
 ```julia
 using LinearAlgebra, Plots, BenchmarkTools
 ```
 
-## 1. PLU Factorisation
+## 1. LU Factorisation
 
 Just as Gram–Schmidt can be reinterpreted as a reduced QR factorisation,
-Gaussian elimination with pivoting can be interpreted as a PLU factorisation.
+Gaussian elimination  can be interpreted as an LU factorisation.
 
-
-### Special "one-column" lower triangular matrices
 
 
 Consider the following set of $n × n$ lower triangular
@@ -77,7 +79,7 @@ $$
 where $τ$ is the permutation with Cauchy notation
 $$
 \begin{pmatrix}
-1 & \cdots & n-j \\
+1 & ⋯ & n-j \\
 σ_{j+1}-j & ⋯ & σ_n-j
 \end{pmatrix}
 $$
@@ -90,9 +92,7 @@ noting that $𝐞_j^⊤ P_σ = 𝐞_j^⊤$ (as $σ_j = j$).
 ∎
 
 
-### LU Factorisation
-
-Before discussing pivoting, consider standard Gaussian elimation where one row-reduces
+Now consider standard Gaussian elimation where one row-reduces
 to introduce zeros column-by-column. We will mimick the computation of the QR factorisation
 to view this as a _triangular triangularisation_.
 
@@ -105,8 +105,8 @@ L_1 = \begin{bmatrix} 1 \\ -{a_{21} \over a_{11}} & 1 \\ ⋮ &&⋱ \\
 $$
 We then have
 $$
-L_1 A =  \begin{bmatrix} u_{11} & u_{12} & \cdots & u_{1n} \\ 
-& 𝐚_2^1 & \cdots & 𝐚_n^1   \end{bmatrix}
+L_1 A =  \begin{bmatrix} u_{11} & u_{12} & ⋯ & u_{1n} \\ 
+& 𝐚_2^1 & ⋯ & 𝐚_n^1   \end{bmatrix}
 $$
 where $𝐚_j^1 := (L_1 𝐚_j)[2:n]$ and $u_{1j} = a_{1j}$. But now consider
 $$
@@ -114,9 +114,9 @@ L_2 := I - \begin{bmatrix} 0 \\ {𝐚_2^1[2:n-1] \over 𝐚_2^1[1]} \end{bmatrix
 $$
 Then
 $$
-L_2 L_1 A = \begin{bmatrix} u_{11} & u_{12} & u_{13} & \cdots & u_{1n} \\ 
-    & u_{22} & u_{23} & \cdots & u_{2n} \\
-&& 𝐚_3^2 & \cdots & 𝐚_n^2   \end{bmatrix}
+L_2 L_1 A = \begin{bmatrix} u_{11} & u_{12} & u_{13} & ⋯ & u_{1n} \\ 
+    & u_{22} & u_{23} & ⋯ & u_{2n} \\
+&& 𝐚_3^2 & ⋯ & 𝐚_n^2   \end{bmatrix}
 $$
 where 
 $$
@@ -136,13 +136,13 @@ u_{kj} &:= (L_k 𝐚_j^{k-1})[1]
 $$
 Then
 $$
-L_{n-1} \cdots L_1 A = \underbrace{\begin{bmatrix} 
-u_{11} & \cdots & u_{1n} \\ & ⋱ & ⋮\\
+L_{n-1} ⋯ L_1 A = \underbrace{\begin{bmatrix} 
+u_{11} & ⋯ & u_{1n} \\ & ⋱ & ⋮\\
                                         && u_{nn}\end{bmatrix}}_U
 $$
 i.e.
 $$
-A = \underbrace{L_{1}^{-1} \cdots L_{n-1}^{-1}}_L U.
+A = \underbrace{L_{1}^{-1} ⋯ L_{n-1}^{-1}}_L U.
 $$
 
 Writing
@@ -154,7 +154,7 @@ $$
 L = \begin{bmatrix} 1 \\ -\ell_{21} & 1 \\
 -\ell_{31} & -\ell_{32} & 1 \\
  ⋮ & ⋮ & ⋱ & ⋱ \\
-    -\ell_{n1} & -\ell_{n2} & \cdots & -\ell_{n,n-1} & 1
+    -\ell_{n1} & -\ell_{n2} & ⋯ & -\ell_{n,n-1} & 1
     \end{bmatrix}
 $$
 
@@ -228,25 +228,25 @@ L = \begin{bmatrix} 1 \\ 2 & 1 \\ 1 &{3 \over 2} & 1
 $$
 
 
-### PLU Factorisation
+## 2. PLU Factorisation
 
 We learned in first year linear algebra that if a diagonal entry is zero
 whe1 doing Gaussian elimnation one has to _row pivot_. For stability, 
 in implementation one _always_ pivots: swap the largest in magnitude entry for the entry on the diagonal.
 In terms of a factorisation, this leads to 
 $$
-L_{n-1} P_{n-1} \cdots P_2 L_1 P_1 A = U
+L_{n-1} P_{n-1} ⋯ P_2 L_1 P_1 A = U
 $$
 where $P_j$ is a permutation that leaves rows 1 through $j-1$ fixed,
 and swaps row $j$ with a row $k \geq j$ whose entry is maximal in absolute value.
 
 Thus we can deduce that 
 $$
-L_{n-1} P_{n-1} \cdots P_2 L_1 P_1 = \underbrace{L_{n-1} \tilde L_{n-2} \cdots  \tilde L_1}_{L^{-1}}  \underbrace{P_{n-1} \cdots P_2 P_1}_P.
+L_{n-1} P_{n-1} ⋯ P_2 L_1 P_1 = \underbrace{L_{n-1} \tilde L_{n-2} ⋯  \tilde L_1}_{L^{-1}}  \underbrace{P_{n-1} ⋯ P_2 P_1}_P.
 $$
 where the tilde denotes the combined actions of swapping the permutation and lower-triangular matrices, that is,
 $$
-P_{n-1}\cdots P_{j+1} L_j = \tilde L_j P_{n-1}\cdots P_{j+1}.
+P_{n-1}⋯ P_{j+1} L_j = \tilde L_j P_{n-1}⋯ P_{j+1}.
 $$
 where $\tilde L_j ∈ {\cal L}_j$.
 The entries of $L$ are then again the negative of the entries below the diagonal of $L_{n-1}, \tilde L_{n-2}, \ldots,\tilde L_1$.
@@ -263,8 +263,8 @@ L = \begin{bmatrix}
 -\tilde \ell_{21} & 1 \\
 -\tilde \ell_{31} & -\tilde \ell_{32} & 1 \\
  ⋮ & ⋮ & ⋱ & ⋱ \\
- -\tilde \ell_{n-1,1} & -\tilde \ell_{n-1,2} & \cdots &  - \tilde \ell_{n-1,n-2} & 1 \\
-    -\tilde \ell_{n1} & -\tilde \ell_{n2} & \cdots &  - \tilde \ell_{n,n-2} &  -\ell_{n,n-1} & 1
+ -\tilde \ell_{n-1,1} & -\tilde \ell_{n-1,2} & ⋯ &  - \tilde \ell_{n-1,n-2} & 1 \\
+    -\tilde \ell_{n1} & -\tilde \ell_{n2} & ⋯ &  - \tilde \ell_{n,n-2} &  -\ell_{n,n-1} & 1
 \end{bmatrix}
 $$
 
@@ -340,7 +340,7 @@ U\(L\b[σ]) == A\b
 ```
 Note the entries match exactly because this precisely what `\` is using.
 
-## 2. Cholesky Factorisation
+## 3. Cholesky Factorisation
 
 Cholesky Factorisation is a form of Gaussian elimination (without pivoting)
 that exploits symmetry in the problem, resulting in a substantial speedup. 
@@ -380,7 +380,7 @@ We leave the proofs to the problem sheets. Here is the key result:
 $$
 A = L L^⊤
 $$
-whe1e the diagonals of $L$ are positive.
+where the diagonals of $L$ are positive.
 
 **Proof** If $A$ has a Cholesky factorisation it is symmetric ($A^⊤ = (L L^⊤)^⊤ = A$) and for $𝐱 ≠ 0$ we have
 $$
