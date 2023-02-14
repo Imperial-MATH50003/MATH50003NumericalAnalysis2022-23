@@ -1,6 +1,6 @@
 # II.4 PLU and Cholesky factorisations
 
-In this chapter we consider the following factorisations for square real invetible  matrices $A ∈ ℝ^{n × n}$:
+In this chapter we consider the following factorisations for square invertible  matrices $A$:
 1. The _LU factorisation_:
 $ A = LU$ where $L$ is lower triangular and $U$ is upper triangular. This is equivalent to Gaussian elimination without pivoting,
 so may not exist (e.g. if $A[1,1] = 0$).
@@ -10,11 +10,11 @@ A = P^⊤ LU
 $
 where $P$ is a permutation matrix, $L$ is lower triangular and $U$ is upper triangular. This is equivalent to Gaussian elimination with pivoting.
 It always exists but may in extremely rare cases be unstable. 
-2. For a square, _symmetric positive definite_ ($𝐱^⊤ A 𝐱 > 0$ for all $𝐱 ∈ ℝ^n$, $𝐱 ≠ 0$) 
+2. For a real square _symmetric positive definite_ ($A ∈ ℝ^{n × n}$ such that $A^⊤ = A$ and $𝐱^⊤ A 𝐱 > 0$ for all $𝐱 ∈ ℝ^n$, $𝐱 ≠ 0$) 
 matrix the LU decompostion has a special form which is called the _Cholesky factorisation_:
 $
 A = L L^⊤
-$.
+$. This provides an algorithmic way to _prove_ that a matrix is symmetric positive definite.
 3. We also discuss timing and stability of the different factorisations.
 
 ```julia
@@ -24,139 +24,61 @@ using LinearAlgebra, Plots, BenchmarkTools
 ## 1. LU Factorisation
 
 Just as Gram–Schmidt can be reinterpreted as a reduced QR factorisation,
-Gaussian elimination  can be interpreted as an LU factorisation.
-
-
-
-Consider the following set of $n × n$ lower triangular
-matrices which equals identity apart from one-column:
+Gaussian elimination  can be interpreted as an LU factorisation. Write a matrix
+$A ∈ ℂ^{n × n}$ as follows:
 $$
-{\cal L}_j := \left\{I + \begin{bmatrix} 𝟎_j \\ 𝐥_j \end{bmatrix} 𝐞_j^⊤ : 𝐥_j ∈ ℝ^{n-j} \right\}
+A =  \begin{bmatrix} α_1 & 𝐰_1^⊤ \\ 𝐯_1 & A_2 \end{bmatrix}
 $$
-where  $𝟎_j$ denotes the zero vector of length $j$. 
-That is, if $L_j ∈ {\cal L}_j$ then it is equal to the identity matrix apart from in the $j$ th column:
+where $α_1 = a_{11}$, $𝐯_1 = A[2:n, 1]$ and $𝐰_1 = A[1, 2:n]$. Gaussian elimination consists of taking the first row, dividing by
+$α$ and subtracting from all other rows. That is equivalent to multiplying by a lower triangular matrix:
 $$
-L_j = \begin{bmatrix}
-        1 \\ & {⋱} \\ && 1 \\
-                    && ℓ_{j+1,j} & 1 \\
-                    && ⋮ && \dots \\
-                    && ℓ_{n,j} & & & 1 \end{bmatrix} = 
+\begin{bmatrix}
+1 \\
+-𝐯_1/α_1 & I \end{bmatrix} A = \begin{bmatrix} α_1 & 𝐰_1^⊤ \\  & K -𝐯_1𝐰_1^⊤ /α_1 \end{bmatrix}
 $$
-
-These satisify the following special properties:
-
-**Proposition 1 (one-column lower triangular inverse)**
-If $L_j ∈ {\cal L}_j$ then
+where $A_2 := K -𝐯_1 𝐰_1^⊤/α_1$  happens to be a rank-1 perturbation of $K$. 
+Assume $A_2 = L_2 U_2$.
+We can write this another way:
 $$
-L_j^{-1}  = I - \begin{bmatrix} 𝟎_j \\ 𝐥_j \end{bmatrix} 𝐞_j^⊤ = \begin{bmatrix}
-        1 \\ & ⋱ \\ && 1 \\
-                    &&-ℓ_{j+1,j} & 1 \\
-                    &&⋮ && \dots \\
-                    &&-ℓ_{n,j} & & & 1 \end{bmatrix} ∈ {\cal L}_j.
+A = \underbrace{\begin{bmatrix}
+1 \\
+𝐯_1/α_1 & I \end{bmatrix}}_{L_1}  \begin{bmatrix} α_1 & 𝐰_1^⊤ \\  & A_2 \end{bmatrix}
+= \underbrace{L_1 \begin{bmatrix}
+1 \\
+ & L_2 \end{bmatrix}}_{L}  \underbrace{\begin{bmatrix} α_1 & 𝐰_1^⊤ \\  & U_2 \end{bmatrix}}_{U}
 $$
-
-
-**Proposition 2 (one-column lower triangular multiplication)**
-If $L_j ∈ {\cal L}_j$ and $L_k ∈ {\cal L}_k$ for $k ≥ j$ then
+Note we can multiply through to find
 $$
-L_j L_k =  I + \begin{bmatrix} 𝟎_j \\ 𝐥_j \end{bmatrix} 𝐞_j^⊤ +  \begin{bmatrix} 𝟎_k \\ 𝐥_k \end{bmatrix} 𝐞_k^⊤
+L = \begin{bmatrix}
+1 \\
+𝐯_1/α_1 & L_2 \end{bmatrix}
 $$
 
+This procedure implies an algorithm:
 
-**Lemma 1 (one-column lower triangular with pivoting)**
-If $σ$ is a permutation that leaves the first $j$
-rows fixed (that is, $σ_ℓ = ℓ$ for $ℓ ≤ j$) and $L_j ∈ {\cal L}_j$ then
-$$
-P_σ L_j=  \tilde L_j P_σ
-$$
-where $\tilde L_j ∈ {\cal L}_j$.
-
-**Proof**
-Write
-$$
-P_σ = \begin{bmatrix} I_j \\ & P_τ \end{bmatrix}
-$$
-where $τ$ is the permutation with Cauchy notation
-$$
-\begin{pmatrix}
-1 & ⋯ & n-j \\
-σ_{j+1}-j & ⋯ & σ_n-j
-\end{pmatrix}
-$$
-Then we have
-$$
-P_σ L_j = P_σ + \begin{bmatrix} 𝟎_j \\ P_τ 𝐥_j \end{bmatrix} 𝐞_j^⊤ =
-\underbrace{(I +  \begin{bmatrix} 𝟎_j \\ P_τ 𝐥_j \end{bmatrix} 𝐞_j^⊤)}_{\tilde L_j} P_σ
-$$
-noting that $𝐞_j^⊤ P_σ = 𝐞_j^⊤$ (as $σ_j = j$). 
-∎
-
-
-Now consider standard Gaussian elimation where one row-reduces
-to introduce zeros column-by-column. We will mimick the computation of the QR factorisation
-to view this as a _triangular triangularisation_.
-
-
-Consider the matrix
-$$
-L_1 = \begin{bmatrix} 1 \\ -{a_{21} \over a_{11}} & 1 \\ ⋮ &&⋱ \\
-                -{a_{n1} \over a_{11}}  &&& 1
-                \end{bmatrix} = I - \begin{bmatrix} 0 \\ {𝐚_1[2:n] \over 𝐚_1[1]} \end{bmatrix}  𝐞_1^⊤.
-$$
-We then have
-$$
-L_1 A =  \begin{bmatrix} u_{11} & u_{12} & ⋯ & u_{1n} \\ 
-& 𝐚_2^1 & ⋯ & 𝐚_n^1   \end{bmatrix}
-$$
-where $𝐚_j^1 := (L_1 𝐚_j)[2:n]$ and $u_{1j} = a_{1j}$. But now consider
-$$
-L_2 := I - \begin{bmatrix} 0 \\ {𝐚_2^1[2:n-1] \over 𝐚_2^1[1]} \end{bmatrix}  𝐞_1^⊤.
-$$
-Then
-$$
-L_2 L_1 A = \begin{bmatrix} u_{11} & u_{12} & u_{13} & ⋯ & u_{1n} \\ 
-    & u_{22} & u_{23} & ⋯ & u_{2n} \\
-&& 𝐚_3^2 & ⋯ & 𝐚_n^2   \end{bmatrix}
-$$
-where 
-$$
-u_{2j} :=  (𝐚_j^1)[1] \qquad \hbox{and} \qquad 𝐚_j^2 := (L_2 𝐚_j^1)[2:n-1]
-$$
-Thus the first two columns are triangular. 
-
-The inductive construction is again clear. If we define $𝐚_j^0 := 𝐚_j$ we
-have the construction
+**Algorithm 1 (LU)** Let $A_1 := A$. For $k = 1, …, n-1$ define
 $$
 \begin{align*}
-L_j &:= I - \begin{bmatrix} 𝟎_j \\ {𝐚_{j+1}^j[2:n-j] \over 𝐚_{j+1}^j[1]} \end{bmatrix} 𝐞_j^⊤ \\
-𝐚_j^k &:= (L_k 𝐚_j^{k-1})[2:n-k+1]
- \\
-u_{kj} &:= (L_k 𝐚_j^{k-1})[1]
+α_k &:= A_k[1,1] \\
+𝐯_k &:= A_k[2:n-k+1,1] \\
+𝐰_k &:= A_k[1, 2:n-k+1] \\
+A_{k+1} &:= A_k[2:n-k+1,2:n-k+1]-𝐯_k 𝐰_k^⊤/α_k,
 \end{align*}
 $$
-Then
+and $α_n := A_n[1,1]$. 
+Then for $ℓ_{kj} := 𝐯_j[k-j]/α_j$ and $u_{kj} = 𝐰_k[j-k]$ we have
 $$
-L_{n-1} ⋯ L_1 A = \underbrace{\begin{bmatrix} 
-u_{11} & ⋯ & u_{1n} \\ & ⋱ & ⋮\\
-                                        && u_{nn}\end{bmatrix}}_U
-$$
-i.e.
-$$
-A = \underbrace{L_{1}^{-1} ⋯ L_{n-1}^{-1}}_L U.
+A = \underbrace{\begin{bmatrix}1 \\ ℓ_{21} & 1 \\
+                ℓ_{31} & ℓ_{32} \\ 1 \\
+                ⋮ &  ⋮ & ⋱ & ⋱ \\
+                ℓ_{n1} & ℓ_{n2} & ⋯ & 1
+                \end{bmatrix}}_L \underbrace{\begin{bmatrix} α_1 &u_{12} & u_{13} & ⋯ & u_{1n} \\
+                                          & α_2 & u_{23} & ⋯ & u_{2n} \\
+                                        && ⋱ & ⋱ & ⋮ \\
+                                        &&& α_{n-1} & u_{n-1,n} \\
+                                        &&&& α_n\end{bmatrix}}_U
 $$
 
-Writing
-$$
-L_j = I + \begin{bmatrix} 𝟎_j \\ \ell_{j+1,j} \\ ⋮ \\ \ell_{n,j} \end{bmatrix} 𝐞_j^⊤
-$$
-and using the properties of inversion and multiplication we therefore deduce
-$$
-L = \begin{bmatrix} 1 \\ -\ell_{21} & 1 \\
--\ell_{31} & -\ell_{32} & 1 \\
- ⋮ & ⋮ & ⋱ & ⋱ \\
-    -\ell_{n1} & -\ell_{n2} & ⋯ & -\ell_{n,n-1} & 1
-    \end{bmatrix}
-$$
 
 
 
@@ -167,34 +89,58 @@ The first lower triangular matrix is:
 ```julia
 n = 4
 A = randn(n,n)
-L₁ = I -[0; A[2:end,1]/A[1,1]] * [1 zeros(1,n-1)]
+A₁= A
+
+α₁,𝐯₁,𝐰₁ = A₁[1,1],A₁[2:n,1],A₁[1,2:n]
+L₁ = I + [0; 𝐯₁/α₁] * [1 zeros(1,n-1)] # a rank-1 correction
 ```
 Which indeed introduces zeros in the first column:
 ```julia
-A₁ = L₁*A
+L₁\A
 ```
 Now we make the next lower triangular operator:
 ```julia
-L₂ = I - [0; 0; A₁[3:end,2]/A₁[2,2]] * [0 1 zeros(1,n-2)]
+A₂ = A₁[2:n,2:n] - 𝐯₁*𝐰₁'/α₁ # can use ' since its real. Otherwise use transpose(𝐰₁)
+α₂,𝐯₂,𝐰₂ = A₂[1,1],A₂[2:n-1,1],A₂[1,2:n-1]
+L₂ = I + [0; 𝐯₂/α₂] * [1 zeros(1,n-2)] # a rank-1 correction
 ```
-So that
+Which has introduced zeros in the second column:
 ```julia
-A₂ = L₂*L₁*A
+# adds a row and column to L₂
+L̃₂ = [1          zeros(1,n-1);
+      zeros(n-1) L₂]
+L̃₂\(L₁\A)
 ```
 The last one is:
 ```julia
-L₃ = I - [0; 0; 0; A₂[4:end,3]/A₂[3,3]] * [0 0 1 zeros(1,n-3)]
+A₃ = A₂[2:n-1,2:n-1] - 𝐯₂/α₂ * 𝐰₂' # can use ' since its real. Otherwise use transpose(𝐰₁)
+α₃,𝐯₃,𝐰₃ = A₃[1,1],A₃[2:n-2,1],A₃[1,2:n-2]
+L₃ = I + [0; 𝐯₃/α₃] * [1 zeros(1,n-3)] # a rank-1 correction
 ```
 Giving us
 ```julia
-U = L₃*L₂*L₁*A
+# adds two rows and columns to L̃₃
+L̃₃ = [I(2) zeros(2,n-2); zeros(n-2,2) L₃]
+U = L̃₃ \ (L̃₂ \(L₁\A))
 ```
-and
+In other words, `L̃₃*L̃₂*L₁*U == A` and hence we have:
 ```julia
-L = inv(L₁)*inv(L₂)*inv(L₃)
+L = L₁*L̃₂*L̃₃
+L*U ≈ A
 ```
-Note how the entries of `L` are indeed identical to the negative
-lower entries of `L₁`, `L₂` and `L₃`.
+The entries of `L` are indeed identical to the negative
+lower entries of `L₁`, `L₂` and `L₃`:
+```julia
+L = zeros(n,n)
+for k = 1:n
+    L[k,k] = 1
+end
+L[2:n,1] = 𝐯₁/α₁
+L[3:n,2] = 𝐯₂/α₂
+L[4:n,3] = 𝐯₃/α₃
+L ≈ L₁*L̃₂*L̃₃
+```
+
 
 **Example 2 (by-hand)**
 
@@ -205,69 +151,129 @@ A = \begin{bmatrix} 1 & 1 & 1 \\
                     1 & 4 & 9
                     \end{bmatrix}
 $$
-We have
+We  write
 $$
-L_2 L_1 A = L_2 \begin{bmatrix}1 \\ 
-                        -2 & 1 \\ -1 &  & 1 \end{bmatrix} \begin{bmatrix} 1 & 1 & 1 \\
-                    2 & 4 & 8 \\
-                    1 & 4 & 9
-                    \end{bmatrix}
-    = \begin{bmatrix}1 \\ & 1\\ & -{3 \over 2} & 1 
-    \end{bmatrix} \begin{bmatrix} 1 & 1 & 1 \\
-                         & 2 & 6 \\
-                         & 3 & 8 \end{bmatrix}
-    = \underbrace{\begin{bmatrix} 1 & 1 & 1 \\
-                         & 2 & 6 \\
-                         &  & -1 \end{bmatrix}}_U
+\begin{align*}
+A = \underbrace{\begin{bmatrix} 1  \\
+                    2 & 1 &  \\
+                    1 &  & 1
+                    \end{bmatrix}}_{L_1} \begin{bmatrix} 1 & 1 & 1 \\
+                    0 & 2 & 6 \\
+                    0 & 3 & 8
+                    \end{bmatrix} \\
+ = L_1 \underbrace{\begin{bmatrix} 1  \\
+                     & 1 &  \\
+                     & 3/2 & 1
+                    \end{bmatrix}}_{L̃_2} \begin{bmatrix} 1 & 1 & 1 \\
+                    0 & 2 & 6 \\
+                    0 & 0 & 5
+                    \end{bmatrix} \\
+= \underbrace{\begin{bmatrix} 1  \\
+                    2 & 1 &  \\
+                    1 & 3/2 & 1
+                    \end{bmatrix}}_{L} \underbrace{\begin{bmatrix} 1 & 1 & 1 \\
+                    0 & 2 & 6 \\
+                    0 & 0 & 5
+                    \end{bmatrix}}_U
+\end{align*}
 $$
-We then deduce $L$ by taking the negative of the lower 
-entries of $L_1,L_2$:
-$$
-L = \begin{bmatrix} 1 \\ 2 & 1 \\ 1 &{3 \over 2} & 1
-\end{bmatrix}.
-$$
+
+
 
 
 ## 2. PLU Factorisation
 
 We learned in first year linear algebra that if a diagonal entry is zero
-whe1 doing Gaussian elimnation one has to _row pivot_. For stability, 
+whem doing Gaussian elimnation one has to _row pivot_. For stability, 
 in implementation one _always_ pivots: swap the largest in magnitude entry for the entry on the diagonal.
-In terms of a factorisation, this leads to 
-$$
-L_{n-1} P_{n-1} ⋯ P_2 L_1 P_1 A = U
-$$
-where $P_j$ is a permutation that leaves rows 1 through $j-1$ fixed,
-and swaps row $j$ with a row $k \geq j$ whose entry is maximal in absolute value.
-
-Thus we can deduce that 
-$$
-L_{n-1} P_{n-1} ⋯ P_2 L_1 P_1 = \underbrace{L_{n-1} \tilde L_{n-2} ⋯  \tilde L_1}_{L^{-1}}  \underbrace{P_{n-1} ⋯ P_2 P_1}_P.
-$$
-where the tilde denotes the combined actions of swapping the permutation and lower-triangular matrices, that is,
-$$
-P_{n-1}⋯ P_{j+1} L_j = \tilde L_j P_{n-1}⋯ P_{j+1}.
-$$
-where $\tilde L_j ∈ {\cal L}_j$.
-The entries of $L$ are then again the negative of the entries below the diagonal of $L_{n-1}, \tilde L_{n-2}, \ldots,\tilde L_1$.
+We will see this is equivalent to a PLU decomposition:
 
 
-Writing
+**Theorem 1 (PLU)** A matrix $A ∈ ℂ^{n × n}$ is invertible if and only if it has a PLU decomposition:
 $$
-\tilde L_j = I + \begin{bmatrix} 𝟎_j \\ \tilde \ell_{j+1,j} \\ ⋮ \\ \tilde \ell_{n,j} \end{bmatrix} 𝐞_j^⊤
+A = P^⊤ L U
 $$
-and using the properties of inversion and multiplication we therefore deduce
+where the diagonal of $L$ are all equal to 1 and the diagonal of $U$ are all non-zero.
+
+**Proof**
+
+If we have a PLU decomposition of this form then $L$ and $U$ are invertible and hence the inverse is simply $A^{-1} = U^{-1} L^{-1} P$. 
+
+We will prove the other direction by induction.
+If $A ∈ ℂ^{1 × 1}$ we trivially have an LU decomposition $A = [1] * [a_{11}]$ as all matrices are triangular.
+As $A$ is invertible not all entries in the first column are zero. Therefore there exists a permutation
+$P_1$ so that $α := (P_1 A)[1,1] ≠ 0$. Hence we write
 $$
-L = \begin{bmatrix} 
-1 \\ 
--\tilde \ell_{21} & 1 \\
--\tilde \ell_{31} & -\tilde \ell_{32} & 1 \\
- ⋮ & ⋮ & ⋱ & ⋱ \\
- -\tilde \ell_{n-1,1} & -\tilde \ell_{n-1,2} & ⋯ &  - \tilde \ell_{n-1,n-2} & 1 \\
-    -\tilde \ell_{n1} & -\tilde \ell_{n2} & ⋯ &  - \tilde \ell_{n,n-2} &  -\ell_{n,n-1} & 1
-\end{bmatrix}
+P_1 A = \begin{bmatrix} α & 𝐰^⊤ \\
+                        𝐯 & A_2
+                        \end{bmatrix} = \underbrace{\begin{bmatrix}
+1 \\
+𝐯/α & I \end{bmatrix}}_{L_1}  \begin{bmatrix} α & 𝐰^⊤ \\  & A_2 \end{bmatrix}
+$$
+We know $A_2$ is invertible: if $A_2^⊤ 𝐜  = 𝟎$ then for $𝐝 := P_1^⊤ L_1^{-⊤} [0; 𝐜]$ we have
+$$
+\begin{align*}
+𝐝^⊤ A =  [0\ 𝐜^⊤] L_1^{-1} P_1 P_1^⊤ L_1  \begin{bmatrix} α & 𝐰^⊤ \\  & A_2 \end{bmatrix}
+= [0\ 𝐜^⊤] \begin{bmatrix} α & 𝐰^⊤ \\  & A_2 \end{bmatrix} = [0\ 𝐜^⊤\ A_2] = 𝟎^⊤.
+\end{align*}
+$$
+Thus by induction $A_2 = P_2^⊤ L_2 U_2$. Thus we have:
+$$
+\begin{bmatrix} 1 \\
+            & P_2 \end{bmatrix} P_1 A = 
+            \begin{bmatrix} 1 \\ & P_2 \end{bmatrix} L_1  \begin{bmatrix} α & 𝐰^⊤ \\  & P_2^⊤ L_2 U_2 \end{bmatrix} \\
+            &= \begin{bmatrix}
+1 \\
+P_2 𝐯/α & P_2 \end{bmatrix} \begin{bmatrix} 1 &  \\  &  P_2^⊤ \end{bmatrix} \begin{bmatrix} 1 &  \\  &  L_2 \end{bmatrix} \begin{bmatrix} α & 𝐰^⊤ \\  &  U_2 \end{bmatrix} \\
+ = \begin{bmatrix}
+1 \\
+P_2 𝐯/α & P_2 \end{bmatrix} \begin{bmatrix} 1 &  \\  &  P_2^⊤ \end{bmatrix} \begin{bmatrix} 1 &  \\  &  L_2 \end{bmatrix} \begin{bmatrix} α & 𝐰^⊤ \\  &  U_2 \end{bmatrix} \\
+\underbrace{\begin{bmatrix}
+1 \\
+P_2 𝐯/α & I \end{bmatrix} \begin{bmatrix} 1 &  \\  &  L_2 \end{bmatrix}}_L \underbrace{\begin{bmatrix} α & 𝐰^⊤ \\  &  U_2 \end{bmatrix}}_U \\
 $$
 
+∎
+
+In the above we neglected to state which permutation is used as for the proof of existence it is immaterial. For _stability_ however, 
+we choose one that puts the largest entry: let $σ_{\rm max} : ℝ^n → S_n$ be the permutation that swaps the first row with the row
+of $𝐚$ whose absolute value is maximised.
+In cycle notation we then have:
+$$
+σ_{\rm max}(𝐚) = (1, {\rm indmax} |𝐚|)
+$$
+where ${\rm indmax}$ gives the index of the entry of a vector which is its maximum.
+This inductive proof encodes an  algorithm:
+
+**Algorithm 2 (PLU)** Let $A_1 := A$. For $k = 1, …, n-1$ define
+$$
+\begin{align*}
+σ_k &:= σ_{\rm max}(A_k[1:n-k+1,1]) \\
+P_k &:= P_{σ_k} \\
+Ã_k & := P_k A_k \\
+α_k &:= Ã_k[1,1] \\
+𝐯_k &:= Ã_k[2:n-k+1,1] \\
+𝐰_k &:= Ã_k[1, 2:n-k+1] \\
+A_{k+1} &:= Ã_k[2:n-k+1,2:n-k+1]-𝐯_k 𝐰_k^⊤/α_k,
+\end{align*}
+$$
+and finally $α_n := A_n[1,1]$. 
+Then for $ℓ_{kj} := 𝐯_j[k-j]/α_j$, $u_{kj} = 𝐰_k[j-k]$, and
+$$
+P̃_k := \begin{bmatrix} I_{k-1} \\ & P_k
+$$
+ we have
+$$
+\underbrace{P̃_{σ_{n-1}} ⋯ P̃_{σ_1}}_P A = \underbrace{\begin{bmatrix}1 \\ ℓ_{21} & 1 \\
+                ℓ_{31} & ℓ_{32} \\ 1 \\
+                ⋮ &  ⋮ & ⋱ & ⋱ \\
+                ℓ_{n1} & ℓ_{n2} & ⋯ & 1
+                \end{bmatrix}}_L \underbrace{\begin{bmatrix} α_1 &u_{12} & u_{13} & ⋯ & u_{1n} \\
+                                          & α_2 & u_{23} & ⋯ & u_{2n} \\
+                                        && ⋱ & ⋱ & ⋮ \\
+                                        &&& α_{n-1} & u_{n-1,n} \\
+                                        &&&& α_n\end{bmatrix}}_U
+$$
 
 
 **Example 3**
@@ -296,8 +302,8 @@ $$
 $$
 We now pivot and upper triangularise the second column:
 $$
-  L_2 P_2 L_1 P_1 A = 
-                    L_2 \begin{bmatrix}
+  L̃_2 P̃_2 L̃_1 P_1 A = 
+                    L̃_2 \begin{bmatrix}
                     1 \\ &0 & 1 \\ &1 & 0 \end{bmatrix}
 \begin{bmatrix} 2 & 4 & 8 \\
                 0 & -1 & -3 \\
@@ -313,7 +319,7 @@ $$
                 0 & 0 & -{1 \over 2}
                     \end{bmatrix}}_U
 $$
-We now move $P_2$ to the right:
+We now move $P̃_2$ to the right:
 $$
 L_2 P_2 L_1 P_1 = \underbrace{\begin{bmatrix} 1\\ -{1 \over 2} & 1 \\  -{1 \over 2}  & {1 \over 2} & 1 \end{bmatrix}}_{L_2 \tilde L_1} \underbrace{\begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0 \end{bmatrix}}_P
 $$
@@ -389,6 +395,7 @@ $$
 where we use the fact that $L$ is non-singular.
 
 For the other direction we will prove it by induction, with the $1 × 1$ case being trivial. 
+Assume all lower dimensional symmetric positive definite matrices have Cholesky decompositions.
 Write
 $$
 A = \begin{bmatrix} α & 𝐯^⊤ \\
@@ -399,26 +406,27 @@ A = \begin{bmatrix} α & 𝐯^⊤ \\
                                     \underbrace{\begin{bmatrix} \sqrt{α} & {𝐯^⊤ \over \sqrt{α}} \\
                                      & I \end{bmatrix}}_{L_1^⊤}.
 $$
-Note that $K - {𝐯 𝐯^⊤ \over α}$ is a subslice of $A_1 = L_1^{-1} A L_1^{-⊤}$, hence by the previous propositions is
+Note that $A_2 := K - {𝐯 𝐯^⊤ \over α}$ is a subslice of $L_1^{-1} A L_1^{-⊤}$, hence by the previous propositions is
 itself symmetric positive definite. Thus we can write 
 $$
-K - {𝐯 𝐯^⊤ \over α} = \tilde L \tilde L^⊤
+A_2 = K - {𝐯 𝐯^⊤ \over α} = L_2 L_2^⊤
 $$
 and hence $A = L L^⊤$ for
 $$
-L= L_1 \begin{bmatrix}1 \\ & \tilde L \end{bmatrix}.
+L= L_1 \begin{bmatrix}1 \\ & L_2 \end{bmatrix} = \begin{bmatrix} \sqrt{α} \\ {𝐯 \over \sqrt{α}} & L_2 \end{bmatrix}
 $$
 satisfies $A = L L^⊤$.
 ∎
 
 
-N1te hidden in this proof is a simple algorithm form computing the Cholesky factorisation.
-We define
+Note hidden in this proof is a simple algorithm form computing the Cholesky factorisation.
+
+
+**Algorithm (Cholesky)** Let $A_1 := A$. For  $k = 1, …, n$ define
 $$
 \begin{align*}
-A_1 &:= A \\
-𝐯_k &:= A_k[2:n-k+1,1] \\
 α_k &:= A_k[1,1] \\
+𝐯_k &:= A_k[2:n-k+1,1] \\
 A_{k+1} &:= A_k[2:n-k+1,2:n-k+1] - {𝐯_k 𝐯_k^⊤ \over α_k}.
 \end{align*}
 $$
