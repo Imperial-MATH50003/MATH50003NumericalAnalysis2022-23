@@ -158,6 +158,9 @@ printbits(1/5)
 ## significand has 52 bits. we can either do it by hand or create a string:
 
 function isprime(k) # quick-and-dirty test for prime
+    if k ≤ 1
+        return false
+    end
     for j=1:k-1
         if gcd(k, j) ≠ 1
             return false
