@@ -69,9 +69,9 @@ and $α_n := A_n[1,1]$.
 Then for $ℓ_{kj} := 𝐯_j[k-j]/α_j$ and $u_{kj} = 𝐰_k[j-k]$ we have
 $$
 A = \underbrace{\begin{bmatrix}1 \\ ℓ_{21} & 1 \\
-                ℓ_{31} & ℓ_{32} \\ 1 \\
+                ℓ_{31} & ℓ_{32} & 1 \\
                 ⋮ &  ⋮ & ⋱ & ⋱ \\
-                ℓ_{n1} & ℓ_{n2} & ⋯ & 1
+                ℓ_{n1} & ℓ_{n2} & ⋯ & ℓ_{n,n-1} & 1
                 \end{bmatrix}}_L \underbrace{\begin{bmatrix} α_1 &u_{12} & u_{13} & ⋯ & u_{1n} \\
                                           & α_2 & u_{23} & ⋯ & u_{2n} \\
                                         && ⋱ & ⋱ & ⋮ \\
@@ -160,7 +160,7 @@ A = \underbrace{\begin{bmatrix} 1  \\
                     \end{bmatrix}}_{L_1} \begin{bmatrix} 1 & 1 & 1 \\
                     0 & 2 & 6 \\
                     0 & 3 & 8
-                    \end{bmatrix} \\
+                    \end{bmatrix} 
  = L_1 \underbrace{\begin{bmatrix} 1  \\
                      & 1 &  \\
                      & 3/2 & 1
@@ -219,18 +219,20 @@ $$
 $$
 Thus by induction $A_2 = P_2^⊤ L_2 U_2$. Thus we have:
 $$
+\begin{align*}
 \begin{bmatrix} 1 \\
-            & P_2 \end{bmatrix} P_1 A = 
+            & P_2 \end{bmatrix} P_1 A &= \begin{bmatrix} 1 \\
+            & P_2 \end{bmatrix}  \begin{bmatrix} α & 𝐰^⊤ \\
+                        𝐯 & A_2
+                        \end{bmatrix}  =
             \begin{bmatrix} 1 \\ & P_2 \end{bmatrix} L_1  \begin{bmatrix} α & 𝐰^⊤ \\  & P_2^⊤ L_2 U_2 \end{bmatrix} \\
             &= \begin{bmatrix}
 1 \\
-P_2 𝐯/α & P_2 \end{bmatrix} \begin{bmatrix} 1 &  \\  &  P_2^⊤ \end{bmatrix} \begin{bmatrix} 1 &  \\  &  L_2 \end{bmatrix} \begin{bmatrix} α & 𝐰^⊤ \\  &  U_2 \end{bmatrix} \\
- = \begin{bmatrix}
+P_2 𝐯/α & P_2 \end{bmatrix} \begin{bmatrix} 1 &  \\  &  P_2^⊤ L_2 \end{bmatrix}  \begin{bmatrix} α & 𝐰^⊤ \\  &  U_2 \end{bmatrix} \\
+&= \underbrace{\begin{bmatrix}
 1 \\
-P_2 𝐯/α & P_2 \end{bmatrix} \begin{bmatrix} 1 &  \\  &  P_2^⊤ \end{bmatrix} \begin{bmatrix} 1 &  \\  &  L_2 \end{bmatrix} \begin{bmatrix} α & 𝐰^⊤ \\  &  U_2 \end{bmatrix} \\
-\underbrace{\begin{bmatrix}
-1 \\
-P_2 𝐯/α & I \end{bmatrix} \begin{bmatrix} 1 &  \\  &  L_2 \end{bmatrix}}_L \underbrace{\begin{bmatrix} α & 𝐰^⊤ \\  &  U_2 \end{bmatrix}}_U \\
+P_2 𝐯/α & L_2 \end{bmatrix}}_L \underbrace{\begin{bmatrix} α & 𝐰^⊤ \\  &  U_2 \end{bmatrix}}_U. \\
+\end{align*}
 $$
 
 ∎
@@ -260,14 +262,14 @@ $$
 and finally $α_n := A_n[1,1]$. 
 Then for $ℓ_{kj} := 𝐯_j[k-j]/α_j$, $u_{kj} = 𝐰_k[j-k]$, and
 $$
-P̃_k := \begin{bmatrix} I_{k-1} \\ & P_k
+P̃_k := \begin{bmatrix} I_{k-1} \\ & P_k \end{bmatrix}
 $$
  we have
 $$
 \underbrace{P̃_{σ_{n-1}} ⋯ P̃_{σ_1}}_P A = \underbrace{\begin{bmatrix}1 \\ ℓ_{21} & 1 \\
-                ℓ_{31} & ℓ_{32} \\ 1 \\
+                ℓ_{31} & ℓ_{32} & 1 \\
                 ⋮ &  ⋮ & ⋱ & ⋱ \\
-                ℓ_{n1} & ℓ_{n2} & ⋯ & 1
+                ℓ_{n1} & ℓ_{n2} & ⋯ & ℓ_{n,n-1} & 1
                 \end{bmatrix}}_L \underbrace{\begin{bmatrix} α_1 &u_{12} & u_{13} & ⋯ & u_{1n} \\
                                           & α_2 & u_{23} & ⋯ & u_{2n} \\
                                         && ⋱ & ⋱ & ⋮ \\

@@ -8,7 +8,7 @@ $$
 A = Q R = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_m \end{bmatrix}}_{Q ∈ U(m)} \underbrace{\begin{bmatrix} × & ⋯ & × \\ & ⋱ & ⋮ \\ && × \\ &&0 \\ &&⋮ \\ && 0 \end{bmatrix}}_{R ∈ ℂ^{m × n}}
 $$
 where $Q$ is unitary (i.e., $Q ∈ U(m)$, satisfying $Q^⋆Q = I$, with columns $𝐪_j ∈ ℂ^m$) and $R$ is _right triangular_, which means it 
-is only nonzero on or to the right of the diagonal.
+is only nonzero on or to the right of the diagonal ($r_{kj} = 0$ if $k > j$).
 
 2. The _reduced QR factorisation_
 $$
@@ -275,72 +275,70 @@ Q_1 A = \begin{bmatrix} × & × & ⋯ & × \\
 & × & ⋯ & × \\
                     & ⋮ & ⋱ & ⋮ \\
                     & × & ⋯ & × \end{bmatrix} = 
-\begin{bmatrix} r_{11} & r_{12} & ⋯ & r_{1n} \\ 
-& 𝐚_2^1 & ⋯ & 𝐚_n^1   \end{bmatrix}
+\begin{bmatrix}  α_1 & 𝐰_1^⊤ \\ 
+& A_2   \end{bmatrix}
 $$
 where 
 $$
-r_{1j} :=  (Q_1 𝐚_j)[1] \qquad \hbox{and} \qquad 𝐚_j^1 := (Q_1 𝐚_j)[2:m],
+α_1 := -α_1\|𝐚_1\|, 𝐰 = (Q_1 A)[1, 2:n]  \qquad \hbox{and} \qquad A_2 = (Q_1 A)[2:m, 2:n],
 $$
-noting $r_{11} = -\hbox{sign}(a_{11})\|𝐚_1\|$ and all entries of $𝐚_1^1$ are zero (thus not included).
+where $α_1 = {\rm e}^{{\rm i} \arg a_{11}}$.
 That is, we have made the first column triangular.
-
-But now consider
-$$
-Q_2 := \begin{bmatrix} 1  \\ & Q_{𝐚_2^1}^{\rm H} \end{bmatrix} = Q_{\begin{bmatrix} 0 \\ 𝐚_2^1 \end{bmatrix}}^H
-$$
-so that
-$$
-Q_2 Q_1A = \begin{bmatrix} × & × & × & ⋯ & × \\
-& × & ×  & ⋯ & × \\
-                    && ⋮ & ⋱ & ⋮ \\
-                    && × & ⋯ & × \end{bmatrix}  =  \begin{bmatrix} r_{11} & r_{12} & r_{13} & ⋯ & r_{1n} \\ 
-    & r_{22} & r_{23} & ⋯ & r_{2n} \\
-&& 𝐚_3^2 & ⋯ & 𝐚_n^2   \end{bmatrix}
-$$
-where 
-$$
-r_{2j} :=  (Q_2 𝐚_j^1)[1] \qquad \hbox{and} \qquad 𝐚_j^2 := (Q_2 𝐚_j^1)[2:m-1]
-$$
-Thus the first two columns are triangular. 
-
+We can apply this same step to $A_2$ to make its first column triangular.
 The inductive construction is thus clear.
 
 **Algorithm 2 (QR via Householder)**
-For $j = 1,2, …,n$ and $k = 1, …, j$, define
+Let $A_1 = A$. For $j = 1,2, …,n$ define
 $$
 \begin{align*}
-Q_j &:= \begin{bmatrix} I_{j-1 × j-1}  \\ & Q_{(𝐚_j^{j-1})[j:m] }^{±,\rm H} \end{bmatrix} \\
-𝐚_j^k &:= Q_k ⋯ Q_1 𝐚_j \\
-r_{kj} &:= (𝐚_j^j)[k]
+𝐛_j &:= A_j[1:n-j+1,1] \\
+Q_j &:= Q_{𝐛_j}^{\rm H} \\
+α_j &:= {\rm e}^{{\rm i} \arg 𝐛_j[1]} \\
+r_{jj} &:=  -α_j \| 𝐛_j \| \\
+𝐰_j &:= (Q_k A_k)[1,2:n-j+1] \\
+A_{j+1} &:= (Q_jA_j)[2:m-j+1,2:n-j+1]
 \end{align*}
 $$
+Then for
+$$
+Q̃_j := \begin{bmatrix} I_{j-1} \\ & Q_j \end{bmatrix}
+$$
+we define $Q := Q̃_1 ⋯ Q̃_n$ and $R$ has entries $r_{kj} :=𝐰_k[j]$ for $k < j$.
 
-**Theorem 3 (Householder QR)** 
-For $Q_k$ defined in Algorithm 2 we have 
+
+Corresponding to this algorithm is a proof by induction that evey
+matrix has a QR factorisation:
+
+**Theorem 3 (QR)** 
+Every matrix $A ∈ ℂ^{m × n}$ has a QR factorisation:
 $$
-A = \underbrace{Q_1⋯Q_n}_Q R
+A = QR
 $$
+where $Q ∈ U(m)$ and $R ∈ ℂ^{m × n}$ is right triangular.
 
 **Proof**
 
-Note for $Q := Q_1⋯Q_n$ we have using the Hermitian property of $Q_j$
+Assume $m ≥ n$. If $A = [𝐚_1] ∈ ℂ^{m × 1}$ then we have for the Householder
+reflection $Q_1 = Q_{𝐚_1}^{\rm H}$
 $$
-Q^⋆ = Q_n^⋆⋯Q_1^⋆ = Q_n ⋯ Q_1
+Q_1 A = [-α_1 \|𝐚_1\| 𝐞_1]
 $$
-We have by the properties of Householder reflections
+which is right triangular, where $α_1 = {\rm e}^{{\rm i} \arg a_{11}}$. In other words 
 $$
-𝐚_j^j = Q_j 𝐚_j^{j-1} = \begin{bmatrix} (𝐚_j^{j-1})[1:j-1] \\  \| (𝐚_j^{j-1})[j:m]\| 𝐞_1 \end{bmatrix}
+A = \underbrace{Q_1}_Q \underbrace{[-α_1 \|𝐚_1\| 𝐞_1]}_R.
 $$
-As $Q_{j+1}, …, Q_n$ all leave the first $j$ entries fixed we know that
+
+We now prove by induction. For $A = [𝐚_1|…|𝐚_n] ∈ ℂ^{m × n}$ and $Q_1 = Q_{𝐚_1}^{\rm H}$ we have
 $$
-𝐚_j^{j} = 𝐚_j^{j+1} = ⋯ = 𝐚_j^{n}
+Q_1 A =  \begin{bmatrix} -α_1 \|𝐚_1\| & 𝐰_1^⊤ \\ & A_2 \end{bmatrix}
 $$
-It follows that
+where $A_2 = (Q_1 A)[2:m,2:n]$ and $𝐰_1 = (Q_1 A)[1,2:n]$. By assumption $A_2 = Q_2 R_2$. Thus we have
 $$
-Q^⋆ A = Q_n ⋯ Q_1 A = [𝐚_1^n  | ⋯ | 𝐚_n^n] = [𝐚_1^1 | 𝐚_2^2  | ⋯ | 𝐚_n^n] = R
+\begin{align*}
+A = Q_1 \begin{bmatrix} -α_1 \|𝐚_1\| & 𝐰_1^⊤ \\ & Q_2 R_2 \end{bmatrix} \\
+=\underbrace{Q_1 \begin{bmatrix} 1 \\ & Q_2 \end{bmatrix}}_Q  \underbrace{\begin{bmatrix} -α_1 \|𝐚_1\| & 𝐰_1^⊤ \\ &  R_2 \end{bmatrix}}_R.
+\end{align*}
 $$
-is right-triangular.
 
 ∎
 
