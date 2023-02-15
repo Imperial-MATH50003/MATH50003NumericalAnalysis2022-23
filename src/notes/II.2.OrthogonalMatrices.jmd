@@ -409,15 +409,16 @@ $𝐱 ∈ ℂ^n$, define the Householder reflection as
 $$
 Q_𝐱^{\rm H} := Q_𝐰
 $$
-for $𝐲 = α \|𝐱\| 𝐞_1 + 𝐱$ and $𝐰 = {𝐲 \over \|𝐲\|}$, where $α = {\rm e}^{{\rm i} \arg x_1}$. 
+for $𝐲 = {\rm csign}(x_1) \|𝐱\| 𝐞_1 + 𝐱$ and $𝐰 = {𝐲 \over \|𝐲\|}$, for ${\rm csign}(z) = {\rm e}^{{\rm i} \arg z}$. 
 
 
 **Lemma 2 (Householder reflection maps to axis, complex case)** For $𝐱 ∈ ℂ^n$,
 $$
-Q_𝐱^{\rm H} 𝐱 = -α \|𝐱\| 𝐞_1
+Q_𝐱^{\rm H} 𝐱 = -{\rm csign}(x_1) \|𝐱\| 𝐞_1
 $$
 
 **Proof**
+Denote $α := {\rm csign}(x_1)$. 
 Note that $ᾱ x_1 = {\rm e}^{-{\rm i} \arg x_1} x_1 = |x_1|$.  Now we have
 $$
 \begin{align*}
