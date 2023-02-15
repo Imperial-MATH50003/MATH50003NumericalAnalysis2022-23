@@ -130,7 +130,7 @@ $$
 where $𝐚_k ∈  ℂ^m$ and assume they are linearly independent ($A$ has full column rank).
 
 
-**Proposition 1 (Column spaces match)** Suppose $A = Q̂  R̂$ where $Q̂ = [𝐪_1,…,𝐪_n]$
+**Proposition 1 (Column spaces match)** Suppose $A = Q̂  R̂$ where $Q̂ = [𝐪_1|…|𝐪_n]$
 has orthogonal columns and $R̂$ is upper-triangular, and $A$ has full rank.
 Then the first $j$ columns of
 $Q̂$ span the same space as the first $j$ columns of $A$:
@@ -138,7 +138,7 @@ $$
 \hbox{span}(𝐚_1,…,𝐚_j) = \hbox{span}(𝐪_1,…,𝐪_j).
 $$
 
-**Proof***
+**Proof**
 
 Because $A$ has full rank we know $R̂$ is invertible, i.e. its diagonal entries do not vanish: $r_{jj} ≠ 0$.
 If $𝐯 ∈ \hbox{span}(𝐚_1,…,𝐚_j)$ we have for $𝐜 ∈ ℂ^j$
@@ -275,39 +275,18 @@ Q_1 A = \begin{bmatrix} × & × & ⋯ & × \\
 & × & ⋯ & × \\
                     & ⋮ & ⋱ & ⋮ \\
                     & × & ⋯ & × \end{bmatrix} = 
-\begin{bmatrix}  α_1 & 𝐰_1^⊤ \\ 
+\begin{bmatrix}  α & 𝐰^⊤ \\ 
 & A_2   \end{bmatrix}
 $$
 where 
 $$
-α_1 := -α_1\|𝐚_1\|, 𝐰 = (Q_1 A)[1, 2:n]  \qquad \hbox{and} \qquad A_2 = (Q_1 A)[2:m, 2:n],
+α := -{\rm csign}(a_{11})  \|𝐚_1\|, 𝐰 = (Q_1 A)[1, 2:n]  \qquad \hbox{and} \qquad A_2 = (Q_1 A)[2:m, 2:n],
 $$
-where $α_1 = {\rm e}^{{\rm i} \arg a_{11}}$.
+${\rm csign}(z) :=  {\rm e}^{{\rm i} \arg z}$. 
 That is, we have made the first column triangular.
-We can apply this same step to $A_2$ to make its first column triangular.
-The inductive construction is thus clear.
-
-**Algorithm 2 (QR via Householder)**
-Let $A_1 = A$. For $j = 1,2, …,n$ define
-$$
-\begin{align*}
-𝐛_j &:= A_j[1:n-j+1,1] \\
-Q_j &:= Q_{𝐛_j}^{\rm H} \\
-α_j &:= {\rm e}^{{\rm i} \arg 𝐛_j[1]} \\
-r_{jj} &:=  -α_j \| 𝐛_j \| \\
-𝐰_j &:= (Q_k A_k)[1,2:n-j+1] \\
-A_{j+1} &:= (Q_jA_j)[2:m-j+1,2:n-j+1]
-\end{align*}
-$$
-Then for
-$$
-Q̃_j := \begin{bmatrix} I_{j-1} \\ & Q_j \end{bmatrix}
-$$
-we define $Q := Q̃_1 ⋯ Q̃_n$ and $R$ has entries $r_{kj} :=𝐰_k[j]$ for $k < j$.
-
-
-Corresponding to this algorithm is a proof by induction that evey
-matrix has a QR factorisation:
+In terms of an algorithm, we then introduce zeros into the first column of $A_2$,
+leaving an $A_3$, and so-on. But we can wrap this iterative algorithm into a simple
+proof by induction:
 
 **Theorem 3 (QR)** 
 Every matrix $A ∈ ℂ^{m × n}$ has a QR factorisation:
@@ -321,57 +300,87 @@ where $Q ∈ U(m)$ and $R ∈ ℂ^{m × n}$ is right triangular.
 Assume $m ≥ n$. If $A = [𝐚_1] ∈ ℂ^{m × 1}$ then we have for the Householder
 reflection $Q_1 = Q_{𝐚_1}^{\rm H}$
 $$
-Q_1 A = [-α_1 \|𝐚_1\| 𝐞_1]
+Q_1 A = [α 𝐞₁]
 $$
-which is right triangular, where $α_1 = {\rm e}^{{\rm i} \arg a_{11}}$. In other words 
+which is right triangular, where $α = -{\rm sign}(a_{11}) \|𝐚_1\|$. 
+In other words 
 $$
-A = \underbrace{Q_1}_Q \underbrace{[-α_1 \|𝐚_1\| 𝐞_1]}_R.
+A = \underbrace{Q_1}_Q \underbrace{[α 𝐞₁]}_R.
 $$
 
-We now prove by induction. For $A = [𝐚_1|…|𝐚_n] ∈ ℂ^{m × n}$ and $Q_1 = Q_{𝐚_1}^{\rm H}$ we have
+For $n > 1$, assume every matrix with less columns than $n$ has a QR factorisation.
+For $A = [𝐚_1|…|𝐚_n] ∈ ℂ^{m × n}$, let $Q_1 = Q_{𝐚_1}^{\rm H}$ so that
 $$
-Q_1 A =  \begin{bmatrix} -α_1 \|𝐚_1\| & 𝐰_1^⊤ \\ & A_2 \end{bmatrix}
+Q_1 A =  \begin{bmatrix} α & 𝐰^⊤ \\ & A_2 \end{bmatrix}
 $$
-where $A_2 = (Q_1 A)[2:m,2:n]$ and $𝐰_1 = (Q_1 A)[1,2:n]$. By assumption $A_2 = Q_2 R_2$. Thus we have
+where $A_2 = (Q_1 A)[2:m,2:n]$ and $𝐰 = (Q_1 A)[1,2:n]$. By assumption $A_2 = Q̃ R̃$. Thus we have
 $$
 \begin{align*}
-A = Q_1 \begin{bmatrix} -α_1 \|𝐚_1\| & 𝐰_1^⊤ \\ & Q_2 R_2 \end{bmatrix} \\
-=\underbrace{Q_1 \begin{bmatrix} 1 \\ & Q_2 \end{bmatrix}}_Q  \underbrace{\begin{bmatrix} -α_1 \|𝐚_1\| & 𝐰_1^⊤ \\ &  R_2 \end{bmatrix}}_R.
+A = Q_1 \begin{bmatrix} α & 𝐰^⊤ \\ & Q̃ R̃ \end{bmatrix} \\
+=\underbrace{Q_1 \begin{bmatrix} 1 \\ & Q̃ \end{bmatrix}}_Q  \underbrace{\begin{bmatrix} α & 𝐰^⊤ \\ &  R̃ \end{bmatrix}}_R.
 \end{align*}
 $$
 
 ∎
 
-The implementation is clearer. We do a naive implementation here:
+This proof by induction leads naturally to an iterative algorithm. Note that $Q̃$ is a product of all
+Householder reflections that come afterwards, that is, we can think of $Q$ as:
+$$
+Q = Q_1 Q̃_2 Q̃_3 ⋯ Q̃_n\qquad\hbox{for}\qquad Q̃_j = \begin{bmatrix} I_{j-1} \\ & Q_j \end{bmatrix}
+$$
+where $Q_j$ is a single Householder reflection corresponding to the first column of $A_j$. 
+This is stated cleanly in Julia code:
+
+**Algorithm 2 (QR via Householder)** For $A ∈ ℂ^{m × n}$ with $m ≥ n$, the QR factorisation can be implemented as follows:
 ```julia
 function householderreflection(x)
     y = copy(x)
-    # we cannot use sign(x[1]) in case x[1] == 0
     if x[1] == 0
-        y[1] += norm(x)
-    else # sign(z) == exp(im*angle(z)) for complex numbers
-        y[1] += sign(x[1])*norm(x)
+        y[1] += norm(x) 
+    else # note sign(z) = exp(im*angle(z)) where `angle` is the argument of a complex number
+        y[1] += sign(x[1])*norm(x) 
     end
     w = y/norm(y)
     I - 2*w*w'
 end
 function householderqr(A)
+    T = eltype(A)
     m,n = size(A)
-    R = copy(A)
-    Q = Matrix(1.0I, m, m)
+    if n > m
+        error("More columns than rows is not supported")
+    end
+
+    R = zeros(T, m, n)
+    Q = Matrix(one(T)*I, m, m)
+    Aⱼ = copy(A)
+
     for j = 1:n
-        Qⱼ = householderreflection(R[j:end,j])
-        R[j:end,:] = Qⱼ*R[j:end,:]
-        Q[:,j:end] = Q[:,j:end]*Qⱼ
+        𝐚₁ = Aⱼ[:,1] # first columns of Aⱼ
+        Q₁ = householderreflection(𝐚₁)
+        Q₁Aⱼ = Q₁*Aⱼ
+        α,𝐰 = Q₁Aⱼ[1,1],Q₁Aⱼ[1,2:end]
+        Aⱼ₊₁ = Q₁Aⱼ[2:end,2:end]
+
+        # populate returned data
+        R[j,j] = α
+        R[j,j+1:end] = 𝐰
+
+        # following is equivalent to Q = Q*[I 0 ; 0 Qⱼ]
+        Q[:,j:end] = Q[:,j:end]*Q₁
+
+        Aⱼ = Aⱼ₊₁ # this is the "induction"
     end
     Q,R
 end
 
-m,n = 7,5
-A = randn(m, n)
+m,n = 100,50
+A = randn(m,n)
 Q,R = householderqr(A)
-Q*R ≈ A
+@test Q'Q ≈ I
+@test Q*R ≈ A
 ```
+
+
 Note because we are forming a full matrix representation of each Householder
 reflection this is a slow algorithm, taking $O(n^4)$ operations. The problem sheet
 will consider a better implementation that takes $O(n^3)$ operations.
@@ -407,11 +416,11 @@ $$
 In this example the next column is already upper-triangular,
 but because of our choice of reflection we will end up swapping the sign, that is
 $$
-Q_2 = \begin{bmatrix} 1 \\ & -1 \\ && 1 \\ &&& 1 \end{bmatrix}
+Q̃_2 = \begin{bmatrix} 1 \\ & -1 \\ && 1 \\ &&& 1 \end{bmatrix}
 $$
 so that
 $$
-Q_2 Q_1 A = \begin{bmatrix} -3 & -6 & -9 \\
+Q̃_2 Q_1 A = \begin{bmatrix} -3 & -6 & -9 \\
  & -15 & -18 \\
   & 0 & 0 \\
 & 0 & -6
@@ -419,12 +428,12 @@ Q_2 Q_1 A = \begin{bmatrix} -3 & -6 & -9 \\
 $$
 The final reflection is
 $$
-Q_3 = \begin{bmatrix} I_{2 × 2} \\ &  I - \begin{bmatrix} 1 \\ -1 \end{bmatrix} \begin{bmatrix} 1 & -1 \end{bmatrix} 
+Q̃_3 = \begin{bmatrix} I_{2 × 2} \\ &  I - \begin{bmatrix} 1 \\ -1 \end{bmatrix} \begin{bmatrix} 1 & -1 \end{bmatrix} 
 \end{bmatrix} = \begin{bmatrix} å1 \\ & 1 \\ & & 0 & 1 \\ & & 1 & 0 \end{bmatrix}
 $$
 giving us
 $$
-Q_3 Q_2 Q_1 A = \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
+Q̃_3 Q̃_2 Q_1 A = \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
  & -15 & -18 \\
   &  & -6 \\
 &  & 0
@@ -432,7 +441,7 @@ Q_3 Q_2 Q_1 A = \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
 $$
 That is,
 $$
-A = Q_1 Q_2 Q_3 R = \underbrace{{1 \over 3} \begin{bmatrix}
+A = Q_1 Q̃_2 Q̃_3 R = \underbrace{{1 \over 3} \begin{bmatrix}
 -1 & 0 & 2 & 2 \\
 0 & 3 & 0 & 0 \\
 2 & 0 & -1 & 2 \\

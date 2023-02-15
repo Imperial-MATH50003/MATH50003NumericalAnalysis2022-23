@@ -37,15 +37,20 @@ $$
 -𝐯_1/α_1 & I \end{bmatrix} A = \begin{bmatrix} α_1 & 𝐰_1^⊤ \\  & K -𝐯_1𝐰_1^⊤ /α_1 \end{bmatrix}
 $$
 where $A_2 := K -𝐯_1 𝐰_1^⊤/α_1$  happens to be a rank-1 perturbation of $K$. 
-Assume $A_2 = L_2 U_2$.
 We can write this another way:
 $$
 A = \underbrace{\begin{bmatrix}
 1 \\
 𝐯_1/α_1 & I \end{bmatrix}}_{L_1}  \begin{bmatrix} α_1 & 𝐰_1^⊤ \\  & A_2 \end{bmatrix}
+$$
+Now assume we continue this process and manage to deduce $A_2 = L_2 U_2$.
+Then
+$$
+
+A = L_1 \begin{bmatrix} α_1 & 𝐰_1^⊤ \\  & L_2U_2 \end{bmatrix}
 = \underbrace{L_1 \begin{bmatrix}
 1 \\
- & L_2 \end{bmatrix}}_{L}  \underbrace{\begin{bmatrix} α_1 & 𝐰_1^⊤ \\  & U_2 \end{bmatrix}}_{U}
+ & L_2 \end{bmatrix}}_L  \underbrace{\begin{bmatrix} α_1 & 𝐰_1^⊤ \\  & U_2 \end{bmatrix}}_U
 $$
 Note we can multiply through to find
 $$
@@ -56,93 +61,52 @@ $$
 
 This procedure implies an algorithm:
 
-**Algorithm 1 (LU)** Let $A_1 := A$. For $k = 1, …, n-1$ define
-$$
-\begin{align*}
-α_k &:= A_k[1,1] \\
-𝐯_k &:= A_k[2:n-k+1,1] \\
-𝐰_k &:= A_k[1, 2:n-k+1] \\
-A_{k+1} &:= A_k[2:n-k+1,2:n-k+1]-𝐯_k 𝐰_k^⊤/α_k,
-\end{align*}
-$$
-and $α_n := A_n[1,1]$. 
-Then for $ℓ_{kj} := 𝐯_j[k-j]/α_j$ and $u_{kj} = 𝐰_k[j-k]$ we have
-$$
-A = \underbrace{\begin{bmatrix}1 \\ ℓ_{21} & 1 \\
-                ℓ_{31} & ℓ_{32} & 1 \\
-                ⋮ &  ⋮ & ⋱ & ⋱ \\
-                ℓ_{n1} & ℓ_{n2} & ⋯ & ℓ_{n,n-1} & 1
-                \end{bmatrix}}_L \underbrace{\begin{bmatrix} α_1 &u_{12} & u_{13} & ⋯ & u_{1n} \\
-                                          & α_2 & u_{23} & ⋯ & u_{2n} \\
-                                        && ⋱ & ⋱ & ⋮ \\
-                                        &&& α_{n-1} & u_{n-1,n} \\
-                                        &&&& α_n\end{bmatrix}}_U
-$$
+**Algorithm 1 (LU)**
+```julia
+function mylu(A)
+    n,m = size(A)
+    if n ≠ m
+        error("Matrix must be square")
+    end
+    T = eltype(A)
+    L = LowerTriangular(zeros(T,n,n))
+    U = UpperTriangular(zeros(T,n,n))
 
+    σ = Vector(1:n)
 
+    Aⱼ = copy(A)
 
+    for j = 1:n-1
+        α,𝐯,𝐰 = Aⱼ[1,1],Aⱼ[2:end,1],Aⱼ[1,2:end]
+        K = Aⱼ[2:end,2:end]
 
+        # populate data
+        L[j,j] = 1
+        L[j+1:end,j] = 𝐯/α
+        U[j,j] = α
+        U[j,j+1:end] = 𝐰
 
-**Example 1 (computer)**
-We will do a numerical example (by-hand is equivalent to Gaussian elimination).
-The first lower triangular matrix is:
-```julia
-n = 4
-A = randn(n,n)
-A₁= A
+        # this is the "recursion": Aⱼ is now the next block
+        # We use transpose(𝐰) instead of 𝐰' incase 𝐰 is complex
+        
+        Aⱼ = K - 𝐯*transpose(𝐰)/α
+    end
+    # j = n case
+    L[n,n] = 1
+    U[n,n] = Aⱼ[1,1]
 
-α₁,𝐯₁,𝐰₁ = A₁[1,1],A₁[2:n,1],A₁[1,2:n]
-L₁ = I + [0; 𝐯₁/α₁] * [1 zeros(1,n-1)] # a rank-1 correction
-```
-Which indeed introduces zeros in the first column:
-```julia
-L₁\A
-```
-Now we make the next lower triangular operator:
-```julia
-A₂ = A₁[2:n,2:n] - 𝐯₁*𝐰₁'/α₁ # can use ' since its real. Otherwise use transpose(𝐰₁)
-α₂,𝐯₂,𝐰₂ = A₂[1,1],A₂[2:n-1,1],A₂[1,2:n-1]
-L₂ = I + [0; 𝐯₂/α₂] * [1 zeros(1,n-2)] # a rank-1 correction
-```
-Which has introduced zeros in the second column:
-```julia
-# adds a row and column to L₂
-L̃₂ = [1          zeros(1,n-1);
-      zeros(n-1) L₂]
-L̃₂\(L₁\A)
-```
-The last one is:
-```julia
-A₃ = A₂[2:n-1,2:n-1] - 𝐯₂/α₂ * 𝐰₂' # can use ' since its real. Otherwise use transpose(𝐰₁)
-α₃,𝐯₃,𝐰₃ = A₃[1,1],A₃[2:n-2,1],A₃[1,2:n-2]
-L₃ = I + [0; 𝐯₃/α₃] * [1 zeros(1,n-3)] # a rank-1 correction
-```
-Giving us
-```julia
-# adds two rows and columns to L̃₃
-L̃₃ = [I(2) zeros(2,n-2); zeros(n-2,2) L₃]
-U = L̃₃ \ (L̃₂ \(L₁\A))
-```
-In other words, `L̃₃*L̃₂*L₁*U == A` and hence we have:
-```julia
-L = L₁*L̃₂*L̃₃
-L*U ≈ A
-```
-The entries of `L` are indeed identical to the negative
-lower entries of `L₁`, `L₂` and `L₃`:
-```julia
-L = zeros(n,n)
-for k = 1:n
-    L[k,k] = 1
+    L,U
 end
-L[2:n,1] = 𝐯₁/α₁
-L[3:n,2] = 𝐯₂/α₂
-L[4:n,3] = 𝐯₃/α₃
-L ≈ L₁*L̃₂*L̃₃
+
+A = randn(5,5) + 100I # need + 100I so that the matrix is (probably) diagonally dominant
+L,U = mylu(A)
+@test A ≈ L*U
 ```
 
 
-**Example 2 (by-hand)**
+
+
+**Example 1 (by-hand)**
 
 Consider the matrix
 $$
@@ -184,7 +148,7 @@ $$
 ## 2. PLU Factorisation
 
 We learned in first year linear algebra that if a diagonal entry is zero
-whem doing Gaussian elimnation one has to _row pivot_. For stability, 
+when doing Gaussian elimnation one has to _row pivot_. For stability, 
 in implementation one _always_ pivots: swap the largest in magnitude entry for the entry on the diagonal.
 We will see this is equivalent to a PLU decomposition:
 
@@ -199,39 +163,36 @@ where the diagonal of $L$ are all equal to 1 and the diagonal of $U$ are all non
 
 If we have a PLU decomposition of this form then $L$ and $U$ are invertible and hence the inverse is simply $A^{-1} = U^{-1} L^{-1} P$. 
 
-We will prove the other direction by induction.
-If $A ∈ ℂ^{1 × 1}$ we trivially have an LU decomposition $A = [1] * [a_{11}]$ as all matrices are triangular.
+
+If $A ∈ ℂ^{1 × 1}$ we trivially have an LU decomposition $A = [1] * [a_{11}]$ as all $1 × 1$ matrices are triangular.
+We now proceed by induction: assume all invertible matrices of lower dimension have a PLU factorisation.
 As $A$ is invertible not all entries in the first column are zero. Therefore there exists a permutation
 $P_1$ so that $α := (P_1 A)[1,1] ≠ 0$. Hence we write
 $$
 P_1 A = \begin{bmatrix} α & 𝐰^⊤ \\
-                        𝐯 & A_2
+                        𝐯 & K
                         \end{bmatrix} = \underbrace{\begin{bmatrix}
 1 \\
-𝐯/α & I \end{bmatrix}}_{L_1}  \begin{bmatrix} α & 𝐰^⊤ \\  & A_2 \end{bmatrix}
+𝐯/α & I \end{bmatrix}}_{L_1}  \begin{bmatrix} α & 𝐰^⊤ \\  & K - 𝐯 𝐰^⊤/α \end{bmatrix}
 $$
-We know $A_2$ is invertible: if $A_2^⊤ 𝐜  = 𝟎$ then for $𝐝 := P_1^⊤ L_1^{-⊤} [0; 𝐜]$ we have
-$$
-\begin{align*}
-𝐝^⊤ A =  [0\ 𝐜^⊤] L_1^{-1} P_1 P_1^⊤ L_1  \begin{bmatrix} α & 𝐰^⊤ \\  & A_2 \end{bmatrix}
-= [0\ 𝐜^⊤] \begin{bmatrix} α & 𝐰^⊤ \\  & A_2 \end{bmatrix} = [0\ 𝐜^⊤\ A_2] = 𝟎^⊤.
-\end{align*}
-$$
-Thus by induction $A_2 = P_2^⊤ L_2 U_2$. Thus we have:
+We deduce that $A_2 := K - 𝐯 𝐰^⊤/α$ is invertible because $A$ and $L_1$ are invertible
+(Exercise).
+
+By assumption we can write $A_2 = P̃^⊤ L̃ Ũ$. Thus we have:
 $$
 \begin{align*}
-\begin{bmatrix} 1 \\
-            & P_2 \end{bmatrix} P_1 A &= \begin{bmatrix} 1 \\
-            & P_2 \end{bmatrix}  \begin{bmatrix} α & 𝐰^⊤ \\
+\underbrace{\begin{bmatrix} 1 \\
+            & P̃ \end{bmatrix} P_1}_P A &= \begin{bmatrix} 1 \\
+            & P̃ \end{bmatrix}  \begin{bmatrix} α & 𝐰^⊤ \\
                         𝐯 & A_2
                         \end{bmatrix}  =
-            \begin{bmatrix} 1 \\ & P_2 \end{bmatrix} L_1  \begin{bmatrix} α & 𝐰^⊤ \\  & P_2^⊤ L_2 U_2 \end{bmatrix} \\
+            \begin{bmatrix} 1 \\ & P̃ \end{bmatrix} L_1  \begin{bmatrix} α & 𝐰^⊤ \\  & P̃^⊤ L̃  Ũ \end{bmatrix} \\
             &= \begin{bmatrix}
 1 \\
-P_2 𝐯/α & P_2 \end{bmatrix} \begin{bmatrix} 1 &  \\  &  P_2^⊤ L_2 \end{bmatrix}  \begin{bmatrix} α & 𝐰^⊤ \\  &  U_2 \end{bmatrix} \\
+P̃ 𝐯/α & P̃ \end{bmatrix} \begin{bmatrix} 1 &  \\  &  P̃^⊤ L̃  \end{bmatrix}  \begin{bmatrix} α & 𝐰^⊤ \\  &  Ũ \end{bmatrix} \\
 &= \underbrace{\begin{bmatrix}
 1 \\
-P_2 𝐯/α & L_2 \end{bmatrix}}_L \underbrace{\begin{bmatrix} α & 𝐰^⊤ \\  &  U_2 \end{bmatrix}}_U. \\
+P̃ 𝐯/α & L̃  \end{bmatrix}}_L \underbrace{\begin{bmatrix} α & 𝐰^⊤ \\  &  Ũ \end{bmatrix}}_U. \\
 \end{align*}
 $$
 
@@ -245,40 +206,79 @@ $$
 σ_{\rm max}(𝐚) = (1, {\rm indmax} |𝐚|)
 $$
 where ${\rm indmax}$ gives the index of the entry of a vector which is its maximum.
-This inductive proof encodes an  algorithm:
 
-**Algorithm 2 (PLU)** Let $A_1 := A$. For $k = 1, …, n-1$ define
+
+This inductive proof encodes an  algorithm. Note that in the above, just like in Householder QR,
+$P̃$ is a product of all permutations that come afterwards, that is, we can think of $P$ as:
 $$
-\begin{align*}
-σ_k &:= σ_{\rm max}(A_k[1:n-k+1,1]) \\
-P_k &:= P_{σ_k} \\
-Ã_k & := P_k A_k \\
-α_k &:= Ã_k[1,1] \\
-𝐯_k &:= Ã_k[2:n-k+1,1] \\
-𝐰_k &:= Ã_k[1, 2:n-k+1] \\
-A_{k+1} &:= Ã_k[2:n-k+1,2:n-k+1]-𝐯_k 𝐰_k^⊤/α_k,
-\end{align*}
+P̃ =  P̃_{n-1} ⋯ P̃_3 P̃_2\qquad\hbox{for}\qquad P̃_j = \begin{bmatrix} I_{j-2} \\ & P_j \end{bmatrix}
 $$
-and finally $α_n := A_n[1,1]$. 
-Then for $ℓ_{kj} := 𝐯_j[k-j]/α_j$, $u_{kj} = 𝐰_k[j-k]$, and
+where $P_j$ is a single permutation corresponding to the first column of $A_j$. 
+That is, we have
 $$
-P̃_k := \begin{bmatrix} I_{k-1} \\ & P_k \end{bmatrix}
-$$
- we have
-$$
-\underbrace{P̃_{σ_{n-1}} ⋯ P̃_{σ_1}}_P A = \underbrace{\begin{bmatrix}1 \\ ℓ_{21} & 1 \\
-                ℓ_{31} & ℓ_{32} & 1 \\
-                ⋮ &  ⋮ & ⋱ & ⋱ \\
-                ℓ_{n1} & ℓ_{n2} & ⋯ & ℓ_{n,n-1} & 1
-                \end{bmatrix}}_L \underbrace{\begin{bmatrix} α_1 &u_{12} & u_{13} & ⋯ & u_{1n} \\
-                                          & α_2 & u_{23} & ⋯ & u_{2n} \\
-                                        && ⋱ & ⋱ & ⋮ \\
-                                        &&& α_{n-1} & u_{n-1,n} \\
-                                        &&&& α_n\end{bmatrix}}_U
+P̃ 𝐯 = P̃_{n-1} ⋯ P̃_3 P̃_2 𝐯.
 $$
 
 
-**Example 3**
+**Algorithm 2 (PLU)** This can be implemented in Julia as follows:
+```julia
+function σ_max(a)
+    n = length(a)
+    mx, ind = findmax(abs.(a)) # finds the index of the maximum entry
+    if ind == 1
+        1:n
+    else
+        [ind; 2:ind-1; 1; ind+1:n]
+    end
+end
+
+function plu(A)
+    n,m = size(A)
+    if n ≠ m
+        error("Matrix must be square")
+    end
+    T = eltype(A)
+    L = LowerTriangular(zeros(T,n,n))
+    U = UpperTriangular(zeros(T,n,n))
+
+    σ = Vector(1:n)
+
+    Aⱼ = copy(A)
+
+    for j = 1:n-1
+        σ₁ = σ_max(Aⱼ[:,1])
+        P₁Aⱼ = Aⱼ[σ₁,:] # permute rows of Aⱼ
+        α,𝐯,𝐰 = P₁Aⱼ[1,1],P₁Aⱼ[2:end,1],P₁Aⱼ[1,2:end]
+        K = P₁Aⱼ[2:end,2:end]
+
+        # populate data
+        L[j,j] = 1
+        L[j+1:end,j] = 𝐯/α
+        U[j,j] = α
+        U[j,j+1:end] = 𝐰
+
+        # apply permutation to previous L
+        # and compose the permutations
+        L[j:n,1:j-1] = L[(j:n)[σ₁],1:j-1]
+        σ[j:n] = σ[j:n][σ₁]
+
+        # this is the "recursion": Aⱼ is now the next block
+        # We use transpose(𝐰) instead of 𝐰' incase 𝐰 is complex
+        Aⱼ = K - 𝐯*transpose(𝐰)/α
+    end
+    # j = n case
+    L[n,n] = 1
+    U[n,n] = Aⱼ[1,1]
+
+    L,U,σ
+end
+
+A = randn(5,5)
+L,U,σ = plu(A)
+@test L*U ≈ A[σ,:]
+```
+
+**Example 2**
 
 Again we consider the matrix
 $$
@@ -291,43 +291,36 @@ Even though $a_{11} = 1 ≠ 0$, we still pivot: placing
 the maximum entry on the diagonal to mitigate numerical errors.
 That is, we first pivot and upper triangularise the first column:
 $$
- L_1 P_1 A =  L_1\begin{bmatrix} 0 & 1 \\ 1 & 0 \\ && 1 \end{bmatrix}
-\begin{bmatrix} 1 & 1 & 1 \\
-                    2 & 4 & 8 \\
+  \underbrace{\begin{bmatrix} 0 & 1 \\ 1 & 0 \\ && 1 \end{bmatrix}}_{P_1} A =  
+\begin{bmatrix}  2 & 4 & 8 \\
+                    1 & 1 & 1 \\
                     1 & 4 & 9
                     \end{bmatrix} = 
-                     \begin{bmatrix}1 \\ -{1 \over 2} & 1 \\ -{1 \over 2} && 1 \end{bmatrix}
-\begin{bmatrix} 2 & 4 & 8 \\
-                1 & 1 & 1 \\
-                    1 & 4 & 9
+\underbrace{\begin{bmatrix}  1 &  \\
+                    1/2 & 1 \\
+                    1/2 &  & 1
+                    \end{bmatrix}}_{L_1}
+                    \begin{bmatrix}  2 & 4 & 8 \\
+                     & -1 & -3 \\
+                     & 2 & 5
                     \end{bmatrix}
 $$
-We now pivot and upper triangularise the second column:
+That is we have $α_1 = 2$, $𝐯_1 = [1,1]$, and $𝐰_1 = [4,8]$.
+We now pivot for $A_2$:
 $$
-  L̃_2 P̃_2 L̃_1 P_1 A = 
-                    L̃_2 \begin{bmatrix}
-                    1 \\ &0 & 1 \\ &1 & 0 \end{bmatrix}
-\begin{bmatrix} 2 & 4 & 8 \\
-                0 & -1 & -3 \\
-                    0 & 2 & 5
-                    \end{bmatrix}
-                    = \begin{bmatrix} 1\\ & 1 \\ & {1 \over 2} & 1 \end{bmatrix}
-\begin{bmatrix} 2 & 4 & 8 \\
-                0 & 2 & 5 \\
-                0 & -1 & -3 
-                    \end{bmatrix} = 
-                    \underbrace{\begin{bmatrix} 2 & 4 & 8 \\
-                0 & 2 & 5 \\
-                0 & 0 & -{1 \over 2}
-                    \end{bmatrix}}_U
+\underbrace{\begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}}_{P_2}  \underbrace{\begin{bmatrix}
+-1 & -3 \\ 2 & 5 \end{bmatrix}}_{A_2} = \begin{bmatrix} 2 & 5 \\ -1 & -3 \end{bmatrix}
+= \underbrace{\begin{bmatrix} 1  \\ -1/2 & 1 \end{bmatrix}}_{L_2} \begin{bmatrix} 2 & 5 \\  & -{1 \over 2} \end{bmatrix}
 $$
-We now move $P̃_2$ to the right:
+Note that $P_2 𝐯_1 = 𝐯_1$ and
 $$
-L_2 P_2 L_1 P_1 = \underbrace{\begin{bmatrix} 1\\ -{1 \over 2} & 1 \\  -{1 \over 2}  & {1 \over 2} & 1 \end{bmatrix}}_{L_2 \tilde L_1} \underbrace{\begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 0 & 0 \end{bmatrix}}_P
+P = P̃_2 P_1 = \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 &  0 & 0 \end{bmatrix}.
 $$
-That is
+Hence we have
 $$
-L = \begin{bmatrix} 1\\ {1 \over 2} & 1 \\  {1 \over 2}  & -{1 \over 2} & 1 \end{bmatrix}
+P A = \begin{bmatrix} 1 \\ 
+1/2 & 1 \\
+1/2 & -1/2 & 1 \end{bmatrix}  \begin{bmatrix} 2 & 4 & 8 \\ & 2 & 5 \\ && -1/2 \end{bmatrix}
 $$
 
 We see how this example is done on a computer:
@@ -336,23 +329,29 @@ A = [1 1 1;
      2 4 8;
      1 4 9]
 L,U,σ = lu(A) # σ is a vector encoding the permutation
+
+@test L == [1    0   0 ;
+            1/2  1   0 ; 
+            1/2 -1/2 1 ]
+@test U == [2 4 8   ;
+            0 2 5   ;
+            0 0 -1/2]
+@test I(3)[σ,:] == [0 1 0 ;
+                    0 0 1 ; 
+                    1 0 0 ]
 ```
-The permutation is
-```julia
-σ
-```
-Thus to invert a system we can do:
+To invert a system we can do:
 ```julia
 b = randn(3)
-U\(L\b[σ]) == A\b
+@test U\(L\b[σ]) == A\b
 ```
-Note the entries match exactly because this precisely what `\` is using.
+Note the entries match exactly because this is precisely what `\` is using.
 
 ## 3. Cholesky Factorisation
 
 Cholesky Factorisation is a form of Gaussian elimination (without pivoting)
 that exploits symmetry in the problem, resulting in a substantial speedup. 
-It is only relevant for _symmetric positive definite_
+It is only relevant for _symmetric positive definite_ (SPD)
 matrices.
 
 **Definition 1 (positive definite)** A square matrix $A ∈ ℝ^{n × n}$ is _positive definite_ if
@@ -384,7 +383,7 @@ positive definite.
 We leave the proofs to the problem sheets. Here is the key result:
 
 
-**Theorem 2 (Cholesky and sym. pos. def.)** A matrix $A$ is symmetric positive definite if and only if it has a Cholesky factorisation
+**Theorem 2 (Cholesky and SPD)** A matrix $A$ is symmetric positive definite if and only if it has a Cholesky factorisation
 $$
 A = L L^⊤
 $$
@@ -411,83 +410,116 @@ $$
 Note that $A_2 := K - {𝐯 𝐯^⊤ \over α}$ is a subslice of $L_1^{-1} A L_1^{-⊤}$, hence by the previous propositions is
 itself symmetric positive definite. Thus we can write 
 $$
-A_2 = K - {𝐯 𝐯^⊤ \over α} = L_2 L_2^⊤
+A_2 = K - {𝐯 𝐯^⊤ \over α} = L̃ L̃^⊤
 $$
 and hence $A = L L^⊤$ for
 $$
-L= L_1 \begin{bmatrix}1 \\ & L_2 \end{bmatrix} = \begin{bmatrix} \sqrt{α} \\ {𝐯 \over \sqrt{α}} & L_2 \end{bmatrix}
+L= L_1 \begin{bmatrix}1 \\ & L̃ \end{bmatrix} = \begin{bmatrix} \sqrt{α} \\ {𝐯 \over \sqrt{α}} & L̃ \end{bmatrix}
 $$
 satisfies $A = L L^⊤$.
 ∎
 
 
 Note hidden in this proof is a simple algorithm form computing the Cholesky factorisation.
+We state it as a mathematical formulae since we will be using it for computing-by-hand.
 
+**Algorithm 3 (Cholesky)** 
+```julia
+function mycholesky(A)
+    T = eltype(A)
+    n,m = size(A)
+    if n ≠ m
+        error("Matrix must be square")
+    end
+    if A ≠ A'
+        error("Matrix must be symmetric")
+    end
+    T = eltype(A)
+    L = LowerTriangular(zeros(T,n,n))
+    Aⱼ = copy(A)
+    for j = 1:n
+        α,𝐯 = Aⱼ[1,1],Aⱼ[2:end,1]
+        if α ≤ 0
+            error("Matrix is not SPD")
+        end 
+        L[j,j] = sqrt(α)
+        L[j+1:end,j] = 𝐯/sqrt(α)
 
-**Algorithm (Cholesky)** Let $A_1 := A$. For  $k = 1, …, n$ define
-$$
-\begin{align*}
-α_k &:= A_k[1,1] \\
-𝐯_k &:= A_k[2:n-k+1,1] \\
-A_{k+1} &:= A_k[2:n-k+1,2:n-k+1] - {𝐯_k 𝐯_k^⊤ \over α_k}.
-\end{align*}
-$$
-Then
-$$
-L = \begin{bmatrix} \sqrt{α_1} \\
-    {𝐯_1[1] \over \sqrt{α_1}}  &  \sqrt{α_2} \\
-    {𝐯_1[2] \over \sqrt{α_1}}  & {𝐯_2[1] \over \sqrt{α_2}} &  \sqrt{α_2} \\
-    ⋮ & ⋮ & ⋱ & ⋱ \\
-    {𝐯_1[n-1] \over \sqrt{α_1}} &{𝐯_2[n-2] \over \sqrt{α_2}} & ⋯ & {𝐯_{n-1}[1] \over \sqrt{α_{n-1}}} & \sqrt{α_{n}}
-    \end{bmatrix}
-$$
+        # induction part
+        Aⱼ = Aⱼ[2:end,2:end] - 𝐯*𝐯'/α
+    end
+    L
+end
+
+A = Symmetric(rand(100,100) + 100I)
+L = mycholesky(A)
+@test A ≈ L*L'
+```
+
 
 This algorithm succeeds if and only if $A$ is symmetric positive definite.
 
-**Example 4** Consider the matrix
+**Example 3 (Cholesky by hand)** Consider the matrix
 $$
-A_0 = A = \begin{bmatrix}
+A = \begin{bmatrix}
 2 &1 &1 &1 \\
 1 & 2 & 1 & 1 \\
 1 & 1 & 2 & 1 \\
 1 & 1 & 1 & 2
 \end{bmatrix}
 $$
-Then
+Then $α₁ = 2$, $𝐯₁ = [1,1,1]$, and  
 $$
-A_1 = \begin{bmatrix}
+A_2 = \begin{bmatrix}
 2 &1 &1 \\
 1 & 2 & 1 \\
 1 & 1 & 2 
-\end{bmatrix} - {1 \over 2} \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix} \begin{bmatrix} 1 & 1 & 1 \end{bmatrix} =
-{1 \over 2} \begin{bmatrix}
+\end{bmatrix} - {1 \over 2} \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix} \begin{bmatrix} 1 & 1 & 1 \end{bmatrix} 
+={1 \over 2} \begin{bmatrix}
 3 & 1 & 1 \\
 1 & 3 & 1 \\
 1 & 1 & 3 
-\end{bmatrix}
+\end{bmatrix}.
 $$
-Continuing, we have 
+Continuing, we have $α_2 = 3/2$, $𝐯_2 = [1/2,1/2]$, and
 $$
-A_2 = {1 \over 2} \left( \begin{bmatrix}
+A_3 = {1 \over 2} \left( \begin{bmatrix}
 3 & 1 \\ 1 & 3
 \end{bmatrix} - {1 \over 3} \begin{bmatrix} 1 \\ 1  \end{bmatrix} \begin{bmatrix} 1 & 1  \end{bmatrix}
 \right)
 = {1 \over 3} \begin{bmatrix} 4 & 1 \\ 1 & 4 \end{bmatrix}
 $$
-Finally
+Next, $α_3 = 4/3$, $𝐯_3 = [1]$, and
 $$
-A_3 = {5 \over 4}.
+A_4 = [4/3 - 3/4 * (1/3)^2] = [5/4]
 $$
+i.e. $α_4 = 5/4$.
+
 Thus we get
 $$
-L= L_1 L_2 L_3 = \begin{bmatrix} \sqrt{2} \\ {1 \over \sqrt{2}} & {\sqrt{3} \over 2} \\ 
+L= \begin{bmatrix}
+\sqrt{α₁} \\
+{𝐯_1[1] \over \sqrt{α₁}} & \sqrt{α₂} \\
+{𝐯_1[2] \over \sqrt{α₁}} & {𝐯_2[1] \over \sqrt{α₂}}  & \sqrt{α_3} \\
+{𝐯_1[3] \over \sqrt{α₁}} & {𝐯_2[2] \over \sqrt{α₂}}  & {𝐯_3[1] \over \sqrt{α_3}}  & \sqrt{α_4}
+\end{bmatrix}
+ = \begin{bmatrix} \sqrt{2} \\ {1 \over \sqrt{2}} & \sqrt{3 \over 2} \\ 
 {1 \over \sqrt{2}} & {1 \over \sqrt 6} & {2 \over \sqrt{3}} \\
 {1 \over \sqrt{2}} & {1 \over \sqrt 6} & {1 \over \sqrt{12}} & {\sqrt{5} \over 2}
 \end{bmatrix}
 $$
+We can check if our answer is correct:
+```julia
+A = ones(4,4) + I
+# The inbuilt cholesky returns a special type whose field L is the factor
+@test cholesky(A).L ≈ [  sqrt(2)   0         0            0;
+                         1/sqrt(2) sqrt(3/2) 0            0;
+                         1/sqrt(2) 1/sqrt(6) 2/sqrt(3)    0;
+                         1/sqrt(2) 1/sqrt(6) 1/sqrt(12)   sqrt(5)/2]
+```
 
 
-# 3. Timings and Stability
+# 4. Timings and Stability
 
 The different factorisations have trade-offs between speed and stability.
 First we compare the speed of the different factorisations on a symmetric positive
