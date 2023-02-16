@@ -19,7 +19,7 @@ using Plots, Test, LinearAlgebra
 # **Problem 1.1** Complete the following function which returns a rectangular _Vandermonde matrix_:
 # a matrix $V ∈ ℝ^{m × n}$ such that
 # $$
-# V * \begin{bmatrix} p_0\\ … \\p_n \end{bmatrix} = \begin{bmatrix} p(x_1)\\ … \\p(x_m) \end{bmatrix}
+# V * \begin{bmatrix} p_0\\ ⋮ \\p_n \end{bmatrix} = \begin{bmatrix} p(x_1)\\ ⋮ \\p(x_m) \end{bmatrix}
 # $$
 
 function vandermonde(𝐱, n) # 𝐱 = [x_1,…,x_m]
@@ -77,9 +77,9 @@ f_25 = x -> 1/(25x^2 + 1)
 
 plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
 plot!(𝐠, V_g*𝐜_25)
-
+## We see large errors near ±1 for both examples. 
 ## END
-
+#
 ## TODO: repeat the experiment with `n = 400` and observe what has changed.
 ## SOLUTION
 n = 400
@@ -97,7 +97,7 @@ plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
 plot!(𝐠, V_g*𝐜_25)
 ## Still does not converge
 ## END
-
+#
 ## TODO: repeat the experiment with `n = 400` and using `BigFloat` and observe what has changed.
 ## Hint: make sure to make your `range` be `BigFloat` valued, e.g., by using `big`.
 ## SOLUTION
@@ -115,7 +115,7 @@ f_25 = x -> 1/(25x^2 + 1)
 plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
 plot!(𝐠, V_g*𝐜_25)
 ## With M = 4 it looks like it now is converging. This suggests the issue before was numerical error.
-## For M = 25 the solution is still very inaccurate so suggests the issue is a lack of mathematical
+## For M = 25 the solution is even less accurate, which suggests the issue is a lack of mathematical
 ## convergence.
 
 ## END
@@ -159,20 +159,36 @@ plot!(𝐠, V_g*𝐜_25)
 
 # ------- 
 
+# In lectures we did a quick-and-dirty implementation of Householder QR.
+# One major issue though: it used $O(m^2 n^2)$ operations, which is too many!
+# By being more careful about how we apply and store reflections we can avoid this,
+# in particular, taking advantage of the types `Reflection` and `Reflections` we developed
+# last lab. 
+
 # **Problem 2** Complete the following function that implements
 # Householder QR for a real matrix $A ∈ ℝ^{m × n}$ where $m ≥ n$ using only $O(mn^2)$ operations, using 
-#  `Reflection` and `Reflections` from PS5 (which you may copy-and-paste here).
-# Hint: you will likely need to overload functions `*(::Reflection, ::AbstractMatrix)` and
+#  `Reflection` and `Reflections` from PS5.
+# Hint: We have added the overload functions `*(::Reflection, ::AbstractMatrix)` and
 # `*(::Reflections, ::AbstractMatrix)` so that they can be multiplied by an $m × n$ matrix in $O(mn)$ operations.
 
+
 import Base: *, size, getindex
-
-## SOLUTION
-
 
 struct Reflection{T} <: AbstractMatrix{T}
     v::Vector{T}
 end
+
+struct Reflections{T} <: AbstractMatrix{T}
+    V::Matrix{T}
+end
+
+## TODO: copy over implementation of Reflection and Reflections from PS5. 
+
+
+
+## SOLUTION
+
+
 
 Reflection(x::Vector{T}) where T = Reflection{T}(x/norm(x))
 
@@ -195,15 +211,6 @@ function *(Q::Reflection, x::AbstractVector)
     x - 2*Q.v * dot(Q.v,x) # (Q.v'*x) also works instead of dot
 end
 
-function *(Q::Reflection, X::AbstractMatrix)
-    T = promote_type(eltype(Q), eltype(X))
-    m,n = size(X)
-    ret = zeros(T, m, n)
-    for j = 1:n
-        ret[:,j] = Q * X[:,j]
-    end
-    ret
-end
 
 function householderreflection(s::Bool, x::AbstractVector)
     ## TODO: return a `Reflection` corresponding to a Householder reflection
@@ -216,9 +223,7 @@ function householderreflection(s::Bool, x::AbstractVector)
     Reflection(y)
 end
 
-struct Reflections{T} <: AbstractMatrix{T}
-    V::Matrix{T}
-end
+
 
 size(Q::Reflections) = (size(Q.V,1), size(Q.V,1))
 
@@ -235,16 +240,6 @@ function *(Q::Reflections, x::AbstractVector)
     x
 end
 
-function *(Q::Reflections, X::AbstractMatrix)
-    T = promote_type(eltype(Q), eltype(X))
-    m,n = size(X)
-    ret = zeros(T, m, n)
-    for j = 1:n
-        ret[:,j] = Q * X[:,j]
-    end
-    ret
-end
-
 function getindex(Q::Reflections, k::Int, j::Int)
     ## TODO: Return Q[k,j] in O(mn) operations (hint: use *)
 
@@ -255,6 +250,31 @@ function getindex(Q::Reflections, k::Int, j::Int)
     return (Q*ej)[k]
 end
 ## END
+
+
+
+## Implementations of Reflection * AbstractMatrix
+function *(Q::Reflection, X::AbstractMatrix)
+    T = promote_type(eltype(Q), eltype(X))
+    m,n = size(X)
+    ret = zeros(T, m, n)
+    for j = 1:n
+        ret[:,j] = Q * X[:,j]
+    end
+    ret
+end
+
+## Implementations of Reflections * AbstractMatrix
+function *(Q::Reflections, X::AbstractMatrix)
+    T = promote_type(eltype(Q), eltype(X))
+    m,n = size(X)
+    ret = zeros(T, m, n)
+    for j = 1:n
+        ret[:,j] = Q * X[:,j]
+    end
+    ret
+end
+
 
 
 function householderqr(A)
@@ -269,16 +289,16 @@ function householderqr(A)
     Aⱼ = copy(A)
 
     for j = 1:n
-        ## SOLUTION
         ## TODO: rewrite householder QR to use Reflection and
         ## Reflections, in a way that one achieves O(mn^2) operations
+        ## SOLUTION
         𝐚₁ = Aⱼ[:,1] # first columns of Aⱼ
         Q₁ = householderreflection(𝐚₁[1] < 0, 𝐚₁)
         Q₁Aⱼ = Q₁*Aⱼ
         α,𝐰 = Q₁Aⱼ[1,1],Q₁Aⱼ[1,2:end]
         Aⱼ₊₁ = Q₁Aⱼ[2:end,2:end]
 
-        # populate returned data
+        ## populate returned data
         R[j,j] = α
         R[j,j+1:end] = 𝐰
 
@@ -292,11 +312,52 @@ end
 
 A = randn(600,400)
 Q,R = householderqr(A)
-@test Q isa Reflections
 @test Q*R ≈ A
+
+# --------
+
+# We now consider a Cholesky factorisation for tridiagonal matrices. Since we are assuming the
+# matrix is symmetric, we will use a special type `SymTridiagonal` that captures the symmetry.
+# In particular, `SymTridiagonal(dv, eu) == Tridiagonal(ev, dv, ev)`.
+
+# **Problem 3** Complete the following
+# implementation of `mycholesky` to return a `Bidiagonal` cholesky factor in $O(n)$ operations.
+
+
+## return a Bidiagonal L such that L'L == A (up to machine precision)
+## You are allowed to change A
+function mycholesky(A::SymTridiagonal)
+    d = A.dv # diagonal entries of A
+    u = A.ev # sub/super-diagonal entries of A
+    T = float(eltype(A)) # return type, make float in case A has Ints
+    n = length(d)
+    ld = zeros(T, n) # diagonal entries of L
+    ll = zeros(T, n-1) # sub-diagonal entries of L
+
+    ## TODO: populate the diagonal entries ld and the sub-diagonal entries ll
+    ## of L so that L*L' ≈ A
+    ## SOLUTION
+    ld[1] = sqrt(d[1])
+    for k = 1:n-1
+        ll[k] = u[k]/ld[k]
+        ld[k+1] = sqrt(d[k+1]-ll[k]^2)
+    end
+    ## END
+
+    Bidiagonal(ld, ll, :L)
+end
+
+n = 1000
+A = SymTridiagonal(2*ones(n),-ones(n-1))
+L = mycholesky(A)
+@test L*L' ≈ A
 
 
 # ------
+
+# ## Advanced
+
+# This last problem is advanced so may be considered optional. 
 
 # An alternative to using reflections to introduce zeros is to use rotations.
 # This is particularly convenient for tridiagonal matrices, where one needs to only
@@ -304,7 +365,7 @@ Q,R = householderqr(A)
 # in a way that the factorisation can be computed in $O(n)$ operations.
 
 
-# **Problem 3.1** Complete the implementation of `Rotations`, which represents an orthogonal matrix `Q` that is a product
+# **Problem 4.1** Complete the implementation of `Rotations`, which represents an orthogonal matrix `Q` that is a product
 # of rotations of angle `θ[k]`, each acting on the entries `k:k+1`. That is, it returns $Q = Q_1⋯Q_k$ such that
 # $$
 # Q_k[k:k+1,k:k+1] = 
@@ -363,7 +424,7 @@ Q = Rotations(θ1)
 @test Q'Q ≈ I
 @test Rotations([π/2, -π/2]) ≈ [0 0 -1; 1 0 0; 0 -1 0]
 
-# When one computes a tridiagonal QR, we introduce entries in the
+# When one computes a tridiagonal QR, we introduce entries in the
 # second super-diagonal. Thus we will use the `UpperTridiagonal` type
 # from Lab 4:
 
@@ -378,8 +439,6 @@ size(U::UpperTridiagonal) = (length(U.d),length(U.d))
 
 function getindex(U::UpperTridiagonal, k::Int, j::Int)
     d,du,du2 = U.d,U.du,U.du2
-    ## TODO: return U[k,j]
-    ## SOLUTION
     if j - k == 0
         d[j]
     elseif j - k == 1
@@ -389,7 +448,6 @@ function getindex(U::UpperTridiagonal, k::Int, j::Int)
     else
         0
     end
-    ## END
 end
 
 function setindex!(U::UpperTridiagonal, v, k::Int, j::Int)
@@ -397,9 +455,6 @@ function setindex!(U::UpperTridiagonal, v, k::Int, j::Int)
     if j > k+2
         error("Cannot modify off-band")
     end
-
-    ## TODO: modify d,du,du2 so that U[k,j] == v
-    ## SOLUTION
     if j - k == 0
         d[k] = v
     elseif j - k == 1
@@ -409,15 +464,13 @@ function setindex!(U::UpperTridiagonal, v, k::Int, j::Int)
     else
         error("Cannot modify off-band")
     end
-    ## END
-
     U # by convention we return the matrix
 end
 
 
-# **Problem 3.2** Combine `Rotations` and `UpperTridiagonal` from last problem sheet
+# **Problem 4.2** Combine `Rotations` and `UpperTridiagonal` from last problem sheet
 # to implement a banded QR decomposition, `bandedqr`, that only takes $O(n)$ operations. Hint: the
-# `atan(y,x)` function gives the angle of a vector [x,y].
+# `atan(y,x)` function gives the angle of a vector `[x,y]`.
 
 
 function bandedqr(A::Tridiagonal)
@@ -455,39 +508,3 @@ end
 A = Tridiagonal([1, 2, 3, 4], [1, 2, 3, 4, 5], [1, 2, 3, 4])
 Q, R = bandedqr(A)
 @test Q*R ≈ A
-
-# --------
-
-# We now consider a Cholesky factorisation for tridiagonal matrices. Since we are assuming the
-# matrix is symmetric, we will use a special type `SymTridiagonal` that captures the symmetry.
-# In particular, `SymTridiagonal(dv, eu) == Tridiagonal(ev, dv, ev)`.
-
-# **Problem 4** Complete the following
-# implementation of `mycholesky` to return a `Bidiagonal` cholesky factor in $O(n)$ operations.
-
-
-## return a Bidiagonal L such that L'L == A (up to machine precision)
-## You are allowed to change A
-function mycholesky(A::SymTridiagonal)
-    d = A.dv # diagonal entries of A
-    u = A.ev # sub/super-diagonal entries of A
-    T = float(eltype(A)) # return type, make float in case A has Ints
-    n = length(d)
-    ld = zeros(T, n) # diagonal entries of L
-    ll = zeros(T, n-1) # sub-diagonal entries of L
-
-    ## SOLUTION
-    ld[1] = sqrt(d[1])
-    for k = 1:n-1
-        ll[k] = u[k]/ld[k]
-        ld[k+1] = sqrt(d[k+1]-ll[k]^2)
-    end
-    ## END
-
-    Bidiagonal(ld, ll, :L)
-end
-
-n = 1000
-A = SymTridiagonal(2*ones(n),-ones(n-1))
-L = cholesky(A)
-@test L ≈ cholesky(Matrix(A)).L
