@@ -150,6 +150,7 @@ $$
 We learned in first year linear algebra that if a diagonal entry is zero
 when doing Gaussian elimnation one has to _row pivot_. For stability, 
 in implementation one _always_ pivots: swap the largest in magnitude entry for the entry on the diagonal.
+
 We will see this is equivalent to a PLU decomposition:
 
 
@@ -374,7 +375,7 @@ then its diagonal entries are positive: $a_{kk} > 0$.
 
 
 **Theorem 1 (subslice pos. def.)** If $A ∈ ℝ^{n × n}$ is positive definite
-and $𝐤 ∈ \{1,\ldots,n\}^m$ is a vector of $m$ integers where any integer appears only once,
+and $𝐤 ∈ \{1,…,n\}^m$ is a vector of $m$ integers where any integer appears only once,
  then $A[𝐤,𝐤] ∈ ℝ^{m × m}$ is also
 positive definite.
 
@@ -421,7 +422,6 @@ satisfies $A = L L^⊤$.
 
 
 Note hidden in this proof is a simple algorithm form computing the Cholesky factorisation.
-We state it as a mathematical formulae since we will be using it for computing-by-hand.
 
 **Algorithm 3 (Cholesky)** 
 ```julia
