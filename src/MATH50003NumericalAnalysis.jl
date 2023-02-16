@@ -74,6 +74,10 @@ Literate.notebook("src/labs/lab5s.jl", "labs/")
 write("src/labs/lab5.jl", replace(replace(read("src/labs/lab5s.jl", String), r"## SOLUTION(.*?)## END"s => ""), r"@test" => "@test_broken"))
 Literate.notebook("src/labs/lab5.jl", "labs/")
 
+Literate.notebook("src/labs/lab6s.jl", "labs/")
+write("src/labs/lab6.jl", replace(replace(read("src/labs/lab6s.jl", String), r"## SOLUTION(.*?)## END"s => ""), r"@test" => "@test_broken"))
+Literate.notebook("src/labs/lab6.jl", "labs/")
+
 
 ####
 # OLD

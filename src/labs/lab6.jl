@@ -24,26 +24,7 @@ using Plots, Test, LinearAlgebra
 # **Problem 1.1** Find and plot the best least squares fit of $f_M$ by degree $n$
 # polynomials for $n = 0,…,10$ at 1000 evenly spaced points between $0$ and $1$.
 
-## SOLUTION
 
-N = 100
-err = zeros(N,2)
-for n= 1:N
-    x = range(-1, 1; length=n+1)
-    f_10 = 1 ./ (10*x.^2 .+ 1)
-    f_25 = 1 ./ (25*x.^2 .+ 1)
-    V = x .^ (0:n)'
-    c_10 = V \ f_10
-    c_25 = V \ f_25
-    err[n,1] = abs(1/(10*0.9^2+1) - dot(0.9 .^ (0:n), c_10))
-    err[n,2] = abs(1/(25*0.9^2+1) - dot(0.9 .^ (0:n), c_25))
-end
-
-nanabs = x -> iszero(x) ? NaN : abs(x)
-plot(nanabs.(err); yscale=:log10)
-
-
-## END
 
 # ------- 
 
@@ -60,37 +41,13 @@ function householderqr(A)
     end
     ## TODO: construct Q and R using O(m*n^2) operations
     ## via Householder reflections.
-    ## SOLUTION
-    ## For simplicity in the code we won't use Reflection/Reflections.
-
-    ## R begins as A, modify it in place
-    R = copy(A)
-    Q = Matrix{T}(I, m, m) # makes an m × m matrix. Note using Reflection would lower this to `m × n` storage.
-    for j = 1:n
-        ## we need to find the right reflection vector
-        y = copy(R[j:end, j])
-        ## choose the sign, careful about 0
-        if y[1] ≥ 0
-            s = 1
-        else
-            s = -1
-        end
-        y[1] += s * norm(y)
-        w = y / norm(y)
-
-        ## we now apply the reflection to all columns of R 
-        R[j:end, :] = R[j:end, :] - 2 * w * (w' * R[j:end, :])
-        ## and update Q
-        Q[j:end,:] = Q[j:end,:] - 2w * (w'*Q[j:end,:])
-    end
-    Q',R # transpose to reverse order reflections are applied
-    ## END
+    
 end
 
 A = randn(6,4)
 Q,R = householderqr(A)
-@test Q*R ≈ A
-@test Q'Q ≈ I
+@test_broken Q*R ≈ A
+@test_broken Q'Q ≈ I
 
 
 # ------
@@ -125,16 +82,7 @@ function *(Q::Rotations, x::AbstractVector)
     y = Vector{T}(x) # copies x to a new Vector whose eltype is T
     ## TODO: Apply Q in O(n) operations, modifying y in-place
 
-    ## SOLUTION
-    θ = Q.θ
-    ## Does Q1....Qn x
-    for k = length(θ):-1:1
-        #below has 4 ops to make the matrix and 12 to do the matrix-vector multiplication,
-        #total operations will be 48n = O(n)
-        c, s = cos(θ[k]), sin(θ[k])
-        y[k:(k+1)] = [c -s; s c] * y[k:(k+1)]
-    end
-    ## END
+    
 
     y
 end
@@ -142,23 +90,13 @@ end
 function getindex(Q::Rotations, k::Int, j::Int)
     ## TODO: Return Q[k,j] in O(n) operations (hint: use *)
 
-    ## SOLUTION
-    ## recall that A_kj = e_k'*A*e_j for any matrix A
-    ## so if we use * above, this will take O(n) operations
-    n = size(Q)[1]
-    ej = zeros(eltype(Q), n)
-    ej[j] = 1
-    ## note, must be careful to ensure that ej is a VECTOR
-    ## not a MATRIX, otherwise * above will not be used
-    Qj = Q * ej
-    Qj[k]
-    ## END
+    
 end
 
 θ1 = randn(5)
 Q = Rotations(θ1)
-@test Q'Q ≈ I
-@test Rotations([π/2, -π/2]) ≈ [0 0 -1; 1 0 0; 0 -1 0]
+@test_broken Q'Q ≈ I
+@test_broken Rotations([π/2, -π/2]) ≈ [0 0 -1; 1 0 0; 0 -1 0]
 
 # When one computes a tridiagonal QR, we introduce entries in the
 # second super-diagonal. Thus we will use the `UpperTridiagonal` type
@@ -176,17 +114,7 @@ size(U::UpperTridiagonal) = (length(U.d),length(U.d))
 function getindex(U::UpperTridiagonal, k::Int, j::Int)
     d,du,du2 = U.d,U.du,U.du2
     ## TODO: return U[k,j]
-    ## SOLUTION
-    if j - k == 0
-        d[j]
-    elseif j - k == 1
-        du[k]
-    elseif j - k == 2
-        du2[k]
-    else
-        0
-    end
-    ## END
+    
 end
 
 function setindex!(U::UpperTridiagonal, v, k::Int, j::Int)
@@ -196,17 +124,7 @@ function setindex!(U::UpperTridiagonal, v, k::Int, j::Int)
     end
 
     ## TODO: modify d,du,du2 so that U[k,j] == v
-    ## SOLUTION
-    if j - k == 0
-        d[k] = v
-    elseif j - k == 1
-        du[k] = v
-    elseif j - k == 2
-        du2[k] = v
-    else
-        error("Cannot modify off-band")
-    end
-    ## END
+    
 
     U # by convention we return the matrix
 end
@@ -224,34 +142,13 @@ function bandedqr(A::Tridiagonal)
 
     ## TODO: Populate Q and R by looping through the columns of A.
 
-    ## SOLUTION
-    R[1, 1:2] = A[1, 1:2]
-        
-    for j = 1:n-1
-        ## angle of rotation
-        Q.θ[j] = atan(A[j+1, j], R[j, j])
-        θ = -Q.θ[j] # rotate in opposite direction 
-
-        c, s = cos(θ), sin(θ)
-        ## [c -s; s c] represents the rotation that introduces a zero.
-        ## This is [c -s; s c] to j-th column, but ignore second row
-        ## which is zero
-        R[j, j] = c * R[j, j] - s * A[j+1, j]
-        ## This is [c -s; s c] to (j+1)-th column
-        R[j:j+1, j+1] = [c -s; s c] * [R[j, j+1]; A[j+1, j+1]]
-
-        if j < n - 1
-            ## This is [c -s; s c] to (j+2)-th column, where R is still zero
-            R[j:j+1, j+2] = [-s; c] * A[j+1, j+2]
-        end
-    end
-    ## END
+    
     Q, R
 end
 
 A = Tridiagonal([1, 2, 3, 4], [1, 2, 3, 4, 5], [1, 2, 3, 4])
 Q, R = bandedqr(A)
-@test Q*R ≈ A
+@test_broken Q*R ≈ A
 
 # --------
 
@@ -273,13 +170,7 @@ function mycholesky(A::SymTridiagonal)
     ld = zeros(T, n) # diagonal entries of L
     ll = zeros(T, n-1) # sub-diagonal entries of L
 
-    ## SOLUTION
-    ld[1] = sqrt(d[1])
-    for k = 1:n-1
-        ll[k] = u[k]/ld[k]
-        ld[k+1] = sqrt(d[k+1]-ll[k]^2)
-    end
-    ## END
+    
 
     Bidiagonal(ld, ll, :L)
 end
@@ -287,4 +178,4 @@ end
 n = 1000
 A = SymTridiagonal(2*ones(n),-ones(n-1))
 L = cholesky(A)
-@test L ≈ cholesky(Matrix(A)).L
+@test_broken L ≈ cholesky(Matrix(A)).L
