@@ -9,7 +9,43 @@ using Plots, Test, LinearAlgebra
 # ------
 
 # When $m = n$ a least squares fit by a polynomial becomes _interpolation_:
-# the approximating polynomial will fit the data exactly.
+# the approximating polynomial will fit the data exactly. That is, for
+# $$
+# p(x) = ∑_{k = 0}^{n-1} p_k x^k
+# $$
+# and $x_1, …, x_n ∈ ℝ$, we choose $p_k$ so that $p(x_j) = f(x_j)$ for
+# $j = 1, …, n$. 
+
+# **Problem 1.1** Complete the following function which returns a rectangular _Vandermonde matrix_:
+# a matrix $V ∈ ℝ^{m × n}$ such that
+# $$
+# V * \begin{bmatrix} p_0\\ … \\p_n \end{bmatrix} = \begin{bmatrix} p(x_1)\\ … \\p(x_m) \end{bmatrix}
+# $$
+
+function vandermonde(𝐱, n) # 𝐱 = [x_1,…,x_m]
+    m = length(𝐱)
+    ## TODO: Make V
+    ## SOLUTION
+    ## There are also solutions using broadcasting or for loops.
+    ## e.g. 
+    ## 𝐱 .^ (0:n-1)'
+    [𝐱[j]^k for j = 1:m, k = 0:n-1]
+    ## END
+end
+
+n = 1000
+𝐱 = range(0, 0.5; length=n)
+V = vandermonde(𝐱, n) # square Vandermonde matrix
+## if all coefficients are 1 then p(x) = (1-x^n)/(1-x)
+@test V * ones(n) ≈ (1 .- 𝐱 .^ n) ./ (1 .- 𝐱)
+
+
+# Inverting the square Vandermonde matrix is a way of computing coefficients from function
+# samples. That is, solving
+# $$
+# V𝐜 = \begin{bmatrix} f(x_1) \\ ⋮ \\ f(x_n) \end{bmatrix}
+# $$
+# Gives the coefficients of a polynomial $p(x)$ so that $p(x_j) = f(x_j)$.
 # Whether an interpolation is actually close to a function is a subtle question,
 # involving properties of the function, distribution of the sample points $x_1,…,x_n$,
 # and round-off error.
@@ -18,79 +54,246 @@ using Plots, Test, LinearAlgebra
 #   f_M(x) = {1 \over M x^2 + 1}
 # $$
 # where the choice of $M$ can dictate whether interpolation at evenly spaced points converges.
-#
 
+# **Problem 1.2** Interpolate $1/(4x^2+1)$ and $1/(25x^2 + 1)$ at an evenly spaced grid of $n$
+# points, plotting the solution at a grid of $1000$ points. For $n = 50$ does your interpolation match
+# the true function?  Does increasing $n$ to 400 improve the accuracy? How about using `BigFloat`?
 
-# **Problem 1.1** Find and plot the best least squares fit of $f_M$ by degree $n$
-# polynomials for $n = 0,…,10$ at 1000 evenly spaced points between $0$ and $1$.
+n = 50
+𝐱 = range(-1, 1; length=n)
+𝐠 = range(-1, 1; length=1000) # plotting grid
+
+## TODO: interpolate 1/(10x^2 + 1) and 1/(25x^2 + 1) at $𝐱$, plotting both solutions evaluated at
+## the grid 𝐠. Hint: use a rectangular Vandermonde matrix to evaluate your polynomial on 𝐠. Remember
+## `plot(𝐱, 𝐟)` will create a new plot whilst `plot!(𝐱, 𝐟)` will add to an existing plot.
 
 ## SOLUTION
+V = vandermonde(𝐱, n)
+V_g = vandermonde(𝐠, n)
+f_4 = x -> 1/(4x^2 + 1)
+𝐜_4 = V \ f_4.(𝐱)
+f_25 = x -> 1/(25x^2 + 1)
+𝐜_25 = V \ f_25.(𝐱)
 
-N = 100
-err = zeros(N,2)
-for n= 1:N
-    x = range(-1, 1; length=n+1)
-    f_10 = 1 ./ (10*x.^2 .+ 1)
-    f_25 = 1 ./ (25*x.^2 .+ 1)
-    V = x .^ (0:n)'
-    c_10 = V \ f_10
-    c_25 = V \ f_25
-    err[n,1] = abs(1/(10*0.9^2+1) - dot(0.9 .^ (0:n), c_10))
-    err[n,2] = abs(1/(25*0.9^2+1) - dot(0.9 .^ (0:n), c_25))
-end
+plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
+plot!(𝐠, V_g*𝐜_25)
 
-nanabs = x -> iszero(x) ? NaN : abs(x)
-plot(nanabs.(err); yscale=:log10)
+## END
 
+## TODO: repeat the experiment with `n = 400` and observe what has changed.
+## SOLUTION
+n = 400
+𝐱 = range(-1, 1; length=n)
+𝐠 = range(-1, 1; length=1000) # plotting grid
+
+V = vandermonde(𝐱, n)
+V_g = vandermonde(𝐠, n)
+f_4 = x -> 1/(4x^2 + 1)
+𝐜_4 = V \ f_4.(𝐱)
+f_25 = x -> 1/(25x^2 + 1)
+𝐜_25 = V \ f_25.(𝐱)
+
+plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
+plot!(𝐠, V_g*𝐜_25)
+## Still does not converge
+## END
+
+## TODO: repeat the experiment with `n = 400` and using `BigFloat` and observe what has changed.
+## Hint: make sure to make your `range` be `BigFloat` valued, e.g., by using `big`.
+## SOLUTION
+n = 400
+𝐱 = range(big(-1), 1; length=n)
+𝐠 = range(big(-1), 1; length=1000) # plotting grid
+
+V = vandermonde(𝐱, n)
+V_g = vandermonde(𝐠, n)
+f_4 = x -> 1/(4x^2 + 1)
+𝐜_4 = V \ f_4.(𝐱)
+f_25 = x -> 1/(25x^2 + 1)
+𝐜_25 = V \ f_25.(𝐱)
+
+plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
+plot!(𝐠, V_g*𝐜_25)
+## With M = 4 it looks like it now is converging. This suggests the issue before was numerical error.
+## For M = 25 the solution is still very inaccurate so suggests the issue is a lack of mathematical
+## convergence.
+
+## END
+
+
+
+# **Problem 1.3** Repeat the previous problem but now using _least squares_: instead of interpolating,
+# use least squares on a large grid: choose the coefficients of a degree $(n-1)$ polynomial so that
+# $$
+#     \left\| \begin{bmatrix} p(x_1) \\ ⋮ \\ p(x_m) \end{bmatrix} - \begin{bmatrix} f(x_1) \\ ⋮ \\ f(x_m) \end{bmatrix} \right \|.
+# $$
+# is minimised.
+# Does this improve the convergence properties? Do you think convergence for a least squares approximation
+# is dictated by the radius of convergence of the corresponding Taylor series?
+# Hint: use the rectangular Vandermonde matrix to setup the Least squares system.
+
+n = 50 # use basis [1,x,…,x^(49)]
+𝐱 = range(-1, 1; length=500) # least squares grid
+𝐠 = range(-1, 1; length=2000) # plotting grid
+
+## TODO: interpolate 1/(10x^2 + 1) and 1/(25x^2 + 1) at $𝐱$, plotting both solutions evaluated at
+## the grid 𝐠. Hint: use a rectangular Vandermonde matrix to evaluate your polynomial on 𝐠. Remember
+## `plot(𝐱, 𝐟)` will create a new plot whilst `plot!(𝐱, 𝐟)` will add to an existing plot.
+
+## SOLUTION
+V = vandermonde(𝐱, n)
+V_g = vandermonde(𝐠, n)
+f_4 = x -> 1/(4x^2 + 1)
+𝐜_4 = V \ f_4.(𝐱)
+f_25 = x -> 1/(25x^2 + 1)
+𝐜_25 = V \ f_25.(𝐱)
+
+plot(𝐠, V_g*𝐜_4; ylims=(-1,1))
+plot!(𝐠, V_g*𝐜_25)
+
+## Yes, now both approximations appear to be converging.
+## This is despite the radius of convergence of both functions being
+## smaller than the interval of interpolation.
 
 ## END
 
 # ------- 
 
 # **Problem 2** Complete the following function that implements
-#  Householder QR using only $O(mn^2)$ operations.
-# You may choose to use your implementation of `Reflection` and `Reflections` from PS5.
-# Hint: to find the inner product of a vector `w` with each column of a matrix 
-# `R` one can write `w'R`.
+# Householder QR for a real matrix $A ∈ ℝ^{m × n}$ where $m ≥ n$ using only $O(mn^2)$ operations, using 
+#  `Reflection` and `Reflections` from PS5 (which you may copy-and-paste here).
+# Hint: you will likely need to overload functions `*(::Reflection, ::AbstractMatrix)` and
+# `*(::Reflections, ::AbstractMatrix)` so that they can be multiplied by an $m × n$ matrix in $O(mn)$ operations.
+
+import Base: *, size, getindex
+
+## SOLUTION
+
+
+struct Reflection{T} <: AbstractMatrix{T}
+    v::Vector{T}
+end
+
+Reflection(x::Vector{T}) where T = Reflection{T}(x/norm(x))
+
+function size(Q::Reflection)
+    (length(Q.v),length(Q.v))
+end
+
+## getindex(Q, k, j) is synonym for Q[k,j]
+function getindex(Q::Reflection, k::Int, j::Int)
+    ## TODO: implement Q[k,j] == (I - 2v*v')[k,j] but using O(1) operations.
+    ## Hint: the function `conj` gives the complex-conjugate
+    if k == j
+        1 - 2Q.v[k]*conj(Q.v[j])
+    else
+        - 2Q.v[k]*conj(Q.v[j])
+    end
+end
+function *(Q::Reflection, x::AbstractVector)
+    ## TODO: implement Q*x, equivalent to (I - 2v*v')*x but using only O(n) operations
+    x - 2*Q.v * dot(Q.v,x) # (Q.v'*x) also works instead of dot
+end
+
+function *(Q::Reflection, X::AbstractMatrix)
+    T = promote_type(eltype(Q), eltype(X))
+    m,n = size(X)
+    ret = zeros(T, m, n)
+    for j = 1:n
+        ret[:,j] = Q * X[:,j]
+    end
+    ret
+end
+
+function householderreflection(s::Bool, x::AbstractVector)
+    ## TODO: return a `Reflection` corresponding to a Householder reflection
+    y = copy(x) # don't modify `x`
+    if s
+        y[1] -= norm(x)
+    else
+        y[1] += norm(x)
+    end
+    Reflection(y)
+end
+
+struct Reflections{T} <: AbstractMatrix{T}
+    V::Matrix{T}
+end
+
+size(Q::Reflections) = (size(Q.V,1), size(Q.V,1))
+
+
+function *(Q::Reflections, x::AbstractVector)
+    ## TODO: Apply Q in O(mn) operations by applying
+    ## the reflection corresponding to each column of Q.V to x
+    
+    m,n = size(Q.V)
+    for j = n:-1:1
+        x = Reflection(Q.V[:, j]) * x
+    end
+
+    x
+end
+
+function *(Q::Reflections, X::AbstractMatrix)
+    T = promote_type(eltype(Q), eltype(X))
+    m,n = size(X)
+    ret = zeros(T, m, n)
+    for j = 1:n
+        ret[:,j] = Q * X[:,j]
+    end
+    ret
+end
+
+function getindex(Q::Reflections, k::Int, j::Int)
+    ## TODO: Return Q[k,j] in O(mn) operations (hint: use *)
+
+    T = eltype(Q.V)
+    m,n = size(Q)
+    ej = zeros(T, m)
+    ej[j] = one(T)
+    return (Q*ej)[k]
+end
+## END
+
+
 function householderqr(A)
     T = eltype(A)
     m,n = size(A)
-    if m < n
-        error("Only support more than or equal rows than columns")
+    if n > m
+        error("More columns than rows is not supported")
     end
-    ## TODO: construct Q and R using O(m*n^2) operations
-    ## via Householder reflections.
-    ## SOLUTION
-    ## For simplicity in the code we won't use Reflection/Reflections.
 
-    ## R begins as A, modify it in place
-    R = copy(A)
-    Q = Matrix{T}(I, m, m) # makes an m × m matrix. Note using Reflection would lower this to `m × n` storage.
+    R = zeros(T, m, n)
+    Q = Reflections(zeros(T, m, n))
+    Aⱼ = copy(A)
+
     for j = 1:n
-        ## we need to find the right reflection vector
-        y = copy(R[j:end, j])
-        ## choose the sign, careful about 0
-        if y[1] ≥ 0
-            s = 1
-        else
-            s = -1
-        end
-        y[1] += s * norm(y)
-        w = y / norm(y)
+        ## SOLUTION
+        ## TODO: rewrite householder QR to use Reflection and
+        ## Reflections, in a way that one achieves O(mn^2) operations
+        𝐚₁ = Aⱼ[:,1] # first columns of Aⱼ
+        Q₁ = householderreflection(𝐚₁[1] < 0, 𝐚₁)
+        Q₁Aⱼ = Q₁*Aⱼ
+        α,𝐰 = Q₁Aⱼ[1,1],Q₁Aⱼ[1,2:end]
+        Aⱼ₊₁ = Q₁Aⱼ[2:end,2:end]
 
-        ## we now apply the reflection to all columns of R 
-        R[j:end, :] = R[j:end, :] - 2 * w * (w' * R[j:end, :])
-        ## and update Q
-        Q[j:end,:] = Q[j:end,:] - 2w * (w'*Q[j:end,:])
+        # populate returned data
+        R[j,j] = α
+        R[j,j+1:end] = 𝐰
+
+        Q.V[j:end, j] = Q₁.v
+
+        Aⱼ = Aⱼ₊₁ # this is the "induction"
+        ## END
     end
-    Q',R # transpose to reverse order reflections are applied
-    ## END
+    Q,R
 end
 
-A = randn(6,4)
+A = randn(600,400)
 Q,R = householderqr(A)
+@test Q isa Reflections
 @test Q*R ≈ A
-@test Q'Q ≈ I
 
 
 # ------

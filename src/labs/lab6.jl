@@ -9,7 +9,41 @@ using Plots, Test, LinearAlgebra
 # ------
 
 # When $m = n$ a least squares fit by a polynomial becomes _interpolation_:
-# the approximating polynomial will fit the data exactly.
+# the approximating polynomial will fit the data exactly. That is, for
+# $$
+# p(x) = ∑_{k = 0}^{n-1} p_k x^k
+# $$
+# and $x_1, …, x_n ∈ ℝ$, we choose $p_k$ so that $p(x_j) = f(x_j)$ for
+# $j = 1, …, n$. 
+
+# **Problem 1.1** Complete the following function which returns a  _Vandermonde matrix_:
+# a matrix $V ∈ ℝ^{n × n}$ such that
+# $$
+# V * \begin{bmatrix} p_0\\ … \\p_n \end{bmatrix} = \begin{bmatrix} p(x_1)\\ … \\p(x_m) \end{bmatrix}
+# $$
+
+function vandermonde(𝐱) # 𝐱 = [x_1,…,x_n]
+    n = length(𝐱)
+    ## TODO: Make V
+    ## SOLUTION
+    ## There are also solutions using broadcasting or for loops.
+    [𝐱[j]^k for j = 1:n, k = 0:n-1]
+    ## END
+end
+
+n = 1000
+𝐱 = range(0, 0.5; length=n)
+V = vandermonde(𝐱)
+## if all coefficients are 1 then p(x) = (1-x^n)/(1-x)
+@test V * ones(n) ≈ (1 .- 𝐱 .^ n) ./ (1 .- 𝐱)
+
+
+# Inverting the Vandermonde matrix is a way of computing coefficients from function
+# samples. That is, solving
+# $$
+# V𝐜 = \begin{bmatrix} f(x_1) \\ ⋮ \\ f(x_n) \end{bmatrix}
+# $$
+# Gives the coefficients of a polynomial $p(x)$ so that $p(x_j) = f(x_j)$.
 # Whether an interpolation is actually close to a function is a subtle question,
 # involving properties of the function, distribution of the sample points $x_1,…,x_n$,
 # and round-off error.
@@ -18,11 +52,11 @@ using Plots, Test, LinearAlgebra
 #   f_M(x) = {1 \over M x^2 + 1}
 # $$
 # where the choice of $M$ can dictate whether interpolation at evenly spaced points converges.
-#
 
 
-# **Problem 1.1** Find and plot the best least squares fit of $f_M$ by degree $n$
+# **Problem 1.2** Find and plot the best least squares fit of $f_M$ by degree $n$
 # polynomials for $n = 0,…,10$ at 1000 evenly spaced points between $0$ and $1$.
+
 
 
 
