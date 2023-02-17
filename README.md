@@ -5,20 +5,18 @@ Lecturer: [Dr Sheehan Olver](https://www.ma.imperial.ac.uk/~solver/)
 
 Office hour: Mondays 11am, Huxley 6M40
 
-## Notes
+## Notes ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/Notes.pdf))
 
-[Combined PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/Notes.pdf)
+**Table of Contents:** 
 
-Table of Contents:
-
-**Background material**
+*Background material*
 
   A. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/A.Julia.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/A.Julia.pdf)): we introduce  the basic features of the Julia language. \
   B. [Asymptotics and Computational Cost](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/B.Asymptotics.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/B.Asymptotics.pdf)): we review Big-O, little-o and asymptotic to notation,
 and their usage in describing computational cost. \
   C. [Adjoints and Normal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/C.Adjoints.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/C.Adjoints.pdf)): we review complex inner-products, adjoints, normal matrices, and the spectral theorem.
 
-**I: Computing with numbers**
+*I: Computing with numbers*
 
 1. [Integers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.1.Integers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/I.1.Integers.pdf)): we discuss how computers represent integers using modular arithmetic.
 2. [Reals](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.2.Reals.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/I.2.Reals.pdf)): we discuss how computers represent reals using IEEE floating-point arithmetic.
@@ -27,7 +25,7 @@ and their usage in describing computational cost. \
 which are defined similar to complex numbers,
 facilitate fast and accurate computation of derivatives.
 
-**II: Computing with matrices**
+*II: Computing with matrices*
 
 1. [Structured Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.1.StructuredMatrices.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/II.1.StructuredMatrices.pdf)): we discuss types of structured matrices (dense, triangular, and banded).
 2. [Orthogonal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.2.OrthogonalMatrices.ipynb) 
@@ -40,7 +38,7 @@ the PLU and Cholesky factorisations, as well as symmetric positive definite matr
 
 
 
-**III: Computing with functions**
+*III: Computing with functions*
 
 ## Assessment
 
