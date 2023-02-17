@@ -1,5 +1,5 @@
 # MATH50003 Numerical Analysis (2022–23)
-# Problem Sheet 5
+# Problem Sheet 6
 
 This problem sheet concerns Cholesky factorisations and matrix norms.
 
@@ -98,11 +98,11 @@ $$
 $$
 \|A \|_2 = \|𝐱\|_2 \|𝐲\|_2.
 $$
-Hint: use the Cauchy–Schwartz inequality.
+Hint: use the Cauchy–Schwartz inequality which states $|𝐲^⊤ 𝐳| ≤ \|𝐲\|_2\| 𝐳\|_2$.
 
 
 
-**Problem 4.3** Show for any orthogonal matrix $Q ∈ ℝ^m$ and
+**Problem 5.1** Show for any orthogonal matrix $Q ∈ ℝ^m$ and
 matrix $A ∈ ℝ^{m × n}$ that
 $$
 \|Q A\|_F = \|A\|_F
@@ -117,7 +117,7 @@ $$
 
 
 
-**Problem 4.4** Show that $\|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \|A \|_2$ where
+**Problem 5.2** Show that $\|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \|A \|_2$ where
 $r$ is the rank of $A$.
 
 
