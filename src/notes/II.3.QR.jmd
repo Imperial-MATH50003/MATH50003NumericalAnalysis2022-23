@@ -101,10 +101,10 @@ x = range(0,1; length=m) # 100 points
 f = 2 .+ x .+ 2x.^2 .+ 0.1 .* randn.() # Noisy quadratic
 
 A = x .^ (0:2)'  # 100 x 3 matrix, equivalent to [ones(m) x x.^2]
-Q,\hat R = qr(A)
-\hat Q = Q[:,1:n] # Q represents full orthogonal matrix so we take first 3 columns
+Q,R̂ = qr(A)
+Q̂ = Q[:,1:n] # Q represents full orthogonal matrix so we take first 3 columns
 
-p₀,p₁,p₂ = \hat R \ \hat Q'f
+p₀,p₁,p₂ = R̂ \ Q̂'f
 ```
 We can visualise the fit:
 ```julia
@@ -192,8 +192,8 @@ We are going to compute the reduced QR of a random matrix
 ```julia
 m,n = 5,4
 A = randn(m,n)
-Q,\hat R = qr(A)
-\hat Q = Q[:,1:n]
+Q,R̂ = qr(A)
+Q̂ = Q[:,1:n]
 ```
 The first column of `\hat Q` is indeed a normalised first column of `A`:
 ```julia
@@ -313,20 +313,20 @@ For $A = [𝐚_1|…|𝐚_n] ∈ ℂ^{m × n}$, let $Q_1 = Q_{𝐚_1}^{\rm H}$ s
 $$
 Q_1 A =  \begin{bmatrix} α & 𝐰^⊤ \\ & A_2 \end{bmatrix}
 $$
-where $A_2 = (Q_1 A)[2:m,2:n]$ and $𝐰 = (Q_1 A)[1,2:n]$. By assumption $A_2 = Q̃ R̃$. Thus we have
+where $A_2 = (Q_1 A)[2:m,2:n]$ and $𝐰 = (Q_1 A)[1,2:n]$. By assumption $A_2 = \tilde Q \tilde R$. Thus we have
 $$
 \begin{align*}
-A = Q_1 \begin{bmatrix} α & 𝐰^⊤ \\ & Q̃ R̃ \end{bmatrix} \\
-=\underbrace{Q_1 \begin{bmatrix} 1 \\ & Q̃ \end{bmatrix}}_Q  \underbrace{\begin{bmatrix} α & 𝐰^⊤ \\ &  R̃ \end{bmatrix}}_R.
+A = Q_1 \begin{bmatrix} α & 𝐰^⊤ \\ & \tilde Q \tilde R \end{bmatrix} \\
+=\underbrace{Q_1 \begin{bmatrix} 1 \\ & \tilde Q \end{bmatrix}}_Q  \underbrace{\begin{bmatrix} α & 𝐰^⊤ \\ &  \tilde R \end{bmatrix}}_R.
 \end{align*}
 $$
 
 ∎
 
-This proof by induction leads naturally to an iterative algorithm. Note that $Q̃$ is a product of all
+This proof by induction leads naturally to an iterative algorithm. Note that $\tilde Q$ is a product of all
 Householder reflections that come afterwards, that is, we can think of $Q$ as:
 $$
-Q = Q_1 Q̃_2 Q̃_3 ⋯ Q̃_n\qquad\hbox{for}\qquad Q̃_j = \begin{bmatrix} I_{j-1} \\ & Q_j \end{bmatrix}
+Q = Q_1 \tilde Q_2 \tilde Q_3 ⋯ \tilde Q_n\qquad\hbox{for}\qquad \tilde Q_j = \begin{bmatrix} I_{j-1} \\ & Q_j \end{bmatrix}
 $$
 where $Q_j$ is a single Householder reflection corresponding to the first column of $A_j$. 
 This is stated cleanly in Julia code:
@@ -416,11 +416,11 @@ $$
 In this example the next column is already upper-triangular,
 but because of our choice of reflection we will end up swapping the sign, that is
 $$
-Q̃_2 = \begin{bmatrix} 1 \\ & -1 \\ && 1 \\ &&& 1 \end{bmatrix}
+\tilde Q_2 = \begin{bmatrix} 1 \\ & -1 \\ && 1 \\ &&& 1 \end{bmatrix}
 $$
 so that
 $$
-Q̃_2 Q_1 A = \begin{bmatrix} -3 & -6 & -9 \\
+\tilde Q_2 Q_1 A = \begin{bmatrix} -3 & -6 & -9 \\
  & -15 & -18 \\
   & 0 & 0 \\
 & 0 & -6
@@ -428,12 +428,12 @@ Q̃_2 Q_1 A = \begin{bmatrix} -3 & -6 & -9 \\
 $$
 The final reflection is
 $$
-Q̃_3 = \begin{bmatrix} I_{2 × 2} \\ &  I - \begin{bmatrix} 1 \\ -1 \end{bmatrix} \begin{bmatrix} 1 & -1 \end{bmatrix} 
+\tilde Q_3 = \begin{bmatrix} I_{2 × 2} \\ &  I - \begin{bmatrix} 1 \\ -1 \end{bmatrix} \begin{bmatrix} 1 & -1 \end{bmatrix} 
 \end{bmatrix} = \begin{bmatrix} å1 \\ & 1 \\ & & 0 & 1 \\ & & 1 & 0 \end{bmatrix}
 $$
 giving us
 $$
-Q̃_3 Q̃_2 Q_1 A = \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
+\tilde Q_3 \tilde Q_2 Q_1 A = \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
  & -15 & -18 \\
   &  & -6 \\
 &  & 0
@@ -441,7 +441,7 @@ Q̃_3 Q̃_2 Q_1 A = \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
 $$
 That is,
 $$
-A = Q_1 Q̃_2 Q̃_3 R = \underbrace{{1 \over 3} \begin{bmatrix}
+A = Q_1 \tilde Q_2 \tilde Q_3 R = \underbrace{{1 \over 3} \begin{bmatrix}
 -1 & 0 & 2 & 2 \\
 0 & 3 & 0 & 0 \\
 2 & 0 & -1 & 2 \\
