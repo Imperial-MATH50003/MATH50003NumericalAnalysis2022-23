@@ -12,9 +12,9 @@ is only nonzero on or to the right of the diagonal ($r_{kj} = 0$ if $k > j$).
 
 2. The _reduced QR factorisation_
 $$
-A = Q̂ R̂ = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_n \end{bmatrix}}_{ Q̂ ∈ ℂ^{m × n}} \underbrace{\begin{bmatrix} × & ⋯ & × \\ & ⋱ & ⋮ \\ && ×  \end{bmatrix}}_{R̂ ∈ ℂ^{n × n}}
+A = \hat Q \hat R = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_n \end{bmatrix}}_{ \hat Q ∈ ℂ^{m × n}} \underbrace{\begin{bmatrix} × & ⋯ & × \\ & ⋱ & ⋮ \\ && ×  \end{bmatrix}}_{\hat R ∈ ℂ^{n × n}}
 $$
-where $Q$ has orthogonal columns ($Q^⋆ Q = I$, $𝐪_j ∈ ℂ^m$) and $R̂$ is upper triangular.
+where $Q$ has orthogonal columns ($Q^⋆ Q = I$, $𝐪_j ∈ ℂ^m$) and $\hat R$ is upper triangular.
 
 Note for a square matrix the reduced QR factorisation is equivalent to the QR factorisation, in which case $R$ is _upper triangular_.
 The importance of these decomposition for square matrices is that their component pieces are easy to invert:
@@ -31,7 +31,7 @@ $$
 $$
 Note in the rectangular case the QR decomposition contains within it the reduced QR decomposition:
 $$
-A = QR = \begin{bmatrix} Q̂ | 𝐪_{n+1} | ⋯ | 𝐪_m \end{bmatrix} \begin{bmatrix} R̂ \\  𝟎_{m-n × n} \end{bmatrix} = Q̂ R̂.
+A = QR = \begin{bmatrix} \hat Q | 𝐪_{n+1} | ⋯ | 𝐪_m \end{bmatrix} \begin{bmatrix} \hat R \\  𝟎_{m-n × n} \end{bmatrix} = \hat Q \hat R.
 $$
 
 
@@ -59,7 +59,7 @@ $.
 **Theorem 1 (least squares via QR)** Suppose $A ∈ ℂ^{m × n}$ has full rank. Given a QR decomposition $A = Q R$
 then
 $$
-𝐱 = R̂^{-1} Q̂^⋆ 𝐛
+𝐱 = \hat R^{-1} \hat Q^⋆ 𝐛
 $$
 minimises $\| A 𝐱 - 𝐛 \|$. 
 
@@ -68,14 +68,14 @@ minimises $\| A 𝐱 - 𝐛 \|$.
 The norm-preserving property (see PS4 Q3.1) of unitary matrices tells us
 $$
 \| A 𝐱 - 𝐛 \| = \| Q R 𝐱 - 𝐛 \| = \| Q (R 𝐱 - Q^⋆ 𝐛) \| = \| R 𝐱 - Q^⋆ 𝐛 \| = \left \| 
-\begin{bmatrix} R̂ \\ 𝟎_{m-n × n} \end{bmatrix} 𝐱 - \begin{bmatrix} Q̂^⋆ \\ 𝐪_{n+1}^⋆ \\ ⋮ \\ 𝐪_m^⋆ \end{bmatrix}     𝐛 \right \|
+\begin{bmatrix} \hat R \\ 𝟎_{m-n × n} \end{bmatrix} 𝐱 - \begin{bmatrix} \hat Q^⋆ \\ 𝐪_{n+1}^⋆ \\ ⋮ \\ 𝐪_m^⋆ \end{bmatrix}     𝐛 \right \|
 $$
 Now note that the rows $k > n$ are independent of $𝐱$ and are a fixed contribution. Thus to minimise this norm it suffices to
 drop them and minimise:
 $$
-\| R̂ 𝐱 - Q̂^⋆ 𝐛 \|
+\| \hat R 𝐱 - \hat Q^⋆ 𝐛 \|
 $$
-This norm is minimised if it is zero. Provided the column rank of $A$ is full, $R̂$ will be invertible (Exercise: why is this?).
+This norm is minimised if it is zero. Provided the column rank of $A$ is full, $\hat R$ will be invertible (Exercise: why is this?).
 
 ∎
 
@@ -101,10 +101,10 @@ x = range(0,1; length=m) # 100 points
 f = 2 .+ x .+ 2x.^2 .+ 0.1 .* randn.() # Noisy quadratic
 
 A = x .^ (0:2)'  # 100 x 3 matrix, equivalent to [ones(m) x x.^2]
-Q,R̂ = qr(A)
-Q̂ = Q[:,1:n] # Q represents full orthogonal matrix so we take first 3 columns
+Q,\hat R = qr(A)
+\hat Q = Q[:,1:n] # Q represents full orthogonal matrix so we take first 3 columns
 
-p₀,p₁,p₂ = R̂ \ Q̂'f
+p₀,p₁,p₂ = \hat R \ \hat Q'f
 ```
 We can visualise the fit:
 ```julia
@@ -130,31 +130,31 @@ $$
 where $𝐚_k ∈  ℂ^m$ and assume they are linearly independent ($A$ has full column rank).
 
 
-**Proposition 1 (Column spaces match)** Suppose $A = Q̂  R̂$ where $Q̂ = [𝐪_1|…|𝐪_n]$
-has orthogonal columns and $R̂$ is upper-triangular, and $A$ has full rank.
+**Proposition 1 (Column spaces match)** Suppose $A = \hat Q  \hat R$ where $\hat Q = [𝐪_1|…|𝐪_n]$
+has orthogonal columns and $\hat R$ is upper-triangular, and $A$ has full rank.
 Then the first $j$ columns of
-$Q̂$ span the same space as the first $j$ columns of $A$:
+$\hat Q$ span the same space as the first $j$ columns of $A$:
 $$
 \hbox{span}(𝐚_1,…,𝐚_j) = \hbox{span}(𝐪_1,…,𝐪_j).
 $$
 
 **Proof**
 
-Because $A$ has full rank we know $R̂$ is invertible, i.e. its diagonal entries do not vanish: $r_{jj} ≠ 0$.
+Because $A$ has full rank we know $\hat R$ is invertible, i.e. its diagonal entries do not vanish: $r_{jj} ≠ 0$.
 If $𝐯 ∈ \hbox{span}(𝐚_1,…,𝐚_j)$ we have for $𝐜 ∈ ℂ^j$
 $$
 𝐯 = \begin{bmatrix} 𝐚_1 | ⋯ | 𝐚_j \end{bmatrix} 𝐜 = 
-\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_j \end{bmatrix}  R̂[1:j,1:j] 𝐜 ∈ \hbox{span}(𝐪_1,…,𝐪_j)
+\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_j \end{bmatrix}  \hat R[1:j,1:j] 𝐜 ∈ \hbox{span}(𝐪_1,…,𝐪_j)
 $$
  while if $𝐰 ∈ \hbox{span}(𝐪_1,…,𝐪_j)$ we have for $𝐝 ∈ ℝ^j$
 $$
-𝐰 = \begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_j \end{bmatrix} 𝐝  =  \begin{bmatrix} 𝐚_1 | ⋯ | 𝐚_j \end{bmatrix} R̂[1:j,1:j]^{-1} 𝐝 ∈  \hbox{span}(𝐚_1,…,𝐚_j).
+𝐰 = \begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_j \end{bmatrix} 𝐝  =  \begin{bmatrix} 𝐚_1 | ⋯ | 𝐚_j \end{bmatrix} \hat R[1:j,1:j]^{-1} 𝐝 ∈  \hbox{span}(𝐚_1,…,𝐚_j).
 $$
 
 ∎
 
  
-It is possible to find $Q̂$ and $R̂$ the  using the _Gram–Schmidt algorithm_.
+It is possible to find $\hat Q$ and $\hat R$ the  using the _Gram–Schmidt algorithm_.
 We construct it column-by-column:
 
 **Algorithm 1 (Gram–Schmidt)** For $j = 1, 2, …, n$ define
@@ -169,19 +169,19 @@ $$
 **Theorem 2 (Gram–Schmidt and reduced QR)** Define $𝐪_j$ and $r_{kj}$ as in Algorithm 1
 (with $r_{kj} = 0$ if $k > j$). Then a reduced QR decomposition is given by:
 $$
-A = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_n \end{bmatrix}}_{ Q̂ ∈ ℂ^{m × n}} \underbrace{\begin{bmatrix} r_{11} & ⋯ & r_{1n} \\ & ⋱ & ⋮ \\ && r_{nn}  \end{bmatrix}}_{R̂ ∈ ℂ^{n × n}}
+A = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_n \end{bmatrix}}_{ \hat Q ∈ ℂ^{m × n}} \underbrace{\begin{bmatrix} r_{11} & ⋯ & r_{1n} \\ & ⋱ & ⋮ \\ && r_{nn}  \end{bmatrix}}_{\hat R ∈ ℂ^{n × n}}
 $$
 
 **Proof**
 
-We first show that $Q̂$ has orthogonal columns. Assume that $𝐪_ℓ^⋆ 𝐪_k = δ_{ℓk}$ for $k,ℓ < j$. 
+We first show that $\hat Q$ has orthogonal columns. Assume that $𝐪_ℓ^⋆ 𝐪_k = δ_{ℓk}$ for $k,ℓ < j$. 
 For $ℓ < j$ we then have
 $$
 𝐪_ℓ^⋆ 𝐯_j = 𝐪_ℓ^⋆ 𝐚_j - ∑_{k=1}^{j-1}  𝐪_ℓ^⋆𝐪_k 𝐪_k^⋆ 𝐚_j = 0
 $$
-hence $𝐪_ℓ^⋆ 𝐪_j = 0$ and indeed $Q̂$ has orthogonal columns. Further: from the definition of $𝐯_j$ we find
+hence $𝐪_ℓ^⋆ 𝐪_j = 0$ and indeed $\hat Q$ has orthogonal columns. Further: from the definition of $𝐯_j$ we find
 $$
-𝐚_j = 𝐯_j + ∑_{k=1}^{j-1} r_{kj} 𝐪_k = ∑_{k=1}^j r_{kj} 𝐪_k  = Q̂ R̂ 𝐞_j
+𝐚_j = 𝐯_j + ∑_{k=1}^{j-1} r_{kj} 𝐪_k = ∑_{k=1}^j r_{kj} 𝐪_k  = \hat Q \hat R 𝐞_j
 $$
 
 ∎
@@ -192,10 +192,10 @@ We are going to compute the reduced QR of a random matrix
 ```julia
 m,n = 5,4
 A = randn(m,n)
-Q,R̂ = qr(A)
-Q̂ = Q[:,1:n]
+Q,\hat R = qr(A)
+\hat Q = Q[:,1:n]
 ```
-The first column of `Q̂` is indeed a normalised first column of `A`:
+The first column of `\hat Q` is indeed a normalised first column of `A`:
 ```julia
 R = zeros(n,n)
 Q = zeros(m,n)
@@ -455,10 +455,10 @@ A = Q_1 Q̃_2 Q̃_3 R = \underbrace{{1 \over 3} \begin{bmatrix}
 0 & 3 & 0  \\
 2 & 0 & -1  \\
 2 & 0 & 2 
-\end{bmatrix}}_Q̂  \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
+\end{bmatrix}}_\hat Q  \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
  & -15 & -18 \\
   &  & -6 
-\end{bmatrix}}_R̂
+\end{bmatrix}}_\hat R
 $$
 
 

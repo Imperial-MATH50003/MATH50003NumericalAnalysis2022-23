@@ -87,7 +87,6 @@ notebook("src/SpectralTheorem.jmd"; nkwds...)
 
 
 
-notebook("src/Decompositions.jmd"; nkwds...)
 notebook("src/SingularValues.jmd"; nkwds...)
 notebook("src/DifferentialEquations.jmd"; nkwds...)
 
