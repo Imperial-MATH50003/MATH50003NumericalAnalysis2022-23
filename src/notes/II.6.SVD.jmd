@@ -1,16 +1,15 @@
-# Singular value decomposition and conditioning
+# II.6 Singular value decomposition and conditioning
 
 
 The matrix $2$-norm involves
 _singular values_, which are a measure of how matrices "stretch" vectors. 
-We also show that
-the singular values of a matrix give a notion of a _condition number_, which allows us
+The singular values of a matrix give a notion of a _condition number_, which allows us
 to bound errors introduced by floating point numbers in linear algebra operations.
 
 
-3. Singular value decomposition: we introduce the singular value decomposition which is related to
+1. Singular value decomposition: we introduce the singular value decomposition which is related to
 the matrix $2$-norm and best low rank approximation.
-4. Condition numbers: we will see how errors in matrix-vector multiplication and solving linear systems
+2. Condition numbers: we will see how errors in matrix-vector multiplication and solving linear systems
 can be bounded in terms of the _condition number_, which is defined in terms of singular values.
 
 ```julia
@@ -24,7 +23,7 @@ using LinearAlgebra, Plots
 
 To define the induced $2$-norm we need to consider the following:
 
-**Definition (singular value decomposition)** For $A ∈ ℝ^{m × n}$ with rank $r > 0$, 
+**Definition 1 (singular value decomposition)** For $A ∈ ℝ^{m × n}$ with rank $r > 0$, 
 the _reduced singular value decomposition (SVD)_ is
 $$
 A = U Σ V^⊤
@@ -48,7 +47,7 @@ where $σ_k = 0$ if $k > r$.
 
 To show the SVD exists we first establish some properties of a _Gram matrix_ ($A^⊤A$):
 
-**Proposition (Gram matrix kernel)** The kernel of $A$ is the also the kernel of $A^⊤ A$. 
+**Proposition 1 (Gram matrix kernel)** The kernel of $A$ is the also the kernel of $A^⊤ A$. 
 
 **Proof**
 If $A^⊤ A 𝐱 = 0$ then we have
@@ -58,7 +57,7 @@ $$
 which means $A 𝐱 = 0$ and $𝐱 ∈ \hbox{ker}(A)$.
 ∎
 
-**Proposition (Gram matrix diagonalisation)** The Gram-matrix
+**Proposition 2 (Gram matrix diagonalisation)** The Gram-matrix
 satisfies
 $$
 A^⊤ A = Q Λ Q^⊤
@@ -78,7 +77,7 @@ $$
 
 This connection allows us to prove existence:
 
-**Theorem (SVD existence)** Every $A ∈ ℝ^{m × n}$ has an SVD.
+**Theorem 1 piouj;l(SVD existence)** Every $A ∈ ℝ^{m × n}$ has an SVD.
 
 **Proof**
 Consider
