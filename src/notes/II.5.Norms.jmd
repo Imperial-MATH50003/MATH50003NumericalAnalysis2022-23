@@ -11,7 +11,7 @@ satisfy an additional multiplicative inequality.
 
 Recall the definition of a (vector-)norm:
 
-**Definition (vector-norm)** A norm $\|\cdot\|$ on $ℝ^n$ is a function that satisfies the following, for $𝐱,𝐲 ∈ ℝ^n$ and
+**Definition 1 (vector-norm)** A norm $\|\cdot\|$ on $ℝ^n$ is a function that satisfies the following, for $𝐱,𝐲 ∈ ℝ^n$ and
 $c ∈ ℝ$:x
 1. Triangle inequality: $\|𝐱 + 𝐲 \| ≤ \|𝐱\| + \|𝐲\|$
 2. Homogeneity: $\| c 𝐱 \| = |c| \| 𝐱 \|$
@@ -20,7 +20,7 @@ $c ∈ ℝ$:x
 
 Consider the following example:
 
-**Definition (p-norm)**
+**Definition 2 (p-norm)**
 For $1 ≤ p < ∞$ and $𝐱 \in ℝ^n$, define the $p$-norm:
 $$
 \|𝐱\|_p := \left(\sum_{k=1}^n |x_k|^p\right)^{1/p}
@@ -31,7 +31,7 @@ $$
 \|𝐱\|_∞ := \max_k |x_k|
 $$
 
-**Theorem (p-norm)** $\| ⋅ \|_p$ is a norm for $1 ≤ p ≤ ∞$.
+**Theorem 1 (p-norm)** $\| ⋅ \|_p$ is a norm for $1 ≤ p ≤ ∞$.
 
 **Proof**
 
@@ -90,7 +90,7 @@ vector norm:
 
 
 
-**Definition (matrix-norm)** Suppose $A ∈ ℝ^{m × n}$  and consider two norms $\| ⋅ \|_X$ on $ℝ^n$  and 
+**Definition 3 (matrix-norm)** Suppose $A ∈ ℝ^{m × n}$  and consider two norms $\| ⋅ \|_X$ on $ℝ^n$  and 
 $\| ⋅ \|_Y$ on $ℝ^n$. Define the _(induced) matrix norm_ as:
 $$
 \|A \|_{X → Y} := \sup_{𝐯 : \|𝐯\|_X=1} \|A 𝐯\|_Y
@@ -112,7 +112,7 @@ $$
 This follows since we can scale $𝐱$ by its norm so that it has unit norm, that is,
 ${𝐱} \over \|𝐱\|_X$ has unit norm.
 
-**Lemma (matrix norms are norms)** Induced matrix norms are norms, that is for $\| ⋅ \| = \| ⋅ \|_{X → Y}$ we have:
+**Lemma 1 (matrix norms are norms)** Induced matrix norms are norms, that is for $\| ⋅ \| = \| ⋅ \|_{X → Y}$ we have:
 1. Triangle inequality: $\| A + B \| ≤  \|A\| + \|B\|$
 1. Homogeneneity: $\|c A \| = |c| \|A\|$
 3. Positive-definiteness: $\|A\| =0 \Rightarrow A = 0$
@@ -141,7 +141,7 @@ $$
 
 We have some simple examples of induced norms:
 
-**Example ($1$-norm)** We claim 
+**Example 1 ($1$-norm)** We claim 
 $$
 \|A \|_1 = \max_j \|𝐚_j\|_1
 $$
@@ -173,5 +173,5 @@ opnorm(A) # the 2-norm
 
 An example that does not have a simple formula is $\|A \|_2$, but we do have two simple cases:
 
-**Proposition (diagonal/orthogonal 2-norms)** If $Λ$ is diagonal with entries $λ_k$ then
+**Proposition 1 (diagonal/orthogonal 2-norms)** If $Λ$ is diagonal with entries $λ_k$ then
 $\|Λ\|_2 = \max_k |λ_k|.$. If $Q$ is orthogonal then $\|Q\| = 1$.
