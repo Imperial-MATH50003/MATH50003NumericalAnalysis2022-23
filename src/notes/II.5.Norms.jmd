@@ -11,8 +11,10 @@ satisfy an additional multiplicative inequality.
 
 Recall the definition of a (vector-)norm:
 
-**Definition 1 (vector-norm)** A norm $\|\cdot\|$ on $ℝ^n$ is a function that satisfies the following, for $𝐱,𝐲 ∈ ℝ^n$ and
-$c ∈ ℝ$:x
+**Definition 1 (vector-norm)** A norm $\|\cdot\|$ on a vector space $V$ (e.g. $ℝ^n$ or $ℂ^n$) over a field $𝔽$ (e.g.
+$ℝ$ or $ℂ$)  
+is a function that satisfies the following, for $𝐱,𝐲 ∈ V$ and
+$c ∈ 𝔽$:
 1. Triangle inequality: $\|𝐱 + 𝐲 \| ≤ \|𝐱\| + \|𝐲\|$
 2. Homogeneity: $\| c 𝐱 \| = |c| \| 𝐱 \|$
 3. Positive-definiteness: $\|𝐱\| = 0$ implies that $𝐱 = 0$.
@@ -21,7 +23,7 @@ $c ∈ ℝ$:x
 Consider the following example:
 
 **Definition 2 (p-norm)**
-For $1 ≤ p < ∞$ and $𝐱 \in ℝ^n$, define the $p$-norm:
+For $1 ≤ p < ∞$ and $𝐱 ∈ ℂ^n$, define the $p$-norm:
 $$
 \|𝐱\|_p := \left(\sum_{k=1}^n |x_k|^p\right)^{1/p}
 $$
@@ -54,7 +56,7 @@ $$
 
 For $p = 2$ it can be proved using the Cauchy–Schwartz inequality:
 $$
-|𝐱^⊤ 𝐲| ≤ \| 𝐱 \|_2 \| 𝐲 \|_2
+|𝐱^⋆ 𝐲| ≤ \| 𝐱 \|_2 \| 𝐲 \|_2
 $$
 That is, we have
 $$
@@ -74,11 +76,13 @@ $$
 
 
 ## 2. Matrix norms
- Just like vectors, matrices have norms that measure their "length".  The simplest example is the Fröbenius norm, 
- defined for an $m \times n$ real matrix $A$ as
+ Just like vectors, matrices have norms that measure their "length".  The simplest example is the Fröbenius norm:
+
+ **Definition 3 (Fröbenius norm)** For $A ∈ ℂ^{m × n}$ define
 $$
 \|A\|_F := \sqrt{\sum_{k=1}^m \sum_{j=1}^n A_{kj}^2}
 $$
+
 This is available as `norm` in Julia:
 ```julia
 A = randn(5,3)
@@ -90,20 +94,16 @@ vector norm:
 
 
 
-**Definition 3 (matrix-norm)** Suppose $A ∈ ℝ^{m × n}$  and consider two norms $\| ⋅ \|_X$ on $ℝ^n$  and 
-$\| ⋅ \|_Y$ on $ℝ^n$. Define the _(induced) matrix norm_ as:
+**Definition 4 (matrix-norm)** Suppose $A ∈ ℂ^{m × n}$  and consider two norms $\| ⋅ \|_X$ on $ℂ^n$  and 
+$\| ⋅ \|_Y$ on $ℂ^n$. Define the _(induced) matrix norm_ as:
 $$
 \|A \|_{X → Y} := \sup_{𝐯 : \|𝐯\|_X=1} \|A 𝐯\|_Y
 $$
 Also define
 $$
-\|A\|_X \triangleq \|A\|_{X \rightarrow X}
+\|A\|_X := \|A\|_{X → X}
 $$
-
-For  the induced 2, 1, and $∞$-norm we use
-$$
-\|A\|_2, \|A\|_1 \qquad \hbox{and} \qquad \|A\|_∞.
-$$
+For  the induced $p$-norm we use the notation $\|A\|_p.$
 
 Note an equivalent definition of the induced norm:
 $$
@@ -174,4 +174,6 @@ opnorm(A) # the 2-norm
 An example that does not have a simple formula is $\|A \|_2$, but we do have two simple cases:
 
 **Proposition 1 (diagonal/orthogonal 2-norms)** If $Λ$ is diagonal with entries $λ_k$ then
-$\|Λ\|_2 = \max_k |λ_k|.$. If $Q$ is orthogonal then $\|Q\| = 1$.
+$\|Λ\|_2 = \max_k |λ_k|$. If $Q$ is orthogonal then $\|Q\| = 1$.
+
+In the next chapter we see how the 2-norm for a matrix can be defined in terms of the _Singular Value Decomposition_.
