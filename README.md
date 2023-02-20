@@ -35,7 +35,7 @@ and unitary matrices (permutations, rotations, and reflections).
 ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/II.3.QR.pdf)): we discuss least squares and the computation of the QR factorisation.
 4. [PLU and Cholesky](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.4.LU.ipynb): we discuss 
 the PLU and Cholesky factorisations, as well as symmetric positive definite matrices.
-
+5. [Norms](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.5.Norms.ipynb): we discuss vector and matrix norms.
 
 
 *III: Computing with functions*

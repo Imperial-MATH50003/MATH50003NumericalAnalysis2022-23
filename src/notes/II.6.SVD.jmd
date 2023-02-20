@@ -1,0 +1,388 @@
+# II.6 Singular value decomposition and conditioning
+
+
+The matrix $2$-norm involves
+_singular values_, which are a measure of how matrices "stretch" vectors. 
+The singular values of a matrix give a notion of a _condition number_, which allows us
+to bound errors introduced by floating point numbers in linear algebra operations.
+
+
+1. Singular value decomposition: we introduce the singular value decomposition which is related to
+the matrix $2$-norm and best low rank approximation.
+2. Condition numbers: we will see how errors in matrix-vector multiplication and solving linear systems
+can be bounded in terms of the _condition number_, which is defined in terms of singular values.
+
+```julia
+using LinearAlgebra, Plots
+```
+
+
+
+
+## 3. Singular value decomposition
+
+To define the induced $2$-norm we need to consider the following:
+
+**Definition 1 (singular value decomposition)** For $A ∈ ℝ^{m × n}$ with rank $r > 0$, 
+the _reduced singular value decomposition (SVD)_ is
+$$
+A = U Σ V^⊤
+$$
+where $U ∈ ℝ^{m × r}$ and $V ∈  ℝ^{r × n}$ have orthonormal columns and $Σ ∈ ℝ^{r × r}$ is  diagonal whose
+diagonal entries, which which we call _singular values_, are all positive and decreasing: $σ_1 ≥ ⋯ ≥ σ_r > 0$.
+The _full singular value decomposition (SVD)_ is
+$$
+A = Ũ Σ̃ Ṽ^⊤
+$$
+where $Ũ ∈ ℝ^{m × m}$ and $Ṽ ∈  ℝ^{n × n}$ are orthogonal matrices and $Σ̃ ∈ ℝ^{m × n}$ has only
+diagonal entries, i.e., if $m > n$,
+$$
+Σ̃ = \begin{bmatrix} σ_1 \\ & ⋱ \\ && σ_n \\ && 0 \\ && ⋮ \\ && 0 \end{bmatrix}
+$$
+and if $m < n$,
+$$
+Σ̃ = \begin{bmatrix} σ_1 \\ & ⋱ \\ && σ_m & 0 & ⋯ & 0\end{bmatrix}
+$$
+where $σ_k = 0$ if $k > r$.
+
+To show the SVD exists we first establish some properties of a _Gram matrix_ ($A^⊤A$):
+
+**Proposition 1 (Gram matrix kernel)** The kernel of $A$ is the also the kernel of $A^⊤ A$. 
+
+**Proof**
+If $A^⊤ A 𝐱 = 0$ then we have
+$$
+0 = 𝐱^T A^⊤ A 𝐱 = \| A 𝐱 \|^2
+$$
+which means $A 𝐱 = 0$ and $𝐱 ∈ \hbox{ker}(A)$.
+∎
+
+**Proposition 2 (Gram matrix diagonalisation)** The Gram-matrix
+satisfies
+$$
+A^⊤ A = Q Λ Q^⊤
+$$
+where $Q$ is orthogonal and the eigenvalues $λ_k$ are non-negative.
+
+**Proof**
+$A^⊤ A$ is symmetric so we appeal to the spectral theorem for the
+existence of the decomposition.
+For the corresponding (orthonormal) eigenvector $𝐪_k$,
+$$
+λ_k = λ_k 𝐪_k^⊤ 𝐪_k = 𝐪_k^⊤ A^⊤ A 𝐪_k = \| A 𝐪_k \|^2 ≥ 0.
+$$
+
+∎
+
+
+This connection allows us to prove existence:
+
+**Theorem 1 piouj;l(SVD existence)** Every $A ∈ ℝ^{m × n}$ has an SVD.
+
+**Proof**
+Consider
+$$
+A^⊤ A = Q Λ Q^⊤.
+$$
+Assume (as usual) that the eigenvalues are sorted in decreasing modulus, and so $λ_1,…,λ_r$
+are an enumeration of the non-zero eigenvalues and
+$$
+V := \begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_r \end{bmatrix}
+$$
+the corresponding (orthonormal) eigenvectors, with
+$$
+K = \begin{bmatrix} 𝐪_{r+1} | ⋯ | 𝐪_n \end{bmatrix}
+$$
+the corresponding kernel. 
+Define
+$$
+Σ :=  \begin{bmatrix} \sqrt{λ_1} \\ & ⋱ \\ && \sqrt{λ_r} \end{bmatrix}
+$$
+Now define
+$$
+U := AV Σ^{-1}
+$$
+which is orthogonal since $A^⊤ A V = V Σ^2 $:
+$$
+U^⊤ U = Σ^{-1} V^⊤ A^⊤ A V Σ^{-1} = I.
+$$
+Thus we have
+$$
+U Σ V^⊤ = A V V^⊤ = A \underbrace{\begin{bmatrix} V | K \end{bmatrix}}_Q\underbrace{\begin{bmatrix} V^⊤ \\ K^⊤ \end{bmatrix}}_{Q^⊤}
+$$
+where we use the fact that $A K = 0$ so that concatenating $K$ does not change the value.
+
+∎
+
+Singular values tell us the 2-norm:
+
+**Corollary (singular values and norm)**
+$$
+\|A \|_2 = σ_1
+$$
+and if $A ∈ ℝ^{n × n}$ is invertible, then
+$$
+\|A^{-1} \|_2 = σ_n^{-1}
+$$
+
+**Proof**
+
+First we establish the upper-bound:
+$$
+\|A \|_2 ≤  \|U \|_2 \| Σ \|_2 \| V^⊤\|_2 = \| Σ \|_2  = σ_1
+$$
+This is attained using the first right singular vector:
+$$
+\|A 𝐯_1\|_2 = \|Σ V^⊤ 𝐯_1\|_2 = \|Σ  𝐞_1\|_2 = σ_1
+$$
+The inverse result follows since the inverse has SVD
+$$
+A^{-1} = V Σ^{-1} U^⊤ = V (W Σ^{-1} W) U^⊤
+$$
+is the SVD of $A^{-1}$, where
+$$
+W := P_σ = \begin{bmatrix} && 1 \\ & ⋰ \\ 1 \end{bmatrix}
+$$
+is the permutation that reverses the entries, that is, $σ$ has Cauchy notation
+$$
+\begin{pmatrix}
+1 & 2 & ⋯ & n \\
+n & n-1 & ⋯ & 1
+\end{pmatrix}.
+$$
+
+
+∎
+
+We will not discuss in this module computation of singular value decompositions or eigenvalues:
+they involve iterative algorithms (actually built on a sequence of QR decompositions).
+
+One of the main usages for SVDs is low-rank approximation:
+
+**Theorem (best low rank approximation)** The  matrix
+$$
+A_k := \begin{bmatrix} 𝐮_1 | ⋯ | 𝐮_k \end{bmatrix} \begin{bmatrix}
+σ_1 \\
+& ⋱ \\
+&& σ_k\end{bmatrix} \begin{bmatrix} 𝐯_1 | ⋯ | 𝐯_k \end{bmatrix}^⊤
+$$ 
+is the best 2-norm approximation of $A$ by a rank $k$ matrix, that is, for all rank-$k$ matrices $B$, we have 
+$$\|A - A_k\|_2 ≤ \|A -B \|_2.$$
+
+
+**Proof**
+We have
+
+$$
+A - A_k = U \begin{bmatrix} 0  \cr &\ddots \cr && 0 \cr &&& σ_{k+1} \cr &&&& \ddots \cr &&&&& σ_r\end{bmatrix} V^⊤.
+$$
+Suppose a rank-$k$ matrix $B$ has 
+$$
+\|A-B\|_2  < \|A-A_k\|_2 = σ_{k+1}.
+$$
+For all $𝐰 \in \ker(B)$ we have 
+$$
+\|A 𝐰\|_2 = \|(A-B) 𝐰\|_2 ≤ \|A-B\|\|𝐰\|_2  < σ_{k+1} \|𝐰\|_2
+$$
+
+But for all $𝐮 \in {\rm span}(𝐯_1,…,𝐯_{k+1})$, that is, $𝐮 = V[:,1:k+1]𝐜$ for some $𝐜 \in ℝ^{k+1}$  we have 
+$$
+\|A 𝐮\|_2^2 = \|U Σ_k 𝐜\|_2^2 = \|Σ_k 𝐜\|_2^2 =
+\sum_{j=1}^{k+1} (σ_j c_j)^2 ≥ σ_{k+1}^2 \|c\|^2,
+$$
+i.e., $\|A 𝐮\|_2 ≥ σ_{k+1} \|c\|$.  Thus $𝐰$ cannot be in this span.
+
+
+The dimension of the span of $\ker(B)$ is at least $n-k$, but the dimension of ${\rm span}(𝐯_1,…,𝐯_{k+1})$ is at least $k+1$.
+Since these two spaces cannot intersect we have a contradiction, since $(n-r) + (r+1) = n+1 > n$.  ∎
+
+
+
+Here we show an example of a simple low-rank approximation using the SVD. Consider the Hilbert matrix:
+```julia
+hilbertmatrix(n) = [1/(k+j-1) for j = 1:n, k=1:n]
+hilbertmatrix(5)
+```
+That is, the $H[k,j] = 1/(k+j-1)$. This is a famous example of matrix with rapidly decreasing singular values:
+```julia
+H = hilbertmatrix(100)
+U,σ,V = svd(H)
+scatter(σ; yscale=:log10)
+```
+Note numerically we typically do not get a exactly zero singular values so the rank is always
+treated as $\min(m,n)$.
+Because the singular values decay rapidly 
+ we can approximate the matrix very well with a rank 20 matrix:
+```julia
+k = 20 # rank
+Σ_k = Diagonal(σ[1:k])
+U_k = U[:,1:k]
+V_k = V[:,1:k]
+norm(U_k * Σ_k * V_k' - H)
+```
+
+Note that this can be viewed as a _compression_ algorithm: we have replaced a matrix with 
+$100^2 = 10,000$ entries by two matrices and a vector with $4,000$ entries without losing
+any information.
+In the problem sheet we explore the usage of low rank approximation to smooth functions.
+
+
+
+## 4. Condition numbers
+
+We have seen that floating point arithmetic induces errors in computations, and that we can typically
+bound the absolute errors to be proportional to $C ϵ_{\rm m}$. We want a way to bound the
+effect of more complicated calculations like computing $A 𝐱$ or $A^{-1} 𝐲$ without having to deal with
+the exact nature of floating point arithmetic. Here we consider only matrix-multiplication but will make a remark
+about matrix inversion.
+
+To justify what follows, we first observe that errors in implementing matrix-vector multiplication
+can be captured by considering the multiplication to be exact on the wrong matrix: that is, `A*x`
+(implemented with floating point) is precisely $A + δA$ where $δA$ has small norm, relative to $A$.
+This is known as _backward error analysis_.
+
+
+
+To discuss floating point errors we need to be precise which order the operations happened.
+We will use the definition `mul(A,x)`, which denote ${\rm mul}(A, 𝐱)$. (Note that `mul_rows` actually
+does the _exact_ same operations, just in a different order.) Note that each entry of the result is in fact a dot-product
+of the corresponding rows so we first consider the error in the dot product  `dot(𝐱,𝐲)` as implemented in floating-point, 
+which we denote ${\rm dot}(A,x)$.
+
+We first need a helper proposition:
+
+**Proposition** If $|ϵ_i| ≤ ϵ$ and $n ϵ < 1$, then
+$$
+\prod_{k=1}^n (1+ϵ_i) = 1+θ_n
+$$
+for some constant $θ_n$ satisfying $|θ_n| ≤ {n ϵ \over 1-nϵ}$.
+
+The proof is left as an exercise (Hint: use induction).
+
+**Lemma (dot product backward error)**
+For $𝐱, 𝐲 ∈ ℝ^n$,
+$$
+{\rm dot}(𝐱, 𝐲) = (𝐱 + δ𝐱)^⊤ 𝐲
+$$
+where
+$$
+|δ𝐱| ≤  {n ϵ_{\rm m} \over 2-nϵ_{\rm m}} |𝐱 |,
+$$
+where $|𝐱 |$ means absolute-value of each entry.
+
+
+**Proof**
+
+Note that 
+$$
+\begin{align*}
+{\rm dot}(𝐱, 𝐲) &= \{ [(x_1 ⊗ y_1) ⊕ (x_2 ⊗ y_2)] ⊕(x_3⊗ y_3)] ⊕⋯\}⊕(x_n ⊗ y_n) \\
+  & = \{ [(x_1 y_1)(1+δ_1) + (x_2 y_2)(1+δ_2)](1+γ_2) +x_3 y_3(1+δ_3)](1+γ_3) + ⋯  +x_n y_n(1+δ_n) \}(1+γ_n) \\
+  & = ∑_{j = 1}^n x_j y_j (1+δ_j) ∏_{k=j}^n (1 + γ_k) \\
+  & = ∑_{j = 1}^n x_j y_j (1+θ_j)
+\end{align*}
+$$
+where we denote the errors from multiplication as $δ_k$ and those from addition by $γ_k$ 
+(with $γ_1 = 0$). Note that $θ_j$ each have at most $n$ terms each bounded by $ϵ_{\rm m}/2$,
+Thus the previous proposition tells us
+$$
+|θ_j| ≤ {n ϵ_{\rm m} \over 2- nϵ_{\rm m}}.
+$$
+Thus
+$$
+δ𝐱 =  \begin{pmatrix} x_1 θ_n^1 \cr x_2 θ_n^2 \cr x_3 θ_{n-1} \cr \vdots \cr x_n θ_1\end{pmatrix}
+$$
+and the theorem follows from homogeneity:
+$$
+\| δ𝐱 \| ≤ {n ϵ_{\rm m} \over 2-nϵ_{\rm m}} \| 𝐱 \|
+$$
+
+∎
+
+**Theorem (matrix-vector backward error)**
+For $A ∈ ℝ^{m × n}$ and $𝐱 ∈ ℝ^n$ we have
+$$
+{\rm mul}(A, 𝐱) = (A + δA) 𝐱
+$$
+where
+$$
+|δA| ≤ {n ϵ_{\rm m} \over 2-nϵ_{\rm m}}  |A|.
+$$
+Therefore
+$$
+\begin{align*}
+\|δA\|_1 &≤  {n ϵ_{\rm m} \over 2-nϵ_{\rm m}} \|A \|_1 \\
+\|δA\|_2 &≤  {\sqrt{\min(m,n)} n ϵ_{\rm m} \over 2-nϵ_{\rm m}} \|A \|_2 \\
+\|δA\|_∞ &≤  {n ϵ_{\rm m} \over 2-nϵ_{\rm m}} \|A \|_∞
+\end{align*}
+$$
+
+**Proof**
+The bound on $|δA|$ is implied by the previous lemma.
+The $1$ and $∞$-norm follow since
+$$
+\|A\|_1 = \||A|\|_1 \hbox{ and } \|A\|_∞ = \||A|\|_∞
+$$
+This leaves the 2-norm example, which is a bit more challenging as there are matrices
+$A$ such that $\|A\|_2 ≠ \| |A| \|_2$.
+Instead we will prove the result by going through the Fröbenius norm and using:
+$$
+\|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \| A\|_2
+$$
+where $r$ is rank of $A$ (see PS5)
+and $\|A\|_F = \| |A| \|_F$,
+so we deduce:
+$$
+\begin{align*}
+\|δA \|_2 &≤ \| δA\|F = \| |δA| \|F ≤ {n ϵ_{\rm m} \over 2-nϵ_{\rm m}} \| |A| \|_F \\
+          &= {n ϵ_{\rm m} \over 2-nϵ_{\rm m}} \| A \|_F ≤ {\sqrt{r} n ϵ_{\rm m} \over 2-nϵ_{\rm m}}\| A \|_2 \\
+          &≤ {\sqrt{\min(m,n)} n ϵ_{\rm m} \over 2-nϵ_{\rm m}} \|A \|_2
+\end{align*}
+$$
+
+∎
+
+So now we get to a mathematical question independent of floating point: 
+can we bound the _relative error_ in approximating
+$$
+A 𝐱 ≈ (A + δA) 𝐱
+$$
+if we know a bound on $\|δA\|$?
+It turns out we can in turns of the _condition number_ of the matrix:
+
+**Definition (condition number)**
+For a square matrix $A$, the _condition number_ (in $p$-norm) is
+$$
+κ_p(A) := \| A \|_p \| A^{-1} \|_p
+$$
+with the $2$-norm:
+$$
+κ_2(A) = {σ_1 \over σ_n}.
+$$
+
+
+**Theorem (relative-error for matrix-vector)**
+The _worst-case_ relative error in $A 𝐱 ≈ (A + δA) 𝐱$ is
+$$
+{\| δA 𝐱 \| \over \| A 𝐱 \| } ≤ κ(A) ε
+$$
+if we have the relative pertubation error $\|δA\| = \|A \| ε$.
+
+**Proof**
+We can assume $A$ is invertible (as otherwise $κ(A) = ∞$). Denote $𝐲 = A 𝐱$ and we have
+$$
+{\|𝐱 \| \over \| A 𝐱 \|} = {\|A^{-1} 𝐲 \| \over \|𝐲 \|} ≤ \| A^{-1}\|
+$$
+Thus we have:
+$$
+{\| δA 𝐱 \| \over \| A 𝐱 \| } ≤ \| δA\| \|A^{-1}\| ≤ κ(A) {\|δA\| \over \|A \|}
+$$
+
+∎
+
+
+Thus for floating point arithmetic we know the error is bounded by $κ(A) {n ϵ_{\rm m} \over 2-nϵ_{\rm m}}$.
+
+If one uses QR to solve $A 𝐱 = 𝐲$ the condition number also gives a meaningful bound on the error. 
+As we have already noted, there are some matrices where PLU decompositions introduce large errors, so
+in that case well-conditioning is not a guarantee (but it still usually works).

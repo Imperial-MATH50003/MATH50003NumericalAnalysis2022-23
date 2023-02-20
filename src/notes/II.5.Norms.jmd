@@ -1,0 +1,179 @@
+# II.5 Norms
+
+In this lecture we discuss matrix and vector norms.
+
+1. Vector norms: we discuss the standard $p$-norm for vectors in $ℝ^n$.
+2. Matrix norms: we discuss how two vector norms can be used to induce a norm on matrices. These
+satisfy an additional multiplicative inequality.
+
+
+## 1. Vector norms
+
+Recall the definition of a (vector-)norm:
+
+**Definition 1 (vector-norm)** A norm $\|\cdot\|$ on a vector space $V$ (e.g. $ℝ^n$ or $ℂ^n$) over a field $𝔽$ (e.g.
+$ℝ$ or $ℂ$)  
+is a function that satisfies the following, for $𝐱,𝐲 ∈ V$ and
+$c ∈ 𝔽$:
+1. Triangle inequality: $\|𝐱 + 𝐲 \| ≤ \|𝐱\| + \|𝐲\|$
+2. Homogeneity: $\| c 𝐱 \| = |c| \| 𝐱 \|$
+3. Positive-definiteness: $\|𝐱\| = 0$ implies that $𝐱 = 0$.
+
+
+Consider the following example:
+
+**Definition 2 (p-norm)**
+For $1 ≤ p < ∞$ and $𝐱 ∈ ℂ^n$, define the $p$-norm:
+$$
+\|𝐱\|_p := \left(\sum_{k=1}^n |x_k|^p\right)^{1/p}
+$$
+where $x_k$ is the $k$-th entry of $𝐱$. 
+For $p = ∞$ we define
+$$
+\|𝐱\|_∞ := \max_k |x_k|
+$$
+
+**Theorem 1 (p-norm)** $\| ⋅ \|_p$ is a norm for $1 ≤ p ≤ ∞$.
+
+**Proof**
+
+We will only prove the case $p = 1, 2, ∞$ as general $p$ is more involved.
+
+Homogeneity and positive-definiteness are straightforward: e.g.,
+$$
+\|c 𝐱\|_p = (\sum_{k=1}^n |cx_k|^p)^{1/p} = (|c|^p \sum_{k=1}^n |x_k|^p)^{1/p} = |c| \| 𝐱 \|
+$$
+and if $\| 𝐱 \|_p = 0$ then all $|x_k|^p$ are have to be zero.
+
+For $p = 1,∞$ the triangle inequality is also straightforward:
+$$
+\| 𝐱 + 𝐲 \|_∞ = \max_k (|x_k + y_k|) ≤ \max_k (|x_k| + |y_k|) ≤ \|𝐱\|_∞ + \|𝐲\|_∞
+$$
+and
+$$
+\| 𝐱 + 𝐲 \|_1 = \sum_{k=1}^n |x_k + y_k| ≤  \sum_{k=1}^n (|x_k| + |y_k|) = \| 𝐱 \|_1 + \| 𝐲\|_1
+$$
+
+For $p = 2$ it can be proved using the Cauchy–Schwartz inequality:
+$$
+|𝐱^⋆ 𝐲| ≤ \| 𝐱 \|_2 \| 𝐲 \|_2
+$$
+That is, we have
+$$
+\| 𝐱 + 𝐲 \|^2 = \|𝐱\|^2 + 2 𝐱^⊤ 𝐲 + \|𝐲\|^2 ≤ \|𝐱\|^2 + 2\| 𝐱 \| \| 𝐲 \| + \|𝐲\|^2 = (\| 𝐱 \| +  \| 𝐲 \|)
+$$
+
+
+∎
+
+
+ In Julia, one can use the inbuilt `norm` function to calculate norms:
+ ```julia
+ norm([1,-2,3]) == norm([1,-2,3], 2) == sqrt(1^2 + 2^2 + 3^2);
+ norm([1,-2,3], 1) == sqrt(1 + 2 + 3);
+ norm([1,-2,3], Inf) == 3;
+ ```
+
+
+## 2. Matrix norms
+ Just like vectors, matrices have norms that measure their "length".  The simplest example is the Fröbenius norm:
+
+ **Definition 3 (Fröbenius norm)** For $A ∈ ℂ^{m × n}$ define
+$$
+\|A\|_F := \sqrt{\sum_{k=1}^m \sum_{j=1}^n A_{kj}^2}
+$$
+
+This is available as `norm` in Julia:
+```julia
+A = randn(5,3)
+norm(A) == norm(vec(A))
+```
+
+While this is the simplest norm, it is not the most useful.  Instead, we will build a matrix norm from a 
+vector norm:
+
+
+
+**Definition 4 (matrix-norm)** Suppose $A ∈ ℂ^{m × n}$  and consider two norms $\| ⋅ \|_X$ on $ℂ^n$  and 
+$\| ⋅ \|_Y$ on $ℂ^n$. Define the _(induced) matrix norm_ as:
+$$
+\|A \|_{X → Y} := \sup_{𝐯 : \|𝐯\|_X=1} \|A 𝐯\|_Y
+$$
+Also define
+$$
+\|A\|_X := \|A\|_{X → X}
+$$
+For  the induced $p$-norm we use the notation $\|A\|_p.$
+
+Note an equivalent definition of the induced norm:
+$$
+\|A\|_{X → Y} = \sup_{𝐱 ∈ ℝ^n, 𝐱 ≠ 0} {\|A 𝐱\|_Y \over \| 𝐱\|_X}
+$$
+This follows since we can scale $𝐱$ by its norm so that it has unit norm, that is,
+${𝐱} \over \|𝐱\|_X$ has unit norm.
+
+**Lemma 1 (matrix norms are norms)** Induced matrix norms are norms, that is for $\| ⋅ \| = \| ⋅ \|_{X → Y}$ we have:
+1. Triangle inequality: $\| A + B \| ≤  \|A\| + \|B\|$
+1. Homogeneneity: $\|c A \| = |c| \|A\|$
+3. Positive-definiteness: $\|A\| =0 \Rightarrow A = 0$
+
+In addition, they satisfy the following additional properties:
+1. $\|A 𝐱 \|_Y ≤ \|A\|_{X → Y} \|𝐱 \|_X$
+2. Multiplicative inequality: $\| AB\|_{X → Z} ≤ \|A \|_{Y → Z} \|B\|_{X →  Y}$
+
+**Proof**
+
+First we show the _triangle inequality_:
+$$
+\|A + B \| ≤ \sup_{𝐯 : \|𝐯\|_X=1} (\|A 𝐯\|_Y + \|B 𝐯\|_Y) ≤ \| A \| + \|B \|.
+$$
+Homogeneity is also immediate. Positive-definiteness follows from the fact that if
+$\|A\| = 0$ then $A 𝐱  = 0$ for all $𝐱 ∈ ℝ^n$.
+The property $\|A 𝐱 \|_Y ≤ \|A\|_{X → Y} \|𝐱 \|_X$ follows from the definition.
+Finally, the multiplicative inequality follows from
+$$
+\|A B\| = \sup_{𝐯 : \|𝐯\|_X=1} \|A B 𝐯 |_Z ≤ \sup_{𝐯 : \|𝐯\|_X=1} \|A\|_{Y → Z} \| B 𝐯 | = \|A \|_{Y → Z} \|B\|_{X →  Y}
+$$
+
+
+
+∎
+
+We have some simple examples of induced norms:
+
+**Example 1 ($1$-norm)** We claim 
+$$
+\|A \|_1 = \max_j \|𝐚_j\|_1
+$$
+that is, the maximum $1$-norm of the columns. To see this use the triangle inequality to
+find for $\|𝐱\|_1 = 1$
+$$
+\| A 𝐱 \|_1 ≤ ∑_{j = 1}^n |x_j| \| 𝐚_j\|_1 ≤ \max_j \| 𝐚_j\| ∑_{j = 1}^n |x_j| = \max_j \| 𝐚_j\|_1.
+$$
+But the bound is also attained since if $j$ is the column that maximises the norms then
+$$
+\|A 𝐞_j \|_1 = \|𝐚_j\|_1 =  \max_j \| 𝐚_j\|_1.
+$$
+
+In the problem sheet we see that
+$$
+\|A\|_∞ = \max_k \|A[k,:]\|_1
+$$
+that is, the maximum $1$-norm of the rows.
+
+Matrix norms are available via `opnorm`:
+```julia
+m,n = 5,3
+A = randn(m,n)
+opnorm(A,1) == maximum(norm(A[:,j],1) for j = 1:n)
+opnorm(A,Inf) == maximum(norm(A[k,:],1) for k = 1:m)
+opnorm(A) # the 2-norm
+```
+
+
+An example that does not have a simple formula is $\|A \|_2$, but we do have two simple cases:
+
+**Proposition 1 (diagonal/orthogonal 2-norms)** If $Λ$ is diagonal with entries $λ_k$ then
+$\|Λ\|_2 = \max_k |λ_k|$. If $Q$ is orthogonal then $\|Q\| = 1$.
+
+In the next chapter we see how the 2-norm for a matrix can be defined in terms of the _Singular Value Decomposition_.
