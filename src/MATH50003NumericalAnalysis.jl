@@ -28,6 +28,7 @@ notebook("src/notes/II.2.OrthogonalMatrices.jmd"; nkwds...)
 notebook("src/notes/II.3.QR.jmd"; nkwds...)
 notebook("src/notes/II.4.LU.jmd"; nkwds...)
 notebook("src/notes/II.5.Norms.jmd"; nkwds...)
+notebook("src/notes/II.6.SVD.jmd"; nkwds...)
 
 # /usr/local/bin/jupyter nbconvert --allow-chromium-download --to webpdf *.ipynb
 
