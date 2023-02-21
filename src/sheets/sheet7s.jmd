@@ -1,0 +1,80 @@
+**Problem 5.1** For $A = U Σ V^⊤ ∈ ℝ^{m × n}$ define the _pseudo-inverse_:
+$$
+A^+ := V Σ^{-1} U^⊤.
+$$
+Show that it satisfies the _Moore-Penrose conditions_:
+1. $A A^+ A = A$
+2. $A^+ A A^+ = A^+$
+3. $(A A^+)^⊤  = A A^+$ and $(A^+ A)^⊤ = A^+ A$
+
+**SOLUTION**
+
+Let $A=UΣ V^⊤$ and $A^+ := V Σ^{-1} U^⊤$, where $U ∈ ℝ^{m × r}$ and $V ∈ ℝ^{n × r}$. Note that $U^⊤U = I_m$ and $V^⊤V = I_r$. 
+
+1. We have
+$$
+A A^+ A = U Σ V^⊤ V Σ^{-1} U^⊤ U Σ V^⊤ = U Σ Σ^{-1} Σ V^⊤ = UΣ V^⊤ = A
+$$
+2. Moreover,
+$$
+A^+ A A^+ = V Σ^{-1}U^⊤ U Σ V^⊤ V Σ^{-1} U^⊤ = V Σ^{-1}Σ Σ^{-1} U^⊤ = V Σ^{-1} U^⊤ = A^+
+$$
+3. 
+$$
+\begin{align*}
+(A A^+)^⊤ = (A^+)^⊤ A^⊤ = U Σ^{-1} V^⊤ V Σ U^⊤ = U U^⊤ = U Σ V^⊤ V Σ^{-1} U^⊤ = A A^+ \\
+(A^+ A)^⊤ = A^⊤ (A^+)^⊤ =  V Σ U^⊤ U Σ^{-1} V^⊤ = V V^⊤ = V Σ^{-1} U^⊤ U Σ V^⊤  = A^+ A
+\end{align*}
+$$
+
+
+**END**
+
+**Problem 5.2** Show for $A ∈ ℝ^{m × n}$ with $m ≥ n$ and ⊤ rank
+that $𝐱 =  A^+ 𝐛$ is the least squares solution, i.e., minimises $\| A 𝐱 - 𝐛 \|_2$.
+Hint: extend $U$ in the SVD to be a square orthogonal matrix.
+
+**SOLUTION**
+
+The proof mimics that of the QR factorisation. Write $A =  U Σ V^⊤$ and let
+$$
+Ũ = \begin{bmatrix}U & K \end{bmatrix}
+$$
+so that $Ũ$ is orthogonal. We use the fact orthogonal matrices do not change norms:
+$$
+\begin{align*}
+\|A 𝐱 - 𝐛 \|_2^2 &= \|U Σ V^⊤ 𝐱 - 𝐛 \|_2^2 = \|Ũ^⊤ U Σ V^⊤ 𝐱 - Ũ^⊤ 𝐛 \|_2^2 = \|\underbrace{\begin{bmatrix}I_m \\ O \end{bmatrix}}_{∈ ℝ^{m × n}} Σ V^⊤ 𝐱 - \begin{bmatrix} U^⊤ \\ K^⊤ \end{bmatrix} 𝐛 \|_2^2 \\
+&= \|Σ V^⊤ 𝐱 - U^⊤ 𝐛 \|_2^2 + \|K^⊤ 𝐛\|^2
+\end{align*}
+$$
+The second term is independent of $𝐱$. The first term is minimised when zero:
+$$
+ \|Σ V^⊤ 𝐱 - U^⊤ 𝐛 \|_2 =\|Σ V^⊤ V Σ^{-1} U^⊤ 𝐛  - U^⊤ 𝐛 \|_2 = 0
+$$
+
+**END**
+
+**Problem 5.3**
+If $A ∈ ℝ^{m × n}$ has a non-empty kernel there are multiple solutions to the least
+squares problem as 
+we can add any element of the kernel. Show that $𝐱 = A^+ 𝐛$ gives the least squares solution
+such that $\| 𝐱 \|_2$ is minimised.
+
+**SOLUTION**
+
+Let $𝐱     =A^+b$ and let $𝐱 + 𝐤$ to be another solution i.e.
+$$
+\|A𝐱 - b \| = \|A (𝐱 +𝐤) - b \|
+$$
+Following the previous part we deduce:
+$$
+Σ V^⊤ (𝐱 +𝐤) = U^⊤ 𝐛 \Rightarrow V^⊤ 𝐤 = 0
+$$
+As $𝐱 = V 𝐜$ lies in the span of the columns of $V$ we have
+$𝐱^⊤ 𝐤 = 0$. Thus
+$$
+\| 𝐱 + 𝐤 \|^2 = \| 𝐱 \|^2 + \| 𝐤 \|^2
+$$
+which is minimised when $𝐤 = 0$.
+
+**END**

@@ -1,0 +1,124 @@
+# MATH50003 Numerical Analysis (2022–23)
+# Problem Sheet 6
+
+This problem sheet concerns Cholesky factorisations and matrix norms.
+
+
+-----
+
+**Problem 1** Use the Cholesky factorisation to determine
+which of the following matrices are symmetric positive definite:
+$$
+\begin{bmatrix} 1 & -1  \\
+-1 & 3
+\end{bmatrix}, \begin{bmatrix} 1 & 2 & 2  \\
+2 & 1 & 2\\
+2 & 2 & 1
+\end{bmatrix}, \begin{bmatrix} 3 & 2 & 1  \\
+2 & 4 & 2\\
+1 & 2 & 5
+\end{bmatrix}, 
+\begin{bmatrix} 4 & 2 & 2 & 1  \\
+2 & 4 & 2 & 2\\
+2 & 2 & 4 & 2 \\
+1 & 2 & 2 & 4
+\end{bmatrix}
+$$
+
+
+
+-----
+
+**Problem 2.1** An inner product $⟨𝐱, 𝐲⟩$ on $ℝ^n$
+satisfies, for all $𝐱,𝐲,𝐳 ∈ ℝ$ and $a,b ∈ ℝ$:
+1. Symmetry: $⟨𝐱, 𝐲⟩ = ⟨𝐲, 𝐱⟩$
+2. Linearity: $⟨𝐱, a𝐲 +b𝐳⟩ = a ⟨𝐱, 𝐲⟩+ b⟨𝐱, 𝐳⟩$
+3. Posive-definite: $⟨𝐱, 𝐱⟩ > 0, x ≠ 0$
+
+Prove that $⟨𝐱, 𝐲⟩$ is an inner product if and only if
+$$
+⟨𝐱, 𝐲⟩ = 𝐱^⊤ K 𝐲
+$$
+where $K$ is a symmetric positive definite matrix.
+
+
+
+**Problem 2.2** Show that a symmetric positive definite matrix has strictly positive eigenvalues.
+Hint: you can use the fact that symmetric matrices have real eigenvalues and eigenvectors.
+
+
+
+**Problem 2.3** Show that a matrix is symmetric positive definite if and only if it has a _reverse_ Cholesky
+factorisation of the form
+$$
+A = U U^⊤
+$$
+where $U$ is upper triangular with positive entries on the diagonal.
+
+
+
+------
+
+**Problem 3.1** Use the Cholesky decomposition to prove that the following $n × n$ matrix is symmetric positive definite
+for any $n$:
+$$
+Δ_n := \begin{bmatrix}
+2 & -1 \\
+-1 & 2 & -1 \\
+& -1 & 2 & ⋱ \\
+&& ⋱ & ⋱ & -1 \\
+&&& -1 & 2
+\end{bmatrix}
+$$
+Hint: replace $Δ_n[1,1]$ with $α > 1$ and use a proof by induction.
+
+
+
+
+**Problem 3.2** 
+Deduce its Cholesky and reverse Cholesky factorisations: $Δ_n = L_n L_n^⊤ = U_n U_n^⊤$ where
+$L_n$ is lower triangular and $U_n$ is upper triangular.
+
+
+
+----
+
+**Problem 4.1** Prove the following:
+$$
+\begin{align*}
+\|A\|_∞ &= \max_k \|A[k,:]\|_1 \\
+\|A\|_{1 → ∞} &= \|\hbox{vec}(A)\|_∞ = \max_{kj} |a_{kj}|
+\end{align*}
+$$
+
+
+
+
+**Problem 4.2** For a rank-1 matrix $A = 𝐱 𝐲^⊤$ prove that
+$$
+\|A \|_2 = \|𝐱\|_2 \|𝐲\|_2.
+$$
+Hint: use the Cauchy–Schwartz inequality which states $|𝐲^⊤ 𝐳| ≤ \|𝐲\|_2\| 𝐳\|_2$.
+
+
+
+**Problem 5.1** Show for any orthogonal matrix $Q ∈ ℝ^m$ and
+matrix $A ∈ ℝ^{m × n}$ that
+$$
+\|Q A\|_F = \|A\|_F
+$$
+by first showing that $\|A \|_F = \sqrt{\hbox{tr}(A^⊤ A)}$ using the
+_trace_ of an $m × m$ matrix:
+$$
+\hbox{tr}(A) = a_{11} + a_{22} + ⋯ + a_{mm}.
+$$
+
+
+
+
+
+**Problem 5.2** Show that $\|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \|A \|_2$ where
+$r$ is the rank of $A$.
+
+
+
