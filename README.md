@@ -7,8 +7,6 @@ Office hour: Mondays 11am, Huxley 6M40
 
 ## Notes ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/Notes.pdf))
 
-**Table of Contents:** 
-
 *Background material*
 
   A. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/A.Julia.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/A.Julia.pdf)): we introduce  the basic features of the Julia language. \
