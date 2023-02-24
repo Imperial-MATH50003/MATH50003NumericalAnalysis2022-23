@@ -30,8 +30,8 @@ notebook("src/notes/II.4.LU.jmd"; nkwds...)
 notebook("src/notes/II.5.Norms.jmd"; nkwds...)
 notebook("src/notes/II.6.SVD.jmd"; nkwds...)
 
-# /usr/local/bin/jupyter nbconvert --allow-chromium-download --to webpdf *.ipynb
-
+# /usr/local/bin/jupyter nbconvert  --ExecutePreprocessor.timeout -1 --allow-chromium-download --to webpdf *.ipynb
+# pdfunite pdf/*.pdf Notes.pdf
 #####
 # sheets
 #####
