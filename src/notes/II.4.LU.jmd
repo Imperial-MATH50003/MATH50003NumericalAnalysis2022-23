@@ -46,7 +46,6 @@ $$
 Now assume we continue this process and manage to deduce $A_2 = L_2 U_2$.
 Then
 $$
-
 A = L_1 \begin{bmatrix} α_1 & 𝐰_1^⊤ \\  & L_2U_2 \end{bmatrix}
 = \underbrace{L_1 \begin{bmatrix}
 1 \\
