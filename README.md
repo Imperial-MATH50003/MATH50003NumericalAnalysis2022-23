@@ -34,7 +34,7 @@ and unitary matrices (permutations, rotations, and reflections).
 4. [PLU and Cholesky](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.4.LU.ipynb): we discuss 
 the PLU and Cholesky factorisations, as well as symmetric positive definite matrices.
 5. [Norms](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.5.Norms.ipynb): we discuss vector and matrix norms.
-5. [Singular Value Decomposition](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.5.Norms.ipynb): we discuss the Singular Value Decomposition (SVD) and condition numbers.
+5. [Singular Value Decomposition](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.5.Norms.ipynb): we discuss the Singular Value Decomposition (SVD) and 2-norms of matrices.
 
 
 *III: Computing with functions*
