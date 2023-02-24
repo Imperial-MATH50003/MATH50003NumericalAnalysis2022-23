@@ -36,8 +36,8 @@ end
 
 @test fsample(f, m, n) == F
 
-
-## Singular values of 2D function samples 
+# ------
+# ## Singular values of 2D function samples 
 
 # We will  see experimentally that the singular values 
 # tell us something about the functions.  Recall from lectures 
@@ -87,20 +87,29 @@ f = (x,y) -> cos(ω*x*y)
 
 # **Problem 2.4** Plot the singular values of `(x,y)->sign(x-y)` for `n=m=100` and `n=m=200`.  What do you notice?   
 
-**Exercise 2.5** What are the singular values of `eye(n)`?  How well can you approximate the identity matrix by a rank-`r` matrix?
+f = (x,y) -> sign(x-y)
+plot(svdvals(fsample(f, 200, 200)); yscale=:log10)
 
-Non-smooth functions do not have fast decaying singular values (unless the singularities are aligned to the grid).  If you plot the singular values of the example image in lectures, it would look very similar.
+# -----
+# ## Function compression
 
+# We now turn to using the SVD to compress functions.
 
-## Function compression
+# **Problem 3.1** Write a function `svdcompress(A::Matrix, r::Integer)` that returns the best rank-`r` approximation to `A`.
 
-We now turn to using the SVD to compress functions.
+# **Problem 3.2** Compare a `heatmap` plot of `F=fsample((x,y) -> exp(-x^2*sin(2y-1)), 100, 100)` to its best rank-5 approximation.
 
-**Exercise 4(a)** Write a function `svdcompress(A::Matrix,r::Integer)` that returns the best rank-`r` approximation to `A`.
+# **Problem 3.3** Write a function `svdcompress_rank(A::Matrix, ε::Float64)` that returns `r` so that `Ar = svdcompress(A,r)`  satisfies `norm(A-Ar) ≤ ε`,
+# which we call the "numerical rank".  (Hint: use the singular values instead of guess-and-check.)
 
-**Exercise 4(b)** Compare a `matshow` plot of `F=fsample((x,y)->exp(-x^2*sin(2y-1)),100,100)` to its rank-5 approximation.
+# **Problem 3.4** Plot the rank needed to achieve an accuracy of `1E-4` for `(x,y)->cos(ω*x*y)` as a function of `ω`, for `ω` ranging from `1` to `500` and `n=m=500`.  Can you conjecture what the rate of growth of the necessary rank is?
 
-**Exercise 4(b)** Write a function `svdcompress_rank(A::Matrix,ε::Float64)` that returns `r` so that `Ar=svdcompress(A,r)`  satisfies `norm(A-Ar) ≤ ε`.  (Hint: use the singular values instead of guess-and-check.)
+# ------
+# Consider the Hilbert matrix H_n := [1/(k+j)]
+# 
+# **Problem 4.1** Write a function `lowrank_mul(U, σ, V, x)` that computes `Ax` but using
+# the SVD of a matrix. 
 
-**Exercise 4(c)** Plot the rank needed to achieve an accuracy of `1E-4` for `(x,y)->cos(ω*x*y)` as a function of `ω`, for `ω` ranging from `1` to `500` and `n=m=500`.  Can you conjecture what the rate of growth of the necessary rank is?
+# **Problem 4.2** Use `svdcompress_rank` to estimate how the numerical rank of $H_n$ grows as a function
+# of $n$ for $ε = 10^(-10)$. 
 
