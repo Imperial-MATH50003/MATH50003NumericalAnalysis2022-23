@@ -14,7 +14,7 @@ where $U ∈ ℂ^{m × r}$ and $V ∈  ℂ^{r × n}$ have orthonormal columns an
 diagonal entries, which which we call _singular values_, are all positive and non-increasing: $σ_1 ≥ ⋯ ≥ σ_r > 0$.
 The _full singular value decomposition (SVD)_ is
 $$
-A = Ũ Σ̃ Ṽ^⊤
+A = Ũ Σ̃ Ṽ^⋆
 $$
 where $Ũ ∈ U(m)$ and $Ṽ ∈  U(n)$ are unitary matrices and $Σ̃ ∈ ℝ^{m × n}$ has only
 diagonal non-zero entries, i.e., if $m > n$,
@@ -131,15 +131,15 @@ $$
 
 First we establish the upper-bound:
 $$
-\|A \|_2 ≤  \|U \|_2 \| Σ \|_2 \| V^⊤\|_2 = \| Σ \|_2  = σ_1
+\|A \|_2 ≤  \|U \|_2 \| Σ \|_2 \| V^⋆\|_2 = \| Σ \|_2  = σ_1
 $$
 This is attained using the first right singular vector:
 $$
-\|A 𝐯_1\|_2 = \|Σ V^⊤ 𝐯_1\|_2 = \|Σ  𝐞_1\|_2 = σ_1
+\|A 𝐯_1\|_2 = \|Σ V^⋆ 𝐯_1\|_2 = \|Σ  𝐞_1\|_2 = σ_1
 $$
 The inverse result follows since the inverse has SVD
 $$
-A^{-1} = V Σ^{-1} U^⊤ = V (W Σ^{-1} W) U^⊤
+A^{-1} = V Σ^{-1} U^⋆ = V (W Σ^{-1} W) U^⋆
 $$
 is the SVD of $A^{-1}$, where
 $$
@@ -168,7 +168,7 @@ $$
 A_k := \begin{bmatrix} 𝐮_1 | ⋯ | 𝐮_k \end{bmatrix} \begin{bmatrix}
 σ_1 \\
 & ⋱ \\
-&& σ_k\end{bmatrix} \begin{bmatrix} 𝐯_1 | ⋯ | 𝐯_k \end{bmatrix}^⊤
+&& σ_k\end{bmatrix} \begin{bmatrix} 𝐯_1 | ⋯ | 𝐯_k \end{bmatrix}^⋆
 $$ 
 is the best 2-norm approximation of $A$ by a rank $k$ matrix, that is, for all rank-$k$ matrices $B$, we have 
 $$\|A - A_k\|_2 ≤ \|A -B \|_2.$$
@@ -178,7 +178,7 @@ $$\|A - A_k\|_2 ≤ \|A -B \|_2.$$
 We have
 
 $$
-A - A_k = U \begin{bmatrix} 0  \cr &\ddots \cr && 0 \cr &&& σ_{k+1} \cr &&&& \ddots \cr &&&&& σ_r\end{bmatrix} V^⊤.
+A - A_k = U \begin{bmatrix} 0  \cr &\ddots \cr && 0 \cr &&& σ_{k+1} \cr &&&& \ddots \cr &&&&& σ_r\end{bmatrix} V^⋆.
 $$
 Suppose a rank-$k$ matrix $B$ has 
 $$
