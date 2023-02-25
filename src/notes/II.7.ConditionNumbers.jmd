@@ -1,0 +1,224 @@
+## II.7 Condition numbers
+
+We have seen that floating point arithmetic induces errors in computations, and that we can typically
+bound the absolute errors to be proportional to $C ϵ_{\rm m}$. We want a way to bound the
+effect of more complicated calculations like computing $A 𝐱$ or $A^{-1} 𝐲$ without having to deal with
+the exact nature of floating point arithmetic, as it will depend on the _data_ $A$ and $𝐱$. 
+Here we consider only matrix-multiplication but will make a remark about matrix inversion.
+
+1. Backward error analysis: We introduce the concept of _backward error_ analysis, which is a more practical
+way of understanding and bounding floating point errors.
+2. Condition numbers: We introduce a _condition numbers_, which can capture the effect of perturbations in
+$A$ for linear algebra oerations. 
+3. Bounding floating point errors for linear algebra: we see how simple operations like $A 𝐱$ can be put
+into a backward error analysis framework, leading to bounds on the errors in terms of the condition number. 
+
+
+## 1. Backward error analysis
+
+So far we have done forward error analysis, e.g., to understand $f(x) ≈ f^{\rm FP}(x)$ we consider either
+the absolute
+$$
+f^{\rm FP}(x) = f(x) + δ_{\rm a}
+$$
+or relative
+$$
+f^{\rm FP}(x) = f(x)(1 + δ_{\rm a})
+$$
+errors of the _answer_. For vector functions $𝐟 = ℝ^m → ℝ^n$  we write
+$$
+𝐟^{\rm FP}(𝐱) = 𝐟(𝐱) + \mathbf{δ_{\rm f}}
+$$
+where we bound a norm of $\mathbf{δ_{\rm f}}$ either _absolutely_:
+$$
+\|\mathbf{δ_{\rm f}}\| ≤ C ε
+$$
+or _relative_ to the true result:
+$$
+\|\mathbf{δ_{\rm f}}\| ≤ C \| 𝐟(𝐱) \| ε
+$$
+(which is similar to PS4, Q1.3).
+
+Backward error analysis consists of attempting to write the approximation
+as the true function with a pertubed input:
+$$
+𝐟^{\rm FP}(𝐱) = 𝐟(𝐱̃)
+$$
+in which case one can study the _backward  error_, the error in the input:
+$$
+𝐱̃ = 𝐱 + {\mathbf δ}_{\rm b}
+$$
+either via an absolute bound on the norm:
+$$
+\|{\mathbf δ}_{\rm b}\| ≤ Cε
+$$
+or relative bound:
+$$
+\|{\mathbf δ}_{\rm b}\| ≤ C \|𝐱\| ε
+$$
+We shall see that _some_ algorithms (like `mul_rows`) lead naturally
+to backward error results. 
+
+
+
+## 2. Condition numbers
+
+So now we get to a mathematical question independent of floating point: 
+can we bound the _relative error_ in approximating
+$$
+A 𝐱 ≈ (A + δA) 𝐱
+$$
+if we know a bound on the relative backward error   $\|δA\|$?
+It turns out we can in turns of the _condition number_ of the matrix:
+
+**Definition 2 (condition number)**
+For a square matrix $A$, the _condition number_ (in $p$-norm) is
+$$
+κ_p(A) := \| A \|_p \| A^{-1} \|_p
+$$
+with the $2$-norm:
+$$
+κ_2(A) = {σ_1 \over σ_n}.
+$$
+
+
+**Theorem 4 (relative forward error for matrix-vector)**
+The _worst-case_ relative forward error in 
+$
+$(A + δA) 𝐱 = A 𝐱 + \mathbf{δ}_{\rm f}
+$$
+is bounded by
+$$
+\|\mathbf{δ}_{\rm f}\|  ≤ κ(A) ε
+$$
+if we have the relative backward error bound $\|δA\| ≤ \|A \| ε$.
+
+**Proof**
+We can assume $A$ is invertible (as otherwise $κ(A) = ∞$). Denote $𝐲 = A 𝐱$ and we have
+$$
+{\|𝐱 \| \over \| A 𝐱 \|} = {\|A^{-1} 𝐲 \| \over \|𝐲 \|} ≤ \| A^{-1}\|
+$$
+Thus we have:
+$$
+\|\mathbf{δ}_{\rm f}\| = {\| δA 𝐱 \| \over \| A 𝐱 \| } ≤ \| δA\| \|A^{-1}\| ≤ κ(A) {\|δA\| \over \|A \|} ≤  κ(A)ε
+$$
+
+∎
+
+
+
+## 3. Bounding floating point errors for linear algebra
+
+We nowrst observe that errors in implementing matrix-vector multiplication using floating points
+can be captured by considering the multiplication to be exact on the wrong matrix: that is, `A*x`
+(implemented with floating point) is precisely $A + δA$ where $δA$ has small norm, relative to $A$.
+That is, we have a bound on the _backward relative error_.
+
+
+
+To discuss floating point errors we need to be precise which order the operations happened.
+We will use the definition `mul_rows(A,x)` (which is equivalent to `mul_cols(A,x)`).
+ Note that each entry of the result is in fact a dot-product
+of the corresponding rows so we first consider the error in the dot product  `dot(𝐱,𝐲)` as implemented in floating-point, 
+which we denote ${\rm dot}(A,x)$.
+
+We first need a helper proposition, from PS2 Q2.1:
+
+**Proposition 3** If $|ϵ_i| ≤ ϵ$ and $n ϵ < 1$, then
+$$
+\prod_{k=1}^n (1+ϵ_i) = 1+θ_n
+$$
+for some constant $θ_n$ satisfying $|θ_n| ≤ E_{n,ϵ} := {n ϵ \over 1-nϵ}$.
+
+
+
+**Lemma 1 (dot product backward error)**
+For $𝐱, 𝐲 ∈ ℝ^n$,
+$$
+{\rm dot}(𝐱, 𝐲) = (𝐱 + δ𝐱)^⊤ 𝐲
+$$
+where
+$$
+|δ𝐱| ≤  E_{n,ϵ_{\rm m}/2} |𝐱 |,
+$$
+where $|𝐱 |$ means absolute-value of each entry, assuming $n ϵ_{\rm m} < 2$.
+
+
+**Proof**
+
+This is related to PS2 Q2.3 but asks for the _backward error_ instead of the
+_forward error_. Note
+$$
+{\rm dot}(𝐱, 𝐲) = ⨁_{j=1}^n (x_j ⊗ y_j) = ⨁_{j=1}^n (x_j  y_j) (1 + δ_j)
+= x_1 y_1 (1 + θ̃_{n}) +   ∑_{j=2}^n x_j y_j (1 + θ_{n-j+2})
+$$
+where $|θ̃_n|, |θ_k| ≤ E_{n,ϵ_{\rm m}/2}$ (the subscript denotes the number of terms
+bounded by $ε_{\rm m}/2$. Thus we can define
+$$
+δ𝐱  := \begin{bmatrix}
+x_1 θ̃_n \\
+x_2 θ_n \\
+⋮ \\
+x_n θ_2
+\end{bmatrix}
+$$
+where
+$$
+| δ𝐱 | ≤ E_{n,ϵ_{\rm m}/2} | 𝐱 |.
+$$
+
+
+∎
+
+We can use this to get a relative backward error bound on `mul_rows`:
+
+**Theorem 3 (matrix-vector backward error)**
+For $A ∈ ℝ^{m × n}$ and $𝐱 ∈ ℝ^n$ we have
+$$
+{\rm mul_rows}(A, 𝐱) = (A + δA) 𝐱
+$$
+where
+$$
+|δA| ≤ E_{n,ϵ_{\rm m}/2}  |A|,
+$$
+assuming $n ϵ_{\rm m} < 2$. Therefore
+$$
+\begin{align*}
+\|δA\|_1 &≤  E_{n,ϵ_{\rm m}/2} \|A \|_1 \\
+\|δA\|_2 &≤  \sqrt{\min(m,n)} E_{n,ϵ_{\rm m}/2} \|A \|_2 \\
+\|δA\|_∞ &≤  E_{n,ϵ_{\rm m}/2} \|A \|_∞
+\end{align*}
+$$
+
+**Proof**
+The bound on $|δA|$ is implied by the previous lemma.
+The $1$ and $∞$-norm follow since
+$$
+\|A\|_1 = \||A|\|_1 \hbox{ and } \|A\|_∞ = \||A|\|_∞
+$$
+This leaves the 2-norm example, which is a bit more challenging as there are matrices
+$A$ such that $\|A\|_2 ≠ \| |A| \|_2$.
+Instead we will prove the result by going through the Fröbenius norm and using:
+$$
+\|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \| A\|_2
+$$
+where $r$ is rank of $A$ (see PS6 Q5.2)
+and $\|A\|_F = \| |A| \|_F$,
+so we deduce:
+$$
+\begin{align*}
+\|δA \|_2 &≤ \| δA\|F = \| |δA| \|F ≤ E_{n,ϵ_{\rm m}/2} \| |A| \|_F \\
+          &= E_{n,ϵ_{\rm m}/2} \| A \|_F ≤ \sqrt{r} E_{n,ϵ_{\rm m}/2} \| A \|_2 \\
+          &≤ \sqrt{\min(m,n)} E_{n,ϵ_{\rm m}/2} \|A \|_2
+\end{align*}
+$$
+
+∎
+
+
+
+Thus for floating point arithmetic we know the error is bounded by $κ(A) E_{n,ϵ_{\rm m}/2}$.
+
+If one uses QR to solve $A 𝐱 = 𝐲$ the condition number also gives a meaningful bound on the error. 
+As we have already noted, there are some matrices where PLU decompositions introduce large errors, so
+in that case well-conditioning is not a guarantee (but it still usually works).

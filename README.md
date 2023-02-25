@@ -5,36 +5,36 @@ Lecturer: [Dr Sheehan Olver](https://www.ma.imperial.ac.uk/~solver/)
 
 Office hour: Mondays 11am, Huxley 6M40
 
-## Notes ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/Notes.pdf))
+## Notes ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/Notes.pdf))
 
 *Background material*
 
-  A. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/A.Julia.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/A.Julia.pdf)): we introduce  the basic features of the Julia language. \
-  B. [Asymptotics and Computational Cost](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/B.Asymptotics.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/B.Asymptotics.pdf)): we review Big-O, little-o and asymptotic to notation,
+  A. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/A.Julia.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/A.Julia.pdf)): we introduce  the basic features of the Julia language. \
+  B. [Asymptotics and Computational Cost](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/B.Asymptotics.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/B.Asymptotics.pdf)): we review Big-O, little-o and asymptotic to notation,
 and their usage in describing computational cost. \
-  C. [Adjoints and Normal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/C.Adjoints.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/C.Adjoints.pdf)): we review complex inner-products, adjoints, normal matrices, and the spectral theorem.
+  C. [Adjoints and Normal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/C.Adjoints.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/C.Adjoints.pdf)): we review complex inner-products, adjoints, normal matrices, and the spectral theorem.
 
 *I: Computing with numbers*
 
-1. [Integers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.1.Integers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/I.1.Integers.pdf)): we discuss how computers represent integers using modular arithmetic.
-2. [Reals](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.2.Reals.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/I.2.Reals.pdf)): we discuss how computers represent reals using IEEE floating-point arithmetic.
-3. [Divided Differences](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.3.DividedDifferences.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/I.3.DividedDifferences.pdf)): we discuss how we can approximate derivatives using floating point arithmetic, with error bounds.
-4. [Dual Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.4.DualNumbers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/I.4.DualNumbers.pdf)): we discuss how a special commutative ring, _dual numbers_,
+1. [Integers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.1.Integers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/I.1.Integers.pdf)): we discuss how computers represent integers using modular arithmetic.
+2. [Reals](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.2.Reals.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/I.2.Reals.pdf)): we discuss how computers represent reals using IEEE floating-point arithmetic.
+3. [Divided Differences](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.3.DividedDifferences.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/I.3.DividedDifferences.pdf)): we discuss how we can approximate derivatives using floating point arithmetic, with error bounds.
+4. [Dual Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.4.DualNumbers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/I.4.DualNumbers.pdf)): we discuss how a special commutative ring, _dual numbers_,
 which are defined similar to complex numbers,
 facilitate fast and accurate computation of derivatives.
 
 *II: Computing with matrices*
 
-1. [Structured Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.1.StructuredMatrices.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/II.1.StructuredMatrices.pdf)): we discuss types of structured matrices (dense, triangular, and banded).
+1. [Structured Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.1.StructuredMatrices.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.1.StructuredMatrices.pdf)): we discuss types of structured matrices (dense, triangular, and banded).
 2. [Orthogonal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.2.OrthogonalMatrices.ipynb) 
-([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/II.2.OrthogonalMatrices.pdf)): we discuss types of orthogonal 
+([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.2.OrthogonalMatrices.pdf)): we discuss types of orthogonal 
 and unitary matrices (permutations, rotations, and reflections).
 3. [Least Squares and QR](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.3.QR.ipynb) 
-([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/pdf/II.3.QR.pdf)): we discuss least squares and the computation of the QR factorisation.
-4. [PLU and Cholesky](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.4.LU.ipynb): we discuss 
+([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.3.QR.pdf)): we discuss least squares and the computation of the QR factorisation.
+4. [PLU and Cholesky](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.4.LU.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.4.LU.pdf)): we discuss 
 the PLU and Cholesky factorisations, as well as symmetric positive definite matrices.
-5. [Norms](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.5.Norms.ipynb): we discuss vector and matrix norms.
-5. [Singular Value Decomposition](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.5.Norms.ipynb): we discuss the Singular Value Decomposition (SVD) and condition numbers.
+5. [Norms](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.5.Norms.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.5.Norms.pdf)): we discuss vector and matrix norms.
+5. [Singular Value Decomposition](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.5.Norms.ipynb): we discuss the Singular Value Decomposition (SVD) and 2-norms of matrices.
 
 
 *III: Computing with functions*

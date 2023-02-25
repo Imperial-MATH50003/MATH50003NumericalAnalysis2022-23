@@ -1,27 +1,9 @@
-# II.6 Singular value decomposition and conditioning
+# II.6 Singular Value Decomposition
 
 
-In this chapter we discuss the _Singular Value Decomposition_: a matrix factorisation
+In this chapter we discuss the _Singular Value Decomposition (SVD)_: a matrix factorisation
 that encodes how much a matrix "stretches" a random vector. This includes _singular values_, 
 the largest of which dictates the $2$-norm of the matirx.
-
-In particular, we discuss:
-
-1. Singular value decomposition: we introduce the singular value decomposition which is related to
-the matrix $2$-norm and best low rank approximation.
-2. Condition numbers: we will see how errors in matrix-vector multiplication and solving linear systems
-can be bounded in terms of the _condition number_, which is defined in terms of singular values.
-
-```julia
-using LinearAlgebra, Plots
-```
-
-
-
-
-## 1. Singular value decomposition
-
-To define the induced $2$-norm we need to consider the following:
 
 **Definition 1 (singular value decomposition)** For $A ∈ ℂ^{m × n}$ with rank $r > 0$, 
 the _(reduced) singular value decomposition (SVD)_ is
@@ -32,7 +14,7 @@ where $U ∈ ℂ^{m × r}$ and $V ∈  ℂ^{r × n}$ have orthonormal columns an
 diagonal entries, which which we call _singular values_, are all positive and non-increasing: $σ_1 ≥ ⋯ ≥ σ_r > 0$.
 The _full singular value decomposition (SVD)_ is
 $$
-A = Ũ Σ̃ Ṽ^⊤
+A = Ũ Σ̃ Ṽ^⋆
 $$
 where $Ũ ∈ U(m)$ and $Ṽ ∈  U(n)$ are unitary matrices and $Σ̃ ∈ ℝ^{m × n}$ has only
 diagonal non-zero entries, i.e., if $m > n$,
@@ -44,6 +26,23 @@ $$
 Σ̃ = \begin{bmatrix} σ_1 \\ & ⋱ \\ && σ_m & 0 & ⋯ & 0\end{bmatrix}
 $$
 where $σ_k = 0$ if $k > r$.
+
+In particular, we discuss:
+
+1. Existence of the SVD: we show that an SVD exists by relating it to the eigenvalue Decomposition of $A^⋆A$ and $AA^⋆$.
+2. 2-norm and SVD: the 2-norm of a matrix is defined in terms of the largest singular value.
+3. Best rank-$k$ approximation and compression: the best approximation of a matrix by a smaller rank matrix can be constructed
+using the SVD, which gives an effective way to compress matrices. 
+
+```julia
+using LinearAlgebra, Plots
+```
+
+
+
+
+## 1. Existence
+
 
 To show the SVD exists we first establish some properties of a _Gram matrix_ ($A^⋆ A$):
 
@@ -115,9 +114,11 @@ where we use the fact that $A K = 0$ so that concatenating $K$ does not change t
 
 ∎
 
+## 2. 2-norm and SVD
+
 Singular values tell us the 2-norm:
 
-**Corollary (singular values and norm)**
+**Corollary 1 (singular values and norm)**
 $$
 \|A \|_2 = σ_1
 $$
@@ -130,15 +131,15 @@ $$
 
 First we establish the upper-bound:
 $$
-\|A \|_2 ≤  \|U \|_2 \| Σ \|_2 \| V^⊤\|_2 = \| Σ \|_2  = σ_1
+\|A \|_2 ≤  \|U \|_2 \| Σ \|_2 \| V^⋆\|_2 = \| Σ \|_2  = σ_1
 $$
 This is attained using the first right singular vector:
 $$
-\|A 𝐯_1\|_2 = \|Σ V^⊤ 𝐯_1\|_2 = \|Σ  𝐞_1\|_2 = σ_1
+\|A 𝐯_1\|_2 = \|Σ V^⋆ 𝐯_1\|_2 = \|Σ  𝐞_1\|_2 = σ_1
 $$
 The inverse result follows since the inverse has SVD
 $$
-A^{-1} = V Σ^{-1} U^⊤ = V (W Σ^{-1} W) U^⊤
+A^{-1} = V Σ^{-1} U^⋆ = V (W Σ^{-1} W) U^⋆
 $$
 is the SVD of $A^{-1}$, where
 $$
@@ -158,6 +159,8 @@ $$
 We will not discuss in this module computation of singular value decompositions or eigenvalues:
 they involve iterative algorithms (actually built on a sequence of QR decompositions).
 
+## 3. Best rank-$k$ approximation and compression
+
 One of the main usages for SVDs is low-rank approximation:
 
 **Theorem 2 (best low rank approximation)** The  matrix
@@ -165,7 +168,7 @@ $$
 A_k := \begin{bmatrix} 𝐮_1 | ⋯ | 𝐮_k \end{bmatrix} \begin{bmatrix}
 σ_1 \\
 & ⋱ \\
-&& σ_k\end{bmatrix} \begin{bmatrix} 𝐯_1 | ⋯ | 𝐯_k \end{bmatrix}^⊤
+&& σ_k\end{bmatrix} \begin{bmatrix} 𝐯_1 | ⋯ | 𝐯_k \end{bmatrix}^⋆
 $$ 
 is the best 2-norm approximation of $A$ by a rank $k$ matrix, that is, for all rank-$k$ matrices $B$, we have 
 $$\|A - A_k\|_2 ≤ \|A -B \|_2.$$
@@ -175,7 +178,7 @@ $$\|A - A_k\|_2 ≤ \|A -B \|_2.$$
 We have
 
 $$
-A - A_k = U \begin{bmatrix} 0  \cr &\ddots \cr && 0 \cr &&& σ_{k+1} \cr &&&& \ddots \cr &&&&& σ_r\end{bmatrix} V^⊤.
+A - A_k = U \begin{bmatrix} 0  \cr &\ddots \cr && 0 \cr &&& σ_{k+1} \cr &&&& \ddots \cr &&&&& σ_r\end{bmatrix} V^⋆.
 $$
 Suppose a rank-$k$ matrix $B$ has 
 $$
@@ -229,159 +232,3 @@ In the problem sheet we explore the usage of low rank approximation to smooth fu
 and to compress images.
 
 
-## 2. Condition numbers
-
-We have seen that floating point arithmetic induces errors in computations, and that we can typically
-bound the absolute errors to be proportional to $C ϵ_{\rm m}$. We want a way to bound the
-effect of more complicated calculations like computing $A 𝐱$ or $A^{-1} 𝐲$ without having to deal with
-the exact nature of floating point arithmetic. Here we consider only matrix-multiplication but will make a remark
-about matrix inversion.
-
-To justify what follows, we first observe that errors in implementing matrix-vector multiplication
-can be captured by considering the multiplication to be exact on the wrong matrix: that is, `A*x`
-(implemented with floating point) is precisely $A + δA$ where $δA$ has small norm, relative to $A$.
-This is known as _backward error analysis_.
-
-
-
-To discuss floating point errors we need to be precise which order the operations happened.
-We will use the definition `mul(A,x)`, which denote ${\rm mul}(A, 𝐱)$. (Note that `mul_rows` actually
-does the _exact_ same operations, just in a different order.) Note that each entry of the result is in fact a dot-product
-of the corresponding rows so we first consider the error in the dot product  `dot(𝐱,𝐲)` as implemented in floating-point, 
-which we denote ${\rm dot}(A,x)$.
-
-We first need a helper proposition, from PS2 Q2.1:
-
-**Proposition 3** If $|ϵ_i| ≤ ϵ$ and $n ϵ < 1$, then
-$$
-\prod_{k=1}^n (1+ϵ_i) = 1+θ_n
-$$
-for some constant $θ_n$ satisfying $|θ_n| ≤ E_{n,ϵ} := {n ϵ \over 1-nϵ}$.
-
-
-
-**Lemma 1 (dot product backward error)**
-For $𝐱, 𝐲 ∈ ℝ^n$,
-$$
-{\rm dot}(𝐱, 𝐲) = (𝐱 + δ𝐱)^⊤ 𝐲
-$$
-where
-$$
-|δ𝐱| ≤  E_{n,ϵ_{\rm m}/2} |𝐱 |,
-$$
-where $|𝐱 |$ means absolute-value of each entry, assuming $n ϵ_{\rm m} < 2$.
-
-
-**Proof**
-
-This is related to PS2 Q2.3 but asks for the _backward error_ instead of the
-_forward error_. Note
-$$
-{\rm dot}(𝐱, 𝐲) = ⨁_{j=1}^n (x_j ⊗ y_j) = ⨁_{j=1}^n (x_j  y_j) (1 + δ_j)
-= x_1 y_1 (1 + θ̃_{n}) +   ∑_{j=2}^n x_j y_j (1 + θ_{n-j+2})
-$$
-where $|θ̃_n|, |θ_k| ≤ E_{n,ϵ_{\rm m}/2}$ (the subscript denotes the number of terms
-bounded by $ε_{\rm m}/2$. Thus we can define
-$$
-δ𝐱  := \begin{bmatrix}
-x_1 θ̃_n \\
-x_2 θ_n \\
-⋮ \\
-x_n θ_2
-\end{bmatrix}
-$$
-where
-$$
-| δ𝐱 | ≤ E_{n,ϵ_{\rm m}/2} | 𝐱 |.
-$$
-
-
-∎
-
-**Theorem 3 (matrix-vector backward error)**
-For $A ∈ ℝ^{m × n}$ and $𝐱 ∈ ℝ^n$ we have
-$$
-{\rm mul_rows}(A, 𝐱) = (A + δA) 𝐱
-$$
-where
-$$
-|δA| ≤ E_{n,ϵ_{\rm m}/2}  |A|,
-$$
-assuming $n ϵ_{\rm m} < 2$. Therefore
-$$
-\begin{align*}
-\|δA\|_1 &≤  E_{n,ϵ_{\rm m}/2} \|A \|_1 \\
-\|δA\|_2 &≤  \sqrt{\min(m,n)} E_{n,ϵ_{\rm m}/2} \|A \|_2 \\
-\|δA\|_∞ &≤  E_{n,ϵ_{\rm m}/2} \|A \|_∞
-\end{align*}
-$$
-
-**Proof**
-The bound on $|δA|$ is implied by the previous lemma.
-The $1$ and $∞$-norm follow since
-$$
-\|A\|_1 = \||A|\|_1 \hbox{ and } \|A\|_∞ = \||A|\|_∞
-$$
-This leaves the 2-norm example, which is a bit more challenging as there are matrices
-$A$ such that $\|A\|_2 ≠ \| |A| \|_2$.
-Instead we will prove the result by going through the Fröbenius norm and using:
-$$
-\|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \| A\|_2
-$$
-where $r$ is rank of $A$ (see PS6 Q5.2)
-and $\|A\|_F = \| |A| \|_F$,
-so we deduce:
-$$
-\begin{align*}
-\|δA \|_2 &≤ \| δA\|F = \| |δA| \|F ≤ E_{n,ϵ_{\rm m}/2} \| |A| \|_F \\
-          &= E_{n,ϵ_{\rm m}/2} \| A \|_F ≤ \sqrt{r} E_{n,ϵ_{\rm m}/2} \| A \|_2 \\
-          &≤ \sqrt{\min(m,n)} E_{n,ϵ_{\rm m}/2} \|A \|_2
-\end{align*}
-$$
-
-∎
-
-So now we get to a mathematical question independent of floating point: 
-can we bound the _relative error_ in approximating
-$$
-A 𝐱 ≈ (A + δA) 𝐱
-$$
-if we know a bound on $\|δA\|$?
-It turns out we can in turns of the _condition number_ of the matrix:
-
-**Definition 2 (condition number)**
-For a square matrix $A$, the _condition number_ (in $p$-norm) is
-$$
-κ_p(A) := \| A \|_p \| A^{-1} \|_p
-$$
-with the $2$-norm:
-$$
-κ_2(A) = {σ_1 \over σ_n}.
-$$
-
-
-**Theorem 4 (relative-error for matrix-vector)**
-The _worst-case_ relative error in $A 𝐱 ≈ (A + δA) 𝐱$ is
-$$
-{\| δA 𝐱 \| \over \| A 𝐱 \| } ≤ κ(A) ε
-$$
-if we have the relative pertubation error $\|δA\| = \|A \| ε$.
-
-**Proof**
-We can assume $A$ is invertible (as otherwise $κ(A) = ∞$). Denote $𝐲 = A 𝐱$ and we have
-$$
-{\|𝐱 \| \over \| A 𝐱 \|} = {\|A^{-1} 𝐲 \| \over \|𝐲 \|} ≤ \| A^{-1}\|
-$$
-Thus we have:
-$$
-{\| δA 𝐱 \| \over \| A 𝐱 \| } ≤ \| δA\| \|A^{-1}\| ≤ κ(A) {\|δA\| \over \|A \|}
-$$
-
-∎
-
-
-Thus for floating point arithmetic we know the error is bounded by $κ(A) E_{n,ϵ_{\rm m}/2}$.
-
-If one uses QR to solve $A 𝐱 = 𝐲$ the condition number also gives a meaningful bound on the error. 
-As we have already noted, there are some matrices where PLU decompositions introduce large errors, so
-in that case well-conditioning is not a guarantee (but it still usually works).

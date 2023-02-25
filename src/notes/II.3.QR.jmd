@@ -389,78 +389,89 @@ will consider a better implementation that takes $O(n^3)$ operations.
 **Example 2** We will now do an example by hand. Consider the $4 × 3$ matrix
 $$
 A = \begin{bmatrix} 
-4 & 2 & -1 \\ 
-0 & 15 & 18 \\
--2 & -4 & -4 \\
--2 & -4 & -10
+2 & 3 & 0 \\ 
+0 & 0 & 1 \\
+-2 & -3 & 0 \\
+-1 & -3 & -3
 \end{bmatrix}
 $$
 For the first column we have
 $$
-Q_1 = I - {1 \over 12} \begin{bmatrix} 4 \\ 0 \\ -2 \\ -2 \end{bmatrix} \begin{bmatrix} 4 & 0 & -2 & -2 \end{bmatrix} =
-{1 \over 3} \begin{bmatrix}
--1 & 0 & 2 & 2 \\
+𝐲_1 := [-1,0,-2,-1]
+$$
+where $\| 𝐲_1 \|^2 = 6$. Hence
+$$
+Q_1 := I - {1 \over 6} \begin{bmatrix} -1 \\ 0 \\ -2 \\ -1 \end{bmatrix} \begin{bmatrix} -1 & 0 & -2 & -1 \end{bmatrix} =
+ {1 \over 3} \begin{bmatrix}
+2 & 0 & -2 & -1 \\
 0 & 3 & 0 & 0 \\
-2 & 0 & 2 & -1 \\
-2 & 0 & -1 &2
+-2 & 0 & -1 & -2 \\
+-1 & 0 & -2 &  2
 \end{bmatrix}
 $$
 so that
 $$
-Q_1 A = \begin{bmatrix} -3 & -6 & -9 \\
- & 15 & 18 \\
-  & 0 & 0 \\
-& 0 & -6
+Q_1 A = \begin{bmatrix} 3 &  5 & 1 \\
+ & 0 & 1 \\
+  & 1 & 2 \\
+& -1 & -2
 \end{bmatrix}
 $$
-In this example the next column is already upper-triangular,
-but because of our choice of reflection we will end up swapping the sign, that is
+For the second column we have
 $$
-\tilde Q_2 = \begin{bmatrix} 1 \\ & -1 \\ && 1 \\ &&& 1 \end{bmatrix}
+𝐲_2 :=  [-\sqrt{2},1,1]
+$$
+where $\| 𝐲_2 \|^2 = 4$. Thus we have
+$$
+Q_2 := I - {1 \over 2}
+ \begin{bmatrix} -\sqrt{2} \\1 \\ 1
+\end{bmatrix} \begin{bmatrix} -\sqrt{2} & 1 & 1 \end{bmatrix}
+= \begin{bmatrix}
+0 & 1/\sqrt{2} & -1/\sqrt{2} \\
+1/\sqrt{2} & 1/2 & 1/2 \\
+-1/\sqrt{2} & 1/2 & 1/2
+\end{bmatrix}
 $$
 so that
 $$
-\tilde Q_2 Q_1 A = \begin{bmatrix} -3 & -6 & -9 \\
- & -15 & -18 \\
-  & 0 & 0 \\
-& 0 & -6
+\tilde Q_2 Q_1 A = \begin{bmatrix} 3 & 5 & 1 \\
+ & \sqrt{2} & 2\sqrt{2} \\
+  & 0 & 1/\sqrt{2} \\
+& 0 & -1/\sqrt{2}
 \end{bmatrix}
 $$
-The final reflection is
+The final vector is 
 $$
-\tilde Q_3 = \begin{bmatrix} I_{2 × 2} \\ &  I - \begin{bmatrix} 1 \\ -1 \end{bmatrix} \begin{bmatrix} 1 & -1 \end{bmatrix} 
-\end{bmatrix} = \begin{bmatrix} å1 \\ & 1 \\ & & 0 & 1 \\ & & 1 & 0 \end{bmatrix}
+𝐲_3 := [1/\sqrt{2}-1,-1/\sqrt{2}]
 $$
-giving us
+where $\| 𝐲_3 \|^2 = 2 - 2/\sqrt{2}$. Hence
 $$
-\tilde Q_3 \tilde Q_2 Q_1 A = \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
- & -15 & -18 \\
-  &  & -6 \\
-&  & 0
-\end{bmatrix}}_R
+Q_3 := I - {\sqrt{2} \over \sqrt{2} - 1} \begin{bmatrix}
+1/\sqrt{2}-1 \\
+-1/\sqrt{2}
+\end{bmatrix} \begin{bmatrix}
+1/\sqrt{2}-1 &
+-1/\sqrt{2}
+\end{bmatrix} =
+\begin{bmatrix}
+\sqrt{2} & -\sqrt{2}\\
+-\sqrt{2} & -\sqrt{2}
+\end{bmatrix}
 $$
-That is,
+so that 
 $$
-A = Q_1 \tilde Q_2 \tilde Q_3 R = \underbrace{{1 \over 3} \begin{bmatrix}
--1 & 0 & 2 & 2 \\
-0 & 3 & 0 & 0 \\
-2 & 0 & -1 & 2 \\
-2 & 0 & 2 &-1
-\end{bmatrix}}_Q \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
- & -15 & -18 \\
-  &  & -6 \\
-&  & 0
-\end{bmatrix}}_R = \underbrace{{1 \over 3} \begin{bmatrix}
--1 & 0 & 2  \\
-0 & 3 & 0  \\
-2 & 0 & -1  \\
-2 & 0 & 2 
-\end{bmatrix}}_\hat Q  \underbrace{\begin{bmatrix} -3 & -6 & -9 \\
- & -15 & -18 \\
-  &  & -6 
-\end{bmatrix}}_\hat R
+\tilde Q_3 \tilde Q_2 Q_1 A = \begin{bmatrix} 3 & 5 & 1 \\
+ & \sqrt{2} & 2\sqrt{2} \\
+  & 0 & 1 \\
+& 0 & 0
+\end{bmatrix} =: R
 $$
-
-
-
-
+and
+$$
+Q := Q_1 \tilde Q_2 \tilde Q_3 =  \begin{bmatrix}
+2/3 & -1/(3\sqrt{2}) & 0 & 1/\sqrt{2} \\
+0 &  0 & 1 & 0 \\
+-2/3 & 1/(3\sqrt{2}) & 0 & 1/\sqrt{2} \\ 
+-1/3 & - 4/(3\sqrt{2}) & 0 & 0
+\end{bmatrix}.
+$$
