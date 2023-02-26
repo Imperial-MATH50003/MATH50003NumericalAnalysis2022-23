@@ -11,7 +11,7 @@ satisfy an additional multiplicative inequality.
 
 Recall the definition of a (vector-)norm:
 
-**Definition 1 (vector-norm)** A norm $\|\cdot\|$ on a vector space $V$ (e.g. $ℝ^n$ or $ℂ^n$) over a field $𝔽$ (e.g.
+**Definition 1 (vector-norm)** A norm $\|⋅\|$ on a vector space $V$ (e.g. $ℝ^n$ or $ℂ^n$) over a field $𝔽$ (e.g.
 $ℝ$ or $ℂ$)  
 is a function that satisfies the following, for $𝐱,𝐲 ∈ V$ and
 $c ∈ 𝔽$:
@@ -132,7 +132,7 @@ $\|A\| = 0$ then $A 𝐱  = 0$ for all $𝐱 ∈ ℝ^n$.
 The property $\|A 𝐱 \|_Y ≤ \|A\|_{X → Y} \|𝐱 \|_X$ follows from the definition.
 Finally, the multiplicative inequality follows from
 $$
-\|A B\| = \sup_{𝐯 : \|𝐯\|_X=1} \|A B 𝐯 |_Z ≤ \sup_{𝐯 : \|𝐯\|_X=1} \|A\|_{Y → Z} \| B 𝐯 | = \|A \|_{Y → Z} \|B\|_{X →  Y}
+\|A B\| = \sup_{𝐯 : \|𝐯\|_X=1} \|A B 𝐯 \|_Z ≤ \sup_{𝐯 : \|𝐯\|_X=1} \|A\|_{Y → Z} \| B 𝐯 \| = \|A \|_{Y → Z} \|B\|_{X →  Y}
 $$
 
 
