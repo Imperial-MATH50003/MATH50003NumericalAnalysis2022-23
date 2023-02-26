@@ -69,8 +69,8 @@ $$
 
  In Julia, one can use the inbuilt `norm` function to calculate norms:
  ```julia
- norm([1,-2,3]) == norm([1,-2,3], 2) == sqrt(1^2 + 2^2 + 3^2);
- norm([1,-2,3], 1) == sqrt(1 + 2 + 3);
+ norm([1,-2,3]) == norm([1,-2,3], 2) == sqrt(1^2 + 2^2 + 3^2) == sqrt(14);
+ norm([1,-2,3], 1) == 1 + 2 + 3 == 6;
  norm([1,-2,3], Inf) == 3;
  ```
 
@@ -80,7 +80,7 @@ $$
 
  **Definition 3 (Fröbenius norm)** For $A ∈ ℂ^{m × n}$ define
 $$
-\|A\|_F := \sqrt{\sum_{k=1}^m \sum_{j=1}^n A_{kj}^2}
+\|A\|_F := \sqrt{\sum_{k=1}^m \sum_{j=1}^n |a_{kj}|^2}
 $$
 
 This is available as `norm` in Julia:
