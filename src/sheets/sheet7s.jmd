@@ -95,16 +95,16 @@ which is minimised when $𝐤 = 0$.
 
 
 
-**Problem 2.1** Compute the 1-norm, 2-norm, and ∞-norm condition numbers for the following matrices:
+**Problem 2** Compute the 1-norm, 2-norm, and ∞-norm condition numbers for the following matrices:
 $$
 \begin{bmatrix}
 1 & 2 \\ 3 & 4
 \end{bmatrix}, \begin{bmatrix}
 1/3 & 1/5 \\ 0 & 1/7
-\end{bmatrix}, \begin{bmatrix} 1 \\ & 1/2 \\ && ⋯ \\ &&& 1/2^n \end{bmatrix}
+\end{bmatrix}, \begin{bmatrix} 1 \\ & 1/2 \\ && ⋱ \\ &&& 1/2^n \end{bmatrix}
 $$
-(Hint: recall that the singular values of a matrix $A$ are the square roots of the eigenvalues of the Gram matrix
-$A^⊤A$.)
+Hint: recall that the singular values of a matrix $A$ are the square roots of the eigenvalues of the Gram matrix
+$A^⊤A$.
 
 **SOLUTION**
 
@@ -174,7 +174,15 @@ An eigenvalue $λ$ must satisfy:
 (1/9 - λ) ≤ \left(\frac{74}{5^27^2}-λ\right) - \frac{1}{225} = 0 \\
 ⇔ λ = \frac{1891 \pm29\sqrt{2941}}{22050}.
 \end{align*}
-With the same logic as above, we can then deduce that $$\|B\|_2 = \sqrt{\frac{1891 +29\sqrt{2941}}{22050}}$$ and $$\|B^{-1}\|_2 \sqrt{\frac{22050}{1891 -29\sqrt{2941}}}$$ so that,
+With the same logic as above, we can then deduce that
+$$
+\|B\|_2 = \sqrt{\frac{1891 +29\sqrt{2941}}{22050}}
+$$
+and
+$$
+\|B^{-1}\|_2 \sqrt{\frac{22050}{1891 -29\sqrt{2941}}}
+$$
+so that,
 $$
 κ_2(B) = \sqrt{\frac{1891 +29\sqrt{2941}}{1891 -29\sqrt{2941}}}
 $$
@@ -184,41 +192,17 @@ $$
 A_n =   \begin{bmatrix}1 \\ &1/2 \\&&⋱ \\&&&1/2^n \end{bmatrix},\hspace{5mm}
 A_n^{-1} =   \begin{bmatrix}1 \\ &2 \\&&⋱ \\&&&2^n \end{bmatrix}
 $$ 
-It is clear that $$\|A_n\|_1 = \|A_n\|_∞ = 1,$$ and $$\|A_n^{-1}\|_1 = \|A_n^{-1}\|_∞ = 2^n,$$ so $κ_1(A_n) = κ_∞(A) = 2^n$.
+It is clear that $$\|A_n\|_1 = \|A_n\|_∞ = 1,$$ and
+$$
+\|A_n^{-1}\|_1 = \|A_n^{-1}\|_∞ = 2^n,
+$$
+so $κ_1(A_n) = κ_∞(A) = 2^n$.
 Morover, we can clearly see the singular values $σ_1 = 1, σ_2 = 1/2, …, σ_{n+1} = 1/2^n$. So $\|A_n\|_2 = 1, \|A_n^{-1}\|_2 = 2^n$, $κ_2(A_n) = 2^n$
 
 **END**
 
 
 
-**Problem 2.2**
-State a bound on the relative error on computing $A 𝐯$ with floating point where $𝐯 = [1,1,…,1]$ for the following matrices:
-$$
-\begin{bmatrix}
-1/3 & 1/5 \\ 0 & 1/10^3
-\end{bmatrix},
- \begin{bmatrix} 1 \\ & 1/2 \\ && ⋱ \\ &&& 1/2^{10} \end{bmatrix}
-$$
-
-**SOLUTION**
-
-The Theorem (relative-error for matrix vector) tells us that,
-$$
-\frac{\|\delta A 𝐱\|}{\|A 𝐱\|}  ≤ q κ(A)ϵ,
-$$
-if the relative pertubation error $\|\delta A\| = \|A\| ϵ$. For the 2-norm, we have,
-$$
-\|\delta A \|_2  ≤ q \underbrace{\frac{\sqrt{\min(m, n)} nϵ_m}{2 - nϵ_m}}_ϵ\|A\|_2.
-$$
-The condition number of the first matrix is 453.33 (see code below to compute that), and $ϵ$ defined above is $\frac{2\sqrt{2}ϵ_m}{2-2ϵ_m} = 3.14 \cdot10^{-16},$ so the bound on the relative error is:
-$$1.42 \cdot 10^{-13}.$$
-The condition number of the second matrix is $2^{10}$ by the question above, and $ϵ$ defined above is $\frac{10\sqrt{10}ϵ_m}{2-10ϵ_m} = 7.02\cdot 10^{-16},$ the bound on the relative error in this case is then:
-$$
-7.19\cdot 10^{-13}
-$$
-
-
-**END**
 
 
 --------
@@ -226,12 +210,12 @@ $$
 **Problem 3.1**
 For $U ∈ ℝ^{n × n}$, an upper triangular matrix such that the diagonal are all 1 ($u_{kk} = 1$)
 and all entries are floats, 
-show that backsubstitution implemented with floating point has a backward error
+show that backsubstitution implemented with floating point has a backward error formula:
 $$
-{\tt backsubstitution}(U, 𝐛) = (U+δU)^{-1} (𝐛 + δ𝐛)
+{\tt backsubstitution}(U, 𝐛) = (U+δU)^{-1} (𝐛 + δ𝐛).
 $$
-where the entries of the pertubations satisfy a relative error bound, assuming $n ϵ_{\rm m} < 2$ and all operations are in the
-normalised range,
+Assuming $n ϵ_{\rm m} < 2$ and all operations are in the
+normalised range, show that
 $$
 \begin{align*}
 |δb_k| &≤ {ϵ_{\rm m} \over 2} |b_k| \\
@@ -243,6 +227,7 @@ Hint: Note that if we write $𝐱̃ = {\tt backsubstitution}(U, 𝐛)$ then we h
 $$
 x̃_k = b_k ⊖ {\tt dot}(U[k,k+1:n], 𝐱̃[k+1:n]).
 $$
+You may then use II.7 Lemma 1.
 
 
 **SOLUTION**
