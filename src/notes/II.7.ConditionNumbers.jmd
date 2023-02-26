@@ -34,11 +34,11 @@ $$
 $$
 where we bound a norm of $δ_{\rm f} ∈ ℝ^m$ either _absolutely_:
 $$
-\|δ_{\rm f}\| ≤ C ε
+\|δ_{\rm f}\| ≤ C ε
 $$
 or _relative_ to the true result:
 $$
-\|δ_{\rm f}\| ≤ C \| 𝐟(𝐱) \| ε
+\|δ_{\rm f}\| ≤ C \| 𝐟(𝐱) \| ε
 $$
 (which is similar to PS4, Q1.3).
 
@@ -103,7 +103,7 @@ $$
 **Proof**
 We can assume $A$ is invertible (as otherwise $κ(A) = ∞$). Denote $𝐲 = A 𝐱$ and we have
 $$
-{\|𝐱 \| \over \| A 𝐱 \|} = {\|A^{-1} 𝐲 \| \over \|𝐲 \|} ≤ \| A^{-1}\|
+{\|𝐱 \| \over \| A 𝐱 \|} = {\|A^{-1} 𝐲 \| \over \|𝐲 \|} ≤ \| A^{-1}\|
 $$
 Thus we have:
 $$
@@ -151,7 +151,7 @@ $$
 $$
 where, assuming $n ϵ_{\rm m} < 2$, the entries satisfy
 $$
-|δx_k| ≤  E_{n,ϵ_{\rm m}/2} |x_k |.
+|δx_k| ≤  E_{n,ϵ_{\rm m}/2} |x_k |.
 $$
 
 
@@ -163,7 +163,7 @@ $$
 {\rm dot}(𝐱, 𝐲) = ⨁_{j=1}^n (x_j ⊗ y_j) = ⨁_{j=1}^n (x_j  y_j) (1 + δ_j)
 = x_1 y_1 (1 + θ̃_{n}) +   ∑_{j=2}^n x_j y_j (1 + θ_{n-j+2})
 $$
-where $|θ̃_n|, |θ_k| ≤ E_{n,ϵ_{\rm m}/2}$ (the subscript denotes the number of terms
+where $|θ̃_n|, |θ_k| ≤ E_{n,ϵ_{\rm m}/2}$ (the subscript denotes the number of terms
 bounded by $ε_{\rm m}/2$). Thus we can define
 $$
 δ𝐱  := \begin{bmatrix}
@@ -175,7 +175,7 @@ x_n θ_2
 $$
 where
 $$
-| δx_k | ≤  E_{n,ϵ_{\rm m}/2} | x_k |.
+| δx_k | ≤  E_{n,ϵ_{\rm m}/2} | x_k |.
 $$
 
 
@@ -184,12 +184,12 @@ $$
 We can use this to get a relative backward error bound on `mul_rows`:
 
 **Theorem 2 (matrix-vector backward error)**
-For $A ∈ ℝ^{m × n}$ and $𝐱 ∈ ℝ^n$ we have
+For $A ∈ ℝ^{m × n}$ and $𝐱 ∈ ℝ^n$ (both with normal float entries) we have
 $$
 \hbox{\tt mul\_rows}(A, 𝐱) = (A + δA) 𝐱
 $$
-where, assuming $n ϵ_{\rm m} < 2$, the entries (denoting $δa_{kj} = δA[k,j] = 𝐞_k^⊤ δA 𝐞_j$) 
-satisfy
+where, assuming $n ϵ_{\rm m} < 2$ and all operations are in the normalised range,
+the entries (denoting $δa_{kj} = δA[k,j] = 𝐞_k^⊤ δA 𝐞_j$) satisfy
 $$
 |δa_{kj}| ≤ E_{n,ϵ_{\rm m}/2}  |a_{kj}|.
 $$
@@ -202,9 +202,9 @@ since each row is equivalent to a dot product.
 **Corollary 1 (Norms)**
 $$
 \begin{align*}
-\|δA\|_1 &≤  E_{n,ϵ_{\rm m}/2} \|A \|_1 \\
-\|δA\|_2 &≤  \sqrt{\min(m,n)} E_{n,ϵ_{\rm m}/2} \|A \|_2 \\
-\|δA\|_∞ &≤  E_{n,ϵ_{\rm m}/2} \|A \|_∞
+\|δA\|_1 &≤ E_{n,ϵ_{\rm m}/2} \|A \|_1 \\
+\|δA\|_2 &≤ \sqrt{\min(m,n)} E_{n,ϵ_{\rm m}/2} \|A \|_2 \\
+\|δA\|_∞ &≤ E_{n,ϵ_{\rm m}/2} \|A \|_∞
 \end{align*}
 $$
 In particular, 
@@ -230,15 +230,15 @@ and the proof for the $∞$-norm is similar.
 This leaves the 2-norm, which is a bit more challenging.
 We will prove the result by going through the Fröbenius norm and using
 $$
-\|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \| A\|_2
+\|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \| A\|_2
 $$
 where $r$ is rank of $A$ (see PS6 Q5.2).
 So we deduce
 $$
 \begin{align*}
-\|δA \|_2^2 &≤ \| δA\|_F^2 = ∑_{k=1}^m ∑_{j=1}^n |δa_{kj}|^2 ≤
+\|δA \|_2^2 &≤ \| δA\|_F^2 = ∑_{k=1}^m ∑_{j=1}^n |δa_{kj}|^2 ≤
 E_{n,ϵ_{\rm m}/2} ∑_{k=1}^m ∑_{j=1}^n |a_{kj}|^2 \\
-&=  E_{n,ϵ_{\rm m}/2} \|A \|_F ≤ E_{n,ϵ_{\rm m}/2} \sqrt{r} \|A \|_2.
+&=  E_{n,ϵ_{\rm m}/2} \|A \|_F ≤ E_{n,ϵ_{\rm m}/2} \sqrt{r} \|A \|_2.
 \end{align*}
 $$
 and the rank of $A$ is bounded by $\min(m,n)$.

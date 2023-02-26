@@ -54,6 +54,9 @@ notebook("src/sheets/sheet5s.jmd"; pkwds...)
 write("src/sheets/sheet6.jmd", replace(read("src/sheets/sheet6s.jmd", String), r"\*\*SOLUTION\*\*(.*?)\*\*END\*\*"s => ""))
 notebook("src/sheets/sheet6.jmd"; pkwds...)
 notebook("src/sheets/sheet6s.jmd"; pkwds...)
+write("src/sheets/sheet7.jmd", replace(read("src/sheets/sheet7s.jmd", String), r"\*\*SOLUTION\*\*(.*?)\*\*END\*\*"s => ""))
+notebook("src/sheets/sheet7.jmd"; pkwds...)
+notebook("src/sheets/sheet7s.jmd"; pkwds...)
 
 
 #####
