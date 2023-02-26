@@ -1,0 +1,94 @@
+# MATH50003 Numerical Analysis (2022–23)
+# Problem Sheet 7
+
+This problem sheet concerns singular value decompositions, pseudo-inverses,
+and condition numbers.
+
+-----
+
+For the SVD $A = U Σ V^⊤ ∈ ℝ^{m × n}$, where $U ∈ ℝ^{m × r}$ and $V ∈ ℝ^{n × r}$ have orthogonal columns
+and $Σ$ is a diagonal matrix with non-increasing positive entries, define the _pseudo-inverse_:
+$$
+A^+ := V Σ^{-1} U^⊤.
+$$
+
+**Problem 1.1**  Show that $A^+$ satisfies the _Moore-Penrose conditions_:
+1. $A A^+ A = A$
+2. $A^+ A A^+ = A^+$
+3. $(A A^+)^⊤  = A A^+$ and $(A^+ A)^⊤ = A^+ A$
+
+
+
+**Problem 1.2** Show for $A ∈ ℝ^{m × n}$ with $m ≥ n$ and full rank
+that $𝐱 =  A^+ 𝐛$ is the least squares solution, i.e., minimises $\| A 𝐱 - 𝐛 \|_2$.
+Hint: extend $U$ in the SVD to be a square orthogonal matrix.
+
+
+
+**Problem 1.3**
+If $A ∈ ℝ^{m × n}$ has a non-empty kernel there are multiple solutions to the least
+squares problem as 
+we can add any element of the kernel. Show that $𝐱 = A^+ 𝐛$ gives the least squares solution
+such that $\| 𝐱 \|_2$ is minimised.
+
+
+
+
+------
+
+
+
+**Problem 2** Compute the 1-norm, 2-norm, and ∞-norm condition numbers for the following matrices:
+$$
+\begin{bmatrix}
+1 & 2 \\ 3 & 4
+\end{bmatrix}, \begin{bmatrix}
+1/3 & 1/5 \\ 0 & 1/7
+\end{bmatrix}, \begin{bmatrix} 1 \\ & 1/2 \\ && ⋱ \\ &&& 1/2^n \end{bmatrix}
+$$
+Hint: recall that the singular values of a matrix $A$ are the square roots of the eigenvalues of the Gram matrix
+$A^⊤A$.
+
+
+
+
+
+
+
+--------
+
+**Problem 3.1**
+For $U ∈ ℝ^{n × n}$, an upper triangular matrix such that the diagonal are all 1 ($u_{kk} = 1$)
+and all entries are floats, 
+show that backsubstitution implemented with floating point has a backward error formula:
+$$
+{\tt backsubstitution}(U, 𝐛) = (U+δU)^{-1} (𝐛 + δ𝐛).
+$$
+Assuming $n ϵ_{\rm m} < 2$ and all operations are in the
+normalised range, show that
+$$
+\begin{align*}
+|δb_k| &≤ {ϵ_{\rm m} \over 2} |b_k| \\
+|δu_{k,j}| &≤ E_{n-k+1,ϵ_{\rm m}/2} |u_{k,j}|\qquad\hbox{for $j > k$} \\
+|δu_{k,j}| &= 0 \qquad \hbox{for $j ≤ k$}
+\end{align*}
+$$
+Hint: Note that if we write $𝐱̃ = {\tt backsubstitution}(U, 𝐛)$ then we have
+$$
+x̃_k = b_k ⊖ {\tt dot}(U[k,k+1:n], 𝐱̃[k+1:n]).
+$$
+You may then use II.7 Lemma 1.
+
+
+
+
+**Problem 3.2** Show that 
+$$
+\begin{align*}
+\|δU\|_1 &≤  E_{n,ϵ_{\rm m}/2} \|U \|_1 \\
+\|δU\|_2 &≤  \sqrt{n} E_{n,ϵ_{\rm m}/2} \|U \|_2 \\
+\|δU\|_∞ &≤  E_{n,ϵ_{\rm m}/2} \|U \|_∞
+\end{align*}
+$$
+
+
