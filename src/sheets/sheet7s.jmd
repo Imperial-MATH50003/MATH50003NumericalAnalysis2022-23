@@ -267,6 +267,7 @@ Note, this is exact so the relative error is 0, within the upper bound.
 10*sqrt(10)*eps()/(10-10*eps()) * 2^(10)
 ``` 
 
+
 --------
 
 **Problem 4.1**
@@ -344,13 +345,18 @@ where
 $$
 \|\mathbf{δ}_{\rm f}\| ≤  \|U^{-1} 𝐛 \| κ(U) 
 $$
+You may use the fact (coming from Geometric series) that $(I - K)^{-1} = I + L$ where
+$$
+\| L \| ≤ {\|K \| \over 1 - \|K \|}
+$$
+whenever $\|K \| < 1$. 
 
 **SOLUTION**
 
 We know
 $$
 {\tt backsubstitution}(U, 𝐛) = (U+δU)^{-1} (𝐛 + δ𝐛) = U^{-1}(I+U^{-1}δU)^{-1} (𝐛 + δ𝐛) 
-=  U^{-1}(I+U^{-1}δU + (U^{-1}δU)^2 + ⋯) (𝐛 + δ𝐛) 
+=  U^{-1}(I+L) (𝐛 + δ𝐛) 
 $$
 
 **END**
