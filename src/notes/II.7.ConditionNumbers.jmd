@@ -27,15 +27,15 @@ f^{\rm FP}(x) = f(x)(1 + δ_{\rm a})
 $$
 errors of the _answer_. For vector functions $𝐟 = ℝ^m → ℝ^n$  we write
 $$
-𝐟^{\rm FP}(𝐱) = 𝐟(𝐱) + \mathbf{δ_{\rm f}}
+𝐟^{\rm FP}(𝐱) = 𝐟(𝐱) + \mathbf{δ}_{\rm f}
 $$
-where we bound a norm of $\mathbf{δ_{\rm f}}$ either _absolutely_:
+where we bound a norm of $\mathbf{δ}_{\rm f}$ either _absolutely_:
 $$
-\|\mathbf{δ_{\rm f}}\| ≤ C ε
+\|\mathbf{δ}_{\rm f}\| ≤ C ε
 $$
 or _relative_ to the true result:
 $$
-\|\mathbf{δ_{\rm f}}\| ≤ C \| 𝐟(𝐱) \| ε
+\|\mathbf{δ}_{\rm f}\| ≤ C \| 𝐟(𝐱) \| ε
 $$
 (which is similar to PS4, Q1.3).
 
@@ -82,16 +82,17 @@ $$
 $$
 
 
-**Theorem 4 (relative forward error for matrix-vector)**
-The _worst-case_ relative forward error in 
+**Theorem 1 (relative forward error for matrix-vector)**
+Assume we have the relative backward error bound $\|δA\| ≤ \|A \| ε$.
+Then the forward error in 
 $
 $(A + δA) 𝐱 = A 𝐱 + \mathbf{δ}_{\rm f}
 $$
-is bounded by
+has the relative error bound
 $$
-\|\mathbf{δ}_{\rm f}\|  ≤ κ(A) ε
+\|\mathbf{δ}_{\rm f}\|  ≤ \| A 𝐱 \| κ(A) ε
 $$
-if we have the relative backward error bound $\|δA\| ≤ \|A \| ε$.
+
 
 **Proof**
 We can assume $A$ is invertible (as otherwise $κ(A) = ∞$). Denote $𝐲 = A 𝐱$ and we have
@@ -100,7 +101,7 @@ $$
 $$
 Thus we have:
 $$
-\|\mathbf{δ}_{\rm f}\| = {\| δA 𝐱 \| \over \| A 𝐱 \| } ≤ \| δA\| \|A^{-1}\| ≤ κ(A) {\|δA\| \over \|A \|} ≤  κ(A)ε
+{\|\mathbf{δ}_{\rm f}\| \over \over \| A 𝐱 \|} = {\| δA 𝐱 \| \over \| A 𝐱 \| } ≤ \| δA\| \|A^{-1}\| ≤ κ(A) {\|δA\| \over \|A \|} ≤  κ(A)ε
 $$
 
 ∎
@@ -172,7 +173,7 @@ $$
 
 We can use this to get a relative backward error bound on `mul_rows`:
 
-**Theorem 3 (matrix-vector backward error)**
+**Theorem 2 (matrix-vector backward error)**
 For $A ∈ ℝ^{m × n}$ and $𝐱 ∈ ℝ^n$ we have
 $$
 {\rm mul_rows}(A, 𝐱) = (A + δA) 𝐱
@@ -181,7 +182,14 @@ where
 $$
 |δA| ≤ E_{n,ϵ_{\rm m}/2}  |A|,
 $$
-assuming $n ϵ_{\rm m} < 2$. Therefore
+assuming $n ϵ_{\rm m} < 2$. 
+
+**Proof**
+The bound on $|δA|$ is implied by the previous lemma.
+∎
+
+**Corollary 1 (Norms)**
+It follows that
 $$
 \begin{align*}
 \|δA\|_1 &≤  E_{n,ϵ_{\rm m}/2} \|A \|_1 \\
@@ -189,9 +197,17 @@ $$
 \|δA\|_∞ &≤  E_{n,ϵ_{\rm m}/2} \|A \|_∞
 \end{align*}
 $$
+In particular, 
+$$
+{\rm mul_rows}(A, 𝐱) =A 𝐱 + \mathbf{δ}_{\rm f}
+$$
+where
+$$
+\|\mathbf{δ}_{\rm f}\| ≤ \|A 𝐱\| κ(A) E_{n,ϵ_{\rm m}/2}
+$$
 
 **Proof**
-The bound on $|δA|$ is implied by the previous lemma.
+
 The $1$ and $∞$-norm follow since
 $$
 \|A\|_1 = \||A|\|_1 \hbox{ and } \|A\|_∞ = \||A|\|_∞
@@ -213,12 +229,12 @@ $$
 \end{align*}
 $$
 
+The bound on the forward error follows from Theorem 1. 
+
 ∎
 
 
-
-Thus for floating point arithmetic we know the error is bounded by $κ(A) E_{n,ϵ_{\rm m}/2}$.
-
+We can also bound the error of back-substitution in terms of the condition number (see PS7).
 If one uses QR to solve $A 𝐱 = 𝐲$ the condition number also gives a meaningful bound on the error. 
 As we have already noted, there are some matrices where PLU decompositions introduce large errors, so
-in that case well-conditioning is not a guarantee (but it still usually works).
+in that case well-conditioning is not a guarantee  of accuracy (but it still usually works).
