@@ -29,6 +29,7 @@ notebook("src/notes/II.3.QR.jmd"; nkwds...)
 notebook("src/notes/II.4.LU.jmd"; nkwds...)
 notebook("src/notes/II.5.Norms.jmd"; nkwds...)
 notebook("src/notes/II.6.SVD.jmd"; nkwds...)
+notebook("src/notes/II.7.ConditionNumbers.jmd"; nkwds...)
 
 # /usr/local/bin/jupyter nbconvert  --ExecutePreprocessor.timeout -1 --allow-chromium-download --to webpdf *.ipynb
 # pdfunite pdf/*.pdf Notes.pdf

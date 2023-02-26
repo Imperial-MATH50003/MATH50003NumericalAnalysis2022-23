@@ -4,12 +4,15 @@ We have seen that floating point arithmetic induces errors in computations, and 
 bound the absolute errors to be proportional to $C ϵ_{\rm m}$. We want a way to bound the
 effect of more complicated calculations like computing $A 𝐱$ or $A^{-1} 𝐲$ without having to deal with
 the exact nature of floating point arithmetic, as it will depend on the _data_ $A$ and $𝐱$. 
-Here we consider only matrix-multiplication but will make a remark about matrix inversion.
+That is, we want to reduce floating point stability to a more fundamental property: _mathematical stability_:
+how does a mathematical operation like $A 𝐱$ change in the precense of  small perturbations (random noise or structured
+floating point errors)?
 
 1. Backward error analysis: We introduce the concept of _backward error_ analysis, which is a more practical
 way of understanding and bounding floating point errors.
 2. Condition numbers: We introduce a _condition numbers_, which can capture the effect of perturbations in
-$A$ for linear algebra oerations. 
+$A$ for linear algebra oerations. More precisely: matrix operations are mathematically _stable_ 
+when the condition number is small.
 3. Bounding floating point errors for linear algebra: we see how simple operations like $A 𝐱$ can be put
 into a backward error analysis framework, leading to bounds on the errors in terms of the condition number. 
 
@@ -25,36 +28,38 @@ or relative
 $$
 f^{\rm FP}(x) = f(x)(1 + δ_{\rm a})
 $$
-errors of the _answer_. For vector functions $𝐟 = ℝ^m → ℝ^n$  we write
+errors of the _output_. More generally, for vector functions $𝐟 = ℝ^n → ℝ^m$  we write
 $$
-𝐟^{\rm FP}(𝐱) = 𝐟(𝐱) + \mathbf{δ_{\rm f}}
+𝐟^{\rm FP}(𝐱) = 𝐟(𝐱) + δ_{\rm f}
 $$
-where we bound a norm of $\mathbf{δ_{\rm f}}$ either _absolutely_:
+where we bound a norm of $δ_{\rm f} ∈ ℝ^m$ either _absolutely_:
 $$
-\|\mathbf{δ_{\rm f}}\| ≤ C ε
+\|δ_{\rm f}\| ≤ C ε
 $$
 or _relative_ to the true result:
 $$
-\|\mathbf{δ_{\rm f}}\| ≤ C \| 𝐟(𝐱) \| ε
+\|δ_{\rm f}\| ≤ C \| 𝐟(𝐱) \| ε
 $$
 (which is similar to PS4, Q1.3).
 
-Backward error analysis consists of attempting to write the approximation
-as the true function with a pertubed input:
+On the other hand, _backward error analysis_ 
+considers computations as errors in the _input_. That is, one writes
+the approximate function as the true function with a pertubed input: e.g. find $𝐱̃ ∈ ℝ^n$ 
+such that
 $$
-𝐟^{\rm FP}(𝐱) = 𝐟(𝐱̃)
+𝐟^{\rm FP}(𝐱) = 𝐟(𝐱̃).
 $$
-in which case one can study the _backward  error_, the error in the input:
+We study the _backward  error_, the error in the input
 $$
-𝐱̃ = 𝐱 + {\mathbf δ}_{\rm b}
+𝐱̃ = 𝐱 + δ_{\rm b}
 $$
-either via an absolute bound on the norm:
+where $δ_{\rm b} ∈ ℝ^n$ by bounding either the absolute error
 $$
-\|{\mathbf δ}_{\rm b}\| ≤ Cε
+\|δ_{\rm b}\| ≤ Cε
 $$
-or relative bound:
+or relative error:
 $$
-\|{\mathbf δ}_{\rm b}\| ≤ C \|𝐱\| ε
+δ_{\rm b}\| ≤ C \|𝐱\| ε
 $$
 We shall see that _some_ algorithms (like `mul_rows`) lead naturally
 to backward error results. 
@@ -76,20 +81,22 @@ For a square matrix $A$, the _condition number_ (in $p$-norm) is
 $$
 κ_p(A) := \| A \|_p \| A^{-1} \|_p
 $$
-with the $2$-norm:
+with the default being the $2$-norm condition number, writable in terms of the
+singular values as:
 $$
-κ_2(A) = {σ_1 \over σ_n}.
+κ(A) := κ_2(A) = \| A \|_2 \| A^{-1} \|_2 = {σ_1 \over σ_n}.
 $$
 
 
-**Theorem 4 (relative forward error for matrix-vector)**
-The _worst-case_ relative forward error in 
-$
-$(A + δA) 𝐱 = A 𝐱 + \mathbf{δ}_{\rm f}
+**Theorem 1 (relative forward error for matrix-vector)**
+Assume we have the relative backward error bound $\|δA\| ≤ \|A \| ε$.
+Then for 
 $$
-is bounded by
+(A + δA) 𝐱 = A 𝐱 + δ_{\rm f}
 $$
-\|\mathbf{δ}_{\rm f}\|  ≤ κ(A) ε
+the forward error has the relative error bound
+$$
+\|δ_{\rm f}\|  ≤ \| A 𝐱 \| κ(A) ε
 $$
 if we have the relative backward error bound $\|δA\| ≤ \|A \| ε$.
 
@@ -100,7 +107,7 @@ $$
 $$
 Thus we have:
 $$
-\|\mathbf{δ}_{\rm f}\| = {\| δA 𝐱 \| \over \| A 𝐱 \| } ≤ \| δA\| \|A^{-1}\| ≤ κ(A) {\|δA\| \over \|A \|} ≤  κ(A)ε
+{\|δ_{\rm f}\|  \over \| A 𝐱 \|} = {\| δA \| \| 𝐱 \| \over \| A 𝐱 \| } ≤ \underbrace{\|A \| \|A^{-1}\|}_{κ(A)} ε.
 $$
 
 ∎
@@ -109,9 +116,9 @@ $$
 
 ## 3. Bounding floating point errors for linear algebra
 
-We nowrst observe that errors in implementing matrix-vector multiplication using floating points
+We now observe that errors in implementing matrix-vector multiplication using floating points
 can be captured by considering the multiplication to be exact on the wrong matrix: that is, `A*x`
-(implemented with floating point) is precisely $A + δA$ where $δA$ has small norm, relative to $A$.
+(implemented with floating point as `mul_rows`) is precisely $A + δA$ where $δA$ has small norm, relative to $A$.
 That is, we have a bound on the _backward relative error_.
 
 
@@ -119,16 +126,21 @@ That is, we have a bound on the _backward relative error_.
 To discuss floating point errors we need to be precise which order the operations happened.
 We will use the definition `mul_rows(A,x)` (which is equivalent to `mul_cols(A,x)`).
  Note that each entry of the result is in fact a dot-product
-of the corresponding rows so we first consider the error in the dot product  `dot(𝐱,𝐲)` as implemented in floating-point, 
-which we denote ${\rm dot}(A,x)$.
+of the corresponding rows so we first consider the error in the dot product  `dot(𝐱,𝐲)` as implemented in floating-point:
+$$
+{\rm dot}(𝐱,𝐲) = ⨁_{k=1}^n (x_k ⊗ y_k).
+$$
 
-We first need a helper proposition, from PS2 Q2.1:
+We first need a helper proposition:
 
-**Proposition 3** If $|ϵ_i| ≤ ϵ$ and $n ϵ < 1$, then
+**Proposition 1 [PS2 Q2.1]** If $|ϵ_i| ≤ ϵ$ and $n ϵ < 1$, then
 $$
 \prod_{k=1}^n (1+ϵ_i) = 1+θ_n
 $$
-for some constant $θ_n$ satisfying $|θ_n| ≤ E_{n,ϵ} := {n ϵ \over 1-nϵ}$.
+for some constant $θ_n$ satisfying
+$$
+|θ_n| ≤ \underbrace{n ϵ \over 1-nϵ}_{E_{n,ϵ}}.
+$$
 
 
 
@@ -137,11 +149,10 @@ For $𝐱, 𝐲 ∈ ℝ^n$,
 $$
 {\rm dot}(𝐱, 𝐲) = (𝐱 + δ𝐱)^⊤ 𝐲
 $$
-where
+where, assuming $n ϵ_{\rm m} < 2$, the entries satisfy
 $$
-|δ𝐱| ≤  E_{n,ϵ_{\rm m}/2} |𝐱 |,
+|δx_k| ≤  E_{n,ϵ_{\rm m}/2} |x_k |.
 $$
-where $|𝐱 |$ means absolute-value of each entry, assuming $n ϵ_{\rm m} < 2$.
 
 
 **Proof**
@@ -153,7 +164,7 @@ $$
 = x_1 y_1 (1 + θ̃_{n}) +   ∑_{j=2}^n x_j y_j (1 + θ_{n-j+2})
 $$
 where $|θ̃_n|, |θ_k| ≤ E_{n,ϵ_{\rm m}/2}$ (the subscript denotes the number of terms
-bounded by $ε_{\rm m}/2$. Thus we can define
+bounded by $ε_{\rm m}/2$). Thus we can define
 $$
 δ𝐱  := \begin{bmatrix}
 x_1 θ̃_n \\
@@ -164,7 +175,7 @@ x_n θ_2
 $$
 where
 $$
-| δ𝐱 | ≤ E_{n,ϵ_{\rm m}/2} | 𝐱 |.
+| δx_k | ≤  E_{n,ϵ_{\rm m}/2} | x_k |.
 $$
 
 
@@ -175,13 +186,20 @@ We can use this to get a relative backward error bound on `mul_rows`:
 **Theorem 3 (matrix-vector backward error)**
 For $A ∈ ℝ^{m × n}$ and $𝐱 ∈ ℝ^n$ we have
 $$
-{\rm mul_rows}(A, 𝐱) = (A + δA) 𝐱
+\hbox{\tt mul\_rows}(A, 𝐱) = (A + δA) 𝐱
 $$
-where
+where, assuming $n ϵ_{\rm m} < 2$, the entries (denoting $δa_{kj} = δA[k,j] = 𝐞_k^⊤ δA 𝐞_j$) 
+satisfy
 $$
-|δA| ≤ E_{n,ϵ_{\rm m}/2}  |A|,
+|δa_{kj}| ≤ E_{n,ϵ_{\rm m}/2}  |a_{kj}|.
 $$
-assuming $n ϵ_{\rm m} < 2$. Therefore
+
+**Proof**
+The bound on the entries of $δA$ is implied by the previous lemma
+since each row is equivalent to a dot product.
+∎
+
+**Corollary 1 (Norms)**
 $$
 \begin{align*}
 \|δA\|_1 &≤  E_{n,ϵ_{\rm m}/2} \|A \|_1 \\
@@ -189,29 +207,42 @@ $$
 \|δA\|_∞ &≤  E_{n,ϵ_{\rm m}/2} \|A \|_∞
 \end{align*}
 $$
+In particular, 
+$$
+\hbox{\tt mul\_rows}(A, 𝐱) =A 𝐱 + δ_{\rm f}
+$$
+where
+$$
+\|δ_{\rm f}\| ≤ \|A 𝐱\| κ(A) E_{n,ϵ_{\rm m}/2}
+$$
 
 **Proof**
-The bound on $|δA|$ is implied by the previous lemma.
-The $1$ and $∞$-norm follow since
+
+
+The $1$-norm follow since
 $$
-\|A\|_1 = \||A|\|_1 \hbox{ and } \|A\|_∞ = \||A|\|_∞
+\|δA\|_1  = \max_j ∑_{k=1}^m |δa_{kj}| ≤
+ E_{n,ϵ_{\rm m}/2}  \max_j ∑_{k=1}^m |a_{kj}|  = E_{n,ϵ_{\rm m}/2} \|A\|_1
 $$
-This leaves the 2-norm example, which is a bit more challenging as there are matrices
-$A$ such that $\|A\|_2 ≠ \| |A| \|_2$.
-Instead we will prove the result by going through the Fröbenius norm and using:
+and the proof for the $∞$-norm is similar.
+
+
+This leaves the 2-norm, which is a bit more challenging.
+We will prove the result by going through the Fröbenius norm and using
 $$
 \|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \| A\|_2
 $$
-where $r$ is rank of $A$ (see PS6 Q5.2)
-and $\|A\|_F = \| |A| \|_F$,
-so we deduce:
+where $r$ is rank of $A$ (see PS6 Q5.2).
+So we deduce
 $$
 \begin{align*}
-\|δA \|_2 &≤ \| δA\|F = \| |δA| \|F ≤ E_{n,ϵ_{\rm m}/2} \| |A| \|_F \\
-          &= E_{n,ϵ_{\rm m}/2} \| A \|_F ≤ \sqrt{r} E_{n,ϵ_{\rm m}/2} \| A \|_2 \\
-          &≤ \sqrt{\min(m,n)} E_{n,ϵ_{\rm m}/2} \|A \|_2
+\|δA \|_2^2 &≤ \| δA\|_F^2 = ∑_{k=1}^m ∑_{j=1}^n |δa_{kj}|^2 ≤
+E_{n,ϵ_{\rm m}/2} ∑_{k=1}^m ∑_{j=1}^n |a_{kj}|^2 \\
+&=  E_{n,ϵ_{\rm m}/2} \|A \|_F ≤ E_{n,ϵ_{\rm m}/2} \sqrt{r} \|A \|_2.
 \end{align*}
 $$
+and the rank of $A$ is bounded by $\min(m,n)$.
+The bound on the forward error then follows from Theorem 1. 
 
 ∎
 
