@@ -202,7 +202,7 @@ When $S$ is implied by context we use the notation $ϵ_{\rm m}$.
 The _smallest positive normal number_ is $q = 1$ and $b_k$ all zero:
 $$
 \min |F_{σ,Q,S}^{\rm normal}| = 2^{1-σ}
-$$ 
+$$
 where $|A| := \{|x| : x \in A \}$.
 The _largest (positive) normal number_ is 
 $$

@@ -77,6 +77,7 @@ $$
 $$
 We can apply it to a vector:
 ```julia
+using LinearAlgebra
 σ = [1, 4, 2, 5, 3]
 v = [6, 7, 8, 9, 10]
 v[σ] # we permutate entries of v
@@ -194,7 +195,7 @@ $$
                             π/2 & a = 0\hbox{ and }b >0 \\
                             -π/2 & a = 0\hbox{ and }b < 0 
                             \end{cases}
-$$ 
+$$
 
 This is available in Julia via the function `atan(y,x)`.
 
