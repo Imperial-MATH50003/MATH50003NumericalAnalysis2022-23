@@ -186,7 +186,7 @@ We can use this to get a relative backward error bound on `mul_rows`:
 **Theorem 2 (matrix-vector backward error)**
 For $A ∈ ℝ^{m × n}$ and $𝐱 ∈ ℝ^n$ (both with normal float entries) we have
 $$
-\hbox{\tt mul\_rows}(A, 𝐱) = (A + δA) 𝐱
+\hbox{mul_rows}(A, 𝐱) = (A + δA) 𝐱
 $$
 where, assuming $n ϵ_{\rm m} < 2$ and all operations are in the normalised range,
 the entries (denoting $δa_{kj} = δA[k,j] = 𝐞_k^⊤ δA 𝐞_j$) satisfy
@@ -209,7 +209,7 @@ $$
 $$
 In particular, 
 $$
-\hbox{\tt mul\_rows}(A, 𝐱) =A 𝐱 + δ_{\rm f}
+\hbox{mul_rows}(A, 𝐱) =A 𝐱 + δ_{\rm f}
 $$
 where
 $$
