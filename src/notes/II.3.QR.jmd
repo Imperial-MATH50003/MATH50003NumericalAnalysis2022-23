@@ -14,7 +14,7 @@ is only nonzero on or to the right of the diagonal ($r_{kj} = 0$ if $k > j$).
 $$
 A = \hat Q \hat R = \underbrace{\begin{bmatrix} 𝐪_1 | ⋯ | 𝐪_n \end{bmatrix}}_{ \hat Q ∈ ℂ^{m × n}} \underbrace{\begin{bmatrix} × & ⋯ & × \\ & ⋱ & ⋮ \\ && ×  \end{bmatrix}}_{\hat R ∈ ℂ^{n × n}}
 $$
-where $Q$ has orthogonal columns ($Q^⋆ Q = I$, $𝐪_j ∈ ℂ^m$) and $\hat R$ is upper triangular.
+where $Q$ has orthonormal columns ($Q^⋆ Q = I$, $𝐪_j ∈ ℂ^m$) and $\hat R$ is upper triangular.
 
 Note for a square matrix the reduced QR factorisation is equivalent to the QR factorisation, in which case $R$ is _upper triangular_.
 The importance of these decomposition for square matrices is that their component pieces are easy to invert:
@@ -131,7 +131,7 @@ where $𝐚_k ∈  ℂ^m$ and assume they are linearly independent ($A$ has full
 
 
 **Proposition 1 (Column spaces match)** Suppose $A = \hat Q  \hat R$ where $\hat Q = [𝐪_1|…|𝐪_n]$
-has orthogonal columns and $\hat R$ is upper-triangular, and $A$ has full rank.
+has orthonormal columns and $\hat R$ is upper-triangular, and $A$ has full rank.
 Then the first $j$ columns of
 $\hat Q$ span the same space as the first $j$ columns of $A$:
 $$
@@ -174,12 +174,12 @@ $$
 
 **Proof**
 
-We first show that $\hat Q$ has orthogonal columns. Assume that $𝐪_ℓ^⋆ 𝐪_k = δ_{ℓk}$ for $k,ℓ < j$. 
+We first show that $\hat Q$ has orthonormal columns. Assume that $𝐪_ℓ^⋆ 𝐪_k = δ_{ℓk}$ for $k,ℓ < j$. 
 For $ℓ < j$ we then have
 $$
 𝐪_ℓ^⋆ 𝐯_j = 𝐪_ℓ^⋆ 𝐚_j - ∑_{k=1}^{j-1}  𝐪_ℓ^⋆𝐪_k 𝐪_k^⋆ 𝐚_j = 0
 $$
-hence $𝐪_ℓ^⋆ 𝐪_j = 0$ and indeed $\hat Q$ has orthogonal columns. Further: from the definition of $𝐯_j$ we find
+hence $𝐪_ℓ^⋆ 𝐪_j = 0$ and indeed $\hat Q$ has orthonormal columns. Further: from the definition of $𝐯_j$ we find
 $$
 𝐚_j = 𝐯_j + ∑_{k=1}^{j-1} r_{kj} 𝐪_k = ∑_{k=1}^j r_{kj} 𝐪_k  = \hat Q \hat R 𝐞_j
 $$

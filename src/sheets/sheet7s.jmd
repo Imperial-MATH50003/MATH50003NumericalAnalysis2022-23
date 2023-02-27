@@ -6,7 +6,7 @@ and condition numbers.
 
 -----
 
-For the SVD $A = U Σ V^⊤ ∈ ℝ^{m × n}$, where $U ∈ ℝ^{m × r}$ and $V ∈ ℝ^{n × r}$ have orthogonal columns
+For the SVD $A = U Σ V^⊤ ∈ ℝ^{m × n}$, where $U ∈ ℝ^{m × r}$ and $V ∈ ℝ^{n × r}$ have orthonormal columns
 and $Σ$ is a diagonal matrix with non-increasing positive entries, define the _pseudo-inverse_:
 $$
 A^+ := V Σ^{-1} U^⊤.

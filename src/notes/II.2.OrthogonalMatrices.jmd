@@ -34,7 +34,7 @@ investigate three classes:
 2. _Rotations_: The simple rotations are also known as $2 × 2$ special orthogonal matrices ($SO(2)$)  and correspond to rotations in 2D.
 3. _Reflections_:  Reflections are $n × n$ orthogonal matrices that have simple definitions in terms of a single vector.
 
-We remark a very similar concept are rectangular matrices with orthogonal columns, e.g.
+We remark a very similar concept are rectangular matrices with orthonormal columns, e.g.
 $$
 U = [𝐮_1 | ⋯ | 𝐮_n] ∈ ℝ^{m × n}
 $$

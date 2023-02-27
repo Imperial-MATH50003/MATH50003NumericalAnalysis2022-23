@@ -51,7 +51,7 @@ end
 # $$
 #
 # where $U ∈ ℝ^{m × r}$, $Σ ∈ ℝ^{r × r}$ and $V ∈ ℝ^{n × r}$, where $U$ and $V$
-# have orthogonal columns and $Σ$ is diagonal.   The singular values are the diagonal entries of $Σ$.
+# have orthonormal columns and $Σ$ is diagonal.   The singular values are the diagonal entries of $Σ$.
 
 # Note that `svdvals(A)` calculates the singular values of a matrix `A`, without calculating
 # the `U` and `V` components.
