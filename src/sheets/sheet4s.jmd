@@ -34,11 +34,11 @@ $$
 
 **Problem 1.3** Show when implemented in floating point arithmetic for $A ∈ F_{σ,Q,S}^{m × n}$ and $𝐱 ∈ F_{σ,Q,S}^n$ that
 $$
-\hbox{\tt mul\_rows}(A, 𝐱) = A 𝐱 + \mathbf{δ} 
+\hbox{mul$\_$rows}(A, 𝐱) = A 𝐱 + \mathbf{δ} 
 $$
 where
 $$
-\| δ \|_∞ ≤ 2 \|A\|_∞ \| 𝐱 \|_∞ E_{n-1,ϵ_{\rm m}/2}
+\| δ \|_∞ ≤ 2 \|A\|_∞ \| 𝐱 \|_∞ E_{n,ϵ_{\rm m}/2}
 $$
 and
 $$
@@ -62,6 +62,14 @@ where from PS2.2.3 we know $|σ_n| ≤ M_k E_{n-1,ϵ_{\rm m}/2}$, where
 $$
 M_k ≤ Σ_{j=1}^n |A_{k,j}| |x_k| (1+|δ_j|)  ≤ 2 \max |x_k| Σ_{j=1}^n |A_{k,j}|
 ≤ 2 \|𝐱\|_∞ \|A \|_∞
+$$
+Similarly, we also have 
+$$
+|∑_{j=1}^n A_{k,j} x_k δ_j| ≤ \|𝐱\|_∞ \|A \|_∞ ϵ_{\rm m}/2
+$$
+and so the result follows from
+$$
+ϵ_{\rm m}/2 + 2E_{n-1,ϵ_{\rm m}/2} ≤ {ϵ_{\rm m}/2 + ϵ_{\rm m} (n-1) \over 1-(n-1)ϵ_{\rm m}/2} ≤ {ϵ_{\rm m} n \over 1-nϵ_{\rm m}/2} = 2E_{n,ϵ_{\rm m}/2}.
 $$
 **END**
 
