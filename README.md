@@ -40,6 +40,8 @@ the PLU and Cholesky factorisations, as well as symmetric positive definite matr
 
 *III: Computing with functions*
 
+1. [Fourier expansions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.1.Fourier.ipynb): we discuss approximating Fourier expansions.
+
 ## Assessment
 
 1. [Practice computer-based exam](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/exams/practice.ipynb)

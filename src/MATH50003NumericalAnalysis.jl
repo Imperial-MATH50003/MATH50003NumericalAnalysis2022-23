@@ -31,6 +31,9 @@ notebook("src/notes/II.5.Norms.jmd"; nkwds...)
 notebook("src/notes/II.6.SVD.jmd"; nkwds...)
 notebook("src/notes/II.7.ConditionNumbers.jmd"; nkwds...)
 
+# Part III
+notebook("src/notes/III.1.Fourier.jmd"; nkwds...)
+
 
 
 weave("src/notes/A.Julia.jmd"; out_path="notes/html/")
