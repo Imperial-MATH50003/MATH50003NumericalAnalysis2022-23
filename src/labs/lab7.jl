@@ -5,7 +5,7 @@
 # but we will see that samples of smooth functions can be approximated by very small rank matrices.  
 # This gives some intuition on why pictures tend to be low rank: most pictures have large portions that are "smooth".
 
-
+# Note in Julia `opnorm(A)` is the induced matrix 2-norm. `norm(A) == norm(vec(A))` is the Fröbenius norm.
 
 # The following code samples a function on a grid in the square `[-1,1]^2`
 # and plots the corresponding pixels:
@@ -90,7 +90,7 @@ end
 
 
 
-# **Problem 3.3** Write a function `svdcompress_rank(A::Matrix, ε::Real)` that returns the smallest integer `k` so that `norm(A - svdcompress(A, k)) ≤ ε`,
+# **Problem 3.3** Write a function `svdcompress_rank(A::Matrix, ε::Real)` that returns the smallest integer `k` so that `opnorm(A - svdcompress(A, k)) ≤ ε`,
 # which we call the "numerical rank".   (Hint: use the singular values instead of guess-and-check.)
 
 
@@ -99,7 +99,7 @@ function svdcompress_rank(A::Matrix, ε::Real)
     
 end
 F = fsample((x,y) -> exp(-x^2*sin(2y-1)), 100, 100)
-@test_broken svdcompress_rank(F, 1E-10) == 10
+@test_broken svdcompress_rank(F, 1E-10) == 9
 
 
 
@@ -145,7 +145,7 @@ F = fsample((x,y) -> exp(-x^2*sin(2y-1)), 100, 100)
 # $$
 # Solving this linear system gives an approximation to the solution to the ODE (in this case $u(t) = \exp(a t)$).
 
-# **Problem 5.1** Complete the following function that returns a (lower) `Bidiagonal` matrix of dimension
+# **Problem 4.1** Complete the following function that returns a (lower) `Bidiagonal` matrix of dimension
 # (n+1) × (n+1) representing the above linear system, i.e., acting on the vector `[u_0,u_1,…,u_n]`.
 # Hint: recall the `fill` command and that `[1; vc]` will concatenate the number `1` with a vector `vc`.
 
@@ -159,7 +159,7 @@ x = range(0, 1; length=n+1)
 @test_broken forwardeuler(1, n) isa Bidiagonal
 @test_broken norm(forwardeuler(1, n) \ [1; zeros(n)] - exp.(x)) ≤ 0.005
 
-# **Problem 5.2** For $a = 1$, plot the condition number of `forwardeuler(1,n)` for increasing $n$, up to 
+# **Problem 4.2** For $a = 1$, plot the condition number of `forwardeuler(1,n)` for increasing $n$, up to 
 # $n = 200$. Can you estimate at what rate the condition number is growing? I.e., if the growth can be bounded by
 # $C n^α$ give a conjecture on what $α$ is sufficient.  What does this tell us about a bound on the growth in round-off error in the approximation?
 # Hint: if you scale both the x axis and y axis logarithmically via `plot(...; xscale=:log10, yscale=:log10)` 
