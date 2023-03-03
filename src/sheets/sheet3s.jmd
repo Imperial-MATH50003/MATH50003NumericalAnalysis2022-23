@@ -65,7 +65,9 @@ Subtracting the second expression from the first we obtain
 $$f(x+h)-f(x-h) = f'(x)(2h) + \frac{f'''(z_1)+f'''(z_2)}{6}h^3.$$
 Hence,
 
-$$ \frac{f(x+h)-f(x-h)}{2h} = f'(x)  + \underbrace{\frac{f'''(z_1)+f'''(z_2)}{12}h^2}_{δ_{x,h}^{\rm T}}.$$
+$$
+\frac{f(x+h)-f(x-h)}{2h} = f'(x)  + \underbrace{\frac{f'''(z_1)+f'''(z_2)}{12}h^2}_{δ_{x,h}^{\rm T}}.
+$$
 
 Thus, the error can be bounded by
 $$\left|δ_{x,h}^{\rm T}\right| ≤ {M \over 6} h^2.$$
@@ -246,7 +248,7 @@ $$
 Expanding the products and dropping terms with $ϵ^2$ then leaves us with the definition of division for dual numbers (where the denominator must have non-zero real part):
 $$
 \frac{a}{c} + \frac{bc - ad}{c^2}ϵ.
-$$ 
+$$
 Thus we have $s = \frac{a}{c}$ and $t = \frac{bc - ad}{c^2}$.
 
 

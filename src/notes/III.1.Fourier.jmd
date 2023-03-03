@@ -1,0 +1,282 @@
+## III.1 Fourier expansions
+
+In Part III, Computing with Functions, we work with approximating functions by expansions in
+bases: that is, instead of approximating at a grid (as in the Differential Equations chapter),
+we approximate functions by other, simpler, functions. The ultimate goal is to use such expansions
+to numerically approximate solutions to ordinary and partial differential equations.
+
+
+
+
+1. Review of Fourier series
+2. Trapezium rule and discrete Fourier coefficients
+
+## 1. Review of Fourier series
+
+
+
+The most fundamental basis is (complex) Fourier: we have ${\rm e}^{{\rm i} k θ}$
+are orthogonal with respect to the inner product
+$$
+⟨f, g ⟩ := {1 \over 2π} ∫_0^{2π} f̄(θ) g(θ) {\rm d}θ,
+$$
+where we conjugate the first argument to be consistent with the vector inner product $𝐱^⋆ 𝐲$.
+We can (typically) expand functions in this basis:
+
+**Definition 1 (Fourier)** A function $f$ has a Fourier expansion if
+$$
+f(θ) = ∑_{k = -∞}^∞ f̂ₖ {\rm e}^{{\rm i} k θ}
+$$
+where
+$$
+f̂ₖ := ⟨{\rm e}^{{\rm i} k θ}, f⟩ = {1 \over 2π} ∫_0^{2π}  {\rm e}^{-{\rm i} k θ} f(θ) {\rm d}θ
+$$
+
+A basic observation is if a Fourier expansion has no negative terms it is equivalent to a Taylor series
+if we write $z = {\rm e}^{{\rm i} θ}$:
+
+**Definition 2 (Fourier–Taylor)** A function $f$ has a Fourier–Taylor expansion if
+$$
+f(θ) = ∑_{k = 0}^∞ f̂ₖ {\rm e}^{{\rm i} k θ}
+$$
+where $f̂ₖ := ⟨{\rm e}^{{\rm i} k θ}, f⟩$.
+
+
+
+In numerical analysis we try to build on the analogy with linear algebra as much as possible.
+Therefore we  can write this this as:
+$$
+f(θ) = \underbrace{[1 | {\rm e}^{{\rm i}θ} | {\rm e}^{2{\rm i}θ} | ⋯]}_{T(θ)}
+\underbrace{\begin{bmatrix} f̂_0 \\ f̂_1 \\ f̂_2 \\ ⋮ \end{bmatrix}}_{𝐟̂}.
+$$
+Essentially, expansions in bases are viewed as a way of turning _functions_ into (infinite) _vectors_.
+And (differential) _operators_ into _matrices_.
+
+
+
+
+In analysis one typically works with continuous functions and relates results to continuity.
+In numerical analysis we inheritely have to work with _vectors_, so it is more natural
+to  focus on the case where the _Fourier coefficients_ $f̂_k$ are _absolutely convergent_:
+
+
+**Definition 3 (absolute convergent)** We write
+$𝐟̂ ∈ ℓ^1$ if it is absolutely convergent,
+or in otherwords, the $1$-norm of $𝐟̂$ is bounded:
+$$
+\|𝐟̂\|_1 := ∑_{k=-∞}^∞ |f̂_k| < ∞
+$$
+
+We first state a couple basic results (whose proof is beyond the scope of this module):
+
+**Theorem 1 (2-norm convergence)**
+A function $f$ has bounded 2-norm
+$$
+\| f \|_2 := \sqrt{⟨f,f⟩} = \sqrt{\int_0^{2π} |f(θ)|^2 {\rm d} θ} < ∞
+$$
+if and only if
+$$
+\|𝐟̂ \|_2 = \sqrt{𝐟̂^⋆𝐟̂} = \sqrt{∑_{k = -∞}^∞ |f̂_k|^2} < ∞.
+$$
+In this case
+$$
+\| f - \lim_{m → ∞} ∑_{k = -m}^m f̂ₖ {\rm e}^{{\rm i} k θ} \| → 0
+$$
+
+**Theorem 2 (Absolute convergence)**
+If $𝐟̂ ∈ ℓ^1$ then
+$$
+f(θ) = ∑_{k = -∞}^∞ f̂ₖ {\rm e}^{{\rm i} k θ},
+$$
+which converges uniformly.
+
+
+Continuity gives us sufficient (though not necessary) conditions for absolute convergence:
+
+**Lemma 1 (differentiability and absolutely convergence)** If $f : ℝ → ℂ$ and $f'$ are periodic
+ and $f''$ is uniformly bounded, then $𝐟̂ ∈ ℓ^1$.
+
+**Proof**
+Integrate by parts twice using the fact that $f(0) = f(2π)$, $f'(0) = f(2π)$:
+$$
+\begin{align*}
+2πf̂ₖ &= ∫_0^{2π} f(θ) {\rm e}^{-{\rm i} k θ} {\rm d}θ =
+[f(θ) {\rm e}^{-{\rm i} k θ}]_0^{2π} + {1 \over {\rm i} k} ∫_0^{2π} f'(θ) {\rm e}^{-{\rm i} k θ} {\rm d}θ \\
+&= {1 \over {\rm i} k} [f'(θ) {\rm e}^{-{\rm i} k θ}]_0^{2π} - {1 \over k^2} ∫_0^{2π} f''(θ) {\rm e}^{-{\rm i} k θ} {\rm d}θ \\
+&= - {1 \over k^2} ∫_0^{2π} f''(θ) {\rm e}^{-{\rm i} k θ} {\rm d}θ
+\end{align*}
+$$
+thus uniform boundedness of $f''$ guarantees $|f̂ₖ| ≤ M |k|^{-2}$ for some $M$, and we have
+$$
+∑_{k = -∞}^∞ |f̂ₖ| ≤ |f̂_0|  + 2M ∑_{k = 1}^∞ |k|^{-2}  < ∞.
+$$
+using the dominant convergence test.
+
+∎
+
+This condition can be weakened to Lipschitz continuity but the proof is  beyond the scope
+of this module.
+Of more practical importance is the other direction: the more times differentiable a function the
+faster the coefficients decay, and thence the faster Fourier expansions converge.
+In fact, if a function is smooth and 2π-periodic its Fourier coefficients decay
+faster than algebraically: they decay like $O(k^{-λ})$ for any $λ$. This will be explored in the
+problem sheet.
+
+**Remark (advanced)** Going further, if we let $z = {\rm e}^{{\rm i} θ}$ then if $f(z)$ is _analytic_ in a
+neighbourhood of the unit circle the Fourier coefficients decay _exponentially fast_. And if $f(z)$ is entire
+they decay even faster than exponentially.
+
+
+## 2. Trapezium rule and discrete Fourier coefficients
+
+
+
+**Definition 4 (Trapezium Rule)** Let $θ_j = 2πj/n$ for $j = 0,1,…,n$ denote $n+1$ evenly spaced points over $[0,2π]$.
+The _Trapezium rule_ over $[0,2π]$ is the approximation:
+$$
+∫_0^{2π} f(θ) {\rm d}θ ≈ {2 π \over n} \left[{f(0) \over 2} + ∑_{j=1}^{n-1} f(θ_j) + {f(2 π) \over 2} \right]
+$$
+But if $f$ is periodic we have $f(0) = f(2π)$ we get the _periodic Trapezium rule_:
+$$
+∫_0^{2π} f(θ) {\rm d}θ ≈ 2 π\underbrace{{1 \over n} ∑_{j=0}^{n-1} f(θ_j)}_{Σ_n[f]}
+$$
+
+
+**Definition 5 (Discrete Fourier coefficients)** Define the Trapezium rule approximation to the Fourier coefficients by:
+$$
+f̂_k^n := Σ_n[{\rm e}^{-i k θ} f(θ)]  = {1 \over n} ∑_{j=0}^{n-1} {\rm e}^{-i k θ_j} f(θ_j)
+$$
+
+We know that ${\rm e}^{{\rm i} k θ}$ are orthogonal with respect to the continuous inner product.
+The following says that this property is maintained (up to "aliasing") when we replace the continuous
+integral with a trapezium rule approximation:
+
+**Lemma 2 (Discrete orthogonality)**
+We have:
+$$
+∑_{j=0}^{n-1} {\rm e}^{{\rm i} k θ_j} =
+\begin{cases} n & k = \ldots,-2n,-n,0,n,2n,\ldots  \cr
+              0 & \hbox{otherwise}
+\end{cases}
+$$
+In other words,
+$$
+Σ_n[{\rm e}^{{\rm i} (k-j) θ_j}] =
+\begin{cases} 1 & k-j = \ldots,-2n,-n,0,n,2n,\ldots  \cr
+              0 & \hbox{otherwise}
+\end{cases}.
+$$
+
+**Proof**
+
+Consider $ω := {\rm e}^{{\rm i} θ_1} = {\rm e}^{2 π {\rm i} \over n}$. This is an $n$ th root of unity: $ω^n = 1$.
+Note that ${\rm e}^{{\rm i} θ_j} ={\rm e}^{2 π {\rm i} j \over n}= ω^j$.
+
+(Case 1: $k = pn$ for an integer $p$)
+We have
+$$
+∑_{j=0}^{n-1} {\rm e}^{{\rm i} k θ_j} = ∑_{j=0}^{n-1} ω^{kj} = ∑_{j=0}^{n-1} ({ω^{pn}})^j =   ∑_{j=0}^{n-1} 1 = n
+$$
+(Case 2 $k ≠ pn$ for an integer $p$)  Recall that
+$$
+∑_{j=0}^{n-1} z^j = {z^n-1 \over z-1}.
+$$
+Then we have
+$$
+∑_{j=0}^{n-1} {\rm e}^{{\rm i} k θ_j} = ∑_{j=0}^{n-1} (ω^k)^j = {ω^{kn} -1 \over ω^k -1} = 0.
+$$
+where we use the fact that $k$ is not a multiple of $n$ to guarantee that $ω^k ≠ 1$.
+
+∎
+
+
+**Theorem 3 (discrete Fourier coefficients)**
+If $𝐟̂$ is absolutely convergent then
+$$
+f̂_k^n = ⋯ + f̂_{k-2n} + f̂_{k-n} + f̂_k + f̂_{k+n} + f̂_{k+2n} + ⋯
+$$
+
+**Proof**
+$$
+\begin{align*}
+f̂_k^n &= Σ_n[f(θ) {\rm e}^{-i k θ}] = ∑_{j=-∞}^∞ f̂_j Σ_n[{\rm e}^{{\rm i} (j-k) θ}] \\
+&= ∑_{j=-∞}^∞ f̂_j \begin{cases} 1 & j-k = \ldots,-2n,-n,0,n,2n,\ldots  \cr
+0 & \hbox{otherwise}
+\end{cases}
+\end{align*}
+$$
+∎
+
+Note that there is redundancy:
+
+**Corollary 1 (aliasing)**
+For all $p ∈ ℤ$, $f̂_k^n = f̂_{k+pn}^n$.
+
+
+In other words if we know $f̂_0^n, …, f̂_{n-1}^n$, we know $f̂_k^n$ for all $k$ via a permutation,
+for example if $n = 2m+1$ we have
+$$
+\begin{bmatrix}
+f̂_{-m}^n \\
+⋮\\
+f̂_m^n
+\end{bmatrix} = \underbrace{\begin{bmatrix} &&& 1 \\ &&&& ⋱ \\ &&&&& 1 \\
+    1 \\ & ⋱ \\ && 1 \end{bmatrix}}_{P_σ}
+\begin{bmatrix}
+f̂_0^n \\
+⋮\\
+f̂_{n-1}^n
+\end{bmatrix}
+$$
+where $σ$ has Cauchy notation (_Careful_: we are using 1-based indexing here):
+$$
+\begin{pmatrix}
+1 & 2 & ⋯ & m & m+1 & m+2 & ⋯ & n  \\
+m+2 & m+3 & ⋯ & n & 1 & 2 & ⋯ & m+1
+\end{pmatrix}.
+$$
+
+
+
+We first discuss the case when all negative coefficients are zero.
+That is, $f̂_0^n, …, f̂_{n-1}^n$ are approximations of the Fourier–Taylor coefficients by evaluating
+on the boundary.
+
+
+
+We can  prove _convergence_ whenever of this
+approximation whenever $f$ has absolutely summable coefficients.
+We will prove the result here in the special case where the negative
+coefficients are zero.
+
+
+**Theorem  4 (Approximate Fourier–Taylor expansions converge)**
+If $0 = f̂_{-1} = f̂_{-2} = ⋯$ and $𝐟̂$ is absolutely convergent then
+$$
+f_n(θ) = ∑_{k=0}^{n-1} f̂_k^n {\rm e}^{{\rm i} k θ}
+$$
+converges uniformly to $f(θ)$.
+
+**Proof**
+
+$$
+\begin{align*}
+|f(θ) - f_n(θ)| = |∑_{k=0}^{n-1} (f̂_k - f̂_k^n) {\rm e}^{{\rm i} k θ} + ∑_{k=n}^∞ f̂_k {\rm e}^{{\rm i} k θ}|
+= |∑_{k=n}^∞ f̂_k ({\rm e}^{{\rm i} k θ} - {\rm e}^{{\rm i} {\rm mod}(k,n) θ})|
+≤ 2 ∑_{k=n}^∞ |f̂_k|
+\end{align*}
+$$
+which goes to zero as $n → ∞$.
+∎
+
+For the general case we need to choose a range of coefficients that includes roughly an equal number of
+negative and positive coefficients (preferring negative over positive in a tie as a convention):
+$$
+f_n(θ) = ∑_{k=-⌈n/2⌉}^{⌊n/2⌋} f̂ₖ {\rm e}^{{\rm i} k θ}
+$$
+In the problem sheet we will prove this converges provided the coefficients are absolutely convergent.
+
+
+
+
+

@@ -170,7 +170,7 @@ A_k := \begin{bmatrix} 𝐮_1 | ⋯ | 𝐮_k \end{bmatrix} \begin{bmatrix}
 σ_1 \\
 & ⋱ \\
 && σ_k\end{bmatrix} \begin{bmatrix} 𝐯_1 | ⋯ | 𝐯_k \end{bmatrix}^⋆
-$$ 
+$$
 is the best 2-norm approximation of $A$ by a rank $k$ matrix, that is, for all rank-$k$ matrices $B$, we have 
 $$\|A - A_k\|_2 ≤ \|A -B \|_2.$$
 

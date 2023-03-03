@@ -191,8 +191,12 @@ For,
 $$
 A_n =   \begin{bmatrix}1 \\ &1/2 \\&&⋱ \\&&&1/2^n \end{bmatrix},\hspace{5mm}
 A_n^{-1} =   \begin{bmatrix}1 \\ &2 \\&&⋱ \\&&&2^n \end{bmatrix}
-$$ 
-It is clear that $$\|A_n\|_1 = \|A_n\|_∞ = 1,$$ and
+$$
+It is clear that
+$$
+\|A_n\|_1 = \|A_n\|_∞ = 1,
+$$
+and
 $$
 \|A_n^{-1}\|_1 = \|A_n^{-1}\|_∞ = 2^n,
 $$
