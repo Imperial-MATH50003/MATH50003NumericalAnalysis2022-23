@@ -237,8 +237,8 @@ So we deduce
 $$
 \begin{align*}
 \|δA \|_2^2 &≤ \| δA\|_F^2 = ∑_{k=1}^m ∑_{j=1}^n |δa_{kj}|^2 ≤
-E_{n,ϵ_{\rm m}/2} ∑_{k=1}^m ∑_{j=1}^n |a_{kj}|^2 \\
-&=  E_{n,ϵ_{\rm m}/2} \|A \|_F^2 ≤ E_{n,ϵ_{\rm m}/2} r \|A \|_2^2.
+E_{n,ϵ_{\rm m}/2}^2 ∑_{k=1}^m ∑_{j=1}^n |a_{kj}|^2 \\
+&=  E_{n,ϵ_{\rm m}/2}^2 \|A \|_F^2 ≤ E_{n,ϵ_{\rm m}/2}^2 r \|A \|_2^2.
 \end{align*}
 $$
 and the rank of $A$ is bounded by $\min(m,n)$.
