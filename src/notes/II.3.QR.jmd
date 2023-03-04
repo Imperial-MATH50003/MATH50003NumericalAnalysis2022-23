@@ -386,7 +386,7 @@ reflection this is a slow algorithm, taking $O(n^4)$ operations. The problem she
 will consider a better implementation that takes $O(n^3)$ operations.
 
 
-**Example 2** We will now do an example by hand. Consider the $4 × 3$ matrix
+**Example 2 (non-examinable)** We will now do an example by hand. Consider the $4 × 3$ matrix
 $$
 A = \begin{bmatrix} 
 2 & 3 & 0 \\ 
@@ -401,7 +401,7 @@ $$
 $$
 where $\| 𝐲_1 \|^2 = 6$. Hence
 $$
-Q_1 := I - {1 \over 6} \begin{bmatrix} -1 \\ 0 \\ -2 \\ -1 \end{bmatrix} \begin{bmatrix} -1 & 0 & -2 & -1 \end{bmatrix} =
+Q_1 := I - {1 \over 3} \begin{bmatrix} -1 \\ 0 \\ -2 \\ -1 \end{bmatrix} \begin{bmatrix} -1 & 0 & -2 & -1 \end{bmatrix} =
  {1 \over 3} \begin{bmatrix}
 2 & 0 & -2 & -1 \\
 0 & 3 & 0 & 0 \\
@@ -419,13 +419,13 @@ Q_1 A = \begin{bmatrix} 3 &  5 & 1 \\
 $$
 For the second column we have
 $$
-𝐲_2 :=  [-\sqrt{2},1,1]
+𝐲_2 :=  [-\sqrt{2},1,-1]
 $$
 where $\| 𝐲_2 \|^2 = 4$. Thus we have
 $$
 Q_2 := I - {1 \over 2}
- \begin{bmatrix} -\sqrt{2} \\1 \\ 1
-\end{bmatrix} \begin{bmatrix} -\sqrt{2} & 1 & 1 \end{bmatrix}
+ \begin{bmatrix} -\sqrt{2} \\1 \\ -1
+\end{bmatrix} \begin{bmatrix} -\sqrt{2} & 1 & -1 \end{bmatrix}
 = \begin{bmatrix}
 0 & 1/\sqrt{2} & -1/\sqrt{2} \\
 1/\sqrt{2} & 1/2 & 1/2 \\
