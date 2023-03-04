@@ -1,0 +1,94 @@
+# MATH50003 Numerical Analysis (2022–23)
+# Problem Sheet 8
+
+
+
+This problem sheet explores Fourier expandsions and the Discrete Fourier Transform (DFT).
+
+----
+
+**Problem 1** Give explicit formulae for $f̂_k$ and $f̂_k^n$ for the following functions:
+$$
+\cos θ, \cos 4θ, \sin^4θ, {3 \over 3 - {\rm e}^{\rm i θ}}, {1 \over 1 - 2{\rm e}^{\rm i θ}}
+$$
+Hint: You may wish to try the change of variables $z = {\rm e}^{-{\rm i}θ}$.
+
+
+
+------
+
+**Problem 2** Prove that if the first $λ-1$ derivatives $f(θ), f'(θ), …, f^{(λ-1)}(θ)$ 
+are 2π-periodic and $f^{(λ)}$ is uniformly bounded  that
+$$
+|f̂_k| = O(|k|^{-λ})\qquad \hbox{as $|k| → ∞$}
+$$
+Use this to show for the Taylor case ($0 = f̂_{-1} = f̂_{-2} = ⋯$) that
+$$
+|f(θ) - ∑_{k=0}^{n-1} f̂_k {\rm e}^{{\rm i}kθ}| = O(n^{1-λ})\qquad \hbox{as $n → ∞$}
+$$
+
+
+----
+
+**Problem 3.1**
+If $f$ is a trigonometric polynomial  ($f̂_k = 0$ for $|k| > m$) show
+for $n ≥ 2m+1$ that we can exactly recover $f$:
+$$
+f(θ) = \sum_{k=-m}^m f̂_k^n {\rm e}^{{\rm i} k θ}
+$$
+
+
+
+**Problem 3.2** For the general (non-Taylor) case and $n = 2m+1$, prove convergence for
+$$
+f_{-m:m}(θ) := ∑_{k=-m}^m f̂_k^n {\rm e}^{{\rm i} k θ}
+$$
+to $f(θ)$ as $n \rightarrow ∞$.
+What is the rate of convergence if the first $λ-1$ derivatives $f(θ), f'(θ), …, f^{(λ-1)}(θ)$ 
+are 2π-periodic and $f^{(λ)}$ is uniformly bounded?
+
+
+----
+
+
+**Problem 4.1** Show for $0 ≤ k,ℓ ≤ n-1$
+$$
+{1 \over n} \sum_{j=1}^n \cos k θ_j \cos ℓ θ_j = \begin{cases} 1 & k = ℓ = 0 \\
+                                                  1/2 & k = ℓ \\
+                                                  0 & \hbox{otherwise}
+                                                  \end{cases}
+$$
+for $θ_j = π(j-1/2)/n$. Hint: Be careful as the $θ_j$ differ from before, 
+and only cover half the period, $[0,π]$. Using symmetry may help.
+You may also consider replacing $\cos$ with 
+complex exponentials:
+$$
+\cos θ = {{\rm e}^{{\rm i}θ} + {\rm e}^{-{\rm i}θ} \over 2}.
+$$
+
+
+
+
+
+**Problem 4.2** Consider the Discrete Cosine Transform (DCT)
+$$
+C_n := \begin{bmatrix}
+\sqrt{1/n} \\
+ & \sqrt{2/n} \\ 
+ && ⋱ \\
+ &&& \sqrt{2/n}
+ \end{bmatrix}
+\begin{bmatrix}
+    1 & ⋯ & 1\\
+    \cos θ_1 & ⋯ & \cos θ_n \\
+    ⋮ & ⋱ & ⋮ \\
+    \cos (n-1)θ_1 & ⋯ & \cos (n-1)θ_n
+\end{bmatrix}
+$$
+for $θ_j = π(j-1/2)/n$. Prove that $C_n$ is orthogonal: $C_n^⊤ C_n = C_n C_n^⊤ = I$.
+Hint: $C_n C_n^⊤ = I$ might be easier to show than $C_n^⊤ C_n = I$ using the previous problem.
+
+
+
+
+

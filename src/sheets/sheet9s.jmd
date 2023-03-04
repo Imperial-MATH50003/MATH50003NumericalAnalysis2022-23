@@ -1,0 +1,142 @@
+
+## 3. Orthogonal polynomials
+
+**Problem 3.1⋆  (B)** Construct  $p_0(x),p_1(x),p_2(x),p_3(x)$, monic OPs
+for the weight $\sqrt{1-x^2}$ on $[-1,1]$.
+Hint: first compute $\int_{-1}^1 x^k \sqrt{1-x^2} {\rm d} x$ for $0 ≤ k ≤ 2$
+using a change-of-variables.
+
+Following the hint, we first calculate $\int_{-1}^1 x^k\sqrt{1-x^2}{\rm d}x$. By symmetry, it's zero when $k$ is odd and double the integral on $[0,1]$ when $k$ is even. 
+
+$$
+\underbrace{\int_0^1 x^k\sqrt{1-x^2}{\rm d}x}_{I_k}=_{x=\sin t}\underbrace{\int_0^{\pi/2}\sin^k(t)\cos^2(t){\rm d}t}_{I_k}=\underbrace{\int_0^{\pi/2}\sin^k t{\rm d}t}_{J_k}-\underbrace{\int_0^{\pi/2}\sin^{k+2}t{\rm d}t}_{J_{k+2}}.
+$$
+
+Meanwhile, 
+$$J_k=-\int_0^{\pi/2}\sin^{k-1}t{\rm d}(\cos t)=_{\text{integral by part}}(k-1)I_{k-2}.$$
+
+Putting the above 2 equations together, we have $I_k=(k-1)I_{k-2}-(k+1)I_k$, so $I_k=\frac{k-1}{k+2}I_{k-2}$. Since $I_0=\pi/4$, we have $I_k=\frac{(k-1)!!}{(k+2)!!}\frac{\pi}{2}$ for positive even $k$. (Note that the denominator multiplies to 4, not to 2.) Keep in mind that the integral we want is double this value when $k$ is even.
+
+【Remark】Check the [beta function](https://en.wikipedia.org/wiki/Beta_function).
+
+Let $p_0(x)=1$, then $\|p_0\|^2=2I_0=\pi/2$. We know from the 3-term recurrence that
+$$xp_0(x)=a_0p_0(x)+p_1(x)$$
+where
+$$
+a_0=\frac{⟨ p_0,xp_0⟩}{\|p_0\|^2}=0.$$
+Thus $p_1(x)=x$ and $\|p_1\|^2=2I_2=\pi/8$.
+From
+$$xp_1(x)=c_0p_0(x)+a_1p_1(x)+p_2(x)$$
+we have
+$$c_0=\frac{⟨ p_0,xp_1⟩}{\|p_0\|^2}=2I_2/2I_0=1/4$$
+$$a_1=\frac{⟨ p_1,xp_1⟩}{\|p_1\|^2}=0$$
+$$p_2(x)=xp_1(x)-c_0-a_1p_1(x)=x^2-1/4$$
+$$\|p_2\|^2=2I_4-I_2+1/8I_0=\pi/32$$
+Finally, from
+$$xp_2(x)=c_1p_1(x)+a_2p_2(x)+p_3(x)$$
+we have
+$$c_1=\frac{⟨ p_1,xp_2⟩}{\|p_1\|^2}=(2I_4-1/2I_2)/(\pi/8)=1/4$$
+$$a_2=\frac{⟨ p_2,xp_2⟩}{\|p_2\|^2}=0$$
+$$p_3(x)=xp_2(x)-c_1p_1(x)-a_2p_2(x)=x^3-1/2x$$
+
+**Problem 3.2⋆  (C, 3-term recurrence, 1st form)**
+Show that if $\{p_n\}$ are OPs then there exist real constants $A_n ≠ 0$, $B_n$, and $C_n$
+such that
+$$
+\begin{align*}
+p_1(x) &= (A_0 x + B_0) p_0(x) \\
+p_{n+1}(x) &= (A_n x + B_n) p_n(x) - C_n p_{n-1}(x)
+\end{align*}
+$$
+Write this as a lower triangular linear system, given $p_0(x) = \mu \in \mathbb{R}$:
+$$
+L_x \begin{bmatrix} p_0(x) \\ \vdots \\ p_{n+1}(x) \end{bmatrix} = \begin{bmatrix} \mu \\ 0 \\ \vdots \\ 0 \end{bmatrix}
+$$
+
+**SOLUTION**
+
+The 2nd form of 3-term recurrence is
+$$xp_0(x)=a_0p_0(x)+b_0p_1(x)$$
+and
+$$xp_n(x)=c_{n-1}p_{n-1}(x)+a_np_n(x)+b_np_{n+1}(x)$$
+which is equivalent to
+$$p_1(x)=\left(\frac{1}{b_0}x-\frac{a_0}{b_0}\right)p_0(x),$$
+$$p_{n+1}(x)=\left(\frac{1}{b_n}x-\frac{a_n}{b_n}\right)p_n(x)-\frac{c_{n-1}}{b_n}p_{n-1}(x).$$
+So we have $A_n=1/b_n$, $B_n=-\frac{a_n}{b_n}$ and $C_n=\frac{c_{n-1}}{b_n}$.
+
+Writing down the recurrence for every $n$, we have a lower tridiagonal linear system
+$$
+\underbrace{\begin{bmatrix}
+1 &&&&\\
+-A_0x-B_0 & 1 &&&\\
+C_1 & -A_1x-B_1 & 1 &&\\
+& \ddots &\ddots&\ddots&\\
+&&C_{n}&-A_nx-B_n&1
+\end{bmatrix}}_{L_x}
+\underbrace{\begin{bmatrix} p_0(x) \\ \vdots \\ p_{n+1}(x) \end{bmatrix}}_{\mathbf{P}(x)} = \underbrace{\begin{bmatrix} μ \\ 0 \\ \vdots \\ 0 \end{bmatrix}}_{\mu\mathbf{e}_1}
+$$
+
+
+**Problem 3.3⋆  (B)** Show that if $f(x)$ is a degree $n-1$ polynomial
+$$
+f(x) = [p_0(x) | ⋯ | p_{n-1}(x)] \underbrace{\begin{bmatrix} c_0 \\ \vdots \\ c_{n-1} \end{bmatrix}}_{\bf c}
+$$
+then evaluation at a point can be recast as inverting an upper triangular system
+(_Clenshaw's algorithm_):
+$$
+f(x) = μ𝐞_1^⊤ U_x^{-1} {\bf c}.
+$$
+
+**SOLUTION**
+
+Using the same notation as the previous part we have:
+$$
+f,(x) = \mathbf{P}(x)^⊤ 𝐜 = (μ L_x^{-1} 𝐞_1)^⊤ 𝐜 = μ  𝐞_1^⊤ (L_x^⊤)^{-1} 𝐜
+$$
+that is $U_x = L_x^⊤$.
+
+
+**Problem 3.4⋆  (B)** If $w(-x) = w(x)$ for a weight supported on $[-b,b]$ show that $a_n = 0$.
+Hint: first show that the (monic) polynomials $p_{2n}(x)$ are even and $p_{2n+1}(x)$ are odd.
+
+**SOLUTION**
+
+An integral is zero if its integrand is odd. 
+Moreover an even function times an odd function is odd and
+an odd function times an odd fuction is even.
+Note that $p_0(x)$ and $w(x)$ are even and $x$ is odd. 
+
+We see that $a_0$ is zero:
+$$
+⟨p_0,x p_0(x)⟩ = \int_{-b}^b x w(x) {\rm d} x = 0
+$$
+since $xw(x)$ is odd,
+which shows that
+$$
+p_1(x) = xp_0(x)
+$$
+is odd. We now proceed by induction. Assume that $p_{2n}$ is even and $p_{2n-1}$ is odd.
+We have:
+$$
+⟨p_{2n},x p_{2n}(x)⟩ = \int_{-b}^b x w(x) p_{2n}(x)^2 {\rm d} x = 0
+$$
+since $x w(x) p_{2n}(x)^2$ is odd, therefore $a_{2n} = 0$.
+Thus from
+$$
+p_{2n+1}(x) = (x p_{2n}(x)- c_{2n-1} p_{2n-1}(x)) / b_{2n} 
+$$
+we see that $p_{2n+1}$ is odd. Then
+$$
+⟨p_{2n+1},x p_{2n+1}(x)⟩ = \int_{-b}^b x w(x) p_{2n+1}(x)^2 {\rm d} x = 0
+$$
+since $x w(x) p_{2n+1}(x)^2$ is odd, therefore $a_{2n+1} = 0$.
+and hence
+$$
+p_{2n+2}(x) = (x p_{2n+1}(x)- c_{2n} p_{2n}(x)) / b_{2n+1} 
+$$
+is even.
+
+
+
+**END**
+

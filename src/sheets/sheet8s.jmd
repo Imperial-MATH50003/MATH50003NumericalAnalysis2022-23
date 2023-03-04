@@ -1,0 +1,301 @@
+# MATH50003 Numerical Analysis (2022–23)
+# Problem Sheet 8
+
+
+
+This problem sheet explores Fourier expandsions and the Discrete Fourier Transform (DFT).
+
+----
+
+**Problem 1** Give explicit formulae for $f̂_k$ and $f̂_k^n$ for the following functions:
+$$
+\cos θ, \cos 4θ, \sin^4θ, {3 \over 3 - {\rm e}^{\rm i θ}}, {1 \over 1 - 2{\rm e}^{\rm i θ}}
+$$
+Hint: You may wish to try the change of variables $z = {\rm e}^{-{\rm i}θ}$.
+
+**SOLUTION**
+
+1. Just expand in complex exponentials to find that
+$$
+\cos θ = {\exp({\rm i} θ) + \exp(-{\rm i} θ) \over 2}
+$$
+that is $f̂_1 = f̂_{-1} = 1/2$, $f̂_k = 0$ otherwise.
+Therefore for $p∈ ℤ$ we have
+$$
+\begin{align*}
+f̂_k^1 &= f̂_1 + f̂_{-1} = 1 \\
+f̂_{2p}^2 &= 0, f̂_{2p+1}^2 = f̂_1 + f̂_{-1} = 1 \\
+f̂_{1+np}^n &= f̂_{-1+np}^n = 1/2, f̂_k^n = 0 \hbox{otherwise} \\
+\end{align*}
+$$
+2. Similarly
+$$
+\cos 4 θ = {\exp(4{\rm i} θ) + \exp(-4{\rm i} θ) \over 2}
+$$
+that is $f̂_4 = f̂_{-4} = 1/2$, $f̂_k = 0$ otherwise.
+Therefore for $p∈ ℤ$ we have
+$$
+\begin{align*}
+f̂_p^1 &= f̂_4 + f̂_{-4} = 1 \\
+f̂_{2p}^2 &= f̂_4 + f̂_{-4} = 1, f̂_{2p+1}^2 = 0 \\
+f̂_{3p}^3 &= 0, f̂_{3p±1}^3 = f̂_{±4} =1/2 \\
+f̂_{4p}^4 &= f̂_{-4} + f̂_4 = 1, f̂_{4p±1}^4 = 0,  f̂_{4p+2}^4 = 0 \\
+f̂_{5p}^5 &= 0, f̂_{5p+1}^5 = f̂_{-4} = 1/2, f̂_{5p-1}^5 = f̂_{4} = 1/2,  f̂_{5p±2}^5 =0  \\
+f̂_{6p}^6 &=0, f̂_{6p±1}^6 = 0,  f̂_{6p+2}^6 = f̂_{-4} = 1/2,  f̂_{6p-2}^6 = f̂_{4} = 1/2, f̂_{6p+3}^6 =0  \\
+f̂_{7p}^7 &= 0, f̂_{7p±1}^7 = 0,  f̂_{7p±2}^7 = 0, f̂_{7p±3}^7 = f̂_{∓4} = 1/2 \\
+f̂_{8p}^8 &= f̂_{8p±1}^8 = f̂_{8p±2}^8 =  f̂_{8p±3}^8 = 0, f̂_{8p+4}^8 = f̂_4 + f̂_{-4} = 1 \\
+f̂_{k+pn}^n &= f̂_k \hbox{ for $-4 ≤ k ≤ 4$, 0 otherwise}.
+\end{align*}
+$$
+3. Here we have:
+$$
+(\sin θ)^4= \left({\exp({\rm i} θ) - \exp(-{\rm i} θ) \over 2 {\rm i}}\right)^4
+= \left({\exp(2{\rm i} θ) -2 + \exp(-2{\rm i} θ) \over -4}\right)^2
+= {\exp(4{\rm i} θ) -4\exp(2{\rm i} θ) +6 -4 \exp(-2{\rm i} θ)+\exp(-2{\rm i} θ) \over 16}
+$$
+that is $f̂_{-4} = f̂_4 = 1/16$, $f̂_{-2} = f̂_2 = -1/4$, $f_0 = 3/8$, $f̂_k = 0$ otherwise.
+Therefore for $p∈ ℤ$ we have
+$$
+\begin{align*}
+f̂_p^1 &=f̂_{-4} + f̂_{-2} + f̂_0 + f̂_2 +  f̂_4 = 0 \\
+f̂_k^2 &= 0 \\
+f̂_{3p}^3 &= f̂_0 = 3/8, f̂_{3p+1}^3 = f̂_{-2} + f̂_4 =-3/16,  f̂_{3p-1}^3 = f̂_{2} + f̂_{-4} =-3/16 \\
+f̂_{4p}^4 &= f̂_0 + f̂_{-4} + f̂_4 = 1/2, f̂_{4p±1}^4 = 0,  f̂_{4p+2}^4 = f̂_{2} + f̂_{-2} =-1/2 \\
+f̂_{5p}^5 &= f̂_0 = 3/8, f̂_{5p+1}^5 = f̂_{-4} = 1/16, f̂_{5p-1}^5 = f̂_{4} = 1/16,  f̂_{5p+2}^5 = f̂_2 = -1/4, f̂_{5p-2}^5 = f̂_{-2} = -1/4  \\
+f̂_{6p}^6 &= f̂_0 = 3/8, f̂_{6p±1}^6 = 0,  f̂_{6p+2}^6 = f̂_2 + f̂_{-4} = -3/16,  f̂_{6p-2}^6 = f̂_{-2} + f̂_{4} = -3/16, f̂_{6p+3}^6 =0  \\
+f̂_{7p}^7 &= f̂_0 = 3/8, f̂_{7p±1}^7 = 0,  f̂_{7p±2}^7 = f̂_{±2} = -1/4, f̂_{7p±3}^7 = f̂_{∓4} = 1/16 \\
+f̂_{8p}^8 &= f̂_0 = 3/8, f̂_{8p±1}^8 = 0,  f̂_{8p±2}^8 = f̂_{±2} = -1/4, f̂_{8p±3}^8 = 0, f̂_{8p+4}^8 = f̂_4 + f̂_{-4} = 1/8 \\
+f̂_{k+pn}^n &= f̂_k \hbox{ for $-4 ≤ k ≤ 4$, 0 otherwise}.
+\end{align*}
+$$
+4. Under the change of variables $z = {\rm e}^{{\rm i}θ}$ we can use Geoemtric series to determine
+$$
+{3 \over 3 - z} = {1 \over 1- z/3} = ∑_{k=0}^∞ {z^k \over 3^k}
+$$
+That is $f̂_k = 1/3^k$ for $k ≥ 0$, and $f̂_k = 0$ otherwise.
+We then have for $0 ≤ k ≤ n-1$
+$$
+f̂_{k+pn}^n = ∑_{ℓ=0}^∞ {1 \over 3^{k+ℓn}} = {1 \over 3^k} {1 \over 1 - 1/3^n} = {3^n \over 3^{n+k} - 3^k}
+$$
+5. Now make the change of variables $z = {\rm e}^{-{\rm i} θ}$ to get:
+$$
+{1 \over 1 - 2/z} = {1 \over -2/z} {1 \over 1 - z/2} = {1 \over -2/z} ∑_{k=0}^∞ {z^k \over 2^k}
+= - ∑_{k=1}^∞ {{\rm e}^{-{\rm i} k θ} \over 2^k}
+$$
+That is $f̂_k = -1/2^{-k}$ for $k ≤ -1$ and 0 otherwise.
+We then have for $-n ≤ k ≤ -1$
+$$
+f̂_{k+pn}^n =- ∑_{ℓ=0}^∞ {1 \over 2^{-k+ℓn}} = -{1 \over 2^{-k}} {1 \over 1 - 1/2^n} = -{2^{n+k} \over 2^n - 1}
+$$
+
+**END**
+
+------
+
+**Problem 2** Prove that if the first $λ-1$ derivatives $f(θ), f'(θ), …, f^{(λ-1)}(θ)$ 
+are 2π-periodic and $f^{(λ)}$ is uniformly bounded  that
+$$
+|f̂_k| = O(|k|^{-λ})\qquad \hbox{as $|k| → ∞$}
+$$
+Use this to show for the Taylor case ($0 = f̂_{-1} = f̂_{-2} = ⋯$) that
+$$
+|f(θ) - ∑_{k=0}^{n-1} f̂_k {\rm e}^{{\rm i}kθ}| = O(n^{1-λ})\qquad \hbox{as $n → ∞$}
+$$
+
+**SOLUTION**
+A straightforward application of integration by parts yields the result
+
+$$f̂ₖ = \frac{1}{2π} \int^{2π}_{0} f(θ) {\rm e}^{-ikθ} dθ = \frac{(-i)^λ}{2π k^{λ}} \int^{2π}_{0} f^{(λ)}(θ) {\rm e}^{-ikθ} dθ  $$
+given that $f^{(λ)}$ is uniformly bounded, the second part follows directly from this result
+
+$$
+|∑_{k=n}^{\infty} f̂_k {\rm e}^{{\rm i}kθ}| \leq ∑_{k=n}^{\infty} |f̂_k | \leq C ∑_{k=n}^{\infty} k^{-λ} 
+$$
+
+for some constant $C$.
+**END**
+----
+
+**Problem 3.1**
+If $f$ is a trigonometric polynomial  ($f̂_k = 0$ for $|k| > m$) show
+for $n ≥ 2m+1$ that we can exactly recover $f$:
+$$
+f(θ) = \sum_{k=-m}^m f̂_k^n {\rm e}^{{\rm i} k θ}
+$$
+
+**SOLUTION**
+This proof is nearly identical to the proof of "Theorem (Taylor series converges)" in the lecture notes. Only now one has to also subtract the negative coefficients from the negative approximate coefficients in the chain of arguments.
+
+**END**
+
+**Problem 3.2** For the general (non-Taylor) case and $n = 2m+1$, prove convergence for
+$$
+f_{-m:m}(θ) := ∑_{k=-m}^m f̂_k^n {\rm e}^{{\rm i} k θ}
+$$
+to $f(θ)$ as $n \rightarrow ∞$.
+What is the rate of convergence if the first $λ-1$ derivatives $f(θ), f'(θ), …, f^{(λ-1)}(θ)$ 
+are 2π-periodic and $f^{(λ)}$ is uniformly bounded?
+
+**SOLUTION**
+
+Observe that by aliasing (see corollary in lecture notes) and triangle inequality we have the following 
+
+$$ |f̂_k^n - f̂_k|  \leq \sum_{p=1}^{\infty} (|f̂_{k+pn}|+|f̂_{k-pn}|) $$
+
+Using the result from Problem 3.2 yields
+
+$$ |f̂_k^n - f̂_k| \leq \frac{C}{n^\lambda} \sum_{p=1}^{\infty} \frac{1}{\left(p + \frac{k}{n}\right)^\lambda} + \frac{1}{\left(p - \frac{k}{n}\right)^\lambda} $$
+
+now we pick $|q| < \frac{1}{2}$ (such that the estimate below will hold for both summands above) and construct an integral with convex and monotonocally decreasing integrand such that
+
+$$ \left( p + q \right)^{-\lambda} < \int_{p-\frac{1}{2}}^{p+\frac{1}{2}} (x + q)^{-\lambda} dx $$
+
+more over summing over the left-hand side from $1$ to $\infty$ yields a bound by the integral:
+
+$$ \int^{\infty}_{\frac{1}{2}} (x + q)^{-\lambda} dx = \frac{1}{\lambda}(\frac{1}{2} + q)^{- \lambda + 1}$$
+
+Finally let $q = \pm \frac{k}{n}$ to achieve the rate of convergence
+
+$$ |f̂_k^n - f̂_k| \leq \frac{C_{\lambda}}{ n^{\lambda}} \left(  \left( \frac{1}{2} + k/n \right)^{ - \lambda + 1} + \left( \left( \frac{1}{2} - k/n \right) \right)^{- \lambda +1} \right)$$
+
+where $C_{\lambda}$ is a constant depending on $\lambda$. Note that it is indeed important to split the $n$ coefficients equally over the negative and positive coefficients as stated in the notes, due to the estatime we used above.
+
+Finally, we have (thanks to Anonymous on ed):
+$$
+\begin{align*}
+|f(θ) - f_{-m:m}(θ)|
+&= |\sum_{k=-m}^m {(f̂_k - f̂_k^n)z^k} + \sum_{k=m+1}^\infty {f̂_k z^k}  + \sum_{k=-\infty}^{-m-1} {f̂_k z^k} | \\
+&\le \sum_{k=-m}^m | f̂_k - f̂_k^n | + \sum_{k=m+1}^\infty |f̂_k| +  \sum_{k=-\infty}^{-m-1} |f̂_k| \\
+&\le \sum_{k=-m}^m {\frac{C_{\lambda}}{ n^{\lambda}} \left( \left( \frac{1}{2} + k/n \right)^{ - \lambda + 1} + \left( \left( \frac{1}{2} - k/n \right) \right)^{- \lambda +1} \right)} + \sum_{k=m+1}^\infty |f̂_k| +  \sum_{k=-\infty}^{-m-1} |f̂_k| \\
+&= \frac{C_{\lambda}}{n^{\lambda}} 2^{\lambda} + \sum_{k=m+1}^\infty |f̂_k| +  \sum_{k=-\infty}^{-m-1} |f̂_k|  \\
+&= O(n^{-\lambda}) + O(n^{1-\lambda} ) + O(n^{1-\lambda} ) \\
+&= O(n^{1-\lambda}) 
+\end{align*}
+$$
+
+**END**
+----
+
+
+**Problem 4.1** Show for $0 ≤ k,ℓ ≤ n-1$
+$$
+{1 \over n} \sum_{j=1}^n \cos k θ_j \cos ℓ θ_j = \begin{cases} 1 & k = ℓ = 0 \\
+                                                  1/2 & k = ℓ \\
+                                                  0 & \hbox{otherwise}
+                                                  \end{cases}
+$$
+for $θ_j = π(j-1/2)/n$. Hint: Be careful as the $θ_j$ differ from before, 
+and only cover half the period, $[0,π]$. Using symmetry may help.
+You may also consider replacing $\cos$ with 
+complex exponentials:
+$$
+\cos θ = {{\rm e}^{{\rm i}θ} + {\rm e}^{-{\rm i}θ} \over 2}.
+$$
+
+
+**SOLUTION**
+We have,
+
+$$
+\begin{align*}
+\frac{1}{n}\sum_{j=1}^n \cos(kθ_j)\cos(lθ_j) &= \frac{1}{4n}\sum_{j=1}^ne^{i(k+l)θ_j} + e^{-i(k+l)θ_j} + e^{i(k-l)θ_j} + e^{-i(k-l)θ_j} \\
+&=	\frac{1}{4n}\sum_{j=1}^ne^{ia_{kl}θ_j} + e^{-ia_{kl}θ_j} + e^{ib_{kl}θ_j} + e^{-ib_{kl}θ_j},
+\end{align*}
+$$
+where we have defined $a_{kl} = k+l$ and $b_{kl} = k-l$. Now consider, for $a \in \mathbb{Z}$, a $\neq 2kn$ for some $k \in \mathbb{Z}$,
+$$
+\begin{align*}
+	\sum_{j=1}^n e^{iaθ_j} &=\sum_{j=1}^n e^{iaπ(j-\frac{1}{2})/n} \\
+	&=e^{-iaπ/2n}\sum_{j=1}^n e^{iajπ/n} \\
+	&=e^{-iaπ/2n}\sum_{j=1}^n (e^{iaπ/n})^j \\
+	&=e^{-iaπ/2n} e^{iaπ /n}\frac{(e^{iaπ /n})^n - 1}{e^{iaπ/n} - 1} \\
+	&= e^{iaπ/2n} \frac{e^{iaπ} - 1 }{e^{iaπ / n} - 1},
+\end{align*}
+$$
+where our assumptions on $a$ ensure that we are not dividing by $0$. Then we have, for $a$ as above,
+$$
+\begin{align*}
+	\sum_{j=1}^n e^{iaθ_j} + e^{-iaθ_j} &= e^{iaπ/2n} \frac{e^{iaπ} - 1 }{e^{iaπ / n} - 1} + e^{-iaπ/2n} \frac{e^{-iaπ} - 1 }{e^{-iaπ / n} - 1} \\
+	&= e^{iaπ/2n} \frac{e^{iaπ} - 1 }{e^{iaπ / n} - 1} + e^{-iaπ/2n} \cdot\frac{e^{iaπ/n}}{e^{iaπ/n}}\cdot \frac{e^{-iaπ} - 1 }{e^{-iaπ / n} - 1} \\
+	&= e^{iaπ/2n} \frac{e^{iaπ} - 1 }{e^{iaπ / n} - 1} + e^{iaπ/2n}\frac{e^{-iaπ} - 1}{1 - e^{iaπ/n}} \\
+	&=e^{iaπ/2n} \frac{e^{iaπ} - 1 }{e^{iaπ / n} - 1} - e^{iaπ/2n}\frac{e^{-iaπ} - 1}{e^{iaπ/n} - 1} \\
+	&= \frac{e^{iaπ/2n}}{e^{iaπ/n-1}}\left(e^{iaπ} - 1 - e^{-iaπ} + 1 \right) \\
+	&= \frac{e^{iaπ/2n}}{e^{iaπ/n-1}}\frac{1}{2i}\sin(aπ),
+\end{align*}
+$$
+which is $0$ for $a$ an integer.
+
+Now, when $k = l = 0$, we have $a_{kl} = b_{kl} = 0$, and,
+$$
+\frac{1}{n}\sum_{j=1}^n \cos(kθ_j)\cos(lθ_j) = \frac{1}{4n}\sum_{j=1}^n (1 + 1 + 1 + 1) = 1.
+$$
+When $k = l \neq 0$, we have $0 < a_{kl} = 2k < 2n$, and $b_{kl} = 0$. Hence,
+$$
+\begin{align*}
+	\frac{1}{n}\sum_{j=1}^n \cos(kθ_j)\cos(lθ_j) &= \frac{1}{4n}\sum_{j=1}^n (e^{ia_{kl}θ_j} + e^{-ia_{kl}θ_j} + 1 + 1) \\
+	&= \frac{1}{4n}\left[ \left(\sum_{j=1}^n e^{ia_{kl}θ_j} + e^{-ia_{kl}θ_j}\right) +2n\right] \\
+	&= \frac{1}{2},
+\end{align*}
+$$
+since $a_{kl}$ meets the conditions for the sum considered above.
+
+When $k \neq l$, we have, $-2n < a_{kl}, b_{kl} <  2n$ and $a_{kl}, b_{kl} \neq 0$, hence,
+$$
+\begin{align*}
+	\frac{1}{n}\sum_{j=1}^n \cos(kθ_j)\cos(lθ_j) &= \frac{1}{4n}\sum_{j=1}^n (e^{ia_{kl}θ_j} + e^{-ia_{kl}θ_j} + e^{ib_{kl}θ_j} + e^{-ib_{kl}θ_j}) \\
+	&= \frac{1}{4n} \left[\sum_{j=1}^n (e^{ia_{kl}θ_j} + e^{-ia_{kl}θ_j})  + \sum_{j=1}^n (e^{ib_{kl}θ_j} + e^{-ib_{kl}θ_j} )\right] \\
+	&= 0.
+\end{align*}
+$$
+
+**END**
+
+
+**Problem 4.2** Consider the Discrete Cosine Transform (DCT)
+$$
+C_n := \begin{bmatrix}
+\sqrt{1/n} \\
+ & \sqrt{2/n} \\ 
+ && ⋱ \\
+ &&& \sqrt{2/n}
+ \end{bmatrix}
+\begin{bmatrix}
+    1 & ⋯ & 1\\
+    \cos θ_1 & ⋯ & \cos θ_n \\
+    ⋮ & ⋱ & ⋮ \\
+    \cos (n-1)θ_1 & ⋯ & \cos (n-1)θ_n
+\end{bmatrix}
+$$
+for $θ_j = π(j-1/2)/n$. Prove that $C_n$ is orthogonal: $C_n^⊤ C_n = C_n C_n^⊤ = I$.
+Hint: $C_n C_n^⊤ = I$ might be easier to show than $C_n^⊤ C_n = I$ using the previous problem.
+
+**SOLUTION**
+
+The components of $C$ without the diagonal matrix, which we may call $\hat{C}$ are
+$$
+\hat{C}_{ij} = \cos((j-1)θ_{i-1}),
+$$
+where $θ_j = π(j-1/2)/n$. Recalling that the elements of matrix multiplication are given by
+$$
+(ab)_{ij} := \sum_{k=1}^n a_{ik} b_{kj}
+$$
+we find that
+$$
+(\hat{C}_n \hat{C}_n^⊤)_{ij} = \sum_{k=1}^n \cos((i-1)θ_{k-1}) \cos((k-1)θ_{j-1}).
+$$
+
+By using the previous problem and the terms on the diagonal matrices which ensure that the $1/2$ terms become $1$ we know how to compute all of these entries and find that it is the identity.
+
+Here is a computer-based demonstration:
+```julia
+using LinearAlgebra
+n = 10
+θ = range(π/(2n); step=π/n, length=n) # n evenly spaced points starting at π/(2n) with step size π/n
+C = Diagonal([1/sqrt(n); fill(sqrt(2/n), n-1)]) * [cos((k-1)*θ[j]) for k=1:n, j=1:n]
+C'C
+```
+
+**END**
+
+
+
