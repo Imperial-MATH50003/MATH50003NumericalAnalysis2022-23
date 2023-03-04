@@ -391,7 +391,7 @@ where the diagonals of $L$ are positive.
 
 **Proof** If $A$ has a Cholesky factorisation it is symmetric ($A^⊤ = (L L^⊤)^⊤ = A$) and for $𝐱 ≠ 0$ we have
 $$
-𝐱^⊤ A 𝐱 = (L𝐱)^⊤ L 𝐱 = \|L𝐱\|^2 > 0
+𝐱^⊤ A 𝐱 = (L^⊤𝐱)^⊤ L^⊤ 𝐱 = \|L^⊤𝐱\|^2 > 0
 $$
 where we use the fact that $L$ is non-singular.
 
