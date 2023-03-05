@@ -1,15 +1,21 @@
-## 3. Discrete Fourier Transform
-
-We note that the map from values to coefficients can be defined as a matrix-vector product using the DFT:
+## III.2 Discrete Fourier Transform
 
 
-1. The Discrete Fourier Transform (DFT)
-2. Interpolation: 
-3. The Fast Fourier Transform (FFT): 
+In the last lecture we explored using the trapezium rule for approximating Fourier coefficients.
+This is a linear map from function values to coefficients and thus can be reinterpreted as
+a matrix-vector product, called the the Discrete Fourier Transform. It turns out the matrix
+is unitary which leads to important properties including interpolation. Finally, we discuss how a clever
+way of decomposing the DFT leads to a fast way of applying and inverting it, which is one of the
+most influencial algorithms of the 20th century: the Fast Fourier Transform.
+
+
+1. The Discrete Fourier Transform (DFT): We discuss the map from values to approximate Fourier coefficients, and back.
+2. Interpolation: We show that the approximate Fourier expansion _exactly_ interpolates the values at the sample grid.
+3. The Fast Fourier Transform (FFT): We discuss how the DFT can be applied in $O(n \log n)$ operations.
 
 ## 1. The Discrete Fourier transform
 
-**Definition (DFT)**
+**Definition 1 (DFT)**
 The _Discrete Fourier Transform (DFT)_ is defined as:
 $$
 \begin{align*}
@@ -47,14 +53,15 @@ Q_n^⋆ &= {1 \over √n} \begin{bmatrix}
 \end{align*}
 $$
 
-That is, we have
+Note that
 $$
-\underbrace{\begin{bmatrix} f_0^n \\ ⋮ \\ f_{n-1}^n \end{bmatrix}}_{𝐟̂ⁿ} = {1 \over √n} Q_n \underbrace{\begin{bmatrix} f(θ₀) \\ ⋮ \\ f(θₙ) \end{bmatrix}}_{𝐟ⁿ}
+\underbrace{\begin{bmatrix} f̂_0^n \\ ⋮ \\ f̂_{n-1}^n \end{bmatrix}}_{𝐟̂ⁿ} = 
+{1 \over √n} Q_n \underbrace{\begin{bmatrix} f(θ₀) \\ ⋮ \\ f(θₙ) \end{bmatrix}}_{𝐟ⁿ}
 $$
 
 The choice of normalisation constant is motivated by the following:
 
-**Proposition (DFT is Unitary)** $Q_n$ is unitary: $Q_n^⋆ Q_n = Q_n Q_n^⋆ = I$.
+**Proposition 1 (DFT is Unitary)** $Q_n ∈ U(n)$, that is, $Q_n^⋆ Q_n = Q_n Q_n^⋆ = I$.
 
 **Proof**
 $$
@@ -71,8 +78,18 @@ $$
 \sqrt{n} Q_n^⋆ 𝐟̂ⁿ = 𝐟ⁿ
 $$
 
-**Corollary (Interpolation)**
-$f_n(θ)$ interpolates $f$ at $θ_j$:
+## 2. Interpolation
+
+We investigated briefly interpolation and least squares using polynomials at evenly spaced points, observing that
+there were issues with stability. We now show that the DFT actually gives coefficients that interpolate using Fourier
+expansions. As the DFT is a unitary matrix its (2-norm) condition number is 1, hence this is a stable process. Thus we arrive
+at the main result:
+
+**Corollary 1 (Interpolation)**
+$$
+f_n(θ) := ∑_{k=0}^{n-1} f̂_k^n {\rm e}^{{\rm i} k θ}
+$$
+interpolates $f$ at $θ_j$:
 $$
 f_n(θ_j) = f(θ_j)
 $$
@@ -80,14 +97,14 @@ $$
 **Proof**
 We have
 $$
-f_n(θ_j) = ∑_{k=0}^{n-1} f̂_k^n {\rm e}^{{\rm i} k θ_j} = √n 𝐞_j^⊤ Q_n^⋆ 𝐟̂ⁿ = 𝐞_j^⊤ Q_n^⋆ Q_n 𝐟ⁿ = f(θ_j).
+f_n(θ_j) = ∑_{k=0}^{n-1} f̂_k^n {\rm e}^{{\rm i} k θ_j} = \sqrt n 𝐞_j^⊤ Q_n^⋆ 𝐟̂ⁿ = 𝐞_j^⊤ Q_n^⋆ Q_n 𝐟ⁿ = f(θ_j).
 $$
 
 ∎
 
 
-We will leave extending this result to the problem sheet. Note that regardless of choice of coefficients
-we interpolate, though some interpolations are better than others:
+We will leave extending this result to the general non-Taylor case to the problem sheet. Note that regardless of choice of coefficients
+we interpolate provided we have $n$ consecutive coefficients, though some interpolations are better than others:
 
 ```julia
 using Plots, LinearAlgebra
@@ -135,7 +152,7 @@ scatter!(θ, f.(θ); label="samples")
 We now demonstrate the relationship of Taylor and Fourier coefficients
 and their discrete approximations for some examples:
 
-**Example** Consider the function
+**Example 1** Consider the function
 $$
 f(θ) = {2 \over 2 - {\rm e}^{{\rm i} θ}}
 $$
@@ -162,7 +179,37 @@ Qₙ = 1/sqrt(n) * [exp(-im*(k-1)*θ[j]) for k = 1:n, j=1:n]
 Qₙ/sqrt(n)*f.(θ) ≈ 2 .^ (n .- (0:n-1)) / (2^n-1)
 ```
 
-## 2. Fast Fourier Transform
+**Example 2** Define the following infinite sum (which has no name apparently,
+according to Mathematica):
+$$
+S_n(k) := ∑_{p=0}^∞ {1 \over (k+pn)!}
+$$
+We can use the DFT to compute $S_n(0), …, S_n(n-1)$.
+Consider
+$$
+f(θ) = \exp({\rm e}^{{\rm i} θ}) = ∑_{k=0}^∞ {{\rm e}^{{\rm i} k θ} \over k!}
+$$
+where we know the Fourier coefficients from the Taylor series of ${\rm e}^z$. 
+The discrete Fourier coefficients satisfy for $0 ≤ k ≤ n-1$:
+$$
+f̂_k^n = f̂_k + f̂_{k+n} + f̂_{k+2n} + ⋯ = S_n(k)
+$$
+Thus we have
+$$
+\begin{bmatrix}
+S_n(0) \\ 
+⋮ \\
+S_n(n-1)
+\end{bmatrix} = {1 \over \sqrt{n}} Q_n \begin{bmatrix} 1 \\
+                                \exp({\rm e}^{2{\rm i} π/n}) \\
+                                ⋮ \\
+                                \exp({\rm e}^{2{\rm i} (n-1) π/n}) \end{bmatrix}
+$$
+
+
+
+
+## 3. Fast Fourier Transform (non-examinable)
 
 Applying $Qₙ$ or its adjoint $Q_n^⋆$ to a vector naively takes $O(n^2)$ operations.
 Both can be reduced to $O(n \log n)$ using the celebrated _Fast Fourier Transform_ (FFT),
@@ -278,35 +325,5 @@ f̂ = [fc[m+2:end]; fc[1:m+1]]
 plot(abs.(fc); yscale=:log10, legend=:bottomright, label="default")
 plot!(abs.(f̂); yscale=:log10, label="reordered")
 ```
-
-We can use the FFT to compute some mathematical objects efficiently.
-Here is a simple example.
-
-**Example** Define the following infinite sum (which has no name apparently,
-according to Mathematica):
-$$
-S_n(k) := ∑_{p=0}^∞ {1 \over (k+pn)!}
-$$
-We can use the FFT to compute $S_n(0), …, S_n(n-1)$ in $O(n \log n)$ operations.
-Consider
-$$
-f(θ) = \exp({\rm e}^{{\rm i} θ}) = ∑_{k=0}^∞ {{\rm e}^{{\rm i} k θ} \over k!}
-$$
-where we know the Fourier coefficients from the Taylor series of ${\rm e}^z$. 
-The discrete Fourier coefficients satisfy for $0 ≤ k ≤ n-1$:
-$$
-f̂_k^n = f̂_k + f̂_{k+n} + f̂_{k+2n} + ⋯ = S_n(k)
-$$
-Thus we have
-$$
-\begin{bmatrix}
-S_n(0) \\ 
-⋮ \\
-S_n(n-1)
-\end{bmatrix} = {1 \over \sqrt{n}} Q_n \begin{bmatrix} 1 \\
-                                \exp({\rm e}^{2{\rm i} π/n}) \\
-                                ⋮ \\
-                                \exp({\rm e}^{2{\rm i} (n-1) π/n}) \end{bmatrix}
-$$
 
 

@@ -40,7 +40,8 @@ the PLU and Cholesky factorisations, as well as symmetric positive definite matr
 
 *III: Computing with functions*
 
-1. [Fourier expansions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.1.Fourier.ipynb): we discuss approximating Fourier expansions.
+1. [Fourier Expansions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.1.Fourier.ipynb): we discuss approximating Fourier expansions using the Trapezium Rule.
+2. [Discrete Fourier Transform (DFT)](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.2.DFT.ipynb): we discuss how the approximate Fourier coefficients can be recast as a unitary matrix, and how approximate Fourier expansinos interpolate.
 
 
 **Non-examinable material**: I.3 Example 1/2, II.2 Definition 7/Lemma 2, II.3.2, II.3 Example 2, II.4.1, II.4.2
