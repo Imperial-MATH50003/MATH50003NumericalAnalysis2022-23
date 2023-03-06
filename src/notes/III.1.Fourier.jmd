@@ -9,7 +9,8 @@ to numerically approximate solutions to ordinary and partial differential equati
 
 
 1. Review of Fourier series
-2. Trapezium rule and discrete Fourier coefficients
+2. Trapezium rule and discrete orthogonality
+3. Convergence of approximate Fourier expansions
 
 ## 1. Review of Fourier series
 
@@ -142,10 +143,7 @@ $$
 $$
 
 
-**Definition 5 (Discrete Fourier coefficients)** Define the Trapezium rule approximation to the Fourier coefficients by:
-$$
-f̂_k^n := Σ_n[{\rm e}^{-i k θ} f(θ)]  = {1 \over n} ∑_{j=0}^{n-1} {\rm e}^{-i k θ_j} f(θ_j)
-$$
+
 
 We know that ${\rm e}^{{\rm i} k θ}$ are orthogonal with respect to the continuous inner product.
 The following says that this property is maintained (up to "aliasing") when we replace the continuous
@@ -161,8 +159,8 @@ $$
 $$
 In other words,
 $$
-Σ_n[{\rm e}^{{\rm i} (k-j) θ_j}] =
-\begin{cases} 1 & k-j = \ldots,-2n,-n,0,n,2n,\ldots  \cr
+Σ_n[{\rm e}^{{\rm i} (k-ℓ) θ}] =
+\begin{cases} 1 & k-ℓ = \ldots,-2n,-n,0,n,2n,\ldots  \cr
               0 & \hbox{otherwise}
 \end{cases}.
 $$
@@ -189,9 +187,20 @@ where we use the fact that $k$ is not a multiple of $n$ to guarantee that $ω^k 
 
 ∎
 
+3. Convergence of Approximate Fourier expansions
+
+We will now use the Trapezium rule to approximate Fourier coefficients and expansions:
+
+**Definition 5 (Discrete Fourier coefficients)** Define the Trapezium rule approximation to the Fourier coefficients by:
+$$
+f̂_k^n := Σ_n[{\rm e}^{-i k θ} f(θ)]  = {1 \over n} ∑_{j=0}^{n-1} {\rm e}^{-i k θ_j} f(θ_j)
+$$
+
+A remarkable fact is that the discete Fourier coefficients can be expressed as a sum of
+the true Fourier coefficients:
 
 **Theorem 3 (discrete Fourier coefficients)**
-If $𝐟̂$ is absolutely convergent then
+If $𝐟̂ ∈ ℓ^1$ (absolutely convergent Fourier coefficients) then
 $$
 f̂_k^n = ⋯ + f̂_{k-2n} + f̂_{k-n} + f̂_k + f̂_{k+n} + f̂_{k+2n} + ⋯
 $$
@@ -199,8 +208,8 @@ $$
 **Proof**
 $$
 \begin{align*}
-f̂_k^n &= Σ_n[f(θ) {\rm e}^{-i k θ}] = ∑_{j=-∞}^∞ f̂_j Σ_n[{\rm e}^{{\rm i} (j-k) θ}] \\
-&= ∑_{j=-∞}^∞ f̂_j \begin{cases} 1 & j-k = \ldots,-2n,-n,0,n,2n,\ldots  \cr
+f̂_k^n &= Σ_n[f(θ) {\rm e}^{-{\rm i} k θ}] = ∑_{ℓ=-∞}^∞ f̂_ℓ Σ_n[{\rm e}^{{\rm i} (ℓ-k) θ}] \\
+&= ∑_{ℓ=-∞}^∞ f̂_ℓ \begin{cases} 1 & ℓ-k = \ldots,-2n,-n,0,n,2n,\ldots  \cr
 0 & \hbox{otherwise}
 \end{cases}
 \end{align*}
