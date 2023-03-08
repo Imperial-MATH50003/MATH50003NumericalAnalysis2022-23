@@ -1,0 +1,219 @@
+## 2. Classical orthogonal polynomials
+
+Classical orthogonal polynomials are special families of orthogonal polynomials with a number
+of beautiful properties, for example
+1. Their derivatives are also OPs
+2. They are eigenfunctions of simple differential operators
+
+As stated above orthogonal polynomials are uniquely defined by the weight
+$w(x)$ and the constant $k_n$. We consider:
+
+1. Chebyshev polynomials (1st kind) $T_n(x)$: $w(x) = 1/\sqrt{1-x^2}$ on $[-1,1]$.
+2.  Chebyshev polynomials (2nd kind) $U_n(x)$: $\sqrt{1-x^2}$ on $[-1,1]$.
+2. Legendre polynomials $P_n(x)$: $w(x) = 1$ on $[-1,1]$.
+4. Ultrapsherical polynomials (my fav!): $C_n^{(λ)}(x)$: $w(x) = (1-x^2)^{λ-1/2}$ on $[-1,1]$, $λ ≠ 0$, $λ > -1/2$.
+2. Jacobi polynomials: $P_n^{(a,b)}(x)$: $w(x) = (1-x)^a (1+x)^b$ on $[-1,1]$, $a,b > -1$.
+2. Laguerre polynomials: $L_n(x)$: $w(x) = \exp(-x)$ on $[0,∞)$.
+3. Hermite polynomials $H_n(x)$: $w(x) = \exp(-x^2)$  on $(-∞,∞)$.
+
+In the notes we will discuss properties of $T_n(x)$ and $P_n(x)$.
+
+### Chebyshev
+
+**Definition (Chebyshev polynomials, 1st kind)** $T_n(x)$ are orthogonal with respect to $1/\sqrt{1-x^2}$
+and satisfy:
+$$
+\begin{align*}
+T_0(x) &= 1, \\
+T_n(x) &= 2^{n-1} x^n + O(x^{n-1})
+\end{align*}
+$$
+
+
+**Definition (Chebyshev polynomials, 2nd kind)** $U_n(x)$ are orthogonal with respect to $sqrt{1-x^2}$.
+$$
+U_n(x) = 2^n x^n + O(x^{n-1})
+$$
+
+
+**Theorem (Chebyshev T are cos)**
+$$
+T_n(x) = \cos n\, {\rm acos}\, x
+$$
+In other words
+$$
+T_n(cos(θ)) = \cos n θ.
+$$
+
+
+**Proof**
+
+We need to show that $p_n(x) := \cos n {\rm acos}\, x$ are
+1. graded polynomials
+2. orthogonal w.r.t. $1/\sqrt{1-x^2}$ on $[-1,1]$, and
+3. have the right normalisation constant $k_n = 2^{n-1}$ for $n = 2,…$.
+
+Property (2) follows under a change of variables:
+$$
+\int_{-1}^1 {p_n(x) p_m(x) \over \sqrt{1-x^2}} {\rm d} x =
+\int_{-π}^π {\cos(nθ) \cos(mθ) \over \sqrt{1-\cos^2 θ}} \sin θ {\rm d} θ =
+\int_{-π}^π \cos(nθ) \cos(mθ) {\rm d} x = 0
+$$
+if $n ≠ m$.
+
+To see that they are graded we use the fact that
+$$
+x p_n(x) = \cos θ \cos n θ = {\cos(n-1)θ + \cos(n+1)θ \over 2} = {p_{n-1}(x) + p_{n+1}(x) \over 2}
+$$
+In other words $p_{n+1}(x) = 2x p_n(x) - p_{n-1}(x)$.
+Since each time we multiply by $2x$ and $p_0(x) = 1$ we have
+$$
+p_n(x) = (2x)^n + O(x^{n-1})
+$$
+which completes the proof.
+
+∎
+
+Buried in the proof is the 3-term recurrence:
+
+**Corollary**
+$$
+\begin{align*}
+x T_0(x) = T_1(x) \\
+x T_n(x) = {T_{n-1}(x) + T_{n+1}(x) \over 2}
+\end{align*}
+$$
+
+Chebyshev polynomials are particularly powerful as their expansions are cosine series in disguise: for
+$$
+f(x) = ∑_{k=0}^∞ f̌_k T_k(x)
+$$
+we have
+$$
+f(\cos θ) = ∑_{k=0}^∞ f̌_k \cos k θ.
+$$
+Thus the coefficients can be recovered fast using FFT-based techniques as discussed in the problem sheet.
+
+In the problem sheet we will also show the following:
+
+**Theorem (Chebyshev U are sin)**
+For $x = \cos θ$,
+$$
+U_n(x) = {\sin(n+1) θ \over \sin θ}
+$$
+which satisfy:
+$$
+\begin{align*}
+x U_0(x) &= U_1(x)/2 \\
+x U_n(x) &= {U_{n-1}(x) \over 2} + {U_{n+1}(x) \over 2}.
+\end{align*}
+$$
+
+
+
+### Legendre
+
+
+**Definition (Legendre)** Legendre polynomials
+$P_n(x)$ are orthogonal polynomials with respect to $w(x) = 1$ on $[-1,1]$, with
+$$
+k_n = {1 \over 2^n} \begin{pmatrix} 2n \\ n \end{pmatrix} = 
+{(2n)! \over 2^n (n!)^2}
+$$
+
+The reason for this complicated normalisation constant is both historical and
+that it leads to simpler formulae for recurrence relationships.
+
+
+Classical orthogonal polynomials have _Rodriguez formulae_, defining orthogonal
+polynomials as high order derivatives of simple functions. In this case we have:
+
+**Lemma (Legendre Rodriguez formula)**
+$$
+P_n(x) = {1 \over (-2)^n n!}{{\rm d}^n \over {\rm d} x^n} (1-x^2)^n
+$$
+
+**Proof**
+We need to verify:
+1. graded polynomials
+2. orthogonal to all lower degree polynomials on $[-1,1]$, and
+3. have the right normalisation constant $k_n = {1 \over 2^n} \begin{pmatrix} 2n \\ n \end{pmatrix}$.
+
+(1) follows since its a degree $n$ polynomial (the $n$-th derivative of a degree $2n$ polynomial).
+(2) follows by integration by parts. Note that $(1-x^2)^n$ and its first $n-1$ derivatives vanish at $±1$.
+If $r_m$ is a degree $m < n$ polynomial we have:
+$$
+∫_{-1}^1 {{\rm d}^n \over {\rm d} x^n} (1-x^2)^n r_m(x) {\rm d}x
+= -∫_{-1}^1 {{\rm d}^{n-1} \over {\rm d} x^{n-1}} (1-x^2)^n r_m'(x) {\rm d}x =
+⋯ = (-)^n ∫_{-1}^1 (1-x^2) r_m^{(n)}(x) {\rm d}x = 0.
+$$
+(3) follows since:
+$$
+\begin{align*}
+{{\rm d}^n \over {\rm d} x^n}[(-)^n x^{2n} + O(x^{2n-1})] &=
+(-)^n 2n {{\rm d}^{n-1} \over {\rm d} x^{n-1}} x^{2n-1}+ O(x^{2n-1})] \\
+&=
+(-)^n 2n (2n-1) {{\rm d}^{n-2} \over {\rm d} x^{n-2}} x^{2n-2}+ O(x^{2n-2})] = ⋯ \\
+&= (-)^n 2n (2n-1) ⋯ (n+1) x^n + O(x^{n-1}) = 
+(-)^n {(2n)! \over n!} x^n + O(x^{n-1})
+\end{align*}
+$$
+
+
+∎
+
+This allows us to determine the coefficients $k_n^{(λ)}$ which are useful in proofs. In particular we
+will use $k_n^{(1)}$:
+
+**Lemma (Legendre monomial coefficients)**
+$$
+\begin{align*}
+P_0(x) &= 1 \\
+P_1(x) &= x \\
+P_n(x) &= \underbrace{{(2n)! \over 2^n (n!)^2}}_{k_n} x^n - \underbrace{(2n-2)! \over 2^n (n-2)! (n-1)!}_{k_n^{(2)}} x^{n-2} + O(x^{n-4})
+\end{align*}
+$$
+(Here the $O(x^{n-4})$ is as $x → ∞$, which implies that the term is a polynomial of degree $≤ n-4$. For $n = 2,3$ the $O(x^{n-4})$ term is therefore precisely zero.)
+
+**Proof**
+
+The $n=0$ and $1$ case are immediate. For the other case we expand $(1-x^2)^n$ to get:
+$$
+\begin{align*}
+(-)^n {{\rm d}^n \over {\rm d} x^n} (1-x^2)^n &=
+{{\rm d}^n \over {\rm d} x^n} [ x^{2n} - n x^{2n-2} + O(x^{2n-4})]\\
+&= (2n)⋯(2n-n+1) x^n - n (2n-2)⋯(2n-2-n+1) x^{n-2} + O(x^{n-4}) \\
+&= {(2n)! \over n!} x^n - {n (2n-2)! \over (n-2)!} x^{n-2} + O(x^{n-4})
+\end{align*}
+$$
+Multiplying through by ${1 \over 2^n (n!)}$ completes the derivation.
+
+∎
+
+**Theorem (Legendre 3-term recurrence)**
+$$
+\begin{align*}
+xP_0(x) &= P_1(x) \\
+(2n+1) xP_n(x) &= nP_{n-1}(x) + (n+1)P_{n+1}(x)
+\end{align*}
+$$
+
+**Proof** 
+The $n = 0$ case is immediate (since $w(x) = w(-x)$ $a_n = 0$, from PS8).
+For the other cases we match terms:
+$$
+(2n+1)xP_n(x) - n P_{n-1}(x) - (n+1)P_{n+1}(x) = [(2n+1)k_n - (n+1) k_{n+1}] x^{n+1} + [(2n+1) k_n^{(1)} -n k_{n-1} - (n+1) k_{n+1}^{(1)}] x^{n-1} + O(x^{n-3})
+$$
+Using the expressions for $k_n$ and $k_n^{(1)}$ above we have (leaving the manipulations as an exercise):
+$$
+\begin{align*}
+(2n+1)k_n - (n+1) k_{n+1} = {(2n+1)! \over 2^n (n!)^2} - (n+1) {(2n+2)! \over 2^(n+1) ((n+1)!)^2} = 0 \\
+(2n+1) k_n^{(1)} -n k_{n-1}  - (n+1) k_{n+1}^{(1)} =  -(2n+1) {(2n-2)! \over 2^n (n-2)! (n-1)!} - n {(2n-2)! \over 2^{n-1} ((n-1)!)^2} + (n+1){(2n)! \over 2^{n+1} (n-1)! n!} = 0
+\end{align*}
+$$
+Thus
+$$
+(2n+1)xP_n(x) - n P_{n-1}(x) - (n+1)P_{n+1}(x) = O(x^{n-3})
+$$
+But as it is orthogonal to $P_k(x)$ for $0 ≤ k ≤ n-3$ it must be zero.
+∎

@@ -39,6 +39,42 @@ $$c_1=\frac{⟨ p_1,xp_2⟩}{\|p_1\|^2}=(2I_4-1/2I_2)/(\pi/8)=1/4$$
 $$a_2=\frac{⟨ p_2,xp_2⟩}{\|p_2\|^2}=0$$
 $$p_3(x)=xp_2(x)-c_1p_1(x)-a_2p_2(x)=x^3-1/2x$$
 
+
+
+**Problem** Prove Theorem III.3.1: a precisely degree $n$ polynomial satisfies
+$$
+⟨p,r⟩
+$$
+for all polynomials $r$ of degree less than $n$ if and only if $p(x) = c π_n$ for some constant
+$c$, where $π_n$ are monic orthogonal polynomials.
+
+
+**SOLUTION**
+As $\{π_0,…,π_n\}$ are a basis of all polynomials of degree $n$,
+we can write
+$$
+r(x) = ∑_{k=0}^m a_k π_k(x)
+$$
+Thus if $p(x) = c π_n(x)$, by linearity of inner products we have
+$$
+⟨p,r⟩ = ⟨cπ_n,∑_{k=0}^m a_k π_k⟩ = ∑_{k=0}^m ca_k ⟨π_n, π_k⟩ = 0.
+$$
+
+Now suppose
+$$
+p(x) = c x^n + O(x^{n-1})
+$$
+and consider $p(x) - c π_n(x)$ which is of degree $n-1$. It satisfies
+for $k ≤ n-1$
+$$
+⟨π_k, p - c π_n⟩ = ⟨π_k, p⟩ - c ⟨π_k, π_n⟩ = 0.
+$$
+Thus $p - c π_n$ is zero, i.e., $p(x) = c π_n(x)$.
+
+**END**
+
+
+
 **Problem 3.2⋆  (C, 3-term recurrence, 1st form)**
 Show that if $\{p_n\}$ are OPs then there exist real constants $A_n ≠ 0$, $B_n$, and $C_n$
 such that

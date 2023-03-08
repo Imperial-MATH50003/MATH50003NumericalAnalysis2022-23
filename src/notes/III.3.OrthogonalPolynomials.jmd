@@ -1,0 +1,386 @@
+# III.3 Orthogonal Polynomials
+
+Fourier series proved very powerful for approximating periodic functions.
+If periodicity is lost, however, uniform convergence is lost. In this chapter
+we introduce alternative bases, _Orthogonal Polynomials (OPs)_ built on polynomials that are applicable in
+the non-periodic setting. That is we consider expansions of the form
+$$
+f(x) = \sum_{k=0}^∞ c_k p_k(x)
+$$
+where $p_k(x)$ are special families of polynomials, $c_k$ are expansion coefficients. 
+The computation of the coefficients $c_k ≈ c_k^n$ will wait until the next section.
+
+Why not use monomials as in Taylor series? Hidden in the previous lecture was that we could effectively
+compute Taylor coefficients by evaluating on the unit circle in the complex plane, _only_ if the radius of convergence
+was 1. Many functions are smooth on say $[-1,1]$ but have non-convergent Taylor series, e.g.:
+$$
+{1 \over 25x^2 + 1}
+$$
+While orthogonal polynomials span the same space as monomials, and therefore we can in theory write an
+approximation in monomials, orthogonal polynomials are _much_ more stable.
+
+
+
+In addition to numerics, OPs play a very important role in many mathematical areas
+including functional analysis, integrable systems, singular integral equations,
+complex analysis, and random matrix theory.
+
+1. General properties: we define orthogonal polynomials
+2. Three-term recurrences
+3. Jacobi magtrices
+
+
+**Remark (advanced)** Going beyond what we discuss here are many other beautiful properties of orthogonal 
+polynomials that are useful in computation, analysis, representation theory,
+quantum mechanics, etc. These include sparse recurrence relationships for derivatives,
+that they are eigenfunctions of differential equations, their asymptotics, 
+generating functions, etc. 
+
+
+## 1. General properties
+
+**Definition 1 (graded polynomial basis)**
+A set of polynomials $\{p_0(x), p_1(x), … \}$ is _graded_ if $p_n$ is
+precisely degree $n$: i.e.,
+$$
+p_n(x) = k_n x^n + k_n^{(n-1)} x^{n-1} + ⋯ + k_n^{(1)} x + k_n^{(0)}
+$$
+for $k_n ≠ 0$.
+
+Note that if $p_n$ are graded then $\{p_0(x), …, p_n(x) \}$
+are a basis of all polynomials of degree $n$.
+
+
+**Definition 2 (orthogonal polynomials)**
+Given an (integrable) _weight_ $w(x) > 0$ for $x ∈ (a,b)$,
+which defines a continuous inner product
+$$
+⟨f,g⟩ = ∫_a^b  f(x) g(x) w(x) {\rm d} x
+$$
+a graded polynomial basis $\{p_0(x), p_1(x), … \}$
+are _orthogonal polynomials (OPs)_ if
+$$
+⟨p_n,p_m⟩ = 0
+$$
+whenever $n ≠ m$. We assume through that integrals of polynomials are finite:
+$$
+∫_a^b  x^k w(x) {\rm d} x < ∞.
+$$
+
+
+Note in the above
+$$
+h_n := ⟨p_n,p_n⟩ = \|p_n\|^2 = ∫_a^b  p_n(x)^2 w(x) {\rm d} x > 0.
+$$
+
+Multiplying any orthogonal polynomial by a nonzero constant necessarily is also an orthogonal
+polynomial. We have two standard normalisations:
+
+
+**Definition 3 (orthonormal polynomials)**
+A set of orthogonal polynomials $\{q_0(x), q_1(x), … \}$
+are _orthonormal_ if $\|q_n\| = 1$.
+
+**Definition 4 (monic orthogonal polynomials)**
+A set of orthogonal polynomials $\{π_0(x), π_1(x), … \}$
+are _monic_ if $k_n = 1$.
+
+
+**Proposition 1 (existence)** Given a weight $w(x)$, monic orthogonal polynomials
+exist.
+
+**Proof**
+
+Existence follows immediately from the Gram–Schmidt procedure. That is,
+define $π_0(x) := 1$ and
+$$
+π_n(x) := x^n - ∑_{k=0}^{n-1} {⟨x^n,π_k⟩ \over \|π_k\|^2} π_k(x)
+$$
+
+∎
+
+
+We are primarly concerned with the usage of orthogonal polynomials in
+approximating functions. First we observe the following:
+
+**Proposition 2 (expansion)**
+If $r(x)$ is a degree $n$ polynomial and $\{p_n\}$ are orthogonal then
+$$
+r(x) = ∑_{k=0}^n {⟨p_k,r⟩ \over \|p_k\|^2} p_k(x)
+$$
+Note for $\{q_n\}$ orthonormal we have
+$$
+r(x) = ∑_{k=0}^n ⟨q_k,r⟩ q_k(x).
+$$
+
+**Proof**
+Because $\{p_0,…,p_n \}$ are a basis of polynomials we can
+write
+$$
+r(x) = ∑_{k=0}^n r_k p_k(x)
+$$
+for constants $r_k ∈ ℝ$.
+By linearity we have
+$$
+⟨p_m,r⟩ = ∑_{k=0}^n r_k ⟨p_m,p_k⟩= r_m ⟨p_m,p_m⟩
+$$
+∎
+
+**Corollary 1 (zero inner product)**
+If a degree $n$ polynomial $r$ satisfies
+$$
+0 = ⟨p_0,r⟩ = … = ⟨p_n,r⟩
+$$
+then $r = 0$.
+
+**Corollary 2 (uniqueness)**
+Monic orthogonal polynomials are unique.
+
+**Proof**
+If $p_n(x)$ and $π_n(x)$ are both monic orthogonal polynomials
+then $r(x) = p_n(x) - π_n(x)$ is degree $n-1$ but satisfies
+$$
+⟨r, π_k⟩ = ⟨p_n, π_k⟩ - ⟨p_n, π_k⟩ = 0
+$$
+for $k = 0,…,{n-1}$. Note $⟨p_n, π_k⟩ = 0$ can be seen by
+expanding
+$$
+π_k(x) = ∑_{j=0}^k c_j p_j(x).
+$$
+∎
+
+
+OPs are uniquely defined (up to a constant) by the
+property that they are orthogonal to all lower degree polynomials.
+
+**Theorem 1 (orthogonal to lower degree)**
+Given a weight $w(x)$, 
+a polynomial $p$ of precisely degree $n$ satisfies
+$$
+⟨p,r⟩ = 0
+$$
+for all degree $m < n$ polynomials $r$ if and only if
+$p(x) = c π_n(x)$ where $π_n(x)$ are the monic orthogonal polynomials.
+Therefore an orthogonal polynomial is uniquely
+defined by the weight and leading order coefficient $k_n$.
+
+
+We leave this proof to the problem sheets.
+A consequence of this is that orthonormal polynomials are always a
+constant multiple of orthogonal polynomials.
+
+
+
+## 3. 3-term recurrence
+
+The most _fundamental_ property of orthogonal polynomials is their three-term
+recurrence.
+
+**Theorem 2 (3-term recurrence, 2nd form)**
+If $\{p_n\}$ are OPs then there exist real constants
+$a_n, b_n ≠0,c_{n-1} ≠0$
+such that
+$$
+\begin{align*}
+x p_0(x) &= a_0 p_0(x) + b_0 p_1(x)  \\
+x p_n(x) &= c_{n-1} p_{n-1}(x) + a_n p_n(x) + b_n p_{n+1}(x)
+\end{align*}
+$$
+**Proof**
+The $n=0$ case is immediate since $\{p_0,p_1\}$ are a basis of degree 1 polynomials.
+The $n >0$ case follows from
+$$
+⟨x p_n, p_k⟩ = ⟨ p_n, xp_k⟩ = 0
+$$
+for $k < n-1$ as $x p_k$ is of degree $k+1 < n$.
+
+Note that
+$$
+b_n = {⟨p_{n+1}, x p_n⟩ \over \|p_{n+1} \|^2} ≠ 0
+$$
+since $x p_n = k_n x^{n+1} + O(x^n)$ is precisely degree
+$n$. Further,
+$$
+c_{n-1} = {⟨p_{n-1}, x p_n⟩ \over \|p_{n-1}\|^2 } =
+{⟨p_n, x p_{n-1}⟩  \over \|p_{n-1}\|^2 } =  b_{n-1}{\|p_n\|^2  \over \|p_{n-1}\|^2 } ≠ 0.
+$$
+
+
+
+∎
+
+
+
+
+Clearly if $π_n$ is monic then so is $x π_n$ which leads to the following:
+
+**Corollary 3 (monic 3-term recurrence)** If $\{π_n\}$ are monic then $b_n =  1$.
+
+
+**Example 1** What are the  monic OPs $π_0(x),…,π_3(x)$ with respect to $w(x) = 1$ on $[0,1]$?
+We can construct these using Gram–Schmidt, but exploiting the 3-term recurrence to reduce the computational cost.
+We have $π_0(x) = 1$, which we see is orthogonal:
+$$
+\|π_0\|^2 = ⟨π_0,π_0⟩ = ∫_0^1 {\rm d x} = 1.
+$$
+We know from the 3-term recurrence that
+$$
+x π_0(x) = a_0 π_0(x) +  π_1(x)
+$$
+where
+$$
+a_0 = {⟨π_0,x π_0⟩  \over \|π_0\|^2} = ∫_0^1 x {\rm d} x = 1/2.
+$$
+Thus
+$$
+\begin{align*}
+π_1(x) = x π_0(x) - a_0 π_0(x) = x-1/2 \\
+\|π_1\|^2 = ∫_0^1 (x^2 - x + 1/4) {\rm d} x = 1/12
+\end{align*}
+$$
+From
+$$
+x π_1(x) = c_0 π_0(x) + a_1 π_1(x) +  π_2(x)
+$$
+we have
+$$
+\begin{align*}
+c_0 &= {⟨π_0,x π_1⟩  \over \|π_0\|^2} = ∫_0^1 (x^2 - x/2) {\rm d} x = 1/12 \\
+a_1 &= {⟨π_1,x π_1⟩  \over \|π_1\|^2} = 12 ∫_0^1 (x^3 - x^2 + x/4) {\rm d} x = 1/2 \\
+π_2(x) &= x π_1(x) - c_0 - a_1 π_1(x) = x^2 - x + 1/6 \\
+\|π_2\|^2 &= \int_0^1 (x^4 - 2x^3 + 4x^2/3 - x/3 + 1/36) {\rm d} x = {1 \over 180}
+\end{align*}
+$$
+Finally, from
+$$
+x π_2(x) = c_1 π_1(x) + a_2 π_2(x) +  π_3(x)
+$$
+we have
+$$
+\begin{align*}
+c_1 &= {⟨π_1,x π_2⟩  \over \|π_1\|^2} = 12 ∫_0^1 (x^4 - 3x^3/2 +2x^2/3 -x/12)  {\rm d} x = 1/15 \\
+a_2 &= {⟨π_2,x π_2⟩  \over \|π_2\|^2} = 180 ∫_0^1 (x^5 - 2x^4 +4x^3/3 - x^2/3 + x/36) {\rm d} x = 1/2 \\
+π_3(x) &= x π_2(x) - c_1 π_1(x)- a_2 π_2(x) = x^3 - x^2 + x/6 - x/15 + 1/30 -x^2/2 + x/2 - 1/12 \\
+&= x^3 - 3x^2/2 + 3x/5 -1/20
+\end{align*}
+$$
+
+
+## 3. Jacobi matrices
+
+
+The three-term recurrence can also be interpreted as a matrix known
+as the Jacobi matrix:
+
+**Corollary 4 (Jacobi matrix)**
+For
+$$
+P(x) := [p_0(x) | p_1(x) | ⋯]
+$$
+then we have
+$$
+x P(x) = P(x) \underbrace{\begin{bmatrix} a_0 & c_0 \\
+                                                        b_0 & a_1 & c_1\\
+                                                        & b_1 & a_2 & ⋱ \\
+                                                        && ⋱ & ⋱
+                                                        \end{bmatrix}}_X
+$$
+More generally, for any polynomial $a(x)$ we have
+$$
+a(x) P(x) = P(x) a(X).
+$$
+The Jacobi matrix is $J := X^⊤$.
+
+For the special cases of orthonormal and monic polynomials we have extra structure:
+
+**Corollary 4 (orthonormal 3-term recurrence)** If
+$\{q_n\}$ are orthonormal then its recurrence coefficients satisfy $c_n = b_n$.
+That is, the Jacobi matrix is symmetric:
+$$
+J = X = \begin{bmatrix} a_0 & b_0 \\
+                                                        b_0 & a_1 & b_1\\
+                                                        & b_1 & a_2 & ⋱ \\
+                                                        && ⋱ & ⋱
+                                                        \end{bmatrix}
+$$
+
+**Proof**
+$$
+b_n = ⟨x q_n, q_{n+1}⟩ = ⟨q_n, x q_{n+1}⟩ = c_{n-1}.
+$$
+∎
+
+**Remark (advanced)** If you are worried about multiplication of infinite matrices/vectors
+note it is well-defined by the standard definition because it is banded.
+It can also be defined in terms of functional analysis where one considers these
+as linear operators (functions of functions) between vector spaces.
+
+**Remark (advanced)** Every integrable weight generates a family of
+orthonormal polynomials, which in turn generates a symmetric Jacobi matrix.
+There is a "Spectral Theorem for Jacobi matrices" that says one can go the
+other way: every tridiagonal symmetric matrix with bounded entries is a Jacobi
+matrix for some integrable weight with compact support. This is an example of what
+[Barry Simon](https://en.wikipedia.org/wiki/Barry_Simon) calls a "Gem of spectral theory",
+that is.
+
+
+**Example 2 (uniform weight Jacobi matrix)** Consider the
+monic orthogonal polynomials $π_0(x),π_1(x),…,π_3(x)$ for $w(x) = 1$ on $[0,1]$ constructed above.
+We can write the 3-term recurrence coefficients we have computed above as the Jacobi matrix:
+$$
+x [π_0(x)| π_1(x)| ⋯] = [π_0(x)| π_1(x)| ⋯] \underbrace{\begin{bmatrix} 1/2 & 1/12 \\
+                                                            1 & 1/2 & 1/15 \\
+                                                            & 1 & 1/2 & ⋱ \\
+                                                            & & ⋱ & ⋱ \end{bmatrix}}_X
+$$
+We can compute the orthonormal polynomials, using
+$$
+\|π_3\|^2 = \int_0^1 (x^6 - 3x^5 + 69x^4/20 -19x^3/10 + 51x^2/100 - 3x/50 + 1/400) {\rm d}x = {1 \over 2800}
+$$
+as:
+$$
+\begin{align*}
+q_0(x) &= π_0(x) \\
+q_1(x) &= \sqrt{12} π_1(x)= \sqrt{3} (2  x - 1) \\
+q_2(x) &= \sqrt{180} π_2(x) = \sqrt{5} (6x^2 - 6x + 1) \\
+q_3(x) &= \sqrt{2800} π_3(x) = \sqrt{7} (20x^3-30x^2 + 12x - 1)
+\end{align*}
+$$
+which have the Jacobi matrix
+$$
+\begin{align*}
+x [q_0(x)| q_1(x)| ⋯] &= x [π_0(x)| π_1(x)| ⋯] \underbrace{\begin{bmatrix} 1 \\ & 2\sqrt{3} \\ && 6 \sqrt{5} \\ &&& 20 \sqrt{7} \\
+&&&& ⋱
+\end{bmatrix}}_D \\
+&= [q_0(x)| q_1(x)| ⋯] D^{-1} X D = 
+     \begin{bmatrix} 1/2 & 1/\sqrt{12} \\
+                    1/\sqrt{12} & 1/2 &  1/\sqrt{15} \\
+                    & 1/\sqrt{15} & 1/2 & ⋱ \\
+                    & ⋱ & ⋱ \end{bmatrix}
+\end{align*}
+$$
+which is indeed symmetric. The problem sheet explores a more elegant way of doing this.
+
+
+**Example 3 (expansion)** Consider expanding a low degree polynomial like $f(x) = x^2$ in $π_n(x)$. We have
+$$
+⟨π_0, f⟩ = ∫_0^1 x^2 {\rm d} x = 1/3
+⟨π_1, f⟩ = ∫_0^1 x^2 (x - 1/2) {\rm d} x = 1/12
+⟨π_2, f⟩ = ∫_0^1 x^2 (x^2 - x + 1/6) {\rm d} x = 1/180
+$$
+Thus we have:
+$$
+f(x) = {π_0(x) \over 3} + π_1(x) + π_2(x) = [π_0(x) | π_1(x) | π_2(x) | ⋯] \begin{bmatrix} 1/3 \\ 1 \\ 1 \\ 0 \\ ⋮ \end{bmatrix}
+$$
+We multiply (using that $b_2 = 1$ for monic OPs) to deduce:
+$$
+\begin{align*}
+x f(x) &= x[π_0(x) | π_1(x) | π_2(x) | ⋯] \begin{bmatrix} 1/3 \\ 1 \\ 1 \\ 0 \\ ⋮ \end{bmatrix} \\
+&= [π_0(x) | π_1(x) | π_2(x) | ⋯] X \begin{bmatrix} 1/3 \\ 1 \\ 1 \\ 0 \\ ⋮ \end{bmatrix}
+= [π_0(x) | π_1(x) | π_2(x) | ⋯]  \begin{bmatrix} 1/4 \\ 9/10 \\ 3/2 \\ 1 \\ 0 \\ ⋮ \end{bmatrix} \\
+&= {π_0(x) \over 4} + {9 π_1(x) \over 10} + {3 π_2(x) \over 2} + π_3(x)
+\end{align*}
+$$
+
+
+
