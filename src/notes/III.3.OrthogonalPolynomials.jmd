@@ -140,7 +140,7 @@ Monic orthogonal polynomials are unique.
 If $p_n(x)$ and $π_n(x)$ are both monic orthogonal polynomials
 then $r(x) = p_n(x) - π_n(x)$ is degree $n-1$ but satisfies
 $$
-⟨r, π_k⟩ = ⟨p_n, π_k⟩ - ⟨p_n, π_k⟩ = 0
+⟨r, π_k⟩ = ⟨p_n, π_k⟩ - ⟨π_n, π_k⟩ = 0
 $$
 for $k = 0,…,{n-1}$. Note $⟨p_n, π_k⟩ = 0$ can be seen by
 expanding
@@ -155,12 +155,16 @@ property that they are orthogonal to all lower degree polynomials.
 
 **Theorem 1 (orthogonal to lower degree)**
 Given a weight $w(x)$, 
-a polynomial $p$ of precisely degree $n$ satisfies
+a polynomial
+$$
+p(x) = k_n x^n + O(x^{n-1})
+$$ 
+with $k_n ≠ 0$ satisfies
 $$
 ⟨p,r⟩ = 0
 $$
 for all degree $m < n$ polynomials $r$ if and only if
-$p(x) = c π_n(x)$ where $π_n(x)$ are the monic orthogonal polynomials.
+$p(x) = k_n π_n(x)$ where $π_n(x)$ are the monic orthogonal polynomials.
 Therefore an orthogonal polynomial is uniquely
 defined by the weight and leading order coefficient $k_n$.
 
@@ -171,7 +175,7 @@ constant multiple of orthogonal polynomials.
 
 
 
-## 3. 3-term recurrence
+## 2. 3-term recurrence
 
 The most _fundamental_ property of orthogonal polynomials is their three-term
 recurrence.
@@ -216,6 +220,15 @@ Clearly if $π_n$ is monic then so is $x π_n$ which leads to the following:
 
 **Corollary 3 (monic 3-term recurrence)** If $\{π_n\}$ are monic then $b_n =  1$.
 
+**Corollary 4 (Gram–Schmidt revisited)**
+We can define $π_{n+1}(x)$ in terms of $π_{n-1}$ and $π_n$:
+$$
+π_{n+1}(x) = x π_n(x) - a_n π_n(x) - c_{n-1} π_{n-1}(x)
+$$
+where
+$$
+a_n = {⟨x π_n, π_n⟩ \over \| π_n\|^2} \qquad \hbox{and} \qquad c_{n-1} = {⟨x π_n, π_{n-1}⟩ \over \| π_{n-1}\|^2}
+$$
 
 **Example 1** What are the  monic OPs $π_0(x),…,π_3(x)$ with respect to $w(x) = 1$ on $[0,1]$?
 We can construct these using Gram–Schmidt, but exploiting the 3-term recurrence to reduce the computational cost.

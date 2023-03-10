@@ -1,5 +1,10 @@
 
-## 3. Orthogonal polynomials
+
+
+Fourier interpolates
+
+Cosine series
+
 
 **Problem 3.1⋆  (B)** Construct  $p_0(x),p_1(x),p_2(x),p_3(x)$, monic OPs
 for the weight $\sqrt{1-x^2}$ on $[-1,1]$.
