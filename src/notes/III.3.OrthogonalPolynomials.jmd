@@ -161,9 +161,9 @@ p(x) = k_n x^n + O(x^{n-1})
 $$ 
 with $k_n ≠ 0$ satisfies
 $$
-⟨p,r⟩ = 0
+⟨p,f_m⟩ = 0
 $$
-for all degree $m < n$ polynomials $r$ if and only if
+for all  polynomials $f_m$ of degree $m < n$ if and only if
 $p(x) = k_n π_n(x)$ where $π_n(x)$ are the monic orthogonal polynomials.
 Therefore an orthogonal polynomial is uniquely
 defined by the weight and leading order coefficient $k_n$.
