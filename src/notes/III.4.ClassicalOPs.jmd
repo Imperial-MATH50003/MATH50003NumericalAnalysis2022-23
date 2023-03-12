@@ -1,4 +1,4 @@
-## 2. Classical orthogonal polynomials
+## III.4 Classical Orthogonal Polynomials
 
 Classical orthogonal polynomials are special families of orthogonal polynomials with a number
 of beautiful properties, for example
@@ -6,7 +6,7 @@ of beautiful properties, for example
 2. They are eigenfunctions of simple differential operators
 
 As stated above orthogonal polynomials are uniquely defined by the weight
-$w(x)$ and the constant $k_n$. We consider:
+$w(x)$ and the constant $k_n$. The classical orthogonal polynomials are:
 
 1. Chebyshev polynomials (1st kind) $T_n(x)$: $w(x) = 1/\sqrt{1-x^2}$ on $[-1,1]$.
 2.  Chebyshev polynomials (2nd kind) $U_n(x)$: $\sqrt{1-x^2}$ on $[-1,1]$.
@@ -16,11 +16,15 @@ $w(x)$ and the constant $k_n$. We consider:
 2. Laguerre polynomials: $L_n(x)$: $w(x) = \exp(-x)$ on $[0,∞)$.
 3. Hermite polynomials $H_n(x)$: $w(x) = \exp(-x^2)$  on $(-∞,∞)$.
 
-In the notes we will discuss properties of $T_n(x)$ and $P_n(x)$.
+In the notes we will discuss:
 
-### Chebyshev
+1. Chebyshev polynomials: These are closely linked to Fourier series and are one of the most powerful tools in numerics.
+2. Legendre polynomials: These have no simple closed-form expression but can be defined in terms of a Rodriguez formula, a feature that
+applies to all other classical families.
 
-**Definition (Chebyshev polynomials, 1st kind)** $T_n(x)$ are orthogonal with respect to $1/\sqrt{1-x^2}$
+## 1. Chebyshev
+
+**Definition 1 (Chebyshev polynomials, 1st kind)** $T_n(x)$ are orthogonal with respect to $1/\sqrt{1-x^2}$
 and satisfy:
 $$
 \begin{align*}
@@ -30,19 +34,19 @@ T_n(x) &= 2^{n-1} x^n + O(x^{n-1})
 $$
 
 
-**Definition (Chebyshev polynomials, 2nd kind)** $U_n(x)$ are orthogonal with respect to $sqrt{1-x^2}$.
+**Definition 2 (Chebyshev polynomials, 2nd kind)** $U_n(x)$ are orthogonal with respect to $sqrt{1-x^2}$.
 $$
 U_n(x) = 2^n x^n + O(x^{n-1})
 $$
 
 
-**Theorem (Chebyshev T are cos)**
+**Theorem 1 (Chebyshev T are cos)**
 $$
 T_n(x) = \cos n\, {\rm acos}\, x
 $$
 In other words
 $$
-T_n(cos(θ)) = \cos n θ.
+T_n(\cos θ) = \cos n θ.
 $$
 
 
@@ -96,7 +100,7 @@ Thus the coefficients can be recovered fast using FFT-based techniques as discus
 
 In the problem sheet we will also show the following:
 
-**Theorem (Chebyshev U are sin)**
+**Theorem 2 (Chebyshev U are sin)**
 For $x = \cos θ$,
 $$
 U_n(x) = {\sin(n+1) θ \over \sin θ}
@@ -111,10 +115,10 @@ $$
 
 
 
-### Legendre
+## 2. Legendre
 
 
-**Definition (Legendre)** Legendre polynomials
+**Definition 3 (Legendre)** Legendre polynomials
 $P_n(x)$ are orthogonal polynomials with respect to $w(x) = 1$ on $[-1,1]$, with
 $$
 k_n = {1 \over 2^n} \begin{pmatrix} 2n \\ n \end{pmatrix} = 
@@ -128,7 +132,7 @@ that it leads to simpler formulae for recurrence relationships.
 Classical orthogonal polynomials have _Rodriguez formulae_, defining orthogonal
 polynomials as high order derivatives of simple functions. In this case we have:
 
-**Lemma (Legendre Rodriguez formula)**
+**Lemma 1 (Legendre Rodriguez formula)**
 $$
 P_n(x) = {1 \over (-2)^n n!}{{\rm d}^n \over {\rm d} x^n} (1-x^2)^n
 $$
@@ -163,9 +167,9 @@ $$
 ∎
 
 This allows us to determine the coefficients $k_n^{(λ)}$ which are useful in proofs. In particular we
-will use $k_n^{(1)}$:
+will use $k_n^{(2)}$:
 
-**Lemma (Legendre monomial coefficients)**
+**Lemma 2 (Legendre monomial coefficients)**
 $$
 \begin{align*}
 P_0(x) &= 1 \\
@@ -190,7 +194,7 @@ Multiplying through by ${1 \over 2^n (n!)}$ completes the derivation.
 
 ∎
 
-**Theorem (Legendre 3-term recurrence)**
+**Theorem 3 (Legendre 3-term recurrence)**
 $$
 \begin{align*}
 xP_0(x) &= P_1(x) \\
@@ -202,13 +206,13 @@ $$
 The $n = 0$ case is immediate (since $w(x) = w(-x)$ $a_n = 0$, from PS8).
 For the other cases we match terms:
 $$
-(2n+1)xP_n(x) - n P_{n-1}(x) - (n+1)P_{n+1}(x) = [(2n+1)k_n - (n+1) k_{n+1}] x^{n+1} + [(2n+1) k_n^{(1)} -n k_{n-1} - (n+1) k_{n+1}^{(1)}] x^{n-1} + O(x^{n-3})
+(2n+1)xP_n(x) - n P_{n-1}(x) - (n+1)P_{n+1}(x) = [(2n+1)k_n - (n+1) k_{n+1}] x^{n+1} + [(2n+1) k_n^{(2)} -n k_{n-1} - (n+1) k_{n+1}^{(2)}] x^{n-1} + O(x^{n-3})
 $$
-Using the expressions for $k_n$ and $k_n^{(1)}$ above we have (leaving the manipulations as an exercise):
+Using the expressions for $k_n$ and $k_n^{(2)}$ above we have (leaving the manipulations as an exercise):
 $$
 \begin{align*}
-(2n+1)k_n - (n+1) k_{n+1} = {(2n+1)! \over 2^n (n!)^2} - (n+1) {(2n+2)! \over 2^(n+1) ((n+1)!)^2} = 0 \\
-(2n+1) k_n^{(1)} -n k_{n-1}  - (n+1) k_{n+1}^{(1)} =  -(2n+1) {(2n-2)! \over 2^n (n-2)! (n-1)!} - n {(2n-2)! \over 2^{n-1} ((n-1)!)^2} + (n+1){(2n)! \over 2^{n+1} (n-1)! n!} = 0
+(2n+1)k_n - (n+1) k_{n+1} = {(2n+1)! \over 2^n (n!)^2} - (n+1) {(2n+2)! \over 2^{n+1} ((n+1)!)^2} = 0 \\
+(2n+1) k_n^{(2)} -n k_{n-1}  - (n+1) k_{n+1}^{(2)} =  -(2n+1) {(2n-2)! \over 2^n (n-2)! (n-1)!} - n {(2n-2)! \over 2^{n-1} ((n-1)!)^2} + (n+1){(2n)! \over 2^{n+1} (n-1)! n!} = 0
 \end{align*}
 $$
 Thus

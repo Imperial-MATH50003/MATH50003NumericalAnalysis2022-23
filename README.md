@@ -44,6 +44,7 @@ the PLU and Cholesky factorisations, as well as symmetric positive definite matr
 2. [Discrete Fourier Transform](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.2.DFT.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/III.2.DFT.pdf)): we discuss how the approximate Fourier coefficients can be recast as a unitary matrix, and how approximate Fourier expansinos interpolate.
 3. [Orthogonal Polynomials](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.3.OrthogonalPolynomials.ipynb): we introduce orthogonal polynomials and discuss
 their properties including three-term recurrences and Jacobi matrices.
+4. [Classical Orthogonal Polynomials](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.4.ClassicalOPs.ipynb): we discuss special families of orthogonal polynomials which arise in applications, in particular Chebyshev and Legendre polynomials.
 
 
 **Non-examinable material**: I.3 Example 1/2, II.2 Definition 7/Lemma 2, II.3.2, II.3 Example 2, II.4.1, II.4.2

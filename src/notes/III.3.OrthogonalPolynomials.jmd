@@ -43,7 +43,7 @@ generating functions, etc.
 A set of polynomials $\{p_0(x), p_1(x), … \}$ is _graded_ if $p_n$ is
 precisely degree $n$: i.e.,
 $$
-p_n(x) = k_n x^n + k_n^{(n-1)} x^{n-1} + ⋯ + k_n^{(1)} x + k_n^{(0)}
+p_n(x) = k_n x^n + k_n^{(1)} x^{n-1} + ⋯ + k_n^{(n-1)} x + k_n^{(n)}
 $$
 for $k_n ≠ 0$.
 
@@ -171,7 +171,7 @@ constant multiple of orthogonal polynomials.
 
 
 
-## 3. 3-term recurrence
+## 2. 3-term recurrence
 
 The most _fundamental_ property of orthogonal polynomials is their three-term
 recurrence.
@@ -221,7 +221,7 @@ Clearly if $π_n$ is monic then so is $x π_n$ which leads to the following:
 We can construct these using Gram–Schmidt, but exploiting the 3-term recurrence to reduce the computational cost.
 We have $π_0(x) = 1$, which we see is orthogonal:
 $$
-\|π_0\|^2 = ⟨π_0,π_0⟩ = ∫_0^1 {\rm d x} = 1.
+\|π_0\|^2 = ⟨π_0,π_0⟩ = ∫_0^1 {\rm d} x = 1.
 $$
 We know from the 3-term recurrence that
 $$

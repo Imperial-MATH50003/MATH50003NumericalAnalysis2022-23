@@ -35,6 +35,7 @@ notebook("src/notes/II.7.ConditionNumbers.jmd"; nkwds...)
 notebook("src/notes/III.1.Fourier.jmd"; nkwds...)
 notebook("src/notes/III.2.DFT.jmd"; nkwds...)
 notebook("src/notes/III.3.OrthogonalPolynomials.jmd"; nkwds...)
+notebook("src/notes/III.4.ClassicalOPs.jmd"; nkwds...)
 
 
 
