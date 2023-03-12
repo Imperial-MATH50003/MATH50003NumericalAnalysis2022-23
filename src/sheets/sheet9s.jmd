@@ -1,5 +1,10 @@
 
-## 3. Orthogonal polynomials
+
+
+Fourier interpolates
+
+Cosine series
+
 
 **Problem 3.1⋆  (B)** Construct  $p_0(x),p_1(x),p_2(x),p_3(x)$, monic OPs
 for the weight $\sqrt{1-x^2}$ on $[-1,1]$.
@@ -176,3 +181,8 @@ is even.
 
 **END**
 
+
+**Problem** Recall that the Chebyshev polynomials $T_0(x) = 1$, $T_n(x)  = 2^{n-1} x^n + O(x^{n-1})$ which are orthogonal with respect to $1/\sqrt{1-x^2}$ and $U_n(x) = 2^n x^n +O(x^{n-1})$ which are orthogonal with respect to $\sqrt{1-x^2}$, both on $[-1,1]$. Use the fact that orthogonal polynomials are uniquely determined by their leading order coefficient and orthogonality to lower dimensional polynomials to show that:
+$$
+T_n'(x) = n U_{n-1}(x)
+$$
