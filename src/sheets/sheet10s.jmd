@@ -1,0 +1,761 @@
+# MATH50003 Numerical Analysis: Problem Sheet 10
+
+This problem sheet explores orthogonal polynomial roots, interpolatory quadrature and Gaussian quadrature.
+
+All questions are meant to be completed without using a computer.
+Problems are denoted A/B/C to indicate their difficulty.
+
+
+
+
+##### Orthonormal
+
+We know that for orthonormal ($b_n=c_n$) polynomials we can write the upper 3x3 block of the Jacobi matrix in the
+form
+
+$$X = \begin{bmatrix} a_0 & b_0 & 0 \\ b_0 & a_1 & b_1 \\ 0 & b_1 & a_2 \end{bmatrix}$$
+
+We could proceed step by step as above to find the entries of the recurrences but we may also
+take a short-cut since we already know the monic recurrence. Given any recurrence relationship
+coefficients $a_n, b_n, c_n$ for orthogonal polynomials for a given weight, the(symmetric)
+Jacobi matrix corresponding to the orthonormal polynomials for the same weight has entries $\hat
+{b}_n = \sqrt{c_n b_n}$ and $\hat{a} _n = a_n$. Using this the $3 \times 3$ blocks of the
+Jacobi matrices belonging to the orthonormal polynomials are straightforwardly computed from the above.
+
+**Problem 1.2 (B)** Consider the _truncated Jacobi matrix_ associated
+with orthonormal polynomials $q_n(x)$:
+$$
+X_n := \begin{bmatrix} a_0 & b_0 \\
+                         b_0 & ⋱ & ⋱ \\
+                         & ⋱ & a_{n-2} & b_{n-2} \\
+                         && b_{n-2} & a_{n-1} \end{bmatrix} ∈ ℝ^{n × n}
+$$
+Show that
+$$
+x [q_0(x) | ⋯ | q_{n-1}(x)] = [q_0(x) | ⋯ | q_{n-1}(x)] X_n + b_{n-1} q_n(x) 𝐞_n^⊤.
+$$
+
+**SOLUTION**
+
+We have that in the infinite form of $X$:
+$$x[q_0,...,q_{n-1},...] = [q_0,...,q_{n-1},...]X$$
+
+Thus, selecting just the first $n$ terms, we have
+$$x[q_0,...,q_{n-1}] = \left[[q_0,...,q_{n-1} ,q_n]X\right]_{1,...,n}=\left[[q_0,...,q_{n-1},...]X_{n+1}\right]_{1,...,n}$$
+considering that we don't need the terms after the $n+1$ since the relevant terms in the matrix $X$ would be 0s.
+
+Writing the $n^{th}$ term explicitly we obtain
+$$xq_{n-1} = [q_{n-2},q_{n-1},q_n]\{X_{n+1}\}_{n,n-1:n+1}= b_{n-2}q_{n-2} + a_{n-1} q_{n-1} + b_{n-1}q_n$$
+
+While
+$$[q_{n-2},q_{n-1},q_n]\{X_{n}\}_{n,n-1:n+1} = b_{n-2}q_{n-2} + a_{n-1} q_{n-1}$$
+
+Thus, the only extra term that this form is missing is $b_{n-1}q_n$ in the $n^{th}$ term which can be added using the vector $e_n^T$, hence
+
+
+$$
+x [q_0(x) | ⋯ | q_{n-1}(x)] = [q_0(x) | ⋯ | q_{n-1}(x)] X_n + b_{n-1} q_n(x) 𝐞_n^⊤
+$$
+
+**Problem 1.3 (A)** Prove the _Christoffel-Darboux Formula_: orthonormal polyomials $q_k(x)$ satisfy
+$$
+∑_{k = 0}^n q_k(x) q_k(y) =  b_n {q_{n+1}(x) q_n(y) - q_n(x) q_{n+1}(y) \over x-y}
+$$
+Hint: Consider
+$$
+(x-y) [q_0(x) | ⋯ | q_n(x)] \begin{bmatrix} q_0(y) \\ ⋮ \\ q_n(y) \end{bmatrix}.
+$$
+
+**SOLUTION**
+
+We have to prove that
+$$
+(x-y) [q_0(x) | ⋯ | q_n(x)] \begin{bmatrix} q_0(y) \\ ⋮ \\ q_n(y) \end{bmatrix} = (x-y)∑_{k = 0}^n q_k(x) q_k(y) = b_n ({q_{n+1}(x) q_n(y) - q_n(x) q_{n+1}(y))}
+$$
+
+Using 1.2 we have
+
+$x[q_0(x) | ⋯ | q_n(x)] = [q_0(x) | ⋯ | q_n(x)] X_{n+1} + b_n q_{n+1}(x)e_{n+1}^T$
+
+$y[q_0(y) | ⋯ | q_n(y)] = [q_0(y) | ⋯ | q_n(y)] Y_{n+1} + b_n q_{n+1}(y)e_{n+1}^T$
+
+
+Right-multiplying these formulas respectively by $[q_0(y) | ⋯ | q_n(y)]^T$ and $[q_0(x) | ⋯ | q_n(x)]^T$ we obtain
+
+$x[q_0(x) | ⋯ | q_n(x)][q_0(y) | ⋯ | q_n(y)]^T = [q_0(x) | ⋯ | q_n(x)] X_{n+1}[q_0(y) | ⋯ | q_n(y)]^T + b_n q_{n+1}(x)q_n(y)$
+
+$y[q_0(y) | ⋯ | q_n(y)][q_0(x) | ⋯ | q_n(x)]^T = [q_0(y) | ⋯ | q_n(y)] Y_{n+1}[q_0(x) | ⋯ | q_n(x)]^T + b_n q_{n+1}(y)q_n(x)$
+
+which (transposed of a number) corresponds to
+
+$y[q_0(x) | ⋯ | q_n(x)][q_0(y) | ⋯ | q_n(y)]^T = [q_0(x) | ⋯ | q_n(x)] Y_{n+1}^T[q_0(y) | ⋯ | q_n(y)]^T + b_n q_n(x)q_{n+1}(y)$
+
+Subtracting from the first equation the second (transposed) we get
+
+$(x-y)[q_0(x) | ⋯ | q_n(x)]\begin{bmatrix} q_0(y) \\ ⋮ \\ q_n(y) \end{bmatrix} = [q_0(x) | ⋯ | q_n(x)] (X_{n+1}-Y_{n+1}^T)\begin{bmatrix} q_0(y) \\ ⋮ \\ q_n(y) \end{bmatrix} + b_n (q_{n+1}(x)q_n(y)-q_n(x)q_{n+1}(y))$
+
+But since the matrices $X_{n+1}$ and $Y_{n+1}$ do not depend on the values of $x$ and $y$, but on the polynomials, then they are the same matrix.
+
+In particular, they are symmetric matrices since the $q_k$s are orthonormal. Thus,
+$X_{n+1}-Y_{n+1}^T=0$
+
+Hence, 
+$[q_0(x) | ⋯ | q_n(x)] (X_{n+1}-Y_{n+1}^T)\begin{bmatrix} q_0(y) \\ ⋮ \\ q_n(y) \end{bmatrix}=0$, thus
+
+$$∑_{k = 0}^n q_k(x) q_k(y) = [q_0(x) | ⋯ | q_n(x)]\begin{bmatrix} q_0(y) \\ ⋮ \\ q_n(y) \end{bmatrix} = { b_n (q_{n+1}(x)q_n(y)-q_n(x)q_{n+1}(y))\over x-y}$$
+
+
+## 4. Interpolation
+
+**Problem 4.1 (C)** Use Lagrange interpolation to
+interpolate the function $\cos x$ by a polynomial at the points
+$[0,2,3,4]$ and evaluate at $x = 1$. 
+
+**SOLUTION**
+
+- $l_0(x)=\frac{(x-2)(x-3)(x-4)}{(0-2)(0-3)(0-4)}=-\frac{1}{24}(x-2)(x-3)(x-4)$
+- $l_2(x)=\frac{(x-0)(x-3)(x-4)}{(2-0)(2-3)(2-4)}=\frac{1}{4}x(x-3)(x-4)$
+- $l_3(x)=\frac{(x-0)(x-2)(x-4)}{(3-0)(3-2)(3-4)}=-\frac{1}{3}x(x-2)(x-4)$
+- $l_4(x)=\frac{(x-0)(x-2)(x-3)}{(4-0)(4-2)(4-3)}=\frac{1}{8}x(x-2)(x-3)$
+
+$p(x)=\cos(0)l_0(x)+\cos(2)l_2(x)+\cos(3)l_3(x)+\cos(4)l_4(x)$
+
+$l_0(1)=1/4$, $l_2(1)=3/2$, $l_3(1)=-1$, $l_4(1)=1/4$, so $p(1)=1/4\cos(0)+3/2\cos(2)-\cos(3)+1/4\cos(4)$.
+
+```julia
+using Plots
+l0(x)=-1/24*(x-2)*(x-3)*(x-4)
+l2(x)=1/4*x*(x-3)*(x-4)
+l3(x)=-1/3*x*(x-2)*(x-4)
+l4(x)=1/8*x*(x-2)*(x-3)
+p(x)=cos(0)*l0(x)+cos(2)*l2(x)+cos(3)*l3(x)+cos(4)*l4(x)
+
+plot([p cos], xlims=(-1,5))
+```
+
+**Problem 4.2 (A)** Consider the re-expanding the Lagrange basis in
+monomials. Use this to construct an explicit formula for the inverse of the
+Vandermonde matrix.
+
+**SOLUTION**
+
+We use two methods to interpolate $f(x)$
+
+**Vandermonde matrix**
+
+$$p(x)=\sum_{k=1}^nc_kx^{k-1}=
+\underbrace{\begin{bmatrix}
+1&x&\cdots&x^{n-1}
+\end{bmatrix}}_{\mathbf{M}(x)}
+\underbrace{\begin{bmatrix}
+c_1\\
+\vdots\\
+c_n
+\end{bmatrix}}_{\mathbf{c}}$$
+where
+$$
+V\mathbf{c}=
+\underbrace{\begin{bmatrix}
+f(x_1)\\
+\vdots\\
+f(x_n)
+\end{bmatrix}}_{\mathbf{f}}
+$$
+
+**Lagrange interpolation**
+
+$$p(x)=\sum_{k=1}^nf(x_k)l_k(x)=
+\underbrace{\begin{bmatrix}
+l_1(x)&\cdots&l_n(x)
+\end{bmatrix}}_{\mathbf{L}(x)}\mathbf{f}$$
+
+Comparing the two results, we have
+$$\mathbf{M}(x)V^{-1}\mathbf{f}=\mathbf{L}(x)\mathbf{f},$$
+so
+$$\mathbf{M}(x)V^{-1}=\mathbf{L}(x)$$
+which means that the $(i,j)$-entry of $V^{-1}$ is the coefficient of $x^{i-1}$ in $l_j(x)$.
+
+See [here](https://proofwiki.org/wiki/Inverse_of_Vandermonde_Matrix#Theorem) for the complete explicit expression.
+
+
+## 1. Orthogonal Polynomial Roots
+
+**Problem 1.1 (C)** Compute the roots of $P_3(x)$, orthogonal with respect
+to $w(x) = 1$ on $[-1,1]$, by computing the eigenvalues of a $3 × 3$ truncation
+of the Jacobi matrix.
+
+**SOLUTION**
+
+We have, $P_0(x) = 1$. Though recall that in order to use Lemma (zeros), the Jacobi matrix must be symmetric and hence the polynomials orthonormal. So Take $Q_0(x) = 1/||P_0(x)|| = \frac{1}{\sqrt{2}}$. Then we have, by the three term recurrence relationship,
+$$
+xQ_0(x) = a_0Q_0(x) + b_0Q_1(x),
+$$
+and taking the inner product of both sides with $Q_0(x)$ we get, 
+$$a_0 = \langle xQ_0(x), Q_0(x) \rangle = \int_{-1}^1 x/2 dx = 0.$$
+Next recall that $P_1(x) =  x$ and so $Q_1(x) = x/||P_1(x)||=\sqrt{\frac{3}{2}} x$. We then have, taking the innner product of the first equation above with $Q_ 1(x)$,
+$$
+b_0 = \langle xQ_0(x), Q_1(x)\rangle = \int_{-1}^1 \frac{\sqrt{3}}{2}x^2 dx = \frac{1}{\sqrt{3}},
+$$
+and also $b_0 = c_0$ by the Corollary (orthonormal 3-term recurrence). We have,
+$$
+a_1 = \langle xQ_1(x), Q_1(x)\rangle = \int_{-1}^1 \frac{3}{2}x^3 dx = 0.
+$$
+Recall that $P_2(x) = \frac{1}{2}(3x^2 - 1)$, so that $Q_2(x) = P_2(x)/||P_2(x)|| = \sqrt{\frac{5}{8}}(3x^2 - 1)$, and that,
+$$
+xQ_1(x) = c_0Q_0(x) + a_1Q_1(x) + b_1Q_2(x).
+$$
+Taking inner the inner product of both sides with $Q_2(x)$, we see that,
+$$
+c_1 = b_1 = \langle xQ_1(x), Q_2(x)\rangle = \int_{-1}^1 \sqrt{\frac{5}{8}} \cdot \sqrt{\frac{3}{2}}(3x^2 - 1)\cdot x \cdot xdx =\frac{2}{\sqrt{15}}.
+$$
+Finally,
+$$
+a_2 = \langle Q_2(x), xQ_2(x) \rangle = \frac{5}{8}\int_{-1}^1 (3x^2 - 1)^2 x dx = 0.
+$$
+This gives us the truncated Jacobi matrix,
+$$
+X_3 = \left[\begin{matrix}
+a_0 & b_0	& 0 \\
+b_0 & a_1 & b_1 \\
+0&b_1 & a_2
+\end{matrix}
+ \right] = \left[\begin{matrix}
+0 & \frac{1}{\sqrt{3}}	& 0 \\
+\frac{1}{\sqrt{3}} & 0 & \frac{2}{\sqrt{15}} \\
+0& \frac{2}{\sqrt{15}} & 0
+\end{matrix}
+ \right],
+$$
+whose eigenvalues are the zeros of $Q_3(x)$, and hence the zeros of $P_3(x)$ since they are the same up to a constant. To work out the eigenvalues, we have,
+$$
+\begin{align*}
+	|X_3 - \lambda I| = \left| \begin{matrix}
+		-\lambda & \frac{1}{\sqrt{3}} & 0\\ 
+		\frac{1}{\sqrt{3}} & -\lambda & \frac{2}{\sqrt{15}}\\
+		0 & \frac{2}{\sqrt{15}} & -\lambda 
+	\end{matrix}\right| &= 0 \\
+	\Leftrightarrow -\lambda(\lambda^2 - \frac{4}{15}) - \frac{1}{\sqrt{3}}\cdot \frac{-\lambda}{\sqrt{3}} &=0 \\
+	\Leftrightarrow -\lambda^3 + \frac{3}{5}\lambda &= 0,
+\end{align*}
+$$
+which has solutions $\lambda = 0, \pm \sqrt{\frac{3}{5}}$
+
+**END**
+
+**Problem 1.2 (B)** Give an explicit diagonalisation of
+$$
+X_n = \begin{bmatrix} 0 & 1/2 \\ 
+                1/2 & 0 & ⋱  \\
+                & ⋱ & ⋱ & 1/2 \\
+                && 1/2 & 0
+                \end{bmatrix} ∈ ℝ^{n × n}
+$$
+for all $n$ by relating it to the Jacobi matrix for $U_n(x)$.
+
+**SOLUTION**
+
+Recall the three term recurrence for the Chebyshev Polynomials $U_n$,
+$$
+\begin{align*}
+	xU_0(x) &= \frac{1}{2} U_1(x), \\
+	xU_n(x) &= \frac{U_{n-1}(x)}{2} + \frac{U_{n+1}(x)}{2},
+\end{align*}
+$$
+and hence, we can see that,
+$$
+X_n = \left[\begin{matrix}
+	0 & 1/2 \\
+	1/2 & 0 & \ddots \\
+	&\ddots & \ddots & 1/2 \\ 
+	&&1/2 & 0
+\end{matrix} \right],
+$$
+is the $n \times n$ truncation of the Jacobi matrix. If $x_1,\dots, x_n$ are the zeros of $U_n(x)$, by Lemma (zeros) we have that,
+$$
+X_nQ_n = Q_n \left[\begin{matrix}
+x_1 \\
+&x_2 \\
+&&\ddots \\
+&&&x_n	
+\end{matrix}
+ \right],
+$$
+for,
+$$
+Q_n = \left[\begin{matrix}
+	U_0(x_1) & \cdots & U_0(x_n) \\
+	\vdots & \ddots & \vdots \\
+	U_{n-1}(x_1) & \cdots & U_{n-1}(x_n)
+\end{matrix} \right] D̃ = Q̃_n D̃
+$$
+where
+$$
+D̃ = \begin{bmatrix} 1/\sqrt{U_0(x_1) + ⋯ + U_{n-1}(x_1)} \\ &⋱ \\ 1/\sqrt{U_0(x_n) + ⋯ + U_{n-1}(x_n)}
+\end{bmatrix}
+$$
+guarantess that $Q_n$ is orthogonal.
+Recall that if $x = \cos θ$ then $U_n(x) = \frac{\sin(n+1)θ}{\sin θ}$, 
+so in particular the roots of $U_n(x)$ are 
+$x_k = \cos\left(\frac{k\pi}{n+1} \right)$ for $k = 1,\dots,n$, 
+(where $\sin \left(\frac{k\pi}{n+1}\right) \neq 0$). Hence, we have,
+$$
+\begin{align*}
+	X_n &= Q_n\left[\begin{matrix}
+x_1 \\
+&x_2 \\
+&&\ddots \\
+&&&x_n	
+\end{matrix}
+ \right]Q_n^⊤ \\
+ &= Q̃_n D̃ \left[\begin{matrix}
+x_1 \\
+&x_2 \\
+&&\ddots \\
+&&&x_n	
+\end{matrix}
+ \right] D̃^{-1}Q̃_n^{-1} \\
+ &= Q̃_n\left[\begin{matrix}
+x_1 \\
+&x_2 \\
+&&\ddots \\
+&&&x_n	
+\end{matrix}
+ \right] D̃ D̃^{-1}Q̃_n^{-1} \\
+ &=Q̃_n\left[\begin{matrix}
+\cos\left(\frac{\pi}{n+1}\right) \\
+&\cos\left(\frac{2\pi}{n+1}\right) \\
+&&\ddots \\
+&&&\cos\left(\frac{n\pi}{n+1}\right)
+\end{matrix}
+ \right]Q̃_n^{-1} \\
+ &= Q̃_nΛ_nQ̃_n^{-1},
+\end{align*} 
+$$
+where, 
+$$
+Q̃_n = \left[\begin{matrix}
+	1 & \cdots & 1\\
+	\frac{\sin\left(2\cdot \frac{2\pi}{n+1} \right)}{\sin\left(\frac{2\pi}{n+1}\right)} & \cdots & \frac{\sin\left(2\cdot \frac{n\pi}{n+1} \right)}{\sin\left(\frac{n\pi}{n+1}\right)} \\
+	\vdots & & \vdots \\
+	\frac{\sin\left(n\cdot \frac{2\pi}{n+1} \right)}{\sin\left(\frac{2\pi}{n+1}\right)} & \cdots & \frac{\sin\left( n\cdot \frac{n\pi}{n+1} \right)}{\sin\left(\frac{n\pi}{n+1}\right)}
+\end{matrix} \right],
+$$
+and,
+$$
+Λ_n = \left[\begin{matrix}
+\cos\left(\frac{\pi}{n+1}\right) \\
+&\cos\left(\frac{2\pi}{n+1}\right) \\
+&&\ddots \\
+&&&\cos\left(\frac{n\pi}{n+1}\right)
+\end{matrix}
+ \right]
+$$
+
+**END**
+
+**Problem 1.3 (A)** Give an explicit solution to heat on a graph
+$$
+\begin{align*}
+𝐮(0) &= 𝐮_0 ∈ ℝ^n \\
+𝐮_t &= Δ 𝐮
+\end{align*}
+$$
+where
+$$
+Δ := \begin{bmatrix} -2 & 1 \\ 
+            1 & -2 & ⋱ \\ 
+            & 1 & ⋱ & 1 \\
+            && ⋱ & -2 & 1 \\
+                &&& 1 & -2
+                \end{bmatrix} ∈ ℝ^{n \times n}
+$$
+(which corresponds to Dirichlet conditions.) Hint: use Problem 1.2 to diagonalise the problem.
+
+**SOLUTION**
+
+
+We have,
+$$
+\begin{align*}
+\mathbf{u}_t &= \Delta \mathbf{u} \\	
+&= 2(X_n - I),
+\end{align*}
+$$
+with $X_n$ defined as above. Observe, for $Q_n$ and $Λ_n$ defined as above
+$$
+\begin{align*}
+	2(X_n - I) &= 2(Q_nΛQ_n^⊤ - I) \\
+	&=Q_n (2(Λ - I))Q_n^⊤ 
+\end{align*}
+$$
+We then have 
+$$
+𝐯(t) := Q_n^⊤ 𝐮(t)
+$$
+satisfies
+$$
+𝐯'(t) = Q_n^⊤ 𝐮'(t) = Q_n^⊤ Δ 𝐮(t) = Q_n^⊤ Δ Q_n 𝐯(t) = Λ 𝐯(t)
+$$
+This is a diagonal problem so we know that
+$$
+𝐯(t) = \exp(Λt) 𝐯(0) =   \exp(Λt) Q_n^⊤ 𝐮_0
+$$
+I.e.
+$$
+𝐮(t) = Q_n\exp(Λt) Q_n^⊤ 𝐮_0 =  Q_n\begin{bmatrix}
+	 e^{2\left(\cos(\frac{\pi}{n+1}) - 1\right)t} \\
+	 &e^{2\left(\cos(\frac{2\pi}{n+1}) - 1\right)t} \\
+	&&⋱ \\
+	&&& e^{2\left(\cos(\frac{n\pi}{n+1}) - 1\right)t}
+	\end{bmatrix} Q_n^⊤ 𝐮_0.
+$$
+
+
+**END**
+
+
+## 2. Interpolatory quadrature
+
+
+**Problem 2.1 (C)** Compute the interpolatory quadrature rule for
+$w(x) = \sqrt{1-x^2}$ with the points $[-1,1/2,1]$.
+
+**SOLUTION**
+
+For the points $\mathbf{x} = \{-1, 1/2, 1\}$ we have the Lagrange polynomials:
+$$
+ℓ_1(x) = \left(\frac{x - 1/2}{-1 - 1/2}\right)\cdot\left(\frac{x - 1}{-1 - 1}\right) = \frac{1}{3}\left(x^2 - \frac{3}{2}x + \frac{1}{2}\right),
+$$
+and
+$$
+ℓ_2(x) = -\frac{4}{3}x^2 + \frac{4}{3}, ℓ_3(x) =x^2 + \frac{1}{2}x - \frac{1}{2},
+$$
+similarly. We can then compute the weights,
+$$
+w_j = \int_{-1}^1 ℓ_j(x)w(x)dx,
+$$
+using,
+$$
+\int_{-1}^1 x^k \sqrt{1-x^2}dx = \begin{cases}
+ \frac{\pi}{2} &	k=0 \\
+ 0 & k=1 \\
+\frac{\pi}{8} & k=2
+ \end{cases}
+$$
+to find,
+$$
+w_j = \begin{cases}
+ 	\frac{\pi}{8} & j = 1 \\
+ 	\frac{\pi}{2} & j = 2 \\
+ 	-\frac{\pi}{8} & j = 3,
+ \end{cases}
+$$
+so that the interpolatory quadrature rule is:
+$$
+\Sigma_3^{w,\mathbf{x}}(f) = \frac{\pi}{2}\left(\frac{1}{4}f(-1) + f(1/2) -\frac{1}{4}f(1) \right)
+$$
+
+**END**
+
+**Problem 2.2 (C)** Compute the 2-point 
+interpolatory quadrature rule associated with roots of orthogonal polynomials for the weights $\sqrt{1-x^2}$, $1$, 
+and $1-x$ on $[-1,1]$ by integrating the Lagrange bases.
+
+**SOLUTION**
+For $w(x) = \sqrt{1-x}^2$ the orthogonal polynomial of degree 2 is $U_2(x) = 4x^2 -1$, with roots $\mathbf{x} = \{x = \pm \frac{1}{2}\}$. The Lagrange polynomials corresponding to these roots are,
+\begin{align*}
+ℓ_1(x) &= \frac{x - 1/2}{-1/2 - 1/2} = \frac{1}{2} - x, \\
+ℓ_2(x) &= \frac{x + 1/2}{1/2 + 1/2} = x + \frac{1}{2}
+\end{align*}
+We again work out the weights
+$$
+w_j = \int_{-1}^1 ℓ_j(x)w(x)dx,
+$$
+to find,
+$$
+w_1 = w_2 = {\pi \over 4},
+$$
+and thus the interpolatory quadrature rule is,
+$$
+\Sigma_2^{w,\mathbf{x}}(f) = \frac{\pi}{4}(f(-1/2) + f(1/2)).
+$$
+
+For $w(x) = 1$, the orthogonal polynomial of degree 2 is, using Legendre Rodriguez formula:
+$$
+P_2(x) = \frac{1}{(-2)^22!} \frac{d^2}{dx^2}\left(1 - x^2\right)^2 = -\frac{1}{2} + \frac{3}{2}x^2.
+$$
+This has roots $\mathbf{x} = \left\{\pm \frac{1}{\sqrt{3}}\right\}$. We then have,
+\begin{align*}
+	ℓ_1(x) &= -\frac{\sqrt{3}}{2}x + \frac{1}{2} \\
+	ℓ_2(x) &= \frac{3}{2}x + \frac{1}{2},
+\end{align*}
+from which we can compute the weights,
+$$
+w_1 = w_2 = 1,
+$$
+which give the quadrature rule:
+$$
+\Sigma_2^{w,\mathbf{x}}(f) = \left[f\left(-\frac{1}{\sqrt{3}}\right) + f\left(\frac{1}{\sqrt{3}}\right)\right]
+$$
+
+Finally, with $w(x) = 1 - x$ we use the solution to PS9 Problem 1.1, which states that
+$$
+p_2(x) = x^2 + 2x/5 - 1/5
+$$
+which has roots, $\mathbf{x} = \left\{-\frac{1}{5} \pm \frac{\sqrt{6}}{5} \right\}$. The Lagrange polynomials are then,
+\begin{align*}
+	ℓ_1(x) &= \frac{x - (-\frac{1}{5} + \frac{\sqrt{6}}{5} )}{-\frac{1}{5} - \frac{\sqrt{6}}{5} - (-\frac{1}{5} + \frac{\sqrt{6}}{5}) } \\
+	&= \frac{x - (-\frac{1}{5} + \frac{\sqrt{6}}{5} )}{-\frac{2\sqrt{6}}{5}} \\
+	&=-\frac{5}{2\sqrt{6}}x - \frac{1}{2\sqrt{6}} + \frac{1}{2} \\
+	ℓ_2(x) &= \frac{x - (-\frac{1}{5} - \frac{\sqrt{6}}{5} )}{\frac{2\sqrt{6}}{5}} \\
+	&= \frac{5}{2\sqrt{6}}x + \frac{1}{2\sqrt{6}} + \frac{1}{2}
+\end{align*}
+From which we can compute the weights,
+\begin{align*}
+	w_1 &= 1 + \frac{\sqrt{6}}{9}, \\
+	w_2 &= 1 - \frac{\sqrt{6}}{9},
+\end{align*}
+giving the quadrature rule,
+$$
+\Sigma_2^{w,\mathbf{x}}(f) = \left[\left(1 + \frac{\sqrt{6}}{9} \right)f\left(-\frac{1}{5} - \frac{\sqrt{6}}{5} \right) + \left(1 - \frac{\sqrt{6}}{9} \right)f\left(-\frac{1}{5} + \frac{\sqrt{6}}{5} \right) \right]
+$$
+**END**
+
+## 3. Gaussian quadrature
+
+
+**Problem 3.1 (C)** Compute the 2-point and 3-point Gaussian quadrature rules associated with $w(x) = 1$ on $[-1,1]$. 
+
+**SOLUTION**
+
+For the weights $w(x) = 1$, the orthogonal polynomials of degree $\leq 3$ are the Legendre polynomials,
+\begin{align*}
+	q_0(x) = 1, \\
+	q_1(x) = x, \\
+	q_2(x) = \frac{1}{2}(3x^2  - 1), \\
+	q_3(x) = \frac{1}{2}(5x^3 - 3x).
+\end{align*}
+We can normalise each to get $q'_j(x) = q_j(x)/||q_j||$, with $||q_j||^2 = \int_{-1}^1 q_j^2 dx$. This gives,
+\begin{align*}
+	q'_0(x) = \frac{1}{\sqrt{2}}, \\
+	q'_1(x) = \sqrt{\frac{3}{2}}x, \\
+	q'_2(x) = \sqrt{\frac{5}{8}}(3x^2  - 1), \\
+	q'_3(x) = \sqrt{\frac{7}{8}}(5x^3 - 3x).
+\end{align*}
+For the first part we use the roots of $q_2(x)$ which are $\mathbf{x} = \left\{\pm \frac{1}{\sqrt{3}}\right\}$. The weights are,
+$$
+w_j = \frac{1}{\alpha_j^2} = \frac{1}{q'_0(x_j)^2 + q'_1(x_j)^2} = \frac{1}{\frac{1}{2}+\frac{3}{2}x_j^2},
+$$
+so that,
+$$
+w_1 = w_2 = 1,
+$$
+and the Gaussian Quadrature rule is,
+$$
+\Sigma_2^w[f] = f\left(-\frac{1}{\sqrt{3}}\right) + f\left(\frac{1}{\sqrt{3}}\right)
+$$
+For the second part, we use the roots of $q_3(x)$ which are $\mathbf{x} = \left\{0, \pm \sqrt{\frac{3}{5}} \right\}$. The weights are then,
+$$
+w_j = \frac{1}{\alpha_j^2} = \frac{1}{q'_0(x_j)^2 + q'_1(x_j)^2 + q'_2(x_j)^2} = \frac{1}{\frac{9}{8} -\frac{9}{4}x_j^2 + \frac{45}{8}x_j^4 }
+$$
+Giving us,
+$$
+\begin{align*}
+	w_1 = w_3 = \frac{1}{\frac{9}{8} - \frac{9}{4}\frac{3}{5} + \frac{45}{8}\frac{9}{25}} &= \frac{5}{9} \\
+	w_2 &= \frac{8}{9}
+\end{align*}
+$$
+Then the Gaussian Quadrature rule is,
+$$
+\Sigma_3^w[f] = \frac{1}{9} \left[5f\left(-\sqrt\frac{3}{5}\right) +8f(0) + 5f\left(\sqrt\frac{3}{5}\right) \right]
+$$
+
+**END**
+
+**Problem 3.2 (A)** Show for $w(x) = 1/\sqrt{1-x^2}$ that the Gaussian quadrature rule is
+$$
+{π \over n} \sum_{j=1}^n f(x_j)
+$$
+where $x_j = (j-1/2)π/n$ for all $n$.
+
+**SOLUTION**
+
+For $w(x) = \frac{1}{\sqrt{1-x^2}}$, the orthogonal polynomials are the Chebyshev polynomials $T_n(x) = \cos(n\arccos(x))$. To make them orthonormal, we have,
+\begin{align*}
+	T'_0(x) &= \frac{1}{\sqrt{\pi}}, \\
+	T'_n(x) &= \frac{2}{\pi}\cos(n\arccos(x)), \hspace{5mm} (n > 0)
+\end{align*}
+We have,
+\begin{align*}
+	T'_n(x) = 0 &\Leftrightarrow \cos(n\arccos(x)) = 0 \\
+	&\Leftrightarrow n\arccos(x) = j\pi - \frac{\pi}{2}, \hspace{5mm} (j \in \mathbb{Z}) \\
+	&\Leftrightarrow x = \cos\left(\frac{(j-\frac{1}{2})\pi}{n} \right), \hspace{5mm} (j \in \mathbb{Z}),
+\end{align*}
+which has unique solutions $\left\{x_j = \cos\left(\frac{(j-\frac{1}{2})\pi}{n} \right) : j = 1, \dots, n\right\}$. We then have,
+$$
+w_j = \frac{1}{\alpha_j^2} = \frac{1}{T'_0(x_j)^2 + T'_1(x_j)^2 + \dots T'_{n-1}(x_j)^2}
+$$
+Consider, writing $\theta_j = \frac{(j-\frac{1}{2})\pi}{n} $
+\begin{align*}
+	\alpha_j^2 &= \sum_{k=0}^{n-1}T'_k(x_j)^2 \\
+	&= \frac{1}{\pi} + \frac{2}{\pi}\sum_{k=1}^{n-1}\cos^2(k\theta_j) \\
+	&= \frac{1}{\pi} + \frac{1}{2\pi}\sum_{k=1}^{n-1}(e^{ik\theta_j} + e^{-ik\theta_j})^2 \\
+	&= \frac{1}{\pi} + \frac{1}{2\pi} \sum_{k=1}^{n-1}( e^{2ik\theta_j} + e^{-2ik\theta_j} + 2) \\
+	&= \frac{n}{\pi} + \frac{1}{2\pi} \sum_{k=1}^{n-1}(e^{2ik\theta_j} + e^{-2ik\theta_j})
+\end{align*}
+Using a geometric sum (in essentially the same way as the solution of Problem 1.2 in Problem Sheet 8) we can show that the second term is 0 and thus $w_j = \frac{1}{\alpha_j^2} = \frac{\pi}{n}$.
+
+**END**
+
+**Problem 3.3 (B)** Solve Problem 1.2 from PS8 using **Lemma (discrete orthogonality)** with
+$w(x) = 1/\sqrt{1-x^2}$ on $[-1,1]$.
+
+**SOLUTION**
+
+
+By the Lemma (Discrete Orthogonality), we have,
+\begin{align*}
+	\Sigma_{n}^w[q_lq_m] = \frac{\pi}{n}\sum_{j=1}^n q_l(x_j)q_m(x_j) = \delta_{lm}, \\
+	\sum_{j=1}^n q_l(x_j)q_m(x_j) = \frac{n}{\pi}\delta_{lm},
+\end{align*}
+By the previous question, for the weight $w(x) = \frac{1}{\sqrt{1-x^2}}$ we have $q_0(x_j) = \frac{1}{\sqrt{\pi}}$, $q_k(x_j) = \sqrt{\frac{2}{\pi}}\cos(k\theta_j).$
+For $l = m = 0$ then we have,
+\begin{align*}
+	\frac{1}{\pi}\sum_{j=1}^n \cos(l\theta_j)\cos(m\theta_j) =\sum_{j=1}^nq_l(x_j)q_m(x_j) =  \frac{n}{\pi}\delta_{lm} = \frac{n}{\pi} \\
+	\Rightarrow \frac{1}{n}\sum_{j=1}^n \cos(l\theta_j)\cos(m\theta_j) = 1\
+\end{align*}
+Now, for $l = m \neq 0$, we have,
+\begin{align*}
+	\frac{2}{\pi}\sum_{j=1}^n \cos(l\theta_j)\cos(m\theta_j) =\sum_{j=1}^nq_l(x_j)q_m(x_j) =  \frac{n}{\pi}\delta_{lm} = \frac{n}{\pi} \\
+	\Rightarrow \frac{1}{n}\sum_{j=1}^n \cos(l\theta_j)\cos(m\theta_j) = \frac{1}{2}\
+\end{align*}
+Finally, for $l \neq m$, we have,
+$$
+C_{lm}\sum_{j=1}^n\cos(l\theta_j)\cos(m\theta_j) = \sum_{j=1}^nq_l(x_j )q_m(x_j) = \frac{n}{\pi}\delta_{lm} = 0,
+$$
+for some constant $C_{lm} \neq 0$ which is $\frac{1}{\pi}$ if $l = 0$ or $m = 0$ and $\frac{2}{\pi}$ otherwise (it doesn't matter what it is so long as it is not 0). Therefore, for $l \neq m$ we have,
+$$
+\frac{1}{n}\sum_{j=1}^n \cos(l\theta_j)\cos(m\theta_j) = 0
+$$
+
+**END**
+
+
+**Problem 8** What are the upper 3x3 sub-block of the Jacobi matrix for the 
+monic and orthonormal polynomials with respect to the following weights on
+$[-1,1]$:
+$$
+1-x, \sqrt{1-x^2}, 1-x^2
+$$
+
+**SOLUTION**
+
+##### Monic
+
+We know that for monic ($b_n=1$) orthogonal polynomials we can write the upper 3x3 block in the form
+
+$$X = \begin{bmatrix} a_0 & c_0 & 0 \\ 1 & a_1 & c_1 \\ 0 & 1 & a_2 \end{bmatrix}$$
+
+
+1. $w(x) = 1-x$
+
+Take $p_0(x) = 1$ (monic) and note
+$$
+\| p_0 \|^2 = \int_{-1}^1 (1-x) {\rm d}x = 2
+$$
+From
+$$
+xp_0(x) = a_0p_0(x) + p_1(x)
+$$
+we deduce
+$$
+a_0 = ⟨x p_0, p_0⟩/\|p_0\|^2 =  {\int_{-1}^1 (1-x) x {\rm d}x \over 2} =  -{1 \over 3}
+$$
+i.e.
+$$
+p_1(x) = (x-a_0) p_0(x) = x + 1/3.
+$$
+and note that
+$$
+\|p_1\|^2 = \int_{-1}^1 (1-x) (x+1/3)^2 {\rm d} x = 4/9.
+$$
+From
+$$
+xp_1(x) = c_0 p_0(x) + a_1 p_1(x) + p_2(x)
+$$
+we deduce
+$$
+c_0 = ⟨x p_1, p_0⟩/\|p_0\|^2 =  {\int_{-1}^1 (1-x) x (x+1/3) {\rm d}x \over 2} =  {2 \over 9}
+$$
+and
+$$
+a_1 = ⟨x p_1, p_1⟩/\|p_1\|^2 =  {9 \over 4} {\int_{-1}^1 (1-x) x (x+1/3)^2 {\rm d}x} =  -{1 \over 15}
+$$
+Thus
+$$
+p_2(x) = (x - a_1) p_1(x) - c_0 p_0(x) = (x+1/15) (x+1/3) - 2/9 = x^2 + 2x/5 -1/5.
+$$
+And once again as before:
+$$
+c_1=\frac{\langle p_1, xp_2\rangle}{\|p_1\|^2}= \frac{\int_{-1}^1 (x+\frac{1}{3})(x^2+\frac{2}{5}x- \frac{1}{5}) x(1-x) dx}{\int_{-1}^1 (x+\frac{1}{3})^2 (1-x) dx}= \frac{6}{25}$$
+and
+$$
+a_2 = \frac{\langle p_2, xp_2\rangle}{\|p_2\|^2} = \frac{\int_{-1}^1 (x^2+\frac{2}{5}x- \frac{1}{5})^2 x(1-x) dx}{\int_{-1}^1 (x^2+\frac{2}{5}x- \frac{1}{5})^2 (1-x) dx}= -\frac{1}{35}
+$$
+
+
+2. $w(x)=\sqrt{1-x^2}$
+
+Take $p_0(x) = k_0 = 1$ (monic) so that
+$$
+\|p_0\|^2 = \int_{-1}^1 \sqrt{1-x^2} = {π \over 2}.
+$$
+From PS8, Problem 3.4 we know that $a_k = 0$. Thus
+from the recurrence we have
+$$
+xp_0(x) =  p_1(x)
+$$
+and hence
+$$
+p_1(x) = x p_0(x) = x.
+$$
+Likewise for
+$$
+xp_1(x)= c_0p_0(x)+p_2(x)
+$$
+we have
+$$
+c_0=\frac{\langle p_0, xp_1\rangle}{\|p_0\|^2} \frac{\int_{-1}^1 x^2\sqrt{1-x^2} dx}{π/2}=\frac{π/8}{π/2}= \frac{1}{4}
+$$
+i.e.
+$$
+p_2(x) = xp_1(x) - c_0 = x^2 - {1 \over 4}.
+$$
+Finally:
+$$
+xp_2(x)= c_1p_1(x)p_3(x)
+$$
+and thus
+$$
+c_1=\frac{\langle p_1, xp_2\rangle}{\|p_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{4}) x^2\sqrt{1-x^2} dx}{\int_{-1}^1 x^2 \sqrt{1-x^2} dx}= \frac{π/32}{π/8}=\frac{1}{4}
+$$
+
+
+3. $w(x)=1-x^2$
+
+Take $p_0(x) = k_0 = 1$ (monic). Again due to $w(x) = w(-x)$
+from recurrence we have
+$$
+xp_0(x) = p_1(x)
+$$
+Then from
+$$xp_1(x)= c_0p_0(x)+p_2(x)$$
+we find
+$$c_0=\frac{\langle p_0, xp_1\rangle}{\|p_0\|^2} \frac{\int_{-1}^1 x^2(1-x^2) dx}{4/15}=\frac{4/15}{4/3}= \frac{1}{5}$$
+Finally,
+$$xp_2(x)= c_1p_1(x)+p_3(x)$$
+and thus
+$$c_1=\frac{\langle p_1, xp_2\rangle}{\|p_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{5}) x^2(1-x^2) dx}{\int_{-1}^1 x^2 (1-x^2) dx}= \frac{32/525}{4/15}=\frac{8}{35}$$
+
+
+**END**

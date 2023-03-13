@@ -70,6 +70,7 @@ their properties including three-term recurrences and Jacobi matrices.
 7. [SVD and Condition Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet7.ipynb)
 ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet7s.ipynb))
 8. [Fourier Expansions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet8.ipynb)
+9. [Orthogonal Polynomials](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet9.ipynb)
 
 
 

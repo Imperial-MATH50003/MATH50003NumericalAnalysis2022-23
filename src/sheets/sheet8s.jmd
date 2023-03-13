@@ -132,7 +132,7 @@ This proof is nearly identical to the proof of "Theorem (Taylor series converges
 $$
 f_{-m:m}(θ) := ∑_{k=-m}^m f̂_k^n {\rm e}^{{\rm i} k θ}
 $$
-to $f(θ)$ as $n \rightarrow ∞$.
+to $f(θ)$ as $n → ∞$.
 What is the rate of convergence if the first $λ-1$ derivatives $f(θ), f'(θ), …, f^{(λ-1)}(θ)$ 
 are 2π-periodic and $f^{(λ)}$ is uniformly bounded?
 
