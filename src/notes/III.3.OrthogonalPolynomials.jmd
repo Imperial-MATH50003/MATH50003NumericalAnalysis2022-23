@@ -27,7 +27,7 @@ complex analysis, and random matrix theory.
 
 1. General properties: we define orthogonal polynomials
 2. Three-term recurrences
-3. Jacobi magtrices
+3. Jacobi matrices
 
 
 **Remark (advanced)** Going beyond what we discuss here are many other beautiful properties of orthogonal 
@@ -285,7 +285,7 @@ $$
 The three-term recurrence can also be interpreted as a matrix known
 as the Jacobi matrix:
 
-**Corollary 4 (Jacobi matrix)**
+**Corollary 5 (Jacobi matrix)**
 For
 $$
 P(x) := [p_0(x) | p_1(x) | ⋯]
@@ -306,7 +306,7 @@ The Jacobi matrix is $J := X^⊤$.
 
 For the special cases of orthonormal and monic polynomials we have extra structure:
 
-**Corollary 4 (orthonormal 3-term recurrence)** If
+**Corollary 6 (orthonormal 3-term recurrence)** If
 $\{q_n\}$ are orthonormal then its recurrence coefficients satisfy $c_n = b_n$.
 That is, the Jacobi matrix is symmetric:
 $$
