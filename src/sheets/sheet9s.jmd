@@ -1,5 +1,5 @@
 # MATH50003 Numerical Analysis (2022–23)
-# Problem Sheet 8
+# Problem Sheet 9
 
 
 
@@ -41,9 +41,9 @@ $$
 
 
 
-**Problem 2** Construct  $p_0(x),p_1(x),p_2(x),p_3(x)$, monic OPs
-for the weight $\sqrt{1-x^2}$ on $[-1,1]$.
-Hint: first compute $\int_{-1}^1 x^k \sqrt{1-x^2} {\rm d} x$ for $0 ≤ k ≤ 2$
+**Problem 2** Construct  $π_0(x),π_1(x),π_2(x),π_3(x)$, monic OPs
+for the weights $\sqrt{1-x^2}$ and $1-x$ on $[-1,1]$.
+Hint: for the first weight, first compute $\int_{-1}^1 x^k \sqrt{1-x^2} {\rm d} x$ for $0 ≤ k ≤ 2$
 using a change-of-variables.
 
 **SOLUTION**
@@ -51,7 +51,7 @@ using a change-of-variables.
 Following the hint, we first calculate $\int_{-1}^1 x^k\sqrt{1-x^2}{\rm d}x$. By symmetry, it's zero when $k$ is odd and double the integral on $[0,1]$ when $k$ is even. 
 
 $$
-\underbrace{\int_0^1 x^k\sqrt{1-x^2}{\rm d}x}_{I_k}=_{x=\sin t}\underbrace{\int_0^{π/2}\sin^k(t)\cos^2(t){\rm d}t}_{I_k}=\underbrace{\int_0^{π/2}\sin^k t{\rm d}t}_{J_k}-\underbrace{\int_0^{π/2}\sin^{k+2}t{\rm d}t}_{J_{k+2}}.
+\underbrace{\int_0^1 x^k\sqrt{1-x^2}{\rm d}x}_{I_k} = _{x=\sin t}\underbrace{\int_0^{π/2}\sin^k(t)\cos^2(t){\rm d}t}_{I_k}=\underbrace{\int_0^{π/2}\sin^k t{\rm d}t}_{J_k}-\underbrace{\int_0^{π/2}\sin^{k+2}t{\rm d}t}_{J_{k+2}}.
 $$
 
 Meanwhile, 
@@ -137,6 +137,7 @@ Write this as a lower triangular linear system, given $p_0(x) = \mu \in \mathbb{
 $$
 L_x \begin{bmatrix} p_0(x) \\ \vdots \\ p_{n+1}(x) \end{bmatrix} = \begin{bmatrix} \mu \\ 0 \\ \vdots \\ 0 \end{bmatrix}
 $$
+What are the bandwidths of $L_x$?
 
 **SOLUTION**
 
@@ -160,6 +161,8 @@ C_1 & -A_1x-B_1 & 1 &&\\
 \end{bmatrix}}_{L_x}
 \underbrace{\begin{bmatrix} p_0(x) \\ \vdots \\ p_{n+1}(x) \end{bmatrix}}_{\mathbf{P}(x)} = \underbrace{\begin{bmatrix} μ \\ 0 \\ \vdots \\ 0 \end{bmatrix}}_{\mu\mathbf{e}_1}
 $$
+
+The bandwidths are $(ℓ,u) = (2,0)$ (lower tridiagonal).
 
 **END**
 
@@ -209,22 +212,41 @@ is even.
 
 ----
 
-**Problem 4.1** Recall that the Chebyshev polynomials $T_0(x) = 1$, $T_n(x)  = 2^{n-1} x^n + O(x^{n-1})$ which are orthogonal with respect to $1/\sqrt{1-x^2}$ and $U_n(x) = 2^n x^n +O(x^{n-1})$ which are orthogonal with respect to $\sqrt{1-x^2}$, both on $[-1,1]$. Use the fact that orthogonal polynomials are uniquely determined by their leading order coefficient and orthogonality to lower dimensional polynomials to show that:
+**Problem 4.1** Recall  the Chebyshev polynomials $T_0(x) = 1$, $T_n(x)  = 2^{n-1} x^n + O(x^{n-1})$ which are orthogonal with
+respect to $1/\sqrt{1-x^2}$ and $U_n(x) = 2^n x^n +O(x^{n-1})$ which are orthogonal with respect to $\sqrt{1-x^2}$, both on $[-1,1]$. 
+Use the fact that orthogonal polynomials are uniquely determined by their leading order coefficient and orthogonality to lower 
+dimensional polynomials to show that:
 $$
-T_n'(x) = n U_{n-1}(x)
+T_n'(x) = n U_{n-1}(x).
+$$
+Hint: use integration-by-parts.
+
+
+**SOLUTION**
+
+We need to verify that $T_n'(x)$
+1. graded polynomials
+2. orthogonal w.r.t. $\sqrt{1-x^2}$ on $[-1,1]$, and
+3. have the leading coefficient $n 2^n$.
+(1) and (3) are clear:
+$$
+T_n'(x) = n 2^{n-1} x^{n-1} + O(x^{n-2}).
+$$
+(2) For $f_m$ degree $m < n-1$ we have
+$$
+∫_{-1}^1 T_n'(x) f_m(x) \sqrt{1-x^2} {\rm d}x = 
+-∫_{-1}^1 T_n(x) \underbrace{(f_m'(x)(1-x^2) -x f_m)}_{\hbox{degree $m+1 < n$}}  (1-x^2)^{-1/2} {\rm d}x = 0.
 $$
 
 
-**Problem 4.2**
-Consider orthogonal polynomials with respect to $\sqrt{1-x^2}$ on $[-1,1]$ with the
-normalisation
+
+**END**
+
+**Problem 4.2** Prove that
 $$
-U_n(x) = 2^n x^n + O(x^{n-1})
+U_n(\cos θ) = {\sin(n+1) θ \over \sin θ}.
 $$
-Prove that
-$$
-U_n(\cos θ) = {\sin(n+1) θ \over \sin θ}
-$$
+
 
 **SOLUTION**
 
@@ -234,13 +256,15 @@ We need to verify:
 3. have the leading coefficient $2^n$.
 
 (2) follows under a change of variables
-$$\int_{-1}^1U_n(x)U_m(x)\sqrt{1-x^2}{\rm d}x=\int_0^{π}U_n(\cos\theta)U_m(\cos\theta)\sin^2\theta{\rm d}\theta=\int_0^{π}\sin(n+1)\theta\sin(m+1)\theta{\rm d}\theta=\frac{π}{2}\delta_{mn}$$
+$$\int_{-1}^1U_n(x)U_m(x)\sqrt{1-x^2}{\rm d}x = \int_0^{π}U_n(\cos θ)U_m(\cos θ)\sin^2 θ{\rm d} θ = \int_0^{π}\sin(n+1) θ\sin(m+1) θ{\rm d} θ=\frac{π}{2}\delta_{mn}$$
 where the last step is a result from Fourier theories.
 
 To see that they are graded we use the fact that
-$$xU_n(x)=\frac{\cos\theta\sin(n+1)\theta}{\sin\theta}=\frac{\sin (n+2)\theta+\sin n\theta}{2\sin\theta}$$
+$$xU_n(x)=\frac{\cos θ\sin(n+1) θ}{\sin θ}=\frac{\sin (n+2) θ+\sin n θ}{2\sin θ}$$
 In other words $2xU_n(x)=U_{n+1}(x)+U_{n-1}(x)$. Since each time we multiply by $2x$ and $U_0(x)=1$ we have
-$$U_n(x) = 2^n x^n + O(x^{n-1})$$
+$$
+U_n(x) = 2^n x^n + O(x^{n-1})
+$$
 which also proves (3).
 
 
@@ -259,11 +283,11 @@ $$
 The first result is trivial.
 
 To get the second result, recall that
-$$U_n(\cos\theta)=\cos\theta U_{n-1}(\cos\theta)+\cos n\theta$$
+$$U_n(\cos θ)=\cos θ U_{n-1}(\cos θ)+\cos n θ$$
 and
-$$\cos n\theta=\cos\theta\cos(n-1)\theta-(1-\cos^2\theta)U_{n-2}(\cos\theta).$$
+$$\cos n θ=\cos θ\cos(n-1) θ-(1-\cos^2 θ)U_{n-2}(\cos θ).$$
 
-The first equation gives $\cos n\theta$ in terms of $U_n$ and $U_{n-1}$. Substitute the result into the second equation to get
+The first equation gives $\cos n θ$ in terms of $U_n$ and $U_{n-1}$. Substitute the result into the second equation to get
 $$U_n(x)-xU_{n-1}(x)=x(U_{n-1}(x)-xU_{n-2}(x))-(1-x^2)U_{n-2}(x)$$
 which reduces to the desired recurrence.
 
@@ -280,8 +304,9 @@ H_n(x) = 2^n x^n + O(x^{n-1}).
 $$
 Prove the Rodrigues formula
 $$
-H_n(x) = (-1)^n \exp(x^2) {{\rm d}^n \over {\rm d}x^n} \exp(-x^2)
+H_n(x) = (-1)^n \exp(x^2) {{\rm d}^n \over {\rm d}x^n} \exp(-x^2).
 $$
+Hint: use integration-by-parts.
 
 **SOLUTION**
 Define
