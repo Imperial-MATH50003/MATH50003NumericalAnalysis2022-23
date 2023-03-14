@@ -77,7 +77,8 @@ Hint: Note that if we write $𝐱̃ = {\tt backsubstitution}(U, 𝐛)$ then we h
 $$
 x̃_k = b_k ⊖ {\tt dot}(U[k,k+1:n], 𝐱̃[k+1:n]).
 $$
-You may then use II.7 Lemma 1.
+You may then use II.7 Lemma 1. Further, note that if $|θ_k| ≤ E_{k,ε}$ and $|δ| ≤ ε$  then
+$|(1+θ_k) (1+δ) - 1| ≤ E_{k+1,ε}$.
 
 
 

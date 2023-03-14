@@ -231,7 +231,8 @@ Hint: Note that if we write $𝐱̃ = {\tt backsubstitution}(U, 𝐛)$ then we h
 $$
 x̃_k = b_k ⊖ {\tt dot}(U[k,k+1:n], 𝐱̃[k+1:n]).
 $$
-You may then use II.7 Lemma 1.
+You may then use II.7 Lemma 1. Further, note that if $|θ_k| ≤ E_{k,ε}$ and $|δ| ≤ ε$  then
+$|(1+θ_k) (1+δ) - 1| ≤ E_{k+1,ε}$.
 
 
 **SOLUTION**
@@ -251,15 +252,29 @@ where $|δ𝐮_k| ≤ E_{n-k,ϵ_{\rm m}/2} |𝐮_k|$.
 Thus we find
 $$
 x̃_k = b_k ⊖ {\tt dot}(𝐮_k, 𝐛_k) = (b_k - ((𝐮_k + δ𝐮_k)^⊤ 𝐱̃[k+1:n]))(1+δ_k) 
-= b_k + δ_k b_k  - (𝐮_k + δ𝐮_k (1+δ_k))^⊤ 𝐱̃[k+1:n]).
+= b_k + δ_k b_k  - (𝐮_k + δ_k 𝐮_k + δ𝐮_k (1+δ_k))^⊤ 𝐱̃[k+1:n]).
+$$
+where from II.7 Lemma 1 we know
+$$
+\begin{align*}
+𝐞_1^⊤ δ𝐮_k = θ̃_{n-k} u_{k,k+1} \\
+𝐞_j^⊤ δ𝐮_k = θ_{n-k-j} u_{k,k+j}\qquad\hbox{for $j > 1$}.
+\end{align*}
 $$
 In other words, we have:
 $$
 𝐱̃ = (U+δU)^{-1} (𝐛 + δ𝐛)
 $$
-where for $j > k$,
+where for $j=k$ we have
 $$
-|δu_{k,j}| = |δ𝐮_k (1+δ_k)| ≤ E_{n-k+1,ϵ_{\rm m}/2}
+|δu_{k,k+1}| = |δ_k u_{k,k+1} +  u_{k,k+1} θ̃_{n-k} (1+δ_k)| ≤ 
+|u_{k,k+1}| |(1+θ̃_{n-k}) (1+δ_k)-1| ≤ |u_{k,k+1}| E_{n-k+1,ϵ_{\rm m}/2}
+$$
+since $(1+θ̃_{n-k}) (1+δ_k)$ is precisely a product of $n-k+1$ terms.
+Similarly, for $j > k+1$ we have
+$$
+|δu_{k,j}| ≤  |u_{k,j}| |(1+θ_{n-j+2}) (1+δ_k)-1| ≤ |u_{k,j}| E_{n-j+3,ϵ_{\rm m}/2}
+≤ |u_{k,j}| E_{n-k+1,ϵ_{\rm m}/2}.
 $$
 **END**
 
