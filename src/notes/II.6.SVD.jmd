@@ -10,7 +10,7 @@ the _(reduced) singular value decomposition (SVD)_ is
 $$
 A = U Σ V^⋆
 $$
-where $U ∈ ℂ^{m × r}$ and $V ∈  ℂ^{r × n}$ have orthonormal columns and $Σ ∈ ℝ^{r × r}$ is  diagonal whose
+where $U ∈ ℂ^{m × r}$ and $V ∈  ℂ^{n × r}$ have orthonormal columns and $Σ ∈ ℝ^{r × r}$ is  diagonal whose
 diagonal entries, which which we call _singular values_, are all positive and non-increasing: $σ_1 ≥ ⋯ ≥ σ_r > 0$.
 The _full singular value decomposition (SVD)_ is
 $$
