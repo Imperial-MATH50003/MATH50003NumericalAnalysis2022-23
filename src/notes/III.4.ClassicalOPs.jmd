@@ -34,7 +34,7 @@ T_n(x) &= 2^{n-1} x^n + O(x^{n-1})
 $$
 
 
-**Definition 2 (Chebyshev polynomials, 2nd kind)** $U_n(x)$ are orthogonal with respect to $sqrt{1-x^2}$.
+**Definition 2 (Chebyshev polynomials, 2nd kind)** $U_n(x)$ are orthogonal with respect to $\sqrt{1-x^2}$.
 $$
 U_n(x) = 2^n x^n + O(x^{n-1})
 $$
@@ -80,7 +80,7 @@ which completes the proof.
 
 Buried in the proof is the 3-term recurrence:
 
-**Corollary**
+**Corollary 1 (Chebyshev 3-term)**
 $$
 \begin{align*}
 x T_0(x) = T_1(x) \\
@@ -149,7 +149,7 @@ If $r_m$ is a degree $m < n$ polynomial we have:
 $$
 ∫_{-1}^1 {{\rm d}^n \over {\rm d} x^n} (1-x^2)^n r_m(x) {\rm d}x
 = -∫_{-1}^1 {{\rm d}^{n-1} \over {\rm d} x^{n-1}} (1-x^2)^n r_m'(x) {\rm d}x =
-⋯ = (-)^n ∫_{-1}^1 (1-x^2) r_m^{(n)}(x) {\rm d}x = 0.
+⋯ = (-)^n ∫_{-1}^1 (1-x^2)^n r_m^{(n)}(x) {\rm d}x = 0.
 $$
 (3) follows since:
 $$

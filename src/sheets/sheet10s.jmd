@@ -17,9 +17,9 @@ $$X = \begin{bmatrix} a_0 & b_0 & 0 \\ b_0 & a_1 & b_1 \\ 0 & b_1 & a_2 \end{bma
 
 We could proceed step by step as above to find the entries of the recurrences but we may also
 take a short-cut since we already know the monic recurrence. Given any recurrence relationship
-coefficients $a_n, b_n, c_n$ for orthogonal polynomials for a given weight, the(symmetric)
+coefficients $a_n, b_n, c_n$ for orthogonal polynomials for a given weight, the (symmetric)
 Jacobi matrix corresponding to the orthonormal polynomials for the same weight has entries $\hat
-{b}_n = \sqrt{c_n b_n}$ and $\hat{a} _n = a_n$. Using this the $3 \times 3$ blocks of the
+{b}_n = \sqrt{c_n b_n}$ and $\hat{a} _n = a_n$. Using this the $3 × 3$ blocks of the
 Jacobi matrices belonging to the orthonormal polynomials are straightforwardly computed from the above.
 
 **Problem 1.2 (B)** Consider the _truncated Jacobi matrix_ associated
@@ -56,6 +56,8 @@ Thus, the only extra term that this form is missing is $b_{n-1}q_n$ in the $n^{t
 $$
 x [q_0(x) | ⋯ | q_{n-1}(x)] = [q_0(x) | ⋯ | q_{n-1}(x)] X_n + b_{n-1} q_n(x) 𝐞_n^⊤
 $$
+
+**END**
 
 **Problem 1.3 (A)** Prove the _Christoffel-Darboux Formula_: orthonormal polyomials $q_k(x)$ satisfy
 $$
@@ -104,6 +106,7 @@ $[q_0(x) | ⋯ | q_n(x)] (X_{n+1}-Y_{n+1}^T)\begin{bmatrix} q_0(y) \\ ⋮ \\ q_n
 
 $$∑_{k = 0}^n q_k(x) q_k(y) = [q_0(x) | ⋯ | q_n(x)]\begin{bmatrix} q_0(y) \\ ⋮ \\ q_n(y) \end{bmatrix} = { b_n (q_{n+1}(x)q_n(y)-q_n(x)q_{n+1}(y))\over x-y}$$
 
+**END**
 
 ## 4. Interpolation
 
@@ -133,7 +136,7 @@ p(x)=cos(0)*l0(x)+cos(2)*l2(x)+cos(3)*l3(x)+cos(4)*l4(x)
 plot([p cos], xlims=(-1,5))
 ```
 
-**Problem 4.2 (A)** Consider the re-expanding the Lagrange basis in
+**Problem 4.2 (A)** Consider  re-expanding the Lagrange basis in
 monomials. Use this to construct an explicit formula for the inverse of the
 Vandermonde matrix.
 
@@ -191,14 +194,14 @@ $$
 xQ_0(x) = a_0Q_0(x) + b_0Q_1(x),
 $$
 and taking the inner product of both sides with $Q_0(x)$ we get, 
-$$a_0 = \langle xQ_0(x), Q_0(x) \rangle = \int_{-1}^1 x/2 dx = 0.$$
+$$a_0 = ⟨ xQ_0(x), Q_0(x) ⟩ = \int_{-1}^1 x/2 dx = 0.$$
 Next recall that $P_1(x) =  x$ and so $Q_1(x) = x/||P_1(x)||=\sqrt{\frac{3}{2}} x$. We then have, taking the innner product of the first equation above with $Q_ 1(x)$,
 $$
-b_0 = \langle xQ_0(x), Q_1(x)\rangle = \int_{-1}^1 \frac{\sqrt{3}}{2}x^2 dx = \frac{1}{\sqrt{3}},
+b_0 = ⟨ xQ_0(x), Q_1(x)⟩ = \int_{-1}^1 \frac{\sqrt{3}}{2}x^2 dx = \frac{1}{\sqrt{3}},
 $$
 and also $b_0 = c_0$ by the Corollary (orthonormal 3-term recurrence). We have,
 $$
-a_1 = \langle xQ_1(x), Q_1(x)\rangle = \int_{-1}^1 \frac{3}{2}x^3 dx = 0.
+a_1 = ⟨ xQ_1(x), Q_1(x)⟩ = \int_{-1}^1 \frac{3}{2}x^3 dx = 0.
 $$
 Recall that $P_2(x) = \frac{1}{2}(3x^2 - 1)$, so that $Q_2(x) = P_2(x)/||P_2(x)|| = \sqrt{\frac{5}{8}}(3x^2 - 1)$, and that,
 $$
@@ -206,11 +209,11 @@ xQ_1(x) = c_0Q_0(x) + a_1Q_1(x) + b_1Q_2(x).
 $$
 Taking inner the inner product of both sides with $Q_2(x)$, we see that,
 $$
-c_1 = b_1 = \langle xQ_1(x), Q_2(x)\rangle = \int_{-1}^1 \sqrt{\frac{5}{8}} \cdot \sqrt{\frac{3}{2}}(3x^2 - 1)\cdot x \cdot xdx =\frac{2}{\sqrt{15}}.
+c_1 = b_1 = ⟨ xQ_1(x), Q_2(x)⟩ = \int_{-1}^1 \sqrt{\frac{5}{8}} \cdot \sqrt{\frac{3}{2}}(3x^2 - 1)\cdot x \cdot xdx =\frac{2}{\sqrt{15}}.
 $$
 Finally,
 $$
-a_2 = \langle Q_2(x), xQ_2(x) \rangle = \frac{5}{8}\int_{-1}^1 (3x^2 - 1)^2 x dx = 0.
+a_2 = ⟨ Q_2(x), xQ_2(x) ⟩ = \frac{5}{8}\int_{-1}^1 (3x^2 - 1)^2 x dx = 0.
 $$
 This gives us the truncated Jacobi matrix,
 $$
@@ -296,8 +299,8 @@ $$
 guarantess that $Q_n$ is orthogonal.
 Recall that if $x = \cos θ$ then $U_n(x) = \frac{\sin(n+1)θ}{\sin θ}$, 
 so in particular the roots of $U_n(x)$ are 
-$x_k = \cos\left(\frac{k\pi}{n+1} \right)$ for $k = 1,\dots,n$, 
-(where $\sin \left(\frac{k\pi}{n+1}\right) \neq 0$). Hence, we have,
+$x_k = \cos\left(\frac{kπ}{n+1} \right)$ for $k = 1,\dots,n$, 
+(where $\sin \left(\frac{kπ}{n+1}\right) \neq 0$). Hence, we have,
 $$
 \begin{align*}
 	X_n &= Q_n\left[\begin{matrix}
@@ -322,10 +325,10 @@ x_1 \\
 \end{matrix}
  \right] D̃ D̃^{-1}Q̃_n^{-1} \\
  &=Q̃_n\left[\begin{matrix}
-\cos\left(\frac{\pi}{n+1}\right) \\
-&\cos\left(\frac{2\pi}{n+1}\right) \\
+\cos\left(\frac{π}{n+1}\right) \\
+&\cos\left(\frac{2π}{n+1}\right) \\
 &&\ddots \\
-&&&\cos\left(\frac{n\pi}{n+1}\right)
+&&&\cos\left(\frac{nπ}{n+1}\right)
 \end{matrix}
  \right]Q̃_n^{-1} \\
  &= Q̃_nΛ_nQ̃_n^{-1},
@@ -335,18 +338,18 @@ where,
 $$
 Q̃_n = \left[\begin{matrix}
 	1 & \cdots & 1\\
-	\frac{\sin\left(2\cdot \frac{2\pi}{n+1} \right)}{\sin\left(\frac{2\pi}{n+1}\right)} & \cdots & \frac{\sin\left(2\cdot \frac{n\pi}{n+1} \right)}{\sin\left(\frac{n\pi}{n+1}\right)} \\
+	\frac{\sin\left(2\cdot \frac{2π}{n+1} \right)}{\sin\left(\frac{2π}{n+1}\right)} & \cdots & \frac{\sin\left(2\cdot \frac{nπ}{n+1} \right)}{\sin\left(\frac{nπ}{n+1}\right)} \\
 	\vdots & & \vdots \\
-	\frac{\sin\left(n\cdot \frac{2\pi}{n+1} \right)}{\sin\left(\frac{2\pi}{n+1}\right)} & \cdots & \frac{\sin\left( n\cdot \frac{n\pi}{n+1} \right)}{\sin\left(\frac{n\pi}{n+1}\right)}
+	\frac{\sin\left(n\cdot \frac{2π}{n+1} \right)}{\sin\left(\frac{2π}{n+1}\right)} & \cdots & \frac{\sin\left( n\cdot \frac{nπ}{n+1} \right)}{\sin\left(\frac{nπ}{n+1}\right)}
 \end{matrix} \right],
 $$
 and,
 $$
 Λ_n = \left[\begin{matrix}
-\cos\left(\frac{\pi}{n+1}\right) \\
-&\cos\left(\frac{2\pi}{n+1}\right) \\
+\cos\left(\frac{π}{n+1}\right) \\
+&\cos\left(\frac{2π}{n+1}\right) \\
 &&\ddots \\
-&&&\cos\left(\frac{n\pi}{n+1}\right)
+&&&\cos\left(\frac{nπ}{n+1}\right)
 \end{matrix}
  \right]
 $$
@@ -403,10 +406,10 @@ $$
 I.e.
 $$
 𝐮(t) = Q_n\exp(Λt) Q_n^⊤ 𝐮_0 =  Q_n\begin{bmatrix}
-	 e^{2\left(\cos(\frac{\pi}{n+1}) - 1\right)t} \\
-	 &e^{2\left(\cos(\frac{2\pi}{n+1}) - 1\right)t} \\
+	 e^{2\left(\cos(\frac{π}{n+1}) - 1\right)t} \\
+	 &e^{2\left(\cos(\frac{2π}{n+1}) - 1\right)t} \\
 	&&⋱ \\
-	&&& e^{2\left(\cos(\frac{n\pi}{n+1}) - 1\right)t}
+	&&& e^{2\left(\cos(\frac{nπ}{n+1}) - 1\right)t}
 	\end{bmatrix} Q_n^⊤ 𝐮_0.
 $$
 
@@ -437,22 +440,22 @@ $$
 using,
 $$
 \int_{-1}^1 x^k \sqrt{1-x^2}dx = \begin{cases}
- \frac{\pi}{2} &	k=0 \\
+ \frac{π}{2} &	k=0 \\
  0 & k=1 \\
-\frac{\pi}{8} & k=2
+\frac{π}{8} & k=2
  \end{cases}
 $$
 to find,
 $$
 w_j = \begin{cases}
- 	\frac{\pi}{8} & j = 1 \\
- 	\frac{\pi}{2} & j = 2 \\
- 	-\frac{\pi}{8} & j = 3,
+ 	\frac{π}{8} & j = 1 \\
+ 	\frac{π}{2} & j = 2 \\
+ 	-\frac{π}{8} & j = 3,
  \end{cases}
 $$
 so that the interpolatory quadrature rule is:
 $$
-\Sigma_3^{w,\mathbf{x}}(f) = \frac{\pi}{2}\left(\frac{1}{4}f(-1) + f(1/2) -\frac{1}{4}f(1) \right)
+\Sigma_3^{w,\mathbf{x}}(f) = \frac{π}{2}\left(\frac{1}{4}f(-1) + f(1/2) -\frac{1}{4}f(1) \right)
 $$
 
 **END**
@@ -473,11 +476,11 @@ w_j = \int_{-1}^1 ℓ_j(x)w(x)dx,
 $$
 to find,
 $$
-w_1 = w_2 = {\pi \over 4},
+w_1 = w_2 = {π \over 4},
 $$
 and thus the interpolatory quadrature rule is,
 $$
-\Sigma_2^{w,\mathbf{x}}(f) = \frac{\pi}{4}(f(-1/2) + f(1/2)).
+\Sigma_2^{w,\mathbf{x}}(f) = \frac{π}{4}(f(-1/2) + f(1/2)).
 $$
 
 For $w(x) = 1$, the orthogonal polynomial of degree 2 is, using Legendre Rodriguez formula:
@@ -582,28 +585,28 @@ where $x_j = (j-1/2)π/n$ for all $n$.
 
 For $w(x) = \frac{1}{\sqrt{1-x^2}}$, the orthogonal polynomials are the Chebyshev polynomials $T_n(x) = \cos(n\arccos(x))$. To make them orthonormal, we have,
 \begin{align*}
-	T'_0(x) &= \frac{1}{\sqrt{\pi}}, \\
-	T'_n(x) &= \frac{2}{\pi}\cos(n\arccos(x)), \hspace{5mm} (n > 0)
+	T'_0(x) &= \frac{1}{\sqrt{π}}, \\
+	T'_n(x) &= \frac{2}{π}\cos(n\arccos(x)), \hspace{5mm} (n > 0)
 \end{align*}
 We have,
 \begin{align*}
 	T'_n(x) = 0 &\Leftrightarrow \cos(n\arccos(x)) = 0 \\
-	&\Leftrightarrow n\arccos(x) = j\pi - \frac{\pi}{2}, \hspace{5mm} (j \in \mathbb{Z}) \\
-	&\Leftrightarrow x = \cos\left(\frac{(j-\frac{1}{2})\pi}{n} \right), \hspace{5mm} (j \in \mathbb{Z}),
+	&\Leftrightarrow n\arccos(x) = jπ - \frac{π}{2}, \hspace{5mm} (j \in \mathbb{Z}) \\
+	&\Leftrightarrow x = \cos\left(\frac{(j-\frac{1}{2})π}{n} \right), \hspace{5mm} (j \in \mathbb{Z}),
 \end{align*}
-which has unique solutions $\left\{x_j = \cos\left(\frac{(j-\frac{1}{2})\pi}{n} \right) : j = 1, \dots, n\right\}$. We then have,
+which has unique solutions $\left\{x_j = \cos\left(\frac{(j-\frac{1}{2})π}{n} \right) : j = 1, \dots, n\right\}$. We then have,
 $$
 w_j = \frac{1}{\alpha_j^2} = \frac{1}{T'_0(x_j)^2 + T'_1(x_j)^2 + \dots T'_{n-1}(x_j)^2}
 $$
-Consider, writing $\theta_j = \frac{(j-\frac{1}{2})\pi}{n} $
+Consider, writing $ θ_j = \frac{(j-\frac{1}{2})π}{n} $
 \begin{align*}
 	\alpha_j^2 &= \sum_{k=0}^{n-1}T'_k(x_j)^2 \\
-	&= \frac{1}{\pi} + \frac{2}{\pi}\sum_{k=1}^{n-1}\cos^2(k\theta_j) \\
-	&= \frac{1}{\pi} + \frac{1}{2\pi}\sum_{k=1}^{n-1}(e^{ik\theta_j} + e^{-ik\theta_j})^2 \\
-	&= \frac{1}{\pi} + \frac{1}{2\pi} \sum_{k=1}^{n-1}( e^{2ik\theta_j} + e^{-2ik\theta_j} + 2) \\
-	&= \frac{n}{\pi} + \frac{1}{2\pi} \sum_{k=1}^{n-1}(e^{2ik\theta_j} + e^{-2ik\theta_j})
+	&= \frac{1}{π} + \frac{2}{π}\sum_{k=1}^{n-1}\cos^2(k θ_j) \\
+	&= \frac{1}{π} + \frac{1}{2π}\sum_{k=1}^{n-1}(e^{ik θ_j} + e^{-ik θ_j})^2 \\
+	&= \frac{1}{π} + \frac{1}{2π} \sum_{k=1}^{n-1}( e^{2ik θ_j} + e^{-2ik θ_j} + 2) \\
+	&= \frac{n}{π} + \frac{1}{2π} \sum_{k=1}^{n-1}(e^{2ik θ_j} + e^{-2ik θ_j})
 \end{align*}
-Using a geometric sum (in essentially the same way as the solution of Problem 1.2 in Problem Sheet 8) we can show that the second term is 0 and thus $w_j = \frac{1}{\alpha_j^2} = \frac{\pi}{n}$.
+Using a geometric sum (in essentially the same way as the solution of Problem 1.2 in Problem Sheet 8) we can show that the second term is 0 and thus $w_j = \frac{1}{\alpha_j^2} = \frac{π}{n}$.
 
 **END**
 
@@ -615,27 +618,27 @@ $w(x) = 1/\sqrt{1-x^2}$ on $[-1,1]$.
 
 By the Lemma (Discrete Orthogonality), we have,
 \begin{align*}
-	\Sigma_{n}^w[q_lq_m] = \frac{\pi}{n}\sum_{j=1}^n q_l(x_j)q_m(x_j) = \delta_{lm}, \\
-	\sum_{j=1}^n q_l(x_j)q_m(x_j) = \frac{n}{\pi}\delta_{lm},
+	\Sigma_{n}^w[q_lq_m] = \frac{π}{n}\sum_{j=1}^n q_l(x_j)q_m(x_j) = \delta_{lm}, \\
+	\sum_{j=1}^n q_l(x_j)q_m(x_j) = \frac{n}{π}\delta_{lm},
 \end{align*}
-By the previous question, for the weight $w(x) = \frac{1}{\sqrt{1-x^2}}$ we have $q_0(x_j) = \frac{1}{\sqrt{\pi}}$, $q_k(x_j) = \sqrt{\frac{2}{\pi}}\cos(k\theta_j).$
+By the previous question, for the weight $w(x) = \frac{1}{\sqrt{1-x^2}}$ we have $q_0(x_j) = \frac{1}{\sqrt{π}}$, $q_k(x_j) = \sqrt{\frac{2}{π}}\cos(k θ_j).$
 For $l = m = 0$ then we have,
 \begin{align*}
-	\frac{1}{\pi}\sum_{j=1}^n \cos(l\theta_j)\cos(m\theta_j) =\sum_{j=1}^nq_l(x_j)q_m(x_j) =  \frac{n}{\pi}\delta_{lm} = \frac{n}{\pi} \\
-	\Rightarrow \frac{1}{n}\sum_{j=1}^n \cos(l\theta_j)\cos(m\theta_j) = 1\
+	\frac{1}{π}\sum_{j=1}^n \cos(l θ_j)\cos(m θ_j) =\sum_{j=1}^nq_l(x_j)q_m(x_j) =  \frac{n}{π}\delta_{lm} = \frac{n}{π} \\
+	\Rightarrow \frac{1}{n}\sum_{j=1}^n \cos(l θ_j)\cos(m θ_j) = 1\
 \end{align*}
 Now, for $l = m \neq 0$, we have,
 \begin{align*}
-	\frac{2}{\pi}\sum_{j=1}^n \cos(l\theta_j)\cos(m\theta_j) =\sum_{j=1}^nq_l(x_j)q_m(x_j) =  \frac{n}{\pi}\delta_{lm} = \frac{n}{\pi} \\
-	\Rightarrow \frac{1}{n}\sum_{j=1}^n \cos(l\theta_j)\cos(m\theta_j) = \frac{1}{2}\
+	\frac{2}{π}\sum_{j=1}^n \cos(l θ_j)\cos(m θ_j) =\sum_{j=1}^nq_l(x_j)q_m(x_j) =  \frac{n}{π}\delta_{lm} = \frac{n}{π} \\
+	\Rightarrow \frac{1}{n}\sum_{j=1}^n \cos(l θ_j)\cos(m θ_j) = \frac{1}{2}\
 \end{align*}
 Finally, for $l \neq m$, we have,
 $$
-C_{lm}\sum_{j=1}^n\cos(l\theta_j)\cos(m\theta_j) = \sum_{j=1}^nq_l(x_j )q_m(x_j) = \frac{n}{\pi}\delta_{lm} = 0,
+C_{lm}\sum_{j=1}^n\cos(l θ_j)\cos(m θ_j) = \sum_{j=1}^nq_l(x_j )q_m(x_j) = \frac{n}{π}\delta_{lm} = 0,
 $$
-for some constant $C_{lm} \neq 0$ which is $\frac{1}{\pi}$ if $l = 0$ or $m = 0$ and $\frac{2}{\pi}$ otherwise (it doesn't matter what it is so long as it is not 0). Therefore, for $l \neq m$ we have,
+for some constant $C_{lm} \neq 0$ which is $\frac{1}{π}$ if $l = 0$ or $m = 0$ and $\frac{2}{π}$ otherwise (it doesn't matter what it is so long as it is not 0). Therefore, for $l \neq m$ we have,
 $$
-\frac{1}{n}\sum_{j=1}^n \cos(l\theta_j)\cos(m\theta_j) = 0
+\frac{1}{n}\sum_{j=1}^n \cos(l θ_j)\cos(m θ_j) = 0
 $$
 
 **END**
@@ -697,10 +700,10 @@ p_2(x) = (x - a_1) p_1(x) - c_0 p_0(x) = (x+1/15) (x+1/3) - 2/9 = x^2 + 2x/5 -1/
 $$
 And once again as before:
 $$
-c_1=\frac{\langle p_1, xp_2\rangle}{\|p_1\|^2}= \frac{\int_{-1}^1 (x+\frac{1}{3})(x^2+\frac{2}{5}x- \frac{1}{5}) x(1-x) dx}{\int_{-1}^1 (x+\frac{1}{3})^2 (1-x) dx}= \frac{6}{25}$$
+c_1=\frac{⟨ p_1, xp_2⟩}{\|p_1\|^2}= \frac{\int_{-1}^1 (x+\frac{1}{3})(x^2+\frac{2}{5}x- \frac{1}{5}) x(1-x) dx}{\int_{-1}^1 (x+\frac{1}{3})^2 (1-x) dx}= \frac{6}{25}$$
 and
 $$
-a_2 = \frac{\langle p_2, xp_2\rangle}{\|p_2\|^2} = \frac{\int_{-1}^1 (x^2+\frac{2}{5}x- \frac{1}{5})^2 x(1-x) dx}{\int_{-1}^1 (x^2+\frac{2}{5}x- \frac{1}{5})^2 (1-x) dx}= -\frac{1}{35}
+a_2 = \frac{⟨ p_2, xp_2⟩}{\|p_2\|^2} = \frac{\int_{-1}^1 (x^2+\frac{2}{5}x- \frac{1}{5})^2 x(1-x) dx}{\int_{-1}^1 (x^2+\frac{2}{5}x- \frac{1}{5})^2 (1-x) dx}= -\frac{1}{35}
 $$
 
 
@@ -725,7 +728,7 @@ xp_1(x)= c_0p_0(x)+p_2(x)
 $$
 we have
 $$
-c_0=\frac{\langle p_0, xp_1\rangle}{\|p_0\|^2} \frac{\int_{-1}^1 x^2\sqrt{1-x^2} dx}{π/2}=\frac{π/8}{π/2}= \frac{1}{4}
+c_0=\frac{⟨ p_0, xp_1⟩}{\|p_0\|^2} \frac{\int_{-1}^1 x^2\sqrt{1-x^2} dx}{π/2}=\frac{π/8}{π/2}= \frac{1}{4}
 $$
 i.e.
 $$
@@ -737,7 +740,7 @@ xp_2(x)= c_1p_1(x)p_3(x)
 $$
 and thus
 $$
-c_1=\frac{\langle p_1, xp_2\rangle}{\|p_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{4}) x^2\sqrt{1-x^2} dx}{\int_{-1}^1 x^2 \sqrt{1-x^2} dx}= \frac{π/32}{π/8}=\frac{1}{4}
+c_1=\frac{⟨ p_1, xp_2⟩}{\|p_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{4}) x^2\sqrt{1-x^2} dx}{\int_{-1}^1 x^2 \sqrt{1-x^2} dx}= \frac{π/32}{π/8}=\frac{1}{4}
 $$
 
 
@@ -751,11 +754,11 @@ $$
 Then from
 $$xp_1(x)= c_0p_0(x)+p_2(x)$$
 we find
-$$c_0=\frac{\langle p_0, xp_1\rangle}{\|p_0\|^2} \frac{\int_{-1}^1 x^2(1-x^2) dx}{4/15}=\frac{4/15}{4/3}= \frac{1}{5}$$
+$$c_0=\frac{⟨ p_0, xp_1⟩}{\|p_0\|^2} \frac{\int_{-1}^1 x^2(1-x^2) dx}{4/15}=\frac{4/15}{4/3}= \frac{1}{5}$$
 Finally,
 $$xp_2(x)= c_1p_1(x)+p_3(x)$$
 and thus
-$$c_1=\frac{\langle p_1, xp_2\rangle}{\|p_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{5}) x^2(1-x^2) dx}{\int_{-1}^1 x^2 (1-x^2) dx}= \frac{32/525}{4/15}=\frac{8}{35}$$
+$$c_1=\frac{⟨ p_1, xp_2⟩}{\|p_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{5}) x^2(1-x^2) dx}{\int_{-1}^1 x^2 (1-x^2) dx}= \frac{32/525}{4/15}=\frac{8}{35}$$
 
 
 **END**
