@@ -40,9 +40,9 @@ U_n(x) = 2^n x^n + O(x^{n-1})
 $$
 
 
-**Theorem 1 (Chebyshev T are cos)**
+**Theorem 1 (Chebyshev T are cos)** For $-1 ≤ x ≤ 1$
 $$
-T_n(x) = \cos n\, {\rm acos}\, x
+T_n(x) = \cos n\, {\rm acos}\, x.
 $$
 In other words
 $$
@@ -80,7 +80,7 @@ which completes the proof.
 
 Buried in the proof is the 3-term recurrence:
 
-**Corollary**
+**Corollary 1 (Chebyshev 3-term recurrence)**
 $$
 \begin{align*}
 x T_0(x) = T_1(x) \\
