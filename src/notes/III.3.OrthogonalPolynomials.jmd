@@ -316,13 +316,13 @@ J = X = \begin{bmatrix} a_0 & b_0 \\
                                                         \end{bmatrix}
 $$
 if and only if $p_n(x)$ is up-to-sign a fixed constant scaling of orthonormal:
-for $q_n(x) = π_n(x)/\|π_n\|^2$ we have for a fixed $α ∈ ℝ$ and $s_n ∈ \{-1,1\}$
+for $q_n(x) := π_n(x)/\|π_n\|^2$ we have for a fixed $α ∈ ℝ$ and $s_n ∈ \{-1,1\}$
 $$
 p_n(x) = α s_n q_n(x).
 $$
 
 **Proof**
-Noting that $\|q_n\|^2 = 1$ and thence $\|p_n\|^2 = α^2,
+Noting that $\|q_n\|^2 = 1$ and thence $\|p_n\|^2 = α^2$,
 if $p_n(x) = α s_n q_n(x)$ we have
 $$
 b_n = {⟨xp_n, p_{n+1}⟩ \over \|p_{n+1}\|^2} = s_n s_{n+1} ⟨x q_n, q_{n+1}⟩ =
