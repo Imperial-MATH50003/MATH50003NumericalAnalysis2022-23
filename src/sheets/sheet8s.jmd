@@ -109,11 +109,13 @@ $$f̂ₖ = \frac{1}{2π} \int^{2π}_{0} f(θ) {\rm e}^{-ikθ} dθ = \frac{(-i)^�
 given that $f^{(λ)}$ is uniformly bounded, the second part follows directly from this result
 
 $$
-|∑_{k=n}^{\infty} f̂_k {\rm e}^{{\rm i}kθ}| \leq ∑_{k=n}^{\infty} |f̂_k | \leq C ∑_{k=n}^{\infty} k^{-λ} 
+|∑_{k=n}^{∞} f̂_k {\rm e}^{{\rm i}kθ}| ≤ ∑_{k=n}^{∞} |f̂_k | ≤ C ∑_{k=n}^{∞} k^{-λ} 
 $$
 
 for some constant $C$.
+
 **END**
+
 ----
 
 **Problem 3.1**
@@ -124,7 +126,11 @@ f(θ) = \sum_{k=-m}^m f̂_k^n {\rm e}^{{\rm i} k θ}
 $$
 
 **SOLUTION**
-This proof is nearly identical to the proof of "Theorem (Taylor series converges)" in the lecture notes. Only now one has to also subtract the negative coefficients from the negative approximate coefficients in the chain of arguments.
+This follows from
+$$
+f̂_k^n = ∑_{p=-∞}^∞ f̂_{k+pn} = f̂_k
+$$
+if $-m ≤ k ≤ m$ as in this case $k + p n ≥ k + 2m+1 ≥ m+1$ and $k - pn ≤ k -2m-1 ≤ -m-1$.
 
 **END**
 
@@ -140,40 +146,41 @@ are 2π-periodic and $f^{(λ)}$ is uniformly bounded?
 
 Observe that by aliasing (see corollary in lecture notes) and triangle inequality we have the following 
 
-$$ |f̂_k^n - f̂_k|  \leq \sum_{p=1}^{\infty} (|f̂_{k+pn}|+|f̂_{k-pn}|) $$
+$$ |f̂_k^n - f̂_k|  ≤ \sum_{p=1}^{∞} (|f̂_{k+pn}|+|f̂_{k-pn}|) $$
 
-Using the result from Problem 3.2 yields
+Using the result from Problem 2 yields
 
-$$ |f̂_k^n - f̂_k| \leq \frac{C}{n^\lambda} \sum_{p=1}^{\infty} \frac{1}{\left(p + \frac{k}{n}\right)^\lambda} + \frac{1}{\left(p - \frac{k}{n}\right)^\lambda} $$
+$$ |f̂_k^n - f̂_k| ≤ \frac{C}{n^λ} \sum_{p=1}^{∞} \frac{1}{\left(p + \frac{k}{n}\right)^λ} + \frac{1}{\left(p - \frac{k}{n}\right)^λ} $$
 
 now we pick $|q| < \frac{1}{2}$ (such that the estimate below will hold for both summands above) and construct an integral with convex and monotonocally decreasing integrand such that
 
-$$ \left( p + q \right)^{-\lambda} < \int_{p-\frac{1}{2}}^{p+\frac{1}{2}} (x + q)^{-\lambda} dx $$
+$$ \left( p + q \right)^{-λ} < \int_{p-\frac{1}{2}}^{p+\frac{1}{2}} (x + q)^{-λ} dx $$
 
-more over summing over the left-hand side from $1$ to $\infty$ yields a bound by the integral:
+more over summing over the left-hand side from $1$ to $∞$ yields a bound by the integral:
 
-$$ \int^{\infty}_{\frac{1}{2}} (x + q)^{-\lambda} dx = \frac{1}{\lambda}(\frac{1}{2} + q)^{- \lambda + 1}$$
+$$ \int^{∞}_{\frac{1}{2}} (x + q)^{-λ} dx = \frac{1}{λ}(\frac{1}{2} + q)^{- λ + 1}$$
 
 Finally let $q = \pm \frac{k}{n}$ to achieve the rate of convergence
 
-$$ |f̂_k^n - f̂_k| \leq \frac{C_{\lambda}}{ n^{\lambda}} \left(  \left( \frac{1}{2} + k/n \right)^{ - \lambda + 1} + \left( \left( \frac{1}{2} - k/n \right) \right)^{- \lambda +1} \right)$$
+$$ |f̂_k^n - f̂_k| ≤ \frac{C_{λ}}{ n^{λ}} \left(  \left( \frac{1}{2} + k/n \right)^{ - λ + 1} + \left( \left( \frac{1}{2} - k/n \right) \right)^{- λ +1} \right)$$
 
-where $C_{\lambda}$ is a constant depending on $\lambda$. Note that it is indeed important to split the $n$ coefficients equally over the negative and positive coefficients as stated in the notes, due to the estatime we used above.
+where $C_{λ}$ is a constant depending on $λ$. Note that it is indeed important to split the $n$ coefficients equally over the negative and positive coefficients as stated in the notes, due to the estatime we used above.
 
-Finally, we have (thanks to Anonymous on ed):
+Finally, we have:
 $$
 \begin{align*}
 |f(θ) - f_{-m:m}(θ)|
-&= |\sum_{k=-m}^m {(f̂_k - f̂_k^n)z^k} + \sum_{k=m+1}^\infty {f̂_k z^k}  + \sum_{k=-\infty}^{-m-1} {f̂_k z^k} | \\
-&\le \sum_{k=-m}^m | f̂_k - f̂_k^n | + \sum_{k=m+1}^\infty |f̂_k| +  \sum_{k=-\infty}^{-m-1} |f̂_k| \\
-&\le \sum_{k=-m}^m {\frac{C_{\lambda}}{ n^{\lambda}} \left( \left( \frac{1}{2} + k/n \right)^{ - \lambda + 1} + \left( \left( \frac{1}{2} - k/n \right) \right)^{- \lambda +1} \right)} + \sum_{k=m+1}^\infty |f̂_k| +  \sum_{k=-\infty}^{-m-1} |f̂_k| \\
-&= \frac{C_{\lambda}}{n^{\lambda}} 2^{\lambda} + \sum_{k=m+1}^\infty |f̂_k| +  \sum_{k=-\infty}^{-m-1} |f̂_k|  \\
-&= O(n^{-\lambda}) + O(n^{1-\lambda} ) + O(n^{1-\lambda} ) \\
-&= O(n^{1-\lambda}) 
+&= |\sum_{k=-m}^m {(f̂_k - f̂_k^n)z^k} + \sum_{k=m+1}^∞ {f̂_k z^k}  + \sum_{k=-∞}^{-m-1} {f̂_k z^k} | \\
+&\le \sum_{k=-m}^m | f̂_k - f̂_k^n | + \sum_{k=m+1}^∞ |f̂_k| +  \sum_{k=-∞}^{-m-1} |f̂_k| \\
+&\le \sum_{k=-m}^m {\frac{C_{λ}}{ n^{λ}} \left( \left( \frac{1}{2} + k/n \right)^{ - λ + 1} + \left( \left( \frac{1}{2} - k/n \right) \right)^{- λ +1} \right)} + \sum_{k=m+1}^∞ |f̂_k| +  \sum_{k=-∞}^{-m-1} |f̂_k| \\
+&= \frac{C_{λ}}{n^{λ}} 2^{λ} + \sum_{k=m+1}^∞ |f̂_k| +  \sum_{k=-∞}^{-m-1} |f̂_k|  \\
+&= O(n^{-λ}) + O(n^{1-λ} ) + O(n^{1-λ} ) \\
+&= O(n^{1-λ}) 
 \end{align*}
 $$
 
 **END**
+
 ----
 
 

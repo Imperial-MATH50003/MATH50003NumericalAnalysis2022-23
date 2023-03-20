@@ -1,16 +1,16 @@
-# MATH50003 Numerical Analysis: Problem Sheet 10
-
-This problem sheet explores orthogonal polynomial roots, interpolatory quadrature and Gaussian quadrature.
-
-All questions are meant to be completed without using a computer.
-Problems are denoted A/B/C to indicate their difficulty.
+# MATH50003 Numerical Analysis (2022–23)
+# Problem Sheet 10
 
 
+This problem sheet explores interpolation with Lagrange polynomials, interpolatory quadrature,
+orthogonal polynomial roots and Gaussian quadrature.
 
 
 
+----
 
-**Problem 4.1 (C)** Use Lagrange interpolation to
+
+**Problem 1** Use Lagrange interpolation to
 interpolate the function $\cos x$ by a polynomial at the points
 $[0,2,3,4]$ and evaluate at $x = 1$. 
 
@@ -36,54 +36,12 @@ p(x)=cos(0)*l0(x)+cos(2)*l2(x)+cos(3)*l3(x)+cos(4)*l4(x)
 plot([p cos], xlims=(-1,5))
 ```
 
-**Problem 4.2 (A)** Consider  re-expanding the Lagrange basis in
-monomials. Use this to construct an explicit formula for the inverse of the
-Vandermonde matrix.
+**END**
 
-**SOLUTION**
-
-We use two methods to interpolate $f(x)$
-
-**Vandermonde matrix**
-
-$$p(x)=\sum_{k=1}^nc_kx^{k-1}=
-\underbrace{\begin{bmatrix}
-1&x&\cdots&x^{n-1}
-\end{bmatrix}}_{\mathbf{M}(x)}
-\underbrace{\begin{bmatrix}
-c_1\\
-\vdots\\
-c_n
-\end{bmatrix}}_{\mathbf{c}}$$
-where
-$$
-V\mathbf{c}=
-\underbrace{\begin{bmatrix}
-f(x_1)\\
-\vdots\\
-f(x_n)
-\end{bmatrix}}_{\mathbf{f}}
-$$
-
-**Lagrange interpolation**
-
-$$p(x)=\sum_{k=1}^nf(x_k)l_k(x)=
-\underbrace{\begin{bmatrix}
-l_1(x)&\cdots&l_n(x)
-\end{bmatrix}}_{\mathbf{L}(x)}\mathbf{f}$$
-
-Comparing the two results, we have
-$$\mathbf{M}(x)V^{-1}\mathbf{f}=\mathbf{L}(x)\mathbf{f},$$
-so
-$$\mathbf{M}(x)V^{-1}=\mathbf{L}(x)$$
-which means that the $(i,j)$-entry of $V^{-1}$ is the coefficient of $x^{i-1}$ in $l_j(x)$.
-
-See [here](https://proofwiki.org/wiki/Inverse_of_Vandermonde_Matrix#Theorem) for the complete explicit expression.
+----
 
 
------
-
-**Problem 8** What are the upper 3x3 sub-block of the Jacobi matrix for the 
+**Problem 2.1** What are the upper 3x3 sub-block of the Jacobi matrix for the 
 monic and orthonormal polynomials with respect to the following weights on
 $[-1,1]$:
 $$
@@ -202,9 +160,8 @@ $$c_1=\frac{⟨ p_1, xp_2⟩}{\|p_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{5}) x
 
 **END**
 
-----
 
-**Problem 1.1 (C)** Compute the roots of $P_3(x)$, orthogonal with respect
+**Problem 2.2** Compute the roots of the Legendre polynomial $P_3(x)$, orthogonal with respect
 to $w(x) = 1$ on $[-1,1]$, by computing the eigenvalues of a $3 × 3$ truncation
 of the Jacobi matrix.
 
@@ -266,7 +223,167 @@ which has solutions $\lambda = 0, \pm \sqrt{\frac{3}{5}}$
 
 **END**
 
-**Problem 1.2 (B)** Give an explicit diagonalisation of
+-----
+
+
+**Problem 3.1** Compute the interpolatory quadrature rule for
+$w(x) = \sqrt{1-x^2}$ with the points $[-1,1/2,1]$.
+
+**SOLUTION**
+
+For the points $\mathbf{x} = \{-1, 1/2, 1\}$ we have the Lagrange polynomials:
+$$
+ℓ_1(x) = \left(\frac{x - 1/2}{-1 - 1/2}\right)\cdot\left(\frac{x - 1}{-1 - 1}\right) = \frac{1}{3}\left(x^2 - \frac{3}{2}x + \frac{1}{2}\right),
+$$
+and
+$$
+ℓ_2(x) = -\frac{4}{3}x^2 + \frac{4}{3}, ℓ_3(x) =x^2 + \frac{1}{2}x - \frac{1}{2},
+$$
+similarly. We can then compute the weights,
+$$
+w_j = \int_{-1}^1 ℓ_j(x)w(x)dx,
+$$
+using,
+$$
+\int_{-1}^1 x^k \sqrt{1-x^2}dx = \begin{cases}
+ \frac{π}{2} &	k=0 \\
+ 0 & k=1 \\
+\frac{π}{8} & k=2
+ \end{cases}
+$$
+to find,
+$$
+w_j = \begin{cases}
+ 	\frac{π}{8} & j = 1 \\
+ 	\frac{π}{2} & j = 2 \\
+ 	-\frac{π}{8} & j = 3,
+ \end{cases}
+$$
+so that the interpolatory quadrature rule is:
+$$
+\Sigma_3^{w,\mathbf{x}}(f) = \frac{π}{2}\left(\frac{1}{4}f(-1) + f(1/2) -\frac{1}{4}f(1) \right)
+$$
+
+**END**
+
+**Problem 3.2** Compute the 2-point 
+interpolatory quadrature rule associated with roots of orthogonal polynomials for the weights $\sqrt{1-x^2}$, $1$, 
+and $1-x$ on $[-1,1]$ by integrating the Lagrange bases.
+
+**SOLUTION**
+For $w(x) = \sqrt{1-x}^2$ the orthogonal polynomial of degree 2 is $U_2(x) = 4x^2 -1$, with roots $\mathbf{x} = \{x = \pm \frac{1}{2}\}$. The Lagrange polynomials corresponding to these roots are,
+\begin{align*}
+ℓ_1(x) &= \frac{x - 1/2}{-1/2 - 1/2} = \frac{1}{2} - x, \\
+ℓ_2(x) &= \frac{x + 1/2}{1/2 + 1/2} = x + \frac{1}{2}
+\end{align*}
+We again work out the weights
+$$
+w_j = \int_{-1}^1 ℓ_j(x)w(x)dx,
+$$
+to find,
+$$
+w_1 = w_2 = {π \over 4},
+$$
+and thus the interpolatory quadrature rule is,
+$$
+\Sigma_2^{w,\mathbf{x}}(f) = \frac{π}{4}(f(-1/2) + f(1/2)).
+$$
+
+For $w(x) = 1$, the orthogonal polynomial of degree 2 is, using Legendre Rodriguez formula:
+$$
+P_2(x) = \frac{1}{(-2)^22!} \frac{d^2}{dx^2}\left(1 - x^2\right)^2 = -\frac{1}{2} + \frac{3}{2}x^2.
+$$
+This has roots $\mathbf{x} = \left\{\pm \frac{1}{\sqrt{3}}\right\}$. We then have,
+\begin{align*}
+	ℓ_1(x) &= -\frac{\sqrt{3}}{2}x + \frac{1}{2} \\
+	ℓ_2(x) &= \frac{3}{2}x + \frac{1}{2},
+\end{align*}
+from which we can compute the weights,
+$$
+w_1 = w_2 = 1,
+$$
+which give the quadrature rule:
+$$
+\Sigma_2^{w,\mathbf{x}}(f) = \left[f\left(-\frac{1}{\sqrt{3}}\right) + f\left(\frac{1}{\sqrt{3}}\right)\right]
+$$
+
+Finally, with $w(x) = 1 - x$ we use the solution to PS9 Problem 1.1, which states that
+$$
+p_2(x) = x^2 + 2x/5 - 1/5
+$$
+which has roots, $\mathbf{x} = \left\{-\frac{1}{5} \pm \frac{\sqrt{6}}{5} \right\}$. The Lagrange polynomials are then,
+\begin{align*}
+	ℓ_1(x) &= \frac{x - (-\frac{1}{5} + \frac{\sqrt{6}}{5} )}{-\frac{1}{5} - \frac{\sqrt{6}}{5} - (-\frac{1}{5} + \frac{\sqrt{6}}{5}) } \\
+	&= \frac{x - (-\frac{1}{5} + \frac{\sqrt{6}}{5} )}{-\frac{2\sqrt{6}}{5}} \\
+	&=-\frac{5}{2\sqrt{6}}x - \frac{1}{2\sqrt{6}} + \frac{1}{2} \\
+	ℓ_2(x) &= \frac{x - (-\frac{1}{5} - \frac{\sqrt{6}}{5} )}{\frac{2\sqrt{6}}{5}} \\
+	&= \frac{5}{2\sqrt{6}}x + \frac{1}{2\sqrt{6}} + \frac{1}{2}
+\end{align*}
+From which we can compute the weights,
+\begin{align*}
+	w_1 &= 1 + \frac{\sqrt{6}}{9}, \\
+	w_2 &= 1 - \frac{\sqrt{6}}{9},
+\end{align*}
+giving the quadrature rule,
+$$
+\Sigma_2^{w,\mathbf{x}}(f) = \left[\left(1 + \frac{\sqrt{6}}{9} \right)f\left(-\frac{1}{5} - \frac{\sqrt{6}}{5} \right) + \left(1 - \frac{\sqrt{6}}{9} \right)f\left(-\frac{1}{5} + \frac{\sqrt{6}}{5} \right) \right]
+$$
+**END**
+
+
+
+**Problem 3.2** Compute the 2-point and 3-point Gaussian quadrature rules associated with $w(x) = 1$ on $[-1,1]$. 
+
+**SOLUTION**
+
+For the weights $w(x) = 1$, the orthogonal polynomials of degree $\leq 3$ are the Legendre polynomials,
+\begin{align*}
+	q_0(x) = 1, \\
+	q_1(x) = x, \\
+	q_2(x) = \frac{1}{2}(3x^2  - 1), \\
+	q_3(x) = \frac{1}{2}(5x^3 - 3x).
+\end{align*}
+We can normalise each to get $q'_j(x) = q_j(x)/||q_j||$, with $||q_j||^2 = \int_{-1}^1 q_j^2 dx$. This gives,
+\begin{align*}
+	q'_0(x) = \frac{1}{\sqrt{2}}, \\
+	q'_1(x) = \sqrt{\frac{3}{2}}x, \\
+	q'_2(x) = \sqrt{\frac{5}{8}}(3x^2  - 1), \\
+	q'_3(x) = \sqrt{\frac{7}{8}}(5x^3 - 3x).
+\end{align*}
+For the first part we use the roots of $q_2(x)$ which are $\mathbf{x} = \left\{\pm \frac{1}{\sqrt{3}}\right\}$. The weights are,
+$$
+w_j = \frac{1}{\alpha_j^2} = \frac{1}{q'_0(x_j)^2 + q'_1(x_j)^2} = \frac{1}{\frac{1}{2}+\frac{3}{2}x_j^2},
+$$
+so that,
+$$
+w_1 = w_2 = 1,
+$$
+and the Gaussian Quadrature rule is,
+$$
+\Sigma_2^w[f] = f\left(-\frac{1}{\sqrt{3}}\right) + f\left(\frac{1}{\sqrt{3}}\right)
+$$
+For the second part, we use the roots of $q_3(x)$ which are $\mathbf{x} = \left\{0, \pm \sqrt{\frac{3}{5}} \right\}$. The weights are then,
+$$
+w_j = \frac{1}{\alpha_j^2} = \frac{1}{q'_0(x_j)^2 + q'_1(x_j)^2 + q'_2(x_j)^2} = \frac{1}{\frac{9}{8} -\frac{9}{4}x_j^2 + \frac{45}{8}x_j^4 }
+$$
+Giving us,
+$$
+\begin{align*}
+	w_1 = w_3 = \frac{1}{\frac{9}{8} - \frac{9}{4}\frac{3}{5} + \frac{45}{8}\frac{9}{25}} &= \frac{5}{9} \\
+	w_2 &= \frac{8}{9}
+\end{align*}
+$$
+Then the Gaussian Quadrature rule is,
+$$
+\Sigma_3^w[f] = \frac{1}{9} \left[5f\left(-\sqrt\frac{3}{5}\right) +8f(0) + 5f\left(\sqrt\frac{3}{5}\right) \right]
+$$
+
+**END**
+
+-----
+
+
+**Problem 4.1** Give an explicit diagonalisation of
 $$
 X_n = \begin{bmatrix} 0 & 1/2 \\ 
                 1/2 & 0 & ⋱  \\
@@ -378,166 +495,11 @@ $$
 **END**
 
 
-
-**Problem 2.1 (C)** Compute the interpolatory quadrature rule for
-$w(x) = \sqrt{1-x^2}$ with the points $[-1,1/2,1]$.
-
-**SOLUTION**
-
-For the points $\mathbf{x} = \{-1, 1/2, 1\}$ we have the Lagrange polynomials:
+**Problem 4.2** Show for $w(x) = 1/\sqrt{1-x^2}$ that the Gaussian quadrature rule is
 $$
-ℓ_1(x) = \left(\frac{x - 1/2}{-1 - 1/2}\right)\cdot\left(\frac{x - 1}{-1 - 1}\right) = \frac{1}{3}\left(x^2 - \frac{3}{2}x + \frac{1}{2}\right),
+Q_n^w[f] = {π \over n} \sum_{j=1}^n f(x_j)
 $$
-and
-$$
-ℓ_2(x) = -\frac{4}{3}x^2 + \frac{4}{3}, ℓ_3(x) =x^2 + \frac{1}{2}x - \frac{1}{2},
-$$
-similarly. We can then compute the weights,
-$$
-w_j = \int_{-1}^1 ℓ_j(x)w(x)dx,
-$$
-using,
-$$
-\int_{-1}^1 x^k \sqrt{1-x^2}dx = \begin{cases}
- \frac{π}{2} &	k=0 \\
- 0 & k=1 \\
-\frac{π}{8} & k=2
- \end{cases}
-$$
-to find,
-$$
-w_j = \begin{cases}
- 	\frac{π}{8} & j = 1 \\
- 	\frac{π}{2} & j = 2 \\
- 	-\frac{π}{8} & j = 3,
- \end{cases}
-$$
-so that the interpolatory quadrature rule is:
-$$
-\Sigma_3^{w,\mathbf{x}}(f) = \frac{π}{2}\left(\frac{1}{4}f(-1) + f(1/2) -\frac{1}{4}f(1) \right)
-$$
-
-**END**
-
-**Problem 2.2 (C)** Compute the 2-point 
-interpolatory quadrature rule associated with roots of orthogonal polynomials for the weights $\sqrt{1-x^2}$, $1$, 
-and $1-x$ on $[-1,1]$ by integrating the Lagrange bases.
-
-**SOLUTION**
-For $w(x) = \sqrt{1-x}^2$ the orthogonal polynomial of degree 2 is $U_2(x) = 4x^2 -1$, with roots $\mathbf{x} = \{x = \pm \frac{1}{2}\}$. The Lagrange polynomials corresponding to these roots are,
-\begin{align*}
-ℓ_1(x) &= \frac{x - 1/2}{-1/2 - 1/2} = \frac{1}{2} - x, \\
-ℓ_2(x) &= \frac{x + 1/2}{1/2 + 1/2} = x + \frac{1}{2}
-\end{align*}
-We again work out the weights
-$$
-w_j = \int_{-1}^1 ℓ_j(x)w(x)dx,
-$$
-to find,
-$$
-w_1 = w_2 = {π \over 4},
-$$
-and thus the interpolatory quadrature rule is,
-$$
-\Sigma_2^{w,\mathbf{x}}(f) = \frac{π}{4}(f(-1/2) + f(1/2)).
-$$
-
-For $w(x) = 1$, the orthogonal polynomial of degree 2 is, using Legendre Rodriguez formula:
-$$
-P_2(x) = \frac{1}{(-2)^22!} \frac{d^2}{dx^2}\left(1 - x^2\right)^2 = -\frac{1}{2} + \frac{3}{2}x^2.
-$$
-This has roots $\mathbf{x} = \left\{\pm \frac{1}{\sqrt{3}}\right\}$. We then have,
-\begin{align*}
-	ℓ_1(x) &= -\frac{\sqrt{3}}{2}x + \frac{1}{2} \\
-	ℓ_2(x) &= \frac{3}{2}x + \frac{1}{2},
-\end{align*}
-from which we can compute the weights,
-$$
-w_1 = w_2 = 1,
-$$
-which give the quadrature rule:
-$$
-\Sigma_2^{w,\mathbf{x}}(f) = \left[f\left(-\frac{1}{\sqrt{3}}\right) + f\left(\frac{1}{\sqrt{3}}\right)\right]
-$$
-
-Finally, with $w(x) = 1 - x$ we use the solution to PS9 Problem 1.1, which states that
-$$
-p_2(x) = x^2 + 2x/5 - 1/5
-$$
-which has roots, $\mathbf{x} = \left\{-\frac{1}{5} \pm \frac{\sqrt{6}}{5} \right\}$. The Lagrange polynomials are then,
-\begin{align*}
-	ℓ_1(x) &= \frac{x - (-\frac{1}{5} + \frac{\sqrt{6}}{5} )}{-\frac{1}{5} - \frac{\sqrt{6}}{5} - (-\frac{1}{5} + \frac{\sqrt{6}}{5}) } \\
-	&= \frac{x - (-\frac{1}{5} + \frac{\sqrt{6}}{5} )}{-\frac{2\sqrt{6}}{5}} \\
-	&=-\frac{5}{2\sqrt{6}}x - \frac{1}{2\sqrt{6}} + \frac{1}{2} \\
-	ℓ_2(x) &= \frac{x - (-\frac{1}{5} - \frac{\sqrt{6}}{5} )}{\frac{2\sqrt{6}}{5}} \\
-	&= \frac{5}{2\sqrt{6}}x + \frac{1}{2\sqrt{6}} + \frac{1}{2}
-\end{align*}
-From which we can compute the weights,
-\begin{align*}
-	w_1 &= 1 + \frac{\sqrt{6}}{9}, \\
-	w_2 &= 1 - \frac{\sqrt{6}}{9},
-\end{align*}
-giving the quadrature rule,
-$$
-\Sigma_2^{w,\mathbf{x}}(f) = \left[\left(1 + \frac{\sqrt{6}}{9} \right)f\left(-\frac{1}{5} - \frac{\sqrt{6}}{5} \right) + \left(1 - \frac{\sqrt{6}}{9} \right)f\left(-\frac{1}{5} + \frac{\sqrt{6}}{5} \right) \right]
-$$
-**END**
-
-
-
-**Problem 3.1 (C)** Compute the 2-point and 3-point Gaussian quadrature rules associated with $w(x) = 1$ on $[-1,1]$. 
-
-**SOLUTION**
-
-For the weights $w(x) = 1$, the orthogonal polynomials of degree $\leq 3$ are the Legendre polynomials,
-\begin{align*}
-	q_0(x) = 1, \\
-	q_1(x) = x, \\
-	q_2(x) = \frac{1}{2}(3x^2  - 1), \\
-	q_3(x) = \frac{1}{2}(5x^3 - 3x).
-\end{align*}
-We can normalise each to get $q'_j(x) = q_j(x)/||q_j||$, with $||q_j||^2 = \int_{-1}^1 q_j^2 dx$. This gives,
-\begin{align*}
-	q'_0(x) = \frac{1}{\sqrt{2}}, \\
-	q'_1(x) = \sqrt{\frac{3}{2}}x, \\
-	q'_2(x) = \sqrt{\frac{5}{8}}(3x^2  - 1), \\
-	q'_3(x) = \sqrt{\frac{7}{8}}(5x^3 - 3x).
-\end{align*}
-For the first part we use the roots of $q_2(x)$ which are $\mathbf{x} = \left\{\pm \frac{1}{\sqrt{3}}\right\}$. The weights are,
-$$
-w_j = \frac{1}{\alpha_j^2} = \frac{1}{q'_0(x_j)^2 + q'_1(x_j)^2} = \frac{1}{\frac{1}{2}+\frac{3}{2}x_j^2},
-$$
-so that,
-$$
-w_1 = w_2 = 1,
-$$
-and the Gaussian Quadrature rule is,
-$$
-\Sigma_2^w[f] = f\left(-\frac{1}{\sqrt{3}}\right) + f\left(\frac{1}{\sqrt{3}}\right)
-$$
-For the second part, we use the roots of $q_3(x)$ which are $\mathbf{x} = \left\{0, \pm \sqrt{\frac{3}{5}} \right\}$. The weights are then,
-$$
-w_j = \frac{1}{\alpha_j^2} = \frac{1}{q'_0(x_j)^2 + q'_1(x_j)^2 + q'_2(x_j)^2} = \frac{1}{\frac{9}{8} -\frac{9}{4}x_j^2 + \frac{45}{8}x_j^4 }
-$$
-Giving us,
-$$
-\begin{align*}
-	w_1 = w_3 = \frac{1}{\frac{9}{8} - \frac{9}{4}\frac{3}{5} + \frac{45}{8}\frac{9}{25}} &= \frac{5}{9} \\
-	w_2 &= \frac{8}{9}
-\end{align*}
-$$
-Then the Gaussian Quadrature rule is,
-$$
-\Sigma_3^w[f] = \frac{1}{9} \left[5f\left(-\sqrt\frac{3}{5}\right) +8f(0) + 5f\left(\sqrt\frac{3}{5}\right) \right]
-$$
-
-**END**
-
-**Problem 3.2 (A)** Show for $w(x) = 1/\sqrt{1-x^2}$ that the Gaussian quadrature rule is
-$$
-{π \over n} \sum_{j=1}^n f(x_j)
-$$
-where $x_j = (j-1/2)π/n$ for all $n$.
+where $x_j = \cos(θ_j)$ for $θ_j = (j-1/2)π/n$.
 
 **SOLUTION**
 
@@ -568,7 +530,8 @@ Using a geometric sum (in essentially the same way as the solution of Problem 1.
 
 **END**
 
-**Problem 3.3 (B)** Solve Problem 4.2 from PS8 using **Lemma (discrete orthogonality)** with
+
+**Problem 4.3** Solve Problem 4.2 from PS8 using **Lemma III.6.3 (discrete orthogonality)** with
 $w(x) = 1/\sqrt{1-x^2}$ on $[-1,1]$. That is, use the connection of $T_n(x)$ with $\cos n θ$ to
 show that the Discrete Cosine Transform
 $$
@@ -590,7 +553,7 @@ for $θ_j = π(j-1/2)/n$ is an orthogonal matrix.
 **SOLUTION**
 
 
-By the Lemma (Discrete Orthogonality), we have,
+By the Lemma 3 (Discrete Orthogonality), we have,
 \begin{align*}
 	\Sigma_{n}^w[q_lq_m] = \frac{π}{n}\sum_{j=1}^n q_l(x_j)q_m(x_j) = δ_{lm}, \\
 	\sum_{j=1}^n q_l(x_j)q_m(x_j) = \frac{n}{π}δ_{lm},
@@ -619,3 +582,4 @@ $$
 
 
 
+-----

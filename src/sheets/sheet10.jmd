@@ -1,0 +1,106 @@
+# MATH50003 Numerical Analysis (2022–23)
+# Problem Sheet 10
+
+
+This problem sheet explores interpolation with Lagrange polynomials, interpolatory quadrature,
+orthogonal polynomial roots and Gaussian quadrature.
+
+
+
+----
+
+
+**Problem 1** Use Lagrange interpolation to
+interpolate the function $\cos x$ by a polynomial at the points
+$[0,2,3,4]$ and evaluate at $x = 1$. 
+
+
+
+----
+
+
+**Problem 2.1** What are the upper 3x3 sub-block of the Jacobi matrix for the 
+monic and orthonormal polynomials with respect to the following weights on
+$[-1,1]$:
+$$
+1-x, \sqrt{1-x^2}, 1-x^2
+$$
+
+
+
+
+**Problem 2.2** Compute the roots of the Legendre polynomial $P_3(x)$, orthogonal with respect
+to $w(x) = 1$ on $[-1,1]$, by computing the eigenvalues of a $3 × 3$ truncation
+of the Jacobi matrix.
+
+
+
+-----
+
+
+**Problem 3.1** Compute the interpolatory quadrature rule for
+$w(x) = \sqrt{1-x^2}$ with the points $[-1,1/2,1]$.
+
+
+
+**Problem 3.2** Compute the 2-point 
+interpolatory quadrature rule associated with roots of orthogonal polynomials for the weights $\sqrt{1-x^2}$, $1$, 
+and $1-x$ on $[-1,1]$ by integrating the Lagrange bases.
+
+
+
+
+
+**Problem 3.2** Compute the 2-point and 3-point Gaussian quadrature rules associated with $w(x) = 1$ on $[-1,1]$. 
+
+
+
+-----
+
+
+**Problem 4.1** Give an explicit diagonalisation of
+$$
+X_n = \begin{bmatrix} 0 & 1/2 \\ 
+                1/2 & 0 & ⋱  \\
+                & ⋱ & ⋱ & 1/2 \\
+                && 1/2 & 0
+                \end{bmatrix} ∈ ℝ^{n × n}
+$$
+for all $n$ by relating it to the Jacobi matrix for $U_n(x)$.
+
+
+
+
+**Problem 4.2** Show for $w(x) = 1/\sqrt{1-x^2}$ that the Gaussian quadrature rule is
+$$
+Q_n^w[f] = {π \over n} \sum_{j=1}^n f(x_j)
+$$
+where $x_j = \cos(θ_j)$ for $θ_j = (j-1/2)π/n$.
+
+
+
+
+**Problem 4.3** Solve Problem 4.2 from PS8 using **Lemma III.6.3 (discrete orthogonality)** with
+$w(x) = 1/\sqrt{1-x^2}$ on $[-1,1]$. That is, use the connection of $T_n(x)$ with $\cos n θ$ to
+show that the Discrete Cosine Transform
+$$
+C_n := \begin{bmatrix}
+\sqrt{1/n} \\
+ & \sqrt{2/n} \\ 
+ && ⋱ \\
+ &&& \sqrt{2/n}
+ \end{bmatrix}
+\begin{bmatrix}
+    1 & ⋯ & 1\\
+    \cos θ_1 & ⋯ & \cos θ_n \\
+    ⋮ & ⋱ & ⋮ \\
+    \cos (n-1)θ_1 & ⋯ & \cos (n-1)θ_n
+\end{bmatrix}
+$$
+for $θ_j = π(j-1/2)/n$ is an orthogonal matrix.
+
+
+
+
+
+-----
