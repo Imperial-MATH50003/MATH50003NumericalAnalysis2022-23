@@ -50,7 +50,7 @@ polynomials.
 (associated with a family of orthonormal polynomials),
  the _truncated Jacobi matrix_ is
 $$
-X_n := \begin{bmatrix} a_0 & b_0 \\
+J_n := \begin{bmatrix} a_0 & b_0 \\
                          b_0 & ⋱ & ⋱ \\
                          & ⋱ & a_{n-2} & b_{n-2} \\
                          && b_{n-2} & a_{n-1} \end{bmatrix} ∈ ℝ^{n × n}
@@ -59,10 +59,10 @@ $$
 
 
 **Lemma 2 (zeros)** The zeros $x_1, …,x_n$ of an orthonormal polynomial $q_n(x)$
-are the eigenvalues of the truncated Jacobi matrix $X_n$.
+are the eigenvalues of the truncated Jacobi matrix $J_n$.
 More precisely,
 $$
-X_n Q_n = Q_n \begin{bmatrix} x_1 \\ & ⋱ \\ && x_n \end{bmatrix}
+J_n Q_n = Q_n \begin{bmatrix} x_1 \\ & ⋱ \\ && x_n \end{bmatrix}
 $$
 for the orthogonal matrix
 $$
@@ -78,7 +78,7 @@ where $α_j = \sqrt{q_0(x_j)^2 + ⋯ + q_{n-1}(x_j)^2}$.
 
 We construct the eigenvector (noting $b_{n-1} q_n(x_j) = 0$):
 $$
-X_n \begin{bmatrix} q_0(x_j) \\ ⋮ \\ q_{n-1}(x_j) \end{bmatrix} =
+J_n \begin{bmatrix} q_0(x_j) \\ ⋮ \\ q_{n-1}(x_j) \end{bmatrix} =
 \begin{bmatrix} a_0 q_0(x_j) + b_0 q_1(x_j) \\
  b_0 q_0(x_j) + a_1 q_1(x_j) + b_1 q_2(x_j) \\
 ⋮ \\
@@ -90,7 +90,7 @@ b_{n-2} q_{n-2}(x_j) + a_{n-1} q_{n-1}(x_j) + b_{n-1} q_n(x_j)
 q_{n-1}(x_j)
 \end{bmatrix}
 $$
-The result follows from normalising the eigenvectors. Since $X_n$ is symmetric
+The result follows from normalising the eigenvectors. Since $J_n$ is symmetric
 the eigenvector matrix is orthogonal.
 
 ∎
@@ -160,7 +160,7 @@ where $x_1,…,x_n$ are the roots of the orthonormal polynomials $q_n(x)$ and
 $$
 w_j := {1 \over α_j^2} = {1 \over q_0(x_j)^2 + ⋯ + q_{n-1}(x_j)^2}.
 $$
-Equivalentally, $x_1,…,x_n$ are the eigenvalues of $X_n$ and
+Equivalentally, $x_1,…,x_n$ are the eigenvalues of $J_n$ and
 $$
 w_j = ∫_a^b w(x) {\rm d}x Q_n[1,j]^2.
 $$
