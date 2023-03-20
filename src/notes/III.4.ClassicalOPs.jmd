@@ -40,9 +40,9 @@ U_n(x) = 2^n x^n + O(x^{n-1})
 $$
 
 
-**Theorem 1 (Chebyshev T are cos)**
+**Theorem 1 (Chebyshev T are cos)** For $-1 ≤ x ≤ 1$
 $$
-T_n(x) = \cos n\, {\rm acos}\, x
+T_n(x) = \cos n\, {\rm acos}\, x.
 $$
 In other words
 $$
@@ -80,7 +80,7 @@ which completes the proof.
 
 Buried in the proof is the 3-term recurrence:
 
-**Corollary 1 (Chebyshev 3-term)**
+**Corollary 1 (Chebyshev 3-term recurrence)**
 $$
 \begin{align*}
 x T_0(x) = T_1(x) \\
@@ -121,7 +121,7 @@ $$
 **Definition 3 (Legendre)** Legendre polynomials
 $P_n(x)$ are orthogonal polynomials with respect to $w(x) = 1$ on $[-1,1]$, with
 $$
-k_n = {1 \over 2^n} \begin{pmatrix} 2n \\ n \end{pmatrix} = 
+k_n = {1 \over 2^n} \begin{pmatrix} 2n \\ n \end{pmatrix} =
 {(2n)! \over 2^n (n!)^2}
 $$
 
@@ -158,7 +158,7 @@ $$
 (-)^n 2n {{\rm d}^{n-1} \over {\rm d} x^{n-1}} x^{2n-1}+ O(x^{2n-1})] \\
 &=
 (-)^n 2n (2n-1) {{\rm d}^{n-2} \over {\rm d} x^{n-2}} x^{2n-2}+ O(x^{2n-2})] = ⋯ \\
-&= (-)^n 2n (2n-1) ⋯ (n+1) x^n + O(x^{n-1}) = 
+&= (-)^n 2n (2n-1) ⋯ (n+1) x^n + O(x^{n-1}) =
 (-)^n {(2n)! \over n!} x^n + O(x^{n-1})
 \end{align*}
 $$
@@ -202,7 +202,7 @@ xP_0(x) &= P_1(x) \\
 \end{align*}
 $$
 
-**Proof** 
+**Proof**
 The $n = 0$ case is immediate (since $w(x) = w(-x)$ $a_n = 0$, from PS8).
 For the other cases we match terms:
 $$
