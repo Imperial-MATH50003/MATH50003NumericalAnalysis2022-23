@@ -34,7 +34,7 @@ T_n(x) &= 2^{n-1} x^n + O(x^{n-1})
 $$
 
 
-**Definition 2 (Chebyshev polynomials, 2nd kind)** $U_n(x)$ are orthogonal with respect to $sqrt{1-x^2}$.
+**Definition 2 (Chebyshev polynomials, 2nd kind)** $U_n(x)$ are orthogonal with respect to $\sqrt{1-x^2}$.
 $$
 U_n(x) = 2^n x^n + O(x^{n-1})
 $$
@@ -121,7 +121,7 @@ $$
 **Definition 3 (Legendre)** Legendre polynomials
 $P_n(x)$ are orthogonal polynomials with respect to $w(x) = 1$ on $[-1,1]$, with
 $$
-k_n = {1 \over 2^n} \begin{pmatrix} 2n \\ n \end{pmatrix} = 
+k_n = {1 \over 2^n} \begin{pmatrix} 2n \\ n \end{pmatrix} =
 {(2n)! \over 2^n (n!)^2}
 $$
 
@@ -149,7 +149,7 @@ If $r_m$ is a degree $m < n$ polynomial we have:
 $$
 ∫_{-1}^1 {{\rm d}^n \over {\rm d} x^n} (1-x^2)^n r_m(x) {\rm d}x
 = -∫_{-1}^1 {{\rm d}^{n-1} \over {\rm d} x^{n-1}} (1-x^2)^n r_m'(x) {\rm d}x =
-⋯ = (-)^n ∫_{-1}^1 (1-x^2) r_m^{(n)}(x) {\rm d}x = 0.
+⋯ = (-)^n ∫_{-1}^1 (1-x^2)^n r_m^{(n)}(x) {\rm d}x = 0.
 $$
 (3) follows since:
 $$
@@ -158,7 +158,7 @@ $$
 (-)^n 2n {{\rm d}^{n-1} \over {\rm d} x^{n-1}} x^{2n-1}+ O(x^{2n-1})] \\
 &=
 (-)^n 2n (2n-1) {{\rm d}^{n-2} \over {\rm d} x^{n-2}} x^{2n-2}+ O(x^{2n-2})] = ⋯ \\
-&= (-)^n 2n (2n-1) ⋯ (n+1) x^n + O(x^{n-1}) = 
+&= (-)^n 2n (2n-1) ⋯ (n+1) x^n + O(x^{n-1}) =
 (-)^n {(2n)! \over n!} x^n + O(x^{n-1})
 \end{align*}
 $$
@@ -202,7 +202,7 @@ xP_0(x) &= P_1(x) \\
 \end{align*}
 $$
 
-**Proof** 
+**Proof**
 The $n = 0$ case is immediate (since $w(x) = w(-x)$ $a_n = 0$, from PS8).
 For the other cases we match terms:
 $$

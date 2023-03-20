@@ -10,7 +10,7 @@ the _(reduced) singular value decomposition (SVD)_ is
 $$
 A = U Σ V^⋆
 $$
-where $U ∈ ℂ^{m × r}$ and $V ∈  ℂ^{r × n}$ have orthonormal columns and $Σ ∈ ℝ^{r × r}$ is  diagonal whose
+where $U ∈ ℂ^{m × r}$ and $V ∈  ℂ^{n × r}$ have orthonormal columns and $Σ ∈ ℝ^{r × r}$ is  diagonal whose
 diagonal entries, which which we call _singular values_, are all positive and non-increasing: $σ_1 ≥ ⋯ ≥ σ_r > 0$.
 The _full singular value decomposition (SVD)_ is
 $$
@@ -185,17 +185,21 @@ Suppose a rank-$k$ matrix $B$ has
 $$
 \|A-B\|_2  < \|A-A_k\|_2 = σ_{k+1}.
 $$
-For all $𝐰 \in \ker(B)$ we have 
+For all $𝐰 ∈ \ker(B)$ we have 
 $$
 \|A 𝐰\|_2 = \|(A-B) 𝐰\|_2 ≤ \|A-B\|\|𝐰\|_2  < σ_{k+1} \|𝐰\|_2
 $$
 
-But for all $𝐮 \in {\rm span}(𝐯_1,…,𝐯_{k+1})$, that is, $𝐮 = V[:,1:k+1]𝐜$ for some $𝐜 \in ℝ^{k+1}$  we have 
+But for all $𝐮 ∈ {\rm span}(𝐯_1,…,𝐯_{k+1})$, that is, $𝐮 = V[:,1:k+1]𝐜$ for some $𝐜 ∈ ℂ^{k+1}$  we have 
 $$
 \|A 𝐮\|_2^2 = \|U Σ_k 𝐜\|_2^2 = \|Σ_k 𝐜\|_2^2 =
-\sum_{j=1}^{k+1} (σ_j c_j)^2 ≥ σ_{k+1}^2 \|c\|^2,
+\sum_{j=1}^{k+1} (σ_j c_j)^2 ≥ σ_{k+1}^2 \| 𝐜  \|^2,
 $$
-i.e., $\|A 𝐮\|_2 ≥ σ_{k+1} \|c\|$.  Thus $𝐰$ cannot be in this span.
+i.e., $\|A 𝐮\|_2 ≥ σ_{k+1} \|𝐮\|$, where we use the fact that
+$$
+\|𝐮\|^2 = \|V[:,1:k+1]𝐜\|^2 = 𝐜^⋆ V[:,1:k+1]^⋆ V[:,1:k+1]𝐜 = 𝐜^⋆𝐜 = \|𝐜\|^2.
+$$
+Thus $𝐰$ cannot be in this span.
 
 
 The dimension of the span of $\ker(B)$ is at least $n-k$, but the dimension of ${\rm span}(𝐯_1,…,𝐯_{k+1})$ is at least $k+1$.

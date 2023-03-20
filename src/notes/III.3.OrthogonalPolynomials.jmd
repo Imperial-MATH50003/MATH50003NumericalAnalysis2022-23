@@ -306,9 +306,8 @@ The Jacobi matrix is $J := X^⊤$.
 
 For the special cases of orthonormal and monic polynomials we have extra structure:
 
-**Corollary 6 (orthonormal 3-term recurrence)** If
-$\{q_n\}$ are orthonormal then its recurrence coefficients satisfy $c_n = b_n$.
-That is, the Jacobi matrix is symmetric:
+**Corollary 6 (orthonormal 3-term recurrence)** 
+The Jacobi matrix of a family of orthogonal polynomials $p_n(x)$ is symmetric:
 $$
 J = X = \begin{bmatrix} a_0 & b_0 \\
                                                         b_0 & a_1 & b_1\\
@@ -316,11 +315,30 @@ J = X = \begin{bmatrix} a_0 & b_0 \\
                                                         && ⋱ & ⋱
                                                         \end{bmatrix}
 $$
+if and only if $p_n(x)$ is up-to-sign a fixed constant scaling of orthonormal:
+for $q_n(x) := π_n(x)/\|π_n\|^2$ we have for a fixed $α ∈ ℝ$ and $s_n ∈ \{-1,1\}$
+$$
+p_n(x) = α s_n q_n(x).
+$$
 
 **Proof**
+Noting that $\|q_n\|^2 = 1$ and thence $\|p_n\|^2 = α^2$,
+if $p_n(x) = α s_n q_n(x)$ we have
 $$
-b_n = ⟨x q_n, q_{n+1}⟩ = ⟨q_n, x q_{n+1}⟩ = c_{n-1}.
+b_n = {⟨xp_n, p_{n+1}⟩ \over \|p_{n+1}\|^2} = s_n s_{n+1} ⟨x q_n, q_{n+1}⟩ =
+s_n s_{n+1} ⟨q_n, x q_{n+1}⟩ = {⟨p_n, xp_{n+1}⟩ \over \|p_n\|^2} = c_{n-1}.
 $$
+
+Conversely, suppose $X = X^⊤$, i.e., $b_n = c_{n-1}$ and write the corresponding
+orthogonal polynomials as $p_n(x) = α_n q_n(x)$. We have
+$$
+b_n = {⟨xp_n, p_{n+1}⟩ \over \|p_{n+1}\|^2} = 
+{α_n \over α_{n+1}} ⟨xq_n, q_{n+1}⟩ = 
+{α_n \over α_{n+1}} ⟨q_n, x q_{n+1}⟩ = {α_n^2 \over α_{n+1}^2} {⟨p_n, xp_{n+1}⟩ \over \|p_n\|^2}
+= {α_n^2 \over α_{n+1}^2} c_{n-1} = {α_n^2 \over α_{n+1}^2} b_n.
+$$
+Hence $α_n^2 = α_{n+1}^2$ which implies that $α_{n+1} = ± α_n$. By induction the result follows,
+where $α := α_0$.
 ∎
 
 **Remark (advanced)** If you are worried about multiplication of infinite matrices/vectors
