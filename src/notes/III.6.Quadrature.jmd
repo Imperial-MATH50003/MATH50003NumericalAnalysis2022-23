@@ -193,7 +193,7 @@ interpolating at the grid, so does Gaussian quadrature:
 **Theorem 1 (interpolation via quadrature)**
 For the orthonormal polynomials $q_n(x)$,
 $$
-f_n(x) = ∑_{k=0}^{n-1} c_k^n q_k(x)\hbox{ for } c_k^n := Σ_n^w[f q_k]
+f_n(x) := ∑_{k=0}^{n-1} c_k^n q_k(x)\hbox{ for } c_k^n := Σ_n^w[f q_k]
 $$
 interpolates $f(x)$ at the Gaussian quadrature points $x_1,…,x_n$.
 
