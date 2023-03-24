@@ -95,7 +95,7 @@ the eigenvector matrix is orthogonal.
 
 ∎
 
-**Example 2 (Chebyshev roots)** Consider $T_n(x) = \cos n {\rm acos}\, x$. The roots 
+**Example 1 (Chebyshev roots)** Consider $T_n(x) = \cos n {\rm acos}\, x$. The roots 
 are $x_j = \cos θ_j$ where $θ_j = (j-1/2)π/n$ for $j = 1,…,n$ are the roots of $\cos n θ$
 that are inside $[0,π]$. 
 
@@ -109,7 +109,7 @@ $$
 T_0(x) = 1 \\
 T_1(x) = x \\
 T_2(x) = 2x T_1(x) - T_0(x) = 2x^2-1 \\
-T_3(x) = 2x T_2(x) - T_1(x) = 4x^2-3x
+T_3(x) = 2x T_2(x) - T_1(x) = 4x^3-3x
 \end{align*}
 $$
 We orthonormalise by rescaling
@@ -236,6 +236,62 @@ $$
 
 ∎
 
+
+**Example 2 (Chebyshev expansions)** 
+Consider the construction of Gaussian quadrature associated with the Chebyshev weight for $n = 3$. 
+To determine the weights we need:
+$$
+w_j^{-1} = α_j^2 = q_0(x_j)^2 + q_1(x_j)^2 + q_2(x_j)^2 = 
+{1 \over π} + {2 \over π} x_j^2 + {2 \over π} (2x_j^2-1)^2
+$$
+We can check each case and deduce that $w_j = π/3$.
+Thus we recover the interpolatory quadrature rule.
+Further, we can construct the transform
+$$
+\begin{align*}
+Q_3^w &= \begin{bmatrix}
+w_1 q_0(x_1) & w_2 q_0(x_2) & w_3 q_0(x_3) \\
+w_1 q_1(x_1) & w_2 q_1(x_2) & w_3 q_1(x_3) \\
+w_1 q_3(x_1) & w_2 q_3(x_2) & w_3 q_3(x_3) 
+\end{bmatrix}\\
+&= {π \over 3} \begin{bmatrix} 1/\sqrt{π} & 1/\sqrt{π} & 1/\sqrt{π} \\
+                                x_1\sqrt{2/π} & x_2\sqrt{2/π} & x_3\sqrt{2/π} \\
+                                (2x_1^2-1)\sqrt{2/π} &(2x_2^2-1)\sqrt{2/π} & (2x_3^2-1)\sqrt{2/π}
+                                \end{bmatrix} \\
+                                &= 
+                                {\sqrt{π} \over 3} \begin{bmatrix} 1 & 1 & 1 \\
+                                \sqrt{6}/2 & 0 & -\sqrt{6}/2 \\
+                                1/\sqrt{2} &-\sqrt{2} & 1/\sqrt{2}
+                                \end{bmatrix}
+\end{align*}
+$$
+We can use this to expand a polynomial, e.g. $x^2$:
+$$
+Q_3^w \begin{bmatrix}
+x_1^2 \\
+x_2^2 \\
+x_3^2 
+\end{bmatrix} = {\sqrt{π} \over 3} 
+\begin{bmatrix} 1 & 1 & 1 \\
+\sqrt{6}/2 & 0 & -\sqrt{6}/2 \\
+1/\sqrt{2} &-\sqrt{2} & 1/\sqrt{2}
+\end{bmatrix} 
+\begin{bmatrix} 3/4 \\ 0 \\ 3/4 \end{bmatrix} =
+\begin{bmatrix}
+{\sqrt{π} / 2} \\
+0 \\
+{\sqrt{π} / (2\sqrt{2})}
+\end{bmatrix}
+$$
+In other words:
+$$
+x^2 = {\sqrt π \over 2} q_0(x) + {\sqrt π \over 2\sqrt 2} q_2(x) = {1 \over 2} T_0(x) + {1 \over 2} T_2(x)
+$$
+which can be easily confirmed.
+
+
+
+
 **Corollary 1** Gaussian quadrature is an interpolatory quadrature rule
 with the interpolation points equal to the roots of $q_n$:
 $$
@@ -248,6 +304,23 @@ $$
 = {c_0^n \over q_0} = Σ_n^w[f].
 $$
 ∎
+
+**Example 3 (Chebyshev quadrature via Lagrange polynomials)** The connection with interpolatory quadrature
+means theres another way to compute the quadrature: integrate the Lagrange polynomials associated with
+the zeros. For example, with $n = 3$ recall that the roots of $T_3(x)$ are $±\sqrt{3}/2$ and $0$. Thus we have
+$$
+\begin{align*}
+ℓ_1(x) &= x (x +\sqrt{3}/2) / (3/2) = {(2x^2+\sqrt{3}x) \over 3} \\
+ℓ_2(x) &= (x - \sqrt{3}/2) (x +\sqrt{3}/2) / (-3/4) = -{4 \over 3} x^2 + 1 \\
+ℓ_3(x) &=(x -\sqrt{3}/2) x / (3/2) = {(2x^2-\sqrt{3}x) \over 3}
+\end{align*}
+$$
+A quick check confirms that
+$$
+w_j = ∫_{-1}^1 {ℓ_j(x) \over \sqrt{1-x^2}} {\rm d}x = {π \over 3}.
+$$
+
+
 
 
 
@@ -279,54 +352,19 @@ $$
 ∎
 
 
-**Example (Chebyshev expansions)** 
-Consider the construction of Gaussian quadrature for $n = 3$. To determine the weights we need:
+**Example 4 (Double exactness)**
+We are exact for all polynomials of degree $2n-1$, so for our $n = 3$ rule consider integrating
+$x^5$. We correctly get:
 $$
-w_j^{-1} = α_j^2 = q_0(x_j)^2 + q_1(x_j)^2 + q_2(x_j)^2 = 
-{1 \over π} + {2 \over π} x_j^2 + {2 \over π} (2x_j^2-1)^2
+Σ_n^w[x^5] = {π \over 3} \left( {9 \sqrt{3} \over 32}  - {9 \sqrt{3} \over 2} \right) = 0.
 $$
-We can check each case and deduce that $w_j = π/3$.
-Thus we recover the interpolatory quadrature rule.
-Further, we can construct the transform
+We are also correct for $x^4$:
 $$
-\begin{align*}
-Q_3^w &= \begin{bmatrix}
-w_1 q_0(x_1) & w_2 q_0(x_2) & w_3 q_0(x_3) \\
-w_1 q_1(x_1) & w_2 q_1(x_2) & w_3 q_1(x_3) \\
-w_1 q_3(x_1) & w_2 q_3(x_2) & w_3 q_3(x_3) 
-\end{bmatrix}\\
-&= {π \over 3} \begin{bmatrix} 1/\sqrt{π} & 1/\sqrt{π} & 1/\sqrt{π} \\
-                                x_1\sqrt{2/π} & x_2\sqrt{2/π} & x_3\sqrt{2/π} \\
-                                (2x_1^2-1)\sqrt{2/π} &(2x_2^2-1)\sqrt{2/π} & (2x_3^2-1)\sqrt{2/π}
-                                \end{bmatrix} \\
-                                &= 
-                                {\sqrt{π} \over 3} \begin{bmatrix} 1 & 1 & 1 \\
-                                \sqrt{6}/2 & 0 & -\sqrt{6}/2 \\
-                                1/\sqrt{2} &-\sqrt{2} & 1/\sqrt{2}
-                                \end{bmatrix}
-\end{align*}
+Σ_n^w[x^4] = {π \over 3} \left( {9 \over 16} + {9 \over 16} \right) = {3 π \over 8}.
 $$
-We can use this to expand a polynomial, e.g. $x^2$:
+However,
 $$
-Q_3^2 \begin{bmatrix}
-x_1^2 \\
-x_2^2 \\
-x_3^2 
-\end{bmatrix} = {\sqrt{π} \over 3} 
-\begin{bmatrix} 1 & 1 & 1 \\
-\sqrt{6}/2 & 0 & -\sqrt{6}/2 \\
-1/\sqrt{2} &-\sqrt{2} & 1/\sqrt{2}
-\end{bmatrix} 
-\begin{bmatrix} 3/4 \\ 0 \\ 3/4 \end{bmatrix} =
-\begin{bmatrix}
-{\sqrt{π} / 2} \\
-0 \\
-{\sqrt{π} / (2\sqrt{2})}
-\end{bmatrix}
+Σ_n^w[x^6] = {9 π \over 64} ≠ {5 π \over 16}
 $$
-In other words:
-$$
-x^2 = {\sqrt π \over 2} q_0(x) + {\sqrt π \over 2\sqrt 2} q_2(x) = {1 \over 2} T_0(x) + {1 \over 2} T_2(x)
-$$
-which can be easily confirmed.
+hence it is incorrect for larger degree polynomials.
 
