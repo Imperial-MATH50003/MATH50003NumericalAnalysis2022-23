@@ -202,7 +202,7 @@ By assumption $K - {𝐯 𝐯^⊤ \over α} = ŨŨ^⊤$.
 
 ------
 
-**Problem 3.1** Use the Cholesky decomposition to prove that the following $n × n$ matrix is symmetric positive definite
+**Problem 3.1⋆** Use the Cholesky decomposition to prove that the following $n × n$ matrix is symmetric positive definite
 for any $n$:
 $$
 Δ_n := \begin{bmatrix}
@@ -256,7 +256,7 @@ we conclude that $Δ_n$ has a Cholesky factorisation and hence is symmetric posi
 
 **END**
 
-**Problem 3.2** 
+**Problem 3.2⋆** 
 Deduce its Cholesky and reverse Cholesky factorisations: $Δ_n = L_n L_n^⊤ = U_n U_n^⊤$ where
 $L_n$ is lower triangular and $U_n$ is upper triangular.
 
@@ -380,7 +380,7 @@ $$
 
 **END**
 
-**Problem 5.1** Show for any orthogonal matrix $Q ∈ ℝ^m$ and
+**Problem 5.1⋆** Show for any orthogonal matrix $Q ∈ ℝ^m$ and
 matrix $A ∈ ℝ^{m × n}$ that
 $$
 \|Q A\|_F = \|A\|_F
@@ -405,12 +405,12 @@ $$
 
 
 
-**Problem 5.2** Show that $\|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \|A \|_2$ where
+**Problem 5.2⋆** Show that $\|A \|_2 ≤ \|A\|_F ≤ \sqrt{r} \|A \|_2$ where
 $r$ is the rank of $A$.
 
 **SOLUTION**
 
-From Problem 5.1 use the fact that $\|A \|_F = \sqrt{\hbox{tr}(A^⊤ A)}$, where $A\in ℝ^{m× n}$.
+From Problem 5.1 use the fact that $\|A \|_F = \sqrt{\hbox{tr}(A^⊤ A)}$, where $A ∈ ℝ^{m× n}$.
 
 Hence,
 

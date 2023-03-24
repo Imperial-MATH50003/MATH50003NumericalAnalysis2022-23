@@ -211,7 +211,7 @@ Morover, we can clearly see the singular values $σ_1 = 1, σ_2 = 1/2, …, σ_{
 
 --------
 
-**Problem 3.1**
+**Problem 3.1⋆**
 For $U ∈ ℝ^{n × n}$, an upper triangular matrix such that the diagonal are all 1 ($u_{kk} = 1$)
 and all entries are floats, 
 show that backsubstitution implemented with floating point has a backward error formula:
@@ -278,7 +278,7 @@ $$
 $$
 **END**
 
-**Problem 3.2** Show that 
+**Problem 3.2⋆** Show that 
 $$
 \begin{align*}
 \|δU\|_1 &≤  E_{n,ϵ_{\rm m}/2} \|U \|_1 \\

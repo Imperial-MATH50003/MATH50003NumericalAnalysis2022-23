@@ -495,7 +495,7 @@ $$
 **END**
 
 
-**Problem 4.2** Show for $w(x) = 1/\sqrt{1-x^2}$ that the Gaussian quadrature rule is
+**Problem 4.2⋆** Show for $w(x) = 1/\sqrt{1-x^2}$ that the Gaussian quadrature rule is
 $$
 Q_n^w[f] = {π \over n} \sum_{j=1}^n f(x_j)
 $$
@@ -531,7 +531,7 @@ Using a geometric sum (in essentially the same way as the solution of Problem 1.
 **END**
 
 
-**Problem 4.3** Solve Problem 4.2 from PS8 using **Lemma III.6.3 (discrete orthogonality)** with
+**Problem 4.3⋆** Solve Problem 4.2 from PS8 using **Lemma III.6.3 (discrete orthogonality)** with
 $w(x) = 1/\sqrt{1-x^2}$ on $[-1,1]$. That is, use the connection of $T_n(x)$ with $\cos n θ$ to
 show that the Discrete Cosine Transform
 $$

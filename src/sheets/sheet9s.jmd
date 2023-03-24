@@ -339,7 +339,7 @@ Thus $p_n(x) = H_n(x)$ by uniqueness.
 
 **END**
 
-**Problem 5.2** What are $k_n^{(1)}$ and $k_n^{(2)}$ such that
+**Problem 5.2⋆** What are $k_n^{(1)}$ and $k_n^{(2)}$ such that
 $$
 H_n(x) = 2^n x^n + k_n^{(1)} x^{n-1} + k_n^{(2)} x^{n-2} + O(x^{n-3})
 $$
@@ -358,7 +358,7 @@ Since $k_0^{(2)}=0$, we have $2^{-n}k_n^{(2)}=-\frac{1+⋯+(n-1)}{2}=-\frac{n(n-
 
 **END**
 
-**Problem 5.3** Deduce the 3-term recurrence relationship for $H_n(x)$.
+**Problem 5.3⋆** Deduce the 3-term recurrence relationship for $H_n(x)$.
 
 **SOLUTION**
 

@@ -6,10 +6,14 @@ modular and floating point arithmetic.
 
 Please complete the problems using pen-and-paper, though some can be verified using Julia.
 
+Starred problems are more challenging.
+
 **Problem 1** With 8-bit signed integers, what are the bits for the following: $10, 120, -10$.
 
 
+
 **Problem 2** What is $π$ to 5 binary places? Hint: recall that $π ≈ 3.14$.
+
 
 
 **Problem 3** What are the single precision $F_{32}$ (`Float32`) floating point representations for the following: 
@@ -18,15 +22,22 @@ $$
 $$
 
 
+
+
 **Problem 4** Let $m(y) = \min\{x \in F_{32} : x > y \}$ be the smallest single precision number
 greater than $y$. What is $m(2) - 2$ and $m(1024) - 1024$? 
+
+
 
 
 **Problem 5** Suppose $x = 1.25$ and consider 16-bit floating point arithmetic ($F_{16}$). 
 What is the error in approximating $x$ by the nearest float point number ${\rm fl}(x)$?
 What is the error in approximating $2x$, $x/2$, $x + 2$ and $x - 2$ by $2 \otimes x$, $x \oslash 2$, $x ⊕ 2$ and $x \ominus 2$?
 
-**Problem 6** For what floating point numbers is $x \oslash 2 \neq x/2$ and $x ⊕ 2 \neq x + 2$?
+
+
+**Problem 6⋆** For what floating point numbers is $x ⊘ 2 ≠ x/2$ and $x ⊕ 2 ≠ x + 2$?
+
 
 
 
@@ -41,6 +52,8 @@ Float16(0.1) / (Float16(1.1) - 1)
 ```
 
 
+
+
 **Problem 9** Find a bound on the _absolute error_ in terms of a constant times machine epsilon
 $ϵ_{\rm m}$ for the following computations
 $$
@@ -51,7 +64,5 @@ $$
 $$
 implemented using floating point arithmetic (with any precision). That is, each number is rounded
 first using ${\rm fl}$ and each operation is replaced by its floating point analogues $⊕, ⊗, ⊖, ⊘$.
-
-
 
 

@@ -90,7 +90,7 @@ $$
 
 
 
-**Problem 3.2** Show that
+**Problem 3.2⋆** Show that
 $$
 \exp_n^{\rm t}(x) = ∑_{k=0}^n {x^k \over k!} + ε_n
 $$
@@ -103,7 +103,7 @@ Hint: combine Problem 2.2 and 2.3 and note that $E_{k,ϵ_{\rm m}/2} ≤ E_{j,ϵ_
 
 
 
-**Problem 3.3** For $x > 0$, find a  bound on the relative error $|ρ_n|$ where
+**Problem 3.3⋆** For $x > 0$, find a  bound on the relative error $|ρ_n|$ where
 $$
 \exp_n^{\rm t}(x) =  (1 +  ρ_n) \exp x.
 $$

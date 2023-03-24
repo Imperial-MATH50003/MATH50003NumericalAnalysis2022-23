@@ -32,7 +32,7 @@ $$
 
 **END**
 
-**Problem 1.3** Show when implemented in floating point arithmetic for $A ∈ F_{σ,Q,S}^{m × n}$ and $𝐱 ∈ F_{σ,Q,S}^n$ that
+**Problem 1.3⋆** Show when implemented in floating point arithmetic for $A ∈ F_{σ,Q,S}^{m × n}$ and $𝐱 ∈ F_{σ,Q,S}^n$ that
 $$
 \hbox{mul$\_$rows}(A, 𝐱) = A 𝐱 + \mathbf{δ} 
 $$
@@ -201,7 +201,7 @@ $$
 $$
 **END**
 
-**Problem 3.5** 
+**Problem 3.5⋆** 
 Explain why  $Q ∈ U(n)$ must be equal to $I$ if all its eigenvalues are 1.
 Hint: use the spectral theorem, which says that any normal matrix is diagonalisable
 with unitary eigenvectors (see notes on C. Adjoints and Normal Matrices).

@@ -139,7 +139,7 @@ $$
 
 **END**
 
-**Problem 3.2** Assume that
+**Problem 3.2⋆** Assume that
 $$f^{\rm FP}(x) = f(x) + δ_x^f$$
 where $|δ_x^f| ≤ c ϵ_{\rm m}$. For the _absolute error_ $δ_{x,h}^{\rm 2D}$ satisfying
 $$

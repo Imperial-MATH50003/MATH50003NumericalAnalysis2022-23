@@ -167,7 +167,7 @@ $$
 $$
 **END**
 
-**Problem 3.2** Show that
+**Problem 3.2⋆** Show that
 $$
 \exp_n^{\rm t}(x) = ∑_{k=0}^n {x^k \over k!} + ε_n
 $$
@@ -211,7 +211,7 @@ $$
 
 **END**
 
-**Problem 3.3** For $x > 0$, find a  bound on the relative error $|ρ_n|$ where
+**Problem 3.3⋆** For $x > 0$, find a  bound on the relative error $|ρ_n|$ where
 $$
 \exp_n^{\rm t}(x) =  (1 +  ρ_n) \exp x.
 $$

@@ -67,6 +67,7 @@ notebook("src/notes/III.6.Quadrature.jmd"; nkwds...)
 # sheets
 #####
 
+write("src/sheets/sheet1.jmd", replace(read("src/sheets/sheet1s.jmd", String), r"\*\*SOLUTION\*\*(.*?)\*\*END\*\*"s => ""))
 notebook("src/sheets/sheet1.jmd"; pkwds...)
 notebook("src/sheets/sheet1s.jmd"; pkwds...)
 write("src/sheets/sheet2.jmd", replace(read("src/sheets/sheet2s.jmd", String), r"\*\*SOLUTION\*\*(.*?)\*\*END\*\*"s => ""))

@@ -184,7 +184,7 @@ hence $Ũ$ is also normal. The result follows from induction.
 **END**
 
 
-**Problem 3.2** Show that every matrix $A ∈ ℂ^{n × n}$ has a _Schur decomposition_: it can be written
+**Problem 3.2⋆** Show that every matrix $A ∈ ℂ^{n × n}$ has a _Schur decomposition_: it can be written
 as
 $$
 A = Q U Q^⋆
@@ -205,7 +205,7 @@ Because conjugation with $Q$ is a similarity transformation we know the eigenval
 
 **END**
 
-**Problem 3.3** Prove the spectral theorem for normal matrices: for every normal matrix $A ∈ ℂ^{n × n}$
+**Problem 3.3⋆** Prove the spectral theorem for normal matrices: for every normal matrix $A ∈ ℂ^{n × n}$
  there exists a unitary matrix $Q$ such that
 $$
 A = Q Λ Q^⋆

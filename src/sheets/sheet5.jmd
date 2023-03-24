@@ -61,7 +61,7 @@ Hint: a product of two orthogonal matrices is also orthogonal.
 
 
 
-**Problem 3.2** Show that every matrix $A ∈ ℂ^{n × n}$ has a _Schur decomposition_: it can be written
+**Problem 3.2⋆** Show that every matrix $A ∈ ℂ^{n × n}$ has a _Schur decomposition_: it can be written
 as
 $$
 A = Q U Q^⋆
@@ -74,7 +74,7 @@ where $J$ is upper-triangular with eigenvalues of $A$ on the diagonal.
 
 
 
-**Problem 3.3** Prove the spectral theorem for normal matrices: for every normal matrix $A ∈ ℂ^{n × n}$
+**Problem 3.3⋆** Prove the spectral theorem for normal matrices: for every normal matrix $A ∈ ℂ^{n × n}$
  there exists a unitary matrix $Q$ such that
 $$
 A = Q Λ Q^⋆

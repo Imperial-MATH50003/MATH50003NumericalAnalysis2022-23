@@ -6,6 +6,8 @@ modular and floating point arithmetic.
 
 Please complete the problems using pen-and-paper, though some can be verified using Julia.
 
+Starred problems are more challenging.
+
 **Problem 1** With 8-bit signed integers, what are the bits for the following: $10, 120, -10$.
 
 **SOLUTION**
@@ -129,7 +131,7 @@ What is the error in approximating $2x$, $x/2$, $x + 2$ and $x - 2$ by $2 \otime
 None of these computations have errors since they are all exactly representable as floating point numbers.
 **END**
 
-**Problem 6** For what floating point numbers is $x ⊘ 2 ≠ x/2$ and $x ⊕ 2 ≠ x + 2$?
+**Problem 6⋆** For what floating point numbers is $x ⊘ 2 ≠ x/2$ and $x ⊕ 2 ≠ x + 2$?
 
 **SOLUTION**
 

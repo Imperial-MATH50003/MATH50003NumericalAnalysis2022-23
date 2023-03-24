@@ -121,14 +121,14 @@ Hint: use integration-by-parts.
 
 
 
-**Problem 5.2** What are $k_n^{(1)}$ and $k_n^{(2)}$ such that
+**Problem 5.2⋆** What are $k_n^{(1)}$ and $k_n^{(2)}$ such that
 $$
 H_n(x) = 2^n x^n + k_n^{(1)} x^{n-1} + k_n^{(2)} x^{n-2} + O(x^{n-3})
 $$
 
 
 
-**Problem 5.3** Deduce the 3-term recurrence relationship for $H_n(x)$.
+**Problem 5.3⋆** Deduce the 3-term recurrence relationship for $H_n(x)$.
 
 
 
