@@ -66,11 +66,11 @@ J_n Q_n = Q_n \begin{bmatrix} x_1 \\ & ⋱ \\ && x_n \end{bmatrix}
 $$
 for the orthogonal matrix
 $$
-Q_n = \begin{bmatrix}
+Q_n = \underbrace{\begin{bmatrix}
 q_0(x_1) & ⋯ & q_0(x_n) \\
 ⋮  & ⋯ & ⋮  \\
 q_{n-1}(x_1) & ⋯ & q_{n-1}(x_n)
-\end{bmatrix} \begin{bmatrix} α_1^{-1} \\ & ⋱ \\ && α_n^{-1} \end{bmatrix}
+\end{bmatrix}}_{V_n^⊤} \begin{bmatrix} α_1^{-1} \\ & ⋱ \\ && α_n^{-1} \end{bmatrix}
 $$
 where $α_j = \sqrt{q_0(x_j)^2 + ⋯ + q_{n-1}(x_j)^2}$.
 
@@ -138,7 +138,7 @@ $$
     \end{bmatrix} = {1 \over \sqrt π} \begin{bmatrix} 
 0 & 1/\sqrt{2} \\
 1/\sqrt{2} & 0 & 1/2 \\
-    & 1/2 & 0\end{bmatrix} \begin{bmatrix} 1 \\ 0 \\ -{1 \over \sqrt{2}}
+    & 1/2 & 0\end{bmatrix} \begin{bmatrix} 1 \\ 0 \\ -{\sqrt{2}}
     \end{bmatrix} =\begin{bmatrix} 0 \\ 0 \\ 0
     \end{bmatrix}
 $$
@@ -199,17 +199,17 @@ interpolates $f(x)$ at the Gaussian quadrature points $x_1,…,x_n$.
 
 **Proof**
 
-Consider the Vandermonde-like matrix:
+Consider the Vandermonde-like matrix from above:
 $$
-Ṽ := \begin{bmatrix} q_0(x_1) & ⋯ & q_{n-1}(x_1) \\
+V_n := \begin{bmatrix} q_0(x_1) & ⋯ & q_{n-1}(x_1) \\
                 ⋮ & ⋱ & ⋮ \\
                 q_0(x_n) & ⋯ & q_{n-1}(x_n) \end{bmatrix}
 $$
 and define
 $$
-Q_n^w := Ṽ^⊤ \begin{bmatrix} w_1 \\ &⋱ \\&& w_n \end{bmatrix} = \begin{bmatrix} q_0(x_1)w_1 & ⋯ &  q_0(x_n) w_n \\
+Q_n^w := V_n^⊤ \begin{bmatrix} w_1 \\ &⋱ \\&& w_n \end{bmatrix} = \begin{bmatrix} q_0(x_1)w_1 & ⋯ &  q_0(x_n) w_n \\
                 ⋮ & ⋱ & ⋮ \\
-                w_1q_{n-1}(x_1) & ⋯ & q_{n-1}(x_n)w_n \end{bmatrix}
+                q_{n-1}(x_1) w_1 & ⋯ & q_{n-1}(x_n)w_n \end{bmatrix}
 $$
 so that
 $$
@@ -224,11 +224,11 @@ $$
 p(x_1) \\
 ⋮ \\
 p(x_n)
-\end{bmatrix} = Ṽ 𝐜
+\end{bmatrix} = V_n 𝐜
 $$
 But we see that (similar to the Fourier case)
 $$
-Q_n^w Ṽ = \begin{bmatrix} Σ_n^w[q_0 q_0] & ⋯ & Σ_n^w[q_0 q_{n-1}]\\
+Q_n^w V_n = \begin{bmatrix} Σ_n^w[q_0 q_0] & ⋯ & Σ_n^w[q_0 q_{n-1}]\\
                 ⋮ & ⋱ & ⋮ \\
                 Σ_n^w[q_{n-1} q_0] & ⋯ & Σ_n^w[q_{n-1} q_{n-1}]
                 \end{bmatrix} = I_n
