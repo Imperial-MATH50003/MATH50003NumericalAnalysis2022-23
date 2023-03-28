@@ -50,113 +50,201 @@ $$
 
 **SOLUTION**
 
-##### Monic
+#### Monic
 
 We know that for monic ($b_n=1$) orthogonal polynomials we can write the upper 3x3 block in the form
 
-$$X = \begin{bmatrix} a_0 & c_0 & 0 \\ 1 & a_1 & c_1 \\ 0 & 1 & a_2 \end{bmatrix}$$
+$$X_3 = \begin{bmatrix} a_0 & c_0 & 0 \\ 1 & a_1 & c_1 \\ 0 & 1 & a_2 \end{bmatrix}$$
 
 
 1. $w(x) = 1-x$
 
-Take $p_0(x) = 1$ (monic) and note
+Take $π_0(x) = 1$ (monic) and note
 $$
-\| p_0 \|^2 = \int_{-1}^1 (1-x) {\rm d}x = 2
+\| π_0 \|^2 = \int_{-1}^1 (1-x) {\rm d}x = 2
 $$
 From
 $$
-xp_0(x) = a_0p_0(x) + p_1(x)
+xπ_0(x) = a_0π_0(x) + π_1(x)
 $$
 we deduce
 $$
-a_0 = ⟨x p_0, p_0⟩/\|p_0\|^2 =  {\int_{-1}^1 (1-x) x {\rm d}x \over 2} =  -{1 \over 3}
+a_0 = ⟨x π_0, π_0⟩/\|π_0\|^2 =  {\int_{-1}^1 (1-x) x {\rm d}x \over 2} =  -{1 \over 3}
 $$
 i.e.
 $$
-p_1(x) = (x-a_0) p_0(x) = x + 1/3.
+π_1(x) = (x-a_0) π_0(x) = x + 1/3.
 $$
 and note that
 $$
-\|p_1\|^2 = \int_{-1}^1 (1-x) (x+1/3)^2 {\rm d} x = 4/9.
+\|π_1\|^2 = \int_{-1}^1 (1-x) (x+1/3)^2 {\rm d} x = 4/9.
 $$
 From
 $$
-xp_1(x) = c_0 p_0(x) + a_1 p_1(x) + p_2(x)
+xπ_1(x) = c_0 π_0(x) + a_1 π_1(x) + π_2(x)
 $$
 we deduce
 $$
-c_0 = ⟨x p_1, p_0⟩/\|p_0\|^2 =  {\int_{-1}^1 (1-x) x (x+1/3) {\rm d}x \over 2} =  {2 \over 9}
+c_0 = ⟨x π_1, π_0⟩/\|π_0\|^2 =  {\int_{-1}^1 (1-x) x (x+1/3) {\rm d}x \over 2} =  {2 \over 9}
 $$
 and
 $$
-a_1 = ⟨x p_1, p_1⟩/\|p_1\|^2 =  {9 \over 4} {\int_{-1}^1 (1-x) x (x+1/3)^2 {\rm d}x} =  -{1 \over 15}
+a_1 = ⟨x π_1, π_1⟩/\|π_1\|^2 =  {9 \over 4} {\int_{-1}^1 (1-x) x (x+1/3)^2 {\rm d}x} =  -{1 \over 15}
 $$
 Thus
 $$
-p_2(x) = (x - a_1) p_1(x) - c_0 p_0(x) = (x+1/15) (x+1/3) - 2/9 = x^2 + 2x/5 -1/5.
+π_2(x) = (x - a_1) π_1(x) - c_0 π_0(x) = (x+1/15) (x+1/3) - 2/9 = x^2 + 2x/5 -1/5.
 $$
 And once again as before:
 $$
-c_1=\frac{⟨ p_1, xp_2⟩}{\|p_1\|^2}= \frac{\int_{-1}^1 (x+\frac{1}{3})(x^2+\frac{2}{5}x- \frac{1}{5}) x(1-x) dx}{\int_{-1}^1 (x+\frac{1}{3})^2 (1-x) dx}= \frac{6}{25}$$
+c_1=\frac{⟨ π_1, xπ_2⟩}{\|π_1\|^2}= \frac{\int_{-1}^1 (x+\frac{1}{3})(x^2+\frac{2}{5}x- \frac{1}{5}) x(1-x) dx}{\int_{-1}^1 (x+\frac{1}{3})^2 (1-x) dx}= \frac{6}{25}$$
 and
 $$
-a_2 = \frac{⟨ p_2, xp_2⟩}{\|p_2\|^2} = \frac{\int_{-1}^1 (x^2+\frac{2}{5}x- \frac{1}{5})^2 x(1-x) dx}{\int_{-1}^1 (x^2+\frac{2}{5}x- \frac{1}{5})^2 (1-x) dx}= -\frac{1}{35}
+a_2 = \frac{⟨ π_2, xπ_2⟩}{\|π_2\|^2} = \frac{\int_{-1}^1 (x^2+\frac{2}{5}x- \frac{1}{5})^2 x(1-x) dx}{\int_{-1}^1 (x^2+\frac{2}{5}x- \frac{1}{5})^2 (1-x) dx}= -\frac{1}{35}
 $$
-
+Thus we have
+$$
+X_3 = \begin{bmatrix}
+-1/3 & 2/9 \\
+1 & -1/15 & 6/25 \\
+& 1 & -1/35
+\end{bmatrix}
+$$
 
 2. $w(x)=\sqrt{1-x^2}$
 
-Take $p_0(x) = k_0 = 1$ (monic) so that
+Take $π_0(x) = k_0 = 1$ (monic) so that
 $$
-\|p_0\|^2 = \int_{-1}^1 \sqrt{1-x^2} = {π \over 2}.
+\|π_0\|^2 = \int_{-1}^1 \sqrt{1-x^2} = {π \over 2}.
 $$
 From PS8, Problem 3.4 we know that $a_k = 0$. Thus
 from the recurrence we have
 $$
-xp_0(x) =  p_1(x)
+xπ_0(x) =  π_1(x)
 $$
 and hence
 $$
-p_1(x) = x p_0(x) = x.
+π_1(x) = x π_0(x) = x.
 $$
 Likewise for
 $$
-xp_1(x)= c_0p_0(x)+p_2(x)
+xπ_1(x)= c_0π_0(x)+π_2(x)
 $$
 we have
 $$
-c_0=\frac{⟨ p_0, xp_1⟩}{\|p_0\|^2} \frac{\int_{-1}^1 x^2\sqrt{1-x^2} dx}{π/2}=\frac{π/8}{π/2}= \frac{1}{4}
+c_0=\frac{⟨ π_0, xπ_1⟩}{\|π_0\|^2} \frac{\int_{-1}^1 x^2\sqrt{1-x^2} dx}{π/2}=\frac{π/8}{π/2}= \frac{1}{4}
 $$
 i.e.
 $$
-p_2(x) = xp_1(x) - c_0 = x^2 - {1 \over 4}.
+π_2(x) = xπ_1(x) - c_0 = x^2 - {1 \over 4}.
 $$
 Finally:
 $$
-xp_2(x)= c_1p_1(x)p_3(x)
+xπ_2(x)= c_1π_1(x)π_3(x)
 $$
 and thus
 $$
-c_1=\frac{⟨ p_1, xp_2⟩}{\|p_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{4}) x^2\sqrt{1-x^2} dx}{\int_{-1}^1 x^2 \sqrt{1-x^2} dx}= \frac{π/32}{π/8}=\frac{1}{4}
+c_1=\frac{⟨ π_1, xπ_2⟩}{\|π_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{4}) x^2\sqrt{1-x^2} dx}{\int_{-1}^1 x^2 \sqrt{1-x^2} dx}= \frac{π/32}{π/8}=\frac{1}{4}
 $$
 
+Thus we have
+$$
+X_3 = \begin{bmatrix}
+0 & 1/4 \\
+1 & 0 & 1/4 \\
+& 1 & 0
+\end{bmatrix}
+$$
 
 3. $w(x)=1-x^2$
 
-Take $p_0(x) = k_0 = 1$ (monic). Again due to $w(x) = w(-x)$
+Take $π_0(x) = k_0 = 1$ (monic). Again due to $w(x) = w(-x)$
 from recurrence we have
 $$
-xp_0(x) = p_1(x)
+xπ_0(x) = π_1(x)
 $$
 Then from
-$$xp_1(x)= c_0p_0(x)+p_2(x)$$
+$$xπ_1(x)= c_0π_0(x)+π_2(x)$$
 we find
-$$c_0=\frac{⟨ p_0, xp_1⟩}{\|p_0\|^2} \frac{\int_{-1}^1 x^2(1-x^2) dx}{4/15}=\frac{4/15}{4/3}= \frac{1}{5}$$
+$$c_0=\frac{⟨ π_0, xπ_1⟩}{\|π_0\|^2} \frac{\int_{-1}^1 x^2(1-x^2) dx}{4/15}=\frac{4/15}{4/3}= \frac{1}{5}$$
 Finally,
-$$xp_2(x)= c_1p_1(x)+p_3(x)$$
+$$xπ_2(x)= c_1π_1(x)+π_3(x)$$
 and thus
-$$c_1=\frac{⟨ p_1, xp_2⟩}{\|p_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{5}) x^2(1-x^2) dx}{\int_{-1}^1 x^2 (1-x^2) dx}= \frac{32/525}{4/15}=\frac{8}{35}$$
+$$c_1=\frac{⟨ π_1, xπ_2⟩}{\|π_1\|^2}= \frac{\int_{-1}^1 (x^2- \frac{1}{5}) x^2(1-x^2) dx}{\int_{-1}^1 x^2 (1-x^2) dx}= \frac{32/525}{4/15}=\frac{8}{35}$$
+Thus we have
+$$
+X_3 = \begin{bmatrix}
+0 & 1/5 \\
+1 & 0 & 8/35 \\
+& 1 & 0
+\end{bmatrix}
+$$
 
+#### Orthonormal
+
+The hard way to solve this problem is to compute $\|π_n\|$ for each case.
+Instead, we use a trick for computing the orthonormal  variants: III.3 Corollary 6 tells us that if we find constants $α_n$ and define
+$$
+q_n(x) := α_n π_n(x)
+$$
+so that $\|q_0\| = 1$ and the resulting Jacobi matrix is symmetric then $q_n$ must be orthonormal.
+Note that the three-term recurrence for $q_n$ satisfies
+$$
+\begin{align*}
+x q_0 = x α_0 π_0 = α_0 a_0 π_0 + α_0 π_1 = a_0 q_0 + {α_0 \over α_1} q_1 \\
+x q_m = x α_n π_n = α_n c_{n-1} π_{n-1} +  a_n α_n π_n + α_n π_{n+1} = {α_n c_{n-1} \over α_{n-1}}  q_{n-1} + a_n q_n + {α_n \over α_{n+1}} q_{n+1}
+\end{align*}
+$$
+This is easier to see using linear algebra:
+$$
+\begin{align*}
+x [q_0 | q_1 | … ] &= x[π_0 | π_1 | …] \begin{bmatrix} α_0 \\ & α_1 \\ && ⋱ \end{bmatrix} = [π_0 | π_1 | …] X \begin{bmatrix} α_0 \\ & α_1 \\ && ⋱ \end{bmatrix}   \\
+&=[q_0 | q_1 | …] \begin{bmatrix} α_0^{-1} \\ & α_1^{-1} \\ && ⋱ \end{bmatrix}  X \begin{bmatrix} α_0 \\ & α_1 \\ && ⋱ \end{bmatrix} \\
+&=[q_0 | q_1 | …] \underbrace{\begin{bmatrix}  a_0 & c_0 α_1/α_0 \\
+									α_0/α_1 & a_1 & c_1 α_2/α_1 \\
+									& α_1/α_2 & a_2 & ⋱ \\
+									&& ⋱ & ⋱
+									\end{bmatrix}}_{X̃}
+\end{align*}
+$$
+Thus to make this symmetric we need $ c̃_n := c_n α_{n+1}/α_n = α_n/α_{n+1} =: b̃_n$, i.e., $α_{n+1} = α_n/\sqrt{c_n}$,
+in other words,
+$$
+α_n = {α_0 \over ∏_{k=0}^{n-1} \sqrt{c_k}}.
+$$
+Moreover, we see with this choice that $c̃_n = \sqrt{b_n} = \sqrt{c_n}$ 
+
+1. $w(x) = 1-x$. We know $q_0(x) = α_0 = 1/\|π_0\| = 1/\sqrt{2}$. Then $α_1 = 1/\sqrt{2c_0} =3/2$ (hence $q_1(x) = α_1 π_1(x) = 3x/2+ 1/2$),
+which tells us
+$$
+c̃_0 = c_0 α_1/α_0 = \sqrt{2}/3 = b̃_0 (= \sqrt{c_0}.)
+$$
+Then $α_2 = α_1/\sqrt{c_1} = 15/(2\sqrt{6})$ which tells us $c̃_1 = c_1 α_2/α_1 = \sqrt{6}/5 = b̃_1 (= \sqrt{c_1})$. In other words we have,
+$$
+X̃_3 = \begin{bmatrix}
+-1/3 & \sqrt{2}/3 \\
+ \sqrt{2}/3 & -1/15 & \sqrt{6}/5 \\
+& \sqrt{6}/5 & -1/35
+\end{bmatrix}
+$$
+
+2. $w(x) = \sqrt{1-x^2}$ We can just jump ahead since we know the answer is just with $\sqrt{c_n}$ in place of $b_n$ and $c_n$:
+$$
+X̃_3 = \begin{bmatrix}
+0 & 1/2 \\
+1/2 & 0 & 1/2 \\
+& 1/2 & 0
+\end{bmatrix}
+$$
+
+3. $w(x) = 1-x^2$:
+$$
+X̃_3 = \begin{bmatrix}
+0 & 1/\sqrt{5} \\
+1/\sqrt{5} & 0 & \sqrt{8/35} \\
+& \sqrt{8/35} & 0
+\end{bmatrix}
+$$
 
 **END**
 
