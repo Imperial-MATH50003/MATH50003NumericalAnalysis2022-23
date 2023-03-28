@@ -60,8 +60,8 @@ We need to show that $p_n(x) := \cos n {\rm acos}\, x$ are
 Property (2) follows under a change of variables:
 $$
 \int_{-1}^1 {p_n(x) p_m(x) \over \sqrt{1-x^2}} {\rm d} x =
-\int_{-π}^π {\cos(nθ) \cos(mθ) \over \sqrt{1-\cos^2 θ}} \sin θ {\rm d} θ =
-\int_{-π}^π \cos(nθ) \cos(mθ) {\rm d} x = 0
+\int_0^π {\cos(nθ) \cos(mθ) \over \sqrt{1-\cos^2 θ}} \sin θ {\rm d} θ =
+\int_0^π \cos(nθ) \cos(mθ) {\rm d} x = 0
 $$
 if $n ≠ m$.
 
