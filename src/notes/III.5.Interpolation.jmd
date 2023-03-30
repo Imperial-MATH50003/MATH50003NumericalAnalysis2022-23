@@ -147,7 +147,7 @@ $$
 **Proposition 3 (interpolatory quadrature is exact for polynomials)** 
 Interpolatory quadrature is exact for all degree $n-1$ polynomials $p$:
 $$
-∫_a^b p(x) w(x) {\rm d}x = Σ_n^{w,𝐱}[f]
+∫_a^b p(x) w(x) {\rm d}x = Σ_n^{w,𝐱}[p]
 $$
 
 **Proof**
