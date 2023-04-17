@@ -419,7 +419,7 @@ $$
 $$
 and the error is bounded by:
 $$
-(12 + 2 + 34) ϵ_{\rm m} = 48 ϵ_{\rm m}
+(12 + 2 + 24) ϵ_{\rm m} = 38 ϵ_{\rm m}
 $$
 This is quite pessimistic but still captures that we are on the order of $ϵ_{\rm m}$.
 
