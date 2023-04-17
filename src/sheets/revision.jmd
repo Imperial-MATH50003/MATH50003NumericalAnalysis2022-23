@@ -1,0 +1,132 @@
+# MATH50003 Numerical Analysis (2022–23)
+# Revision Sheet
+
+-----
+
+**Problem 1.1** State which integers are represented by an 8-bit signed (`Int8`) and unsigned (`UInt8`) integer, both with   bits
+$$
+{\tt 10000001}
+$$
+
+**Problem 1.2** State which real number is represented by an IEEE 16-bit floating point number (with $σ = 15, Q = 5$, and $S = 10$) with bits
+$$
+{\tt 1\ 01000\ 0000000001}
+$$
+
+-----
+
+**Problem 2.1** Consider the truncated Taylor series for $1/(1-x)$:
+$$
+g_n(x) := ∑_{k=0}^n x^k
+$$
+Write  a one-line mathematical function $g_n^t(x)$ approximating $g_n(x)$
+using floating point operations  involving $⊕$, $⊘$, and $⊗$.
+You may find it convenient to use the notation:
+$$
+\begin{align*}
+⨁_{k=1}^n x_k &:= x_1 ⊕ ⋯ ⊕ x_n = (⋯((x_1 ⊕ x_2) ⊕ x_3)⋯ ⊕ x_{n-1}) ⊕ x_n \\
+⨂_{k=1}^n x_k &:= x_1 ⊗ ⋯ ⊗ x_n = (⋯((x_1 ⊗ x_2) ⊗ x_3)⋯ ⊗ x_{n-1}) ⊗ x_n \\
+\end{align*}
+$$
+
+**Problem 2.2** Recall for $E_{n,ϵ} := {n ϵ \over 1-nϵ}$ and $x_1,…,x_n ∈ F$ that
+$$
+\begin{align*}
+x_1 ⊗ ⋯ ⊗ x_n &= x_1 ⋯ x_n (1 + θ_{n-1}),\\
+x_1 ⊕ ⋯ ⊕ x_n &= x_1 +  ⋯ + x_n + σ_n
+\end{align*}
+$$
+where $|θ_n| ≤ E_{n,ϵ_{\rm m}/2}$ and $|σ_n| ≤ M E_{n-1,ϵ_{\rm m}/2}$, for $M = Σ_{k=1}^n |x_k|$
+and  assuming $n ϵ_{\rm m} < 2$.
+Show for $x ∈ F$ such that $|x| < 1$
+$$
+g_n^t(x) = ∑_{k=0}^n x^k + ε_n
+$$
+where
+$$
+|ε_n| ≤ {2E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2 \over  1- |x|}.
+$$
+You may assume all operations are normal.
+
+
+
+----
+
+**Problem 3** What is the dual extension of square-roots? I.e. what should $\sqrt{a + b ϵ}$ equal assuming $a > 0$?
+
+
+------
+
+**Problem 4** State the entries of the permutation matrix $P_σ$ corresponding to the permutation $σ$ with Cauchy representation
+$$
+\begin{pmatrix}
+1 & 2 & 3 & 4 & 5 \\
+1 & 5 & 4 & 3 & 2
+\end{pmatrix}.
+$$
+
+----
+
+**Problem 5** Use reflections to determine the entries of an orthogonal matrix $Q$ such that
+$$
+Q \begin{bmatrix} 2 \\ 1 \\ 2 \end{bmatrix} =  \begin{bmatrix} -3 \\ 0 \\ 0 \end{bmatrix}.
+$$
+
+----
+
+**Problem 6** Use the Cholesky factorisation to determine
+whether the following matrix is symmetric positive definite:
+$$
+\begin{bmatrix} 2 & 2 & 1  \\
+2 & 3 & 2\\
+1 & 2 & 2
+\end{bmatrix}
+$$
+
+----
+
+**Problem 7** Compute the 2-norm condition number of the matrix
+$$
+\begin{bmatrix} 1 & 1 \\
+& 2
+\end{bmatrix}
+$$
+
+-----
+
+**Problem 8** For the function $f(θ) = \sin 3 θ$, state explicit formulae for its Fourier coefficients
+$$
+\hat f_k := {1 \over 2π} \int_0^{2π} f(θ) {\rm e}^{-{\rm i} k θ} {\rm d}θ
+$$
+and  their discrete approximation:  
+$$
+\hat f_k^n := {1 \over n} \sum_{j=0}^{n-1} f(θ_j) {\rm e}^{-{\rm i} k θ_j}.
+$$
+for _all_ integers $k$, $n = 1,2,…$, where $θ_j = 2π j/n$.
+
+
+-----
+
+
+
+**Problem 9** Consider orthogonal polynomials 
+$$
+H_n(x) = 2^n x^n + O (x^{n-1})
+$$ 
+as $x → ∞$ and $n = 0, 1, 2, …$,  orthogonal with respect to the inner product
+$$
+\langle f, g \rangle = \int_{-∞}^∞ f(x) g(x) w(x) {\rm d}x, \qquad w(x) = \exp(-x^2)
+$$
+Construct $H_0(x)$, $H_1(x)$, $H_2(x)$ and hence show that $H_3(x) = 8x^3-12x$. You may use without proof the formulae
+$$
+\int_{-∞}^∞ w(x) {\rm d}x = \sqrt{π}, \int_{-∞}^∞ x^2 w(x) {\rm d}x = \sqrt{π}/2, 
+\int_{-∞}^∞ x^4 w(x) {\rm d}x = 3\sqrt{π}/4.
+$$
+
+----
+
+**Problem 10** Derive the 3-point Gauss quadrature formula 
+$$
+\int_{-∞}^∞ f(x) \exp(-x^2) {\rm d}x ≈ w_1 f(x_1) + w_2 f(x_2) + w_3 f(x_3)
+$$
+with analytic expressions for $x_j$ and $w_j$.

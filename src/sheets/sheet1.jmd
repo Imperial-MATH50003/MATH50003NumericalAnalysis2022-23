@@ -18,7 +18,7 @@ Starred problems are more challenging.
 
 **Problem 3** What are the single precision $F_{32}$ (`Float32`) floating point representations for the following: 
 $$
-2, 31, 32, 23/4, (23/4)\times 2^{100}
+2, 31, 32, 23/4, (23/4)× 2^{100}
 $$
 
 

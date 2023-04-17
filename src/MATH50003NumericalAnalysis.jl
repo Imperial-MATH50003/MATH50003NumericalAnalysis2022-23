@@ -98,6 +98,8 @@ write("src/sheets/sheet10.jmd", replace(read("src/sheets/sheet10s.jmd", String),
 notebook("src/sheets/sheet10.jmd"; pkwds...)
 notebook("src/sheets/sheet10s.jmd"; pkwds...)
 
+write("src/sheets/revision.jmd", replace(read("src/sheets/revisions.jmd", String), r"\*\*SOLUTION\*\*(.*?)\*\*END\*\*"s => ""))
+notebook("src/sheets/revision.jmd"; pkwds...)
 
 #####
 # labs
