@@ -130,7 +130,7 @@ We first show for $m < n$ that a QR decomposition exists. Writing
 $$
 A = [𝐚_1 | ⋯ | 𝐚_n]
 $$
-and let $A = [𝐚_1 | ⋯ | 𝐚_m] = Q R_m$. It follows that $R := Q^⋆ A$ is right-triangular.
+and taking the first $m$ columns (so that it is square) we can write $[𝐚_1 | ⋯ | 𝐚_m] = Q R_m$. It follows that $R := Q^⋆ A$ is right-triangular.
 
 We can write:
 $$
