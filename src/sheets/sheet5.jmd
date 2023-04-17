@@ -12,7 +12,7 @@ $$
 Use reflections to determine the entries of orthogonal/unitary matrices $Q_1, Q_2, Q_3$ such that
 $$
 Q_1 𝐚 = \begin{bmatrix} 3 \\ 0 \\ 0 \end{bmatrix}, Q_2 𝐚 = \begin{bmatrix} -3 \\ 0 \\ 0 \end{bmatrix},
-Q_3 𝐛 = \begin{bmatrix} \sqrt{3} \\ 0 \\ 0 \end{bmatrix}
+Q_3 𝐛 = \begin{bmatrix} 3 \\ 0 \\ 0 \end{bmatrix}
 $$
 
 
