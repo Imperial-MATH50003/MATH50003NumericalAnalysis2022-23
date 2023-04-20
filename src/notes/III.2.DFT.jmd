@@ -19,13 +19,13 @@ most influencial algorithms of the 20th century: the Fast Fourier Transform.
 The _Discrete Fourier Transform (DFT)_ is defined as:
 $$
 \begin{align*}
-Q_n &:= {1 \over √n} \begin{bmatrix} 1 & 1 & 1&  ⋯ & 1 \\
+Q_n &:= {1 \over \sqrt{n}} \begin{bmatrix} 1 & 1 & 1&  ⋯ & 1 \\
                                     1 & {\rm e}^{-{\rm i} θ_1} & {\rm e}^{-{\rm i} θ_2} & ⋯ & {\rm e}^{-{\rm i} θ_{n-1}} \\
                                     1 & {\rm e}^{-{\rm i} 2 θ_1} & {\rm e}^{-{\rm i} 2 θ_2} & ⋯ & {\rm e}^{-{\rm i} 2θ_{n-1}} \\
                                     ⋮ & ⋮ & ⋮ & ⋱ & ⋮ \\
                                     1 & {\rm e}^{-{\rm i} (n-1) θ_1} & {\rm e}^{-{\rm i} (n-1) θ_2} & ⋯ & {\rm e}^{-{\rm i} (n-1) θ_{n-1}}
 \end{bmatrix} \\
-&= {1 \over √n} \begin{bmatrix} 1 & 1 & 1&  ⋯ & 1 \\
+&= {1 \over \sqrt{n}} \begin{bmatrix} 1 & 1 & 1&  ⋯ & 1 \\
                                     1 & ω^{-1} & ω^{-2} & ⋯ & ω^{-(n-1)}\\
                                     1 & ω^{-2} & ω^{-4} & ⋯ & ω^{-2(n-1)}\\
                                     ⋮ & ⋮ & ⋮ & ⋱ & ⋮ \\
@@ -36,14 +36,14 @@ $$
 for the $n$-th root of unity $ω = {\rm e}^{{\rm i} π/n}$. Note that
 $$
 \begin{align*}
-Q_n^⋆ &= {1 \over √n} \begin{bmatrix}
+Q_n^⋆ &= {1 \over \sqrt{n}} \begin{bmatrix}
 1 & 1 & 1&  ⋯ & 1 \\
 1 & {\rm e}^{{\rm i} θ_1} & {\rm e}^{{\rm i} 2 θ_1} & ⋯ & {\rm e}^{{\rm i} (n-1) θ_1} \\
 1 &  {\rm e}^{{\rm i} θ_2}  & {\rm e}^{{\rm i} 2 θ_2} & ⋯ & {\rm e}^{{\rm i} (n-1)θ_2} \\
 ⋮ & ⋮ & ⋮ & ⋱ & ⋮ \\
 1 & {\rm e}^{{\rm i} θ_{n-1}} & {\rm e}^{{\rm i} 2 θ_{n-1}} & ⋯ & {\rm e}^{{\rm i} (n-1) θ_{n-1}}
 \end{bmatrix} \\
-&= {1 \over √n} \begin{bmatrix}
+&= {1 \over \sqrt{n}} \begin{bmatrix}
 1 & 1 & 1&  ⋯ & 1 \\
 1 & ω^{1} & ω^{2} & ⋯ & ω^{(n-1)}\\
 1 & ω^{2} & ω^{4} & ⋯ & ω^{2(n-1)}\\
@@ -56,7 +56,7 @@ $$
 Note that
 $$
 \underbrace{\begin{bmatrix} f̂_0^n \\ ⋮ \\ f̂_{n-1}^n \end{bmatrix}}_{𝐟̂ⁿ} = 
-{1 \over √n} Q_n \underbrace{\begin{bmatrix} f(θ₀) \\ ⋮ \\ f(θₙ) \end{bmatrix}}_{𝐟ⁿ}
+{1 \over \sqrt{n}} Q_n \underbrace{\begin{bmatrix} f(θ_0) \\ ⋮ \\ f(θ_{n-1}) \end{bmatrix}}_{𝐟ⁿ}
 $$
 
 The choice of normalisation constant is motivated by the following:
