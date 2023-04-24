@@ -250,20 +250,37 @@ $$
 
 **SOLUTION**
 
-We need to verify:
+We need to verify
+$$
+p_n(x) := {\sin(n+1) θ \over \sin θ}
+$$
+are
 1. graded polynomials
 2. orthogonal w.r.t. $\sqrt{1-x^2}$ on $[-1,1]$, and
 3. have the leading coefficient $2^n$.
+Then uniqueness will guarantee that $p_n(x) = U_n(x)$.
 
 (2) follows under a change of variables
-$$\int_{-1}^1U_n(x)U_m(x)\sqrt{1-x^2}{\rm d}x = \int_0^{π}U_n(\cos θ)U_m(\cos θ)\sin^2 θ{\rm d} θ = \int_0^{π}\sin(n+1) θ\sin(m+1) θ{\rm d} θ=\frac{π}{2}\delta_{mn}$$
-where the last step is a result from Fourier theories.
-
-To see that they are graded we use the fact that
-$$xU_n(x)=\frac{\cos θ\sin(n+1) θ}{\sin θ}=\frac{\sin (n+2) θ+\sin n θ}{2\sin θ}$$
-In other words $2xU_n(x)=U_{n+1}(x)+U_{n-1}(x)$. Since each time we multiply by $2x$ and $U_0(x)=1$ we have
 $$
-U_n(x) = 2^n x^n + O(x^{n-1})
+\begin{align*}
+\int_{-1}^1 p_n(x)p_m(x)\sqrt{1-x^2}{\rm d}x &= \int_0^{π}p_n(\cos θ)p_m(\cos θ)\sin^2 θ{\rm d} θ \\
+&= \int_0^{π}\sin(n+1) θ\sin(m+1) θ{\rm d} θ=\frac{π}{2}δ_{mn}
+\end{align*}
+$$
+where the last step can be shown by substituting $\sin kθ = (\exp(ikθ)-\exp(-ikθ)/(2i)$.
+
+To see that they are graded, first note that
+$$
+p_0(x) = {\sin θ /\sin θ} = 1, p_1(x) =  {\sin 2 θ \over \sin θ} = {2 \sin θ \cos θ \over \sin θ} = 2x.
+$$
+Now for $n = 1,2,…$  use the fact that
+$$
+xp_n(x)=\frac{\cos θ\sin(n+1) θ}{\sin θ}=\frac{\sin (n+2) θ+\sin n θ}{2\sin θ}
+$$
+In other words $2xp_n(x)=p_{n+1}(x)+p_{n-1}(x)$, i.e. $p_{n+1}(x) = 2x p_n(x) + p_{n-1}(x).
+By induction it follows that
+$$
+p_n(x) = 2^n x^n + O(x^{n-1})
 $$
 which also proves (3).
 
@@ -280,16 +297,8 @@ $$
 
 **SOLUTION**
 
-The first result is trivial.
-
-To get the second result, recall that
-$$U_n(\cos θ)=\cos θ U_{n-1}(\cos θ)+\cos n θ$$
-and
-$$\cos n θ=\cos θ\cos(n-1) θ-(1-\cos^2 θ)U_{n-2}(\cos θ).$$
-
-The first equation gives $\cos n θ$ in terms of $U_n$ and $U_{n-1}$. Substitute the result into the second equation to get
-$$U_n(x)-xU_{n-1}(x)=x(U_{n-1}(x)-xU_{n-2}(x))-(1-x^2)U_{n-2}(x)$$
-which reduces to the desired recurrence.
+The first result is trivial. For the other parts, from the solution to 4.2 we know $2xU_n(x)=U_{n+1}(x)+U_{n-1}(x)$
+and this result is a reordering.
 
 **END**
 
