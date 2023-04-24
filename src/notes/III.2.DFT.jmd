@@ -33,7 +33,7 @@ Q_n &:= {1 \over \sqrt{n}} \begin{bmatrix} 1 & 1 & 1&  ⋯ & 1 \\
 \end{bmatrix}
 \end{align*}
 $$
-for the $n$-th root of unity $ω = {\rm e}^{{\rm i} π/n}$. Note that
+for the $n$-th root of unity $ω = {\rm e}^{2π{\rm i}/n}$. Note that
 $$
 \begin{align*}
 Q_n^⋆ &= {1 \over \sqrt{n}} \begin{bmatrix}
