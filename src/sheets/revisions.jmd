@@ -8,10 +8,32 @@ $$
 {\tt 10000001}
 $$
 
+**SOLUTION**
+
+For unsigned it is $2^7 + 1 = 129$. For signed, since the first bit is one, its $2^7 + 1 - 2^8 = -127$.
+
+**END**
+
 **Problem 1.2** State which real number is represented by an IEEE 16-bit floating point number (with $σ = 15, Q = 5$, and $S = 10$) with bits
 $$
 {\tt 1\ 01000\ 0000000001}
 $$
+
+**SOLUTION**
+The sign bit is 1 so the answer is negative. The exponent bits correspond to
+$$
+q = 2^3 = 8
+$$
+The significand is
+$$
+(1.0000000001)_2 = 1 + 2^{-10}
+$$
+So this represents
+$$
+-2^{8-σ} (1 + 2^{-10}) = - 2^{-7} (1 + 2^{-10})
+$$
+
+**END**
 
 -----
 
@@ -28,6 +50,14 @@ $$
 ⨂_{k=1}^n x_k &:= x_1 ⊗ ⋯ ⊗ x_n = (⋯((x_1 ⊗ x_2) ⊗ x_3)⋯ ⊗ x_{n-1}) ⊗ x_n \\
 \end{align*}
 $$
+
+**SOLUTION**
+
+$$
+g_n^t(x) = 1 ⊕ \left(⨁_{k=1}^n ⨂_{j=1}^k x \right)
+$$
+
+**END**
 
 **Problem 2.2** Recall for $E_{n,ϵ} := {n ϵ \over 1-nϵ}$ and $x_1,…,x_n ∈ F$ that
 $$
@@ -50,7 +80,7 @@ You may assume all operations are normal.
 
 **SOLUTION**
 
- Noe that 
+ Note for $x_0 := 1$ and
 $$
 x_k := ⨂_{j=1}^k x = x^k (1+θ_{k-1})
 $$
@@ -77,6 +107,12 @@ $$
 
 **Problem 3** What is the dual extension of square-roots? I.e. what should $\sqrt{a + b ϵ}$ equal assuming $a > 0$?
 
+**SOLUTION**
+$$
+\sqrt{a + b ϵ} = \sqrt{a} + {b \over 2 \sqrt{a}}  ϵ
+$$
+**END**
+
 
 ------
 
@@ -88,12 +124,37 @@ $$
 \end{pmatrix}.
 $$
 
+**SOLUTION**
+$$
+\begin{bmatrix}
+1 & 0 &0&0&0\\ 0&0&0&0& 1 \\
+0&0&0& 1&0 \\
+0&0& 1&0&0 \\
+0& 1&0&0&0
+\end{bmatrix}
+$$
+**END**
+
 ----
 
 **Problem 5** Use reflections to determine the entries of an orthogonal matrix $Q$ such that
 $$
 Q \begin{bmatrix} 2 \\ 1 \\ 2 \end{bmatrix} =  \begin{bmatrix} -3 \\ 0 \\ 0 \end{bmatrix}.
 $$
+
+**SOLUTION**
+
+$$
+\begin{align*}
+𝐱 &:= [2,1,2], \| 𝐱 \| = 3\\
+𝐲 &:= \|𝐱\| 𝐞_1 + 𝐱 = [5,1,2], \| 𝐲 \| = \sqrt{30} \\
+𝐰 &:= 𝐲 / \| 𝐲 \| = [5,1,2] /  \sqrt{30} \\
+Q &:= I - 2𝐰 𝐰^⊤ = I - {1 \over 15} \begin{bmatrix}5 \\ 1 \\ 2 \end{bmatrix} [5 1 2] = I - {1 \over 15} \begin{bmatrix} 25 & 5 & 10 \\5 & 1 & 2 \\ 10 & 2 & 4 \end{bmatrix} \\
+&= {1 \over 15} \begin{bmatrix} -10 & -5 & -10 \\ -5 & 14 & -2 \\ -10 & -2 & 11 \end{bmatrix}
+\end{align*}
+$$
+
+**END**
 
 ----
 
@@ -105,6 +166,10 @@ $$
 1 & 2 & 2
 \end{bmatrix}
 $$
+
+**SOLUTION**
+
+**END**
 
 ----
 
