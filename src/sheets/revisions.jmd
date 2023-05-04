@@ -245,6 +245,29 @@ $$
 $$
 for _all_ integers $k$, $n = 1,2,…$, where $θ_j = 2π j/n$.
 
+**SOLUTION**
+
+We have
+$$
+f(θ) = \sin 3 θ = { \exp(3 i θ) \over 2} -  { \exp(-3 i θ) \over 2 i} 
+$$
+hence $\hat f_3 = 1/(2i) \hat f_{-3} = -1/(2i)$ and $\hat f_k = 0$ otherwise. Thus we have:
+\begin{align*}
+\hat f_k^1 &= \sum_{k=-\infty}^\infty \hat f_k = \hat f_{-3} + \hat f_3 = 0, \\
+\hat f_{2k}^2 &= 1, \hat f_{2k+1}^2 = \hat f_{-3} + \hat f_3 = 0, \\
+\hat f_{3k}^3 &= \hat f_{-3} + \hat f_3 = 0, \hat f_{3k+1}^3 = \hat f_{3k-1}^3 = 0, \\
+\hat f_{4k}^4 &= \hat f_{4k+2}^4 = 0, \hat f_{4k+1}^4 &= \hat f_{-3} = -1/(2i), \hat f_{4k+3}^4 &= \hat f_{3} = 1/(2i) \\
+\hat f_{5k}^5 &= \hat f_{5k+1}^5 = \hat f_{5k+4}^5,  \hat f_{5k+2}^5 = \hat f_{-3} = -1/(2i),  \hat f_{5k+3}^5 = \hat f_{3} = 1/(2i), 
+\hat f_{6k}^6 &= \hat f_{6k+1}^6 = \hat f_{6k+2}^6 = \hat f_{6k+4}^6 = \hat f_{6k+5}^6,  \hat f_{6k+3}^5 = \hat f_{-3} + \hat f_{3} = 0 
+\end{align*}
+For $n > 6$ we have
+$$
+\hat f_{-3+nk}^n =  \hat f_{-3} = -{1 \over 2i},\hat f_{3+nk}^n =  \hat f_{3} = {1 \over 2i}
+$$
+and all other $\hat f_k^n = 0$.
+
+**END**
+
 
 -----
 
@@ -264,6 +287,48 @@ $$
 \int_{-∞}^∞ x^4 w(x) {\rm d}x = 3\sqrt{π}/4.
 $$
 
+**SOLUTION**
+
+Because $w(x) = w(-x) = 0$ we know that $a_k$ is zero. We further know that $H_0(x) = 1$ with $\|H_0\|^2 = \sqrt{π}$
+ and $H_1(x) = 2x$ with
+$$
+\| H_1 \|^2 = 4 ∫_{-∞}^∞ x^2 w(x) {\rm d}x = 2 \sqrt{π}.
+$$
+
+We have
+$$
+ x H_1(x) = c_0 H_0(x) + H_2(x)/2
+$$
+where
+$$
+c_0 = {⟨ x H_1(x), H_0(x) ⟩ \over \|H_0\|^2 } = {\sqrt{π}  \over \sqrt{π}} = 1
+$$
+Hence $H_2(x) = 2 x H_1(x) - H_0(x) = 4x^2-2$, which satisfies
+$$
+\|H_2\|^2 = 16 ∫_{-∞}^∞ x^4 w(x) {\rm d } x - 16∫_{-∞}^∞ x^2 w(x) {\rm d}x + 4 ∫_{-∞}^∞  w(x) {\rm d}x = 
+(12 -8 + 4) \sqrt{π} = 8 \sqrt{π}.
+$$
+We further have
+$$
+⟨ x H_2(x), H_1(x) ⟩ =  ∫_{-∞}^∞ (8x^4 - 4 x^2) w(x) {\rm d} x = (6 -2) \sqrt{π} = 4 \sqrt{π}
+$$
+Finally we have
+$$
+ x H_2(x) = c_1 H_1(x) + H_3(x)/2
+$$
+where
+$$
+c_1 = {⟨ x H_2(x), H_1(x) ⟩ \over \|H_1\|^2 } = { 4 \sqrt{π}  \over 2 \sqrt{π}} = 2
+$$
+Hence
+$$
+H_3(x) = 2x H_2(x) - 4 H_1(x) = 8x^3 - 12x.
+$$
+
+
+
+
+
 ----
 
 **Problem 10** Derive the 3-point Gauss quadrature formula 
@@ -271,3 +336,50 @@ $$
 \int_{-∞}^∞ f(x) \exp(-x^2) {\rm d}x ≈ w_1 f(x_1) + w_2 f(x_2) + w_3 f(x_3)
 $$
 with analytic expressions for $x_j$ and $w_j$.
+
+**SOLUTION**
+
+We know $x_k$ are the roots of $H_3(x) = 8x^3 - 12x$ hence we have $x_2 = 0$ and the other roots satisfy
+$
+2x^2 - 3 = 0 
+$, i.e., $x_1 = -\sqrt{3/2}$ and $x_2 = \sqrt{3/2}$. To deduce the weights the easiest approach is to use Lagrange
+interpolation. An alternative is to orthonormalise. Note the Jacobi matrix satisfies
+$$
+x [H_0 | H_1 | H_2 | H_3 | …] = [H_0 | H_1 | H_2 | H_3 | …] \underbrace{\begin{bmatrix} 0 & 1  
+                                                                    1/2 & 0 & 2 \\ 
+                                                                       & 1/2 & 0 &  ⋱\\
+                                                                          && 1/2 & ⋱ \\
+                                                                                & ⋱ \end{bmatrix}}_X
+$$
+To find $q_k = d_k H_k$, orthonormalised versions of Hermite, we need to choose $d_k$ to symmetrise $X$, 
+that is for $D = {\rm diag}(d_0,d_1,…)$ we have 
+$$
+x [q_0 | q_1 | …] = x [H_0 | H_1 | …] D = [H_0 | H_1 | …] X D = [q_0 | q_1 | …] D^{-1} X D
+$$
+where
+$$
+D^{-1} X D = begin{bmatrix}                                                 0 & d_1/d_0  
+                                                                    d_0/(2d_1) & 0 & 2d_2/d_1 \\ 
+                                                                    & d_1/(2d_2) & 0 &  ⋱\\
+                                                                        && d_2/(2d_3) & ⋱ \\
+                                                                     &&& ⋱ end{bmatrix}
+$$
+Note $d_0 = 1/\sqrt{∫_{-∞}^∞ \exp(-x^2) {\rm d} x } = 1/π^{1/4}$
+then we have 
+$$
+\begin{align*}
+d_0^2 &= 2 d_1^2 ⇒ d_1 = 1/(\sqrt{2} π^{1/4}) \\
+d_1^2 &= 4 d_2^2 ⇒ d_2 = 1/(2\sqrt{2} π^{1/4})
+\end{align*}
+$$
+We thus have
+$$
+w_1 = {1 \over q_0(-\sqrt{3/2})^2 + q_1(-\sqrt{3/2})^2 + q_2(-\sqrt{3/2})^2} =
+{1 \over d_0^2 + 4d_1^2 (3/2) + d_2^2 (6 - 2)^2} = {\sqrt{π} \over 6} \\
+w_2 = {1 \over q_0(0)^2 + q_1(0)^2 + q_2(0)^2} =
+{1 \over d_0^2 + d_2^2 (2)^2} = {2\sqrt{π} \over  3} \\
+w_3 = w_1 = {\sqrt{π} \over 6}.
+$$
+
+
+**END**
