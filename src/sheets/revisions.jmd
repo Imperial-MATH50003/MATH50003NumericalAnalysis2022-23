@@ -8,10 +8,32 @@ $$
 {\tt 10000001}
 $$
 
+**SOLUTION**
+
+For unsigned it is $2^7 + 1 = 129$. For signed, since the first bit is one, its $2^7 + 1 - 2^8 = -127$.
+
+**END**
+
 **Problem 1.2** State which real number is represented by an IEEE 16-bit floating point number (with $σ = 15, Q = 5$, and $S = 10$) with bits
 $$
 {\tt 1\ 01000\ 0000000001}
 $$
+
+**SOLUTION**
+The sign bit is 1 so the answer is negative. The exponent bits correspond to
+$$
+q = 2^3 = 8
+$$
+The significand is
+$$
+(1.0000000001)_2 = 1 + 2^{-10}
+$$
+So this represents
+$$
+-2^{8-σ} (1 + 2^{-10}) = - 2^{-7} (1 + 2^{-10})
+$$
+
+**END**
 
 -----
 
@@ -28,6 +50,14 @@ $$
 ⨂_{k=1}^n x_k &:= x_1 ⊗ ⋯ ⊗ x_n = (⋯((x_1 ⊗ x_2) ⊗ x_3)⋯ ⊗ x_{n-1}) ⊗ x_n \\
 \end{align*}
 $$
+
+**SOLUTION**
+
+$$
+g_n^t(x) = 1 ⊕ \left(⨁_{k=1}^n ⨂_{j=1}^k x \right)
+$$
+
+**END**
 
 **Problem 2.2** Recall for $E_{n,ϵ} := {n ϵ \over 1-nϵ}$ and $x_1,…,x_n ∈ F$ that
 $$
@@ -50,7 +80,7 @@ You may assume all operations are normal.
 
 **SOLUTION**
 
- Noe that 
+ Note for $x_0 := 1$ and
 $$
 x_k := ⨂_{j=1}^k x = x^k (1+θ_{k-1})
 $$
@@ -64,7 +94,7 @@ $$
 $$
 for
 $$
-|σ_{n+1}| ≤ M E_{n,ϵ_{\rm m}/2}$ = {E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2 \over  1- |x|}.
+|σ_{n+1}| ≤ M E_{n,ϵ_{\rm m}/2} = {E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2 \over  1- |x|}.
 $$
 Thus
 $$
@@ -77,6 +107,12 @@ $$
 
 **Problem 3** What is the dual extension of square-roots? I.e. what should $\sqrt{a + b ϵ}$ equal assuming $a > 0$?
 
+**SOLUTION**
+$$
+\sqrt{a + b ϵ} = \sqrt{a} + {b \over 2 \sqrt{a}}  ϵ
+$$
+**END**
+
 
 ------
 
@@ -88,12 +124,37 @@ $$
 \end{pmatrix}.
 $$
 
+**SOLUTION**
+$$
+\begin{bmatrix}
+1 & 0 &0&0&0\\ 0&0&0&0& 1 \\
+0&0&0& 1&0 \\
+0&0& 1&0&0 \\
+0& 1&0&0&0
+\end{bmatrix}
+$$
+**END**
+
 ----
 
 **Problem 5** Use reflections to determine the entries of an orthogonal matrix $Q$ such that
 $$
 Q \begin{bmatrix} 2 \\ 1 \\ 2 \end{bmatrix} =  \begin{bmatrix} -3 \\ 0 \\ 0 \end{bmatrix}.
 $$
+
+**SOLUTION**
+
+$$
+\begin{align*}
+𝐱 &:= [2,1,2], \| 𝐱 \| = 3\\
+𝐲 &:= \|𝐱\| 𝐞_1 + 𝐱 = [5,1,2], \| 𝐲 \| = \sqrt{30} \\
+𝐰 &:= 𝐲 / \| 𝐲 \| = [5,1,2] /  \sqrt{30} \\
+Q &:= I - 2𝐰 𝐰^⊤ = I - {1 \over 15} \begin{bmatrix}5 \\ 1 \\ 2 \end{bmatrix} [5 1 2] = I - {1 \over 15} \begin{bmatrix} 25 & 5 & 10 \\5 & 1 & 2 \\ 10 & 2 & 4 \end{bmatrix} \\
+&= {1 \over 15} \begin{bmatrix} -10 & -5 & -10 \\ -5 & 14 & -2 \\ -10 & -2 & 11 \end{bmatrix}
+\end{align*}
+$$
+
+**END**
 
 ----
 
@@ -106,6 +167,40 @@ $$
 \end{bmatrix}
 $$
 
+**SOLUTION**
+
+Here $α_1 = 2$ and $𝐯 = [2,1]$ giving us
+$$
+\begin{align*}
+A_2 &= \begin{bmatrix}
+3&2\\
+2&2
+\end{bmatrix}-{1 \over 2} \begin{bmatrix} 2 \\ 1 \end{bmatrix}\begin{bmatrix} 2 & 1 \end{bmatrix}\\
+&=
+\begin{bmatrix}
+1&1\\
+1&3/2
+\end{bmatrix}
+\end{align*}
+$$
+Thus $α_2 = 1$ and $𝐯 = [1]$ giving us
+$$
+\begin{align*}
+A_3 &= [3/2 - 1] = [1/2]
+\end{align*}
+$$
+As $α_3 = 1/2 > 0$ we know a Cholesky decomposition exists hence $A$ is SPD. In particular we have computed
+$A = LL^⊤$ where
+$$
+L = \begin{bmatrix}
+\sqrt{2} \\
+\sqrt{2} & 1 \\
+1/\sqrt{2} & 1 & 1/\sqrt{2}
+\end{bmatrix}
+$$
+
+**END**
+
 ----
 
 **Problem 7** Compute the 2-norm condition number of the matrix
@@ -114,6 +209,29 @@ $$
 & 2
 \end{bmatrix}
 $$
+
+**SOLUTION**
+
+The singular values of $A$ are the square root of the eigenvalues of
+$$
+A^⊤A = \begin{bmatrix}1 & 1 \\ 1 & 5 \end{bmatrix}
+$$
+which are the roots of
+$$
+{\rm det}(A^⊤A - λI) = (1-λ)(5-λ) - 1 = λ^2 -6λ + 4
+$$
+i.e. the square root of
+$$
+λ = {6 ± \sqrt{36 -16} \over 2} = 3 ±  \sqrt{5}
+$$
+Thus
+$$
+κ(A) = {σ_1 \over σ_2} = {\sqrt{3+\sqrt{5}} \over \sqrt{3-\sqrt{5}}}
+$$
+
+
+**END**
+
 
 -----
 
@@ -126,6 +244,29 @@ $$
 \hat f_k^n := {1 \over n} \sum_{j=0}^{n-1} f(θ_j) {\rm e}^{-{\rm i} k θ_j}.
 $$
 for _all_ integers $k$, $n = 1,2,…$, where $θ_j = 2π j/n$.
+
+**SOLUTION**
+
+We have
+$$
+f(θ) = \sin 3 θ = { \exp(3 i θ) \over 2} -  { \exp(-3 i θ) \over 2 i} 
+$$
+hence $\hat f_3 = 1/(2i) \hat f_{-3} = -1/(2i)$ and $\hat f_k = 0$ otherwise. Thus we have:
+\begin{align*}
+\hat f_k^1 &= \sum_{k=-\infty}^\infty \hat f_k = \hat f_{-3} + \hat f_3 = 0, \\
+\hat f_{2k}^2 &= 1, \hat f_{2k+1}^2 = \hat f_{-3} + \hat f_3 = 0, \\
+\hat f_{3k}^3 &= \hat f_{-3} + \hat f_3 = 0, \hat f_{3k+1}^3 = \hat f_{3k-1}^3 = 0, \\
+\hat f_{4k}^4 &= \hat f_{4k+2}^4 = 0, \hat f_{4k+1}^4 = \hat f_{-3} = -1/(2i), \hat f_{4k+3}^4 = \hat f_{3} = 1/(2i) \\
+\hat f_{5k}^5 &= \hat f_{5k+1}^5 = \hat f_{5k+4}^5,  \hat f_{5k+2}^5 = \hat f_{-3} = -1/(2i),  \hat f_{5k+3}^5 = \hat f_{3} = 1/(2i), \\
+\hat f_{6k}^6 &= \hat f_{6k+1}^6 = \hat f_{6k+2}^6 = \hat f_{6k+4}^6 = \hat f_{6k+5}^6,  \hat f_{6k+3}^5 = \hat f_{-3} + \hat f_{3} = 0 
+\end{align*}
+For $n > 6$ we have
+$$
+\hat f_{-3+nk}^n =  \hat f_{-3} = -{1 \over 2i},\hat f_{3+nk}^n =  \hat f_{3} = {1 \over 2i}
+$$
+and all other $\hat f_k^n = 0$.
+
+**END**
 
 
 -----
@@ -146,6 +287,48 @@ $$
 \int_{-∞}^∞ x^4 w(x) {\rm d}x = 3\sqrt{π}/4.
 $$
 
+**SOLUTION**
+
+Because $w(x) = w(-x) = 0$ we know that $a_k$ is zero. We further know that $H_0(x) = 1$ with $\|H_0\|^2 = \sqrt{π}$
+ and $H_1(x) = 2x$ with
+$$
+\| H_1 \|^2 = 4 ∫_{-∞}^∞ x^2 w(x) {\rm d}x = 2 \sqrt{π}.
+$$
+
+We have
+$$
+ x H_1(x) = c_0 H_0(x) + H_2(x)/2
+$$
+where
+$$
+c_0 = {⟨ x H_1(x), H_0(x) ⟩ \over \|H_0\|^2 } = {\sqrt{π}  \over \sqrt{π}} = 1
+$$
+Hence $H_2(x) = 2 x H_1(x) - H_0(x) = 4x^2-2$, which satisfies
+$$
+\|H_2\|^2 = 16 ∫_{-∞}^∞ x^4 w(x) {\rm d } x - 16∫_{-∞}^∞ x^2 w(x) {\rm d}x + 4 ∫_{-∞}^∞  w(x) {\rm d}x = 
+(12 -8 + 4) \sqrt{π} = 8 \sqrt{π}.
+$$
+We further have
+$$
+⟨ x H_2(x), H_1(x) ⟩ =  ∫_{-∞}^∞ (8x^4 - 4 x^2) w(x) {\rm d} x = (6 -2) \sqrt{π} = 4 \sqrt{π}
+$$
+Finally we have
+$$
+ x H_2(x) = c_1 H_1(x) + H_3(x)/2
+$$
+where
+$$
+c_1 = {⟨ x H_2(x), H_1(x) ⟩ \over \|H_1\|^2 } = { 4 \sqrt{π}  \over 2 \sqrt{π}} = 2
+$$
+Hence
+$$
+H_3(x) = 2x H_2(x) - 4 H_1(x) = 8x^3 - 12x.
+$$
+
+
+
+
+
 ----
 
 **Problem 10** Derive the 3-point Gauss quadrature formula 
@@ -153,3 +336,50 @@ $$
 \int_{-∞}^∞ f(x) \exp(-x^2) {\rm d}x ≈ w_1 f(x_1) + w_2 f(x_2) + w_3 f(x_3)
 $$
 with analytic expressions for $x_j$ and $w_j$.
+
+**SOLUTION**
+
+We know $x_k$ are the roots of $H_3(x) = 8x^3 - 12x$ hence we have $x_2 = 0$ and the other roots satisfy
+$
+2x^2 - 3 = 0 
+$, i.e., $x_1 = -\sqrt{3/2}$ and $x_2 = \sqrt{3/2}$. To deduce the weights the easiest approach is to use Lagrange
+interpolation. An alternative is to orthonormalise. Note the Jacobi matrix satisfies
+$$
+x [H_0 | H_1 | H_2 | H_3 | …] = [H_0 | H_1 | H_2 | H_3 | …] \underbrace{\begin{bmatrix} 0 & 1  \\
+                                                                    1/2 & 0 & 2 \\ 
+                                                                       & 1/2 & 0 &  ⋱\\
+                                                                          && 1/2 & ⋱ \\
+                                                                                &&& ⋱ \end{bmatrix}}_X
+$$
+To find $q_k = d_k H_k$, orthonormalised versions of Hermite, we need to choose $d_k$ to symmetrise $X$, 
+that is for $D = {\rm diag}(d_0,d_1,…)$ we have 
+$$
+x [q_0 | q_1 | …] = x [H_0 | H_1 | …] D = [H_0 | H_1 | …] X D = [q_0 | q_1 | …] D^{-1} X D
+$$
+where
+$$
+D^{-1} X D = \begin{bmatrix}                                                 0 & d_1/d_0  \\
+                                                                    d_0/(2d_1) & 0 & 2d_2/d_1 \\ 
+                                                                    & d_1/(2d_2) & 0 &  ⋱\\
+                                                                        && d_2/(2d_3) & ⋱ \\
+                                                                     &&& ⋱ \end{bmatrix}
+$$
+Note $d_0 = 1/\sqrt{∫_{-∞}^∞ \exp(-x^2) {\rm d} x } = 1/π^{1/4}$
+then we have 
+$$
+\begin{align*}
+d_0^2 &= 2 d_1^2 ⇒ d_1 = 1/(\sqrt{2} π^{1/4}) \\
+d_1^2 &= 4 d_2^2 ⇒ d_2 = 1/(2\sqrt{2} π^{1/4})
+\end{align*}
+$$
+We thus have
+$$
+w_1 = {1 \over q_0(-\sqrt{3/2})^2 + q_1(-\sqrt{3/2})^2 + q_2(-\sqrt{3/2})^2} =
+{1 \over d_0^2 + 4d_1^2 (3/2) + d_2^2 (6 - 2)^2} = {\sqrt{π} \over 6} \\
+w_2 = {1 \over q_0(0)^2 + q_1(0)^2 + q_2(0)^2} =
+{1 \over d_0^2 + d_2^2 (2)^2} = {2\sqrt{π} \over  3} \\
+w_3 = w_1 = {\sqrt{π} \over 6}.
+$$
+
+
+**END**
