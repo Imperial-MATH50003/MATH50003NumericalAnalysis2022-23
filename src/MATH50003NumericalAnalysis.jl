@@ -100,6 +100,7 @@ notebook("src/sheets/sheet10s.jmd"; pkwds...)
 
 write("src/sheets/revision.jmd", replace(read("src/sheets/revisions.jmd", String), r"\*\*SOLUTION\*\*(.*?)\*\*END\*\*"s => ""))
 notebook("src/sheets/revision.jmd"; pkwds...)
+notebook("src/sheets/revisions.jmd"; pkwds...)
 
 #####
 # labs

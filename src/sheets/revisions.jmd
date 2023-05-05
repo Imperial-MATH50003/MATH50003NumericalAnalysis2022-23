@@ -94,7 +94,7 @@ $$
 $$
 for
 $$
-|σ_{n+1}| ≤ M E_{n,ϵ_{\rm m}/2}$ = {E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2 \over  1- |x|}.
+|σ_{n+1}| ≤ M E_{n,ϵ_{\rm m}/2} = {E_{n,ϵ_{\rm m}/2} + E_{n,ϵ_{\rm m}/2}^2 \over  1- |x|}.
 $$
 Thus
 $$
@@ -256,8 +256,8 @@ hence $\hat f_3 = 1/(2i) \hat f_{-3} = -1/(2i)$ and $\hat f_k = 0$ otherwise. Th
 \hat f_k^1 &= \sum_{k=-\infty}^\infty \hat f_k = \hat f_{-3} + \hat f_3 = 0, \\
 \hat f_{2k}^2 &= 1, \hat f_{2k+1}^2 = \hat f_{-3} + \hat f_3 = 0, \\
 \hat f_{3k}^3 &= \hat f_{-3} + \hat f_3 = 0, \hat f_{3k+1}^3 = \hat f_{3k-1}^3 = 0, \\
-\hat f_{4k}^4 &= \hat f_{4k+2}^4 = 0, \hat f_{4k+1}^4 &= \hat f_{-3} = -1/(2i), \hat f_{4k+3}^4 &= \hat f_{3} = 1/(2i) \\
-\hat f_{5k}^5 &= \hat f_{5k+1}^5 = \hat f_{5k+4}^5,  \hat f_{5k+2}^5 = \hat f_{-3} = -1/(2i),  \hat f_{5k+3}^5 = \hat f_{3} = 1/(2i), 
+\hat f_{4k}^4 &= \hat f_{4k+2}^4 = 0, \hat f_{4k+1}^4 = \hat f_{-3} = -1/(2i), \hat f_{4k+3}^4 = \hat f_{3} = 1/(2i) \\
+\hat f_{5k}^5 &= \hat f_{5k+1}^5 = \hat f_{5k+4}^5,  \hat f_{5k+2}^5 = \hat f_{-3} = -1/(2i),  \hat f_{5k+3}^5 = \hat f_{3} = 1/(2i), \\
 \hat f_{6k}^6 &= \hat f_{6k+1}^6 = \hat f_{6k+2}^6 = \hat f_{6k+4}^6 = \hat f_{6k+5}^6,  \hat f_{6k+3}^5 = \hat f_{-3} + \hat f_{3} = 0 
 \end{align*}
 For $n > 6$ we have
@@ -345,11 +345,11 @@ $
 $, i.e., $x_1 = -\sqrt{3/2}$ and $x_2 = \sqrt{3/2}$. To deduce the weights the easiest approach is to use Lagrange
 interpolation. An alternative is to orthonormalise. Note the Jacobi matrix satisfies
 $$
-x [H_0 | H_1 | H_2 | H_3 | …] = [H_0 | H_1 | H_2 | H_3 | …] \underbrace{\begin{bmatrix} 0 & 1  
+x [H_0 | H_1 | H_2 | H_3 | …] = [H_0 | H_1 | H_2 | H_3 | …] \underbrace{\begin{bmatrix} 0 & 1  \\
                                                                     1/2 & 0 & 2 \\ 
                                                                        & 1/2 & 0 &  ⋱\\
                                                                           && 1/2 & ⋱ \\
-                                                                                & ⋱ \end{bmatrix}}_X
+                                                                                &&& ⋱ \end{bmatrix}}_X
 $$
 To find $q_k = d_k H_k$, orthonormalised versions of Hermite, we need to choose $d_k$ to symmetrise $X$, 
 that is for $D = {\rm diag}(d_0,d_1,…)$ we have 
@@ -358,11 +358,11 @@ x [q_0 | q_1 | …] = x [H_0 | H_1 | …] D = [H_0 | H_1 | …] X D = [q_0 | q_1
 $$
 where
 $$
-D^{-1} X D = begin{bmatrix}                                                 0 & d_1/d_0  
+D^{-1} X D = \begin{bmatrix}                                                 0 & d_1/d_0  \\
                                                                     d_0/(2d_1) & 0 & 2d_2/d_1 \\ 
                                                                     & d_1/(2d_2) & 0 &  ⋱\\
                                                                         && d_2/(2d_3) & ⋱ \\
-                                                                     &&& ⋱ end{bmatrix}
+                                                                     &&& ⋱ \end{bmatrix}
 $$
 Note $d_0 = 1/\sqrt{∫_{-∞}^∞ \exp(-x^2) {\rm d} x } = 1/π^{1/4}$
 then we have 
