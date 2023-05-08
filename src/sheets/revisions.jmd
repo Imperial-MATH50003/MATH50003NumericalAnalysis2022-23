@@ -289,7 +289,7 @@ $$
 
 **SOLUTION**
 
-Because $w(x) = w(-x) = 0$ we know that $a_k$ is zero. We further know that $H_0(x) = 1$ with $\|H_0\|^2 = \sqrt{π}$
+Because $w(x) = w(-x)$ we know that $a_k$ is zero. We further know that $H_0(x) = 1$ with $\|H_0\|^2 = \sqrt{π}$
  and $H_1(x) = 2x$ with
 $$
 \| H_1 \|^2 = 4 ∫_{-∞}^∞ x^2 w(x) {\rm d}x = 2 \sqrt{π}.

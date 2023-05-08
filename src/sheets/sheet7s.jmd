@@ -54,7 +54,7 @@ so that $Ũ$ is orthogonal. We use the fact orthogonal matrices do not change n
 $$
 \begin{align*}
 \|A 𝐱 - 𝐛 \|_2^2 &= \|U Σ V^⊤ 𝐱 - 𝐛 \|_2^2 = \|Ũ^⊤ U Σ V^⊤ 𝐱 - Ũ^⊤ 𝐛 \|_2^2 = 
-\|\underbrace{\begin{bmatrix}I_m \\ O \end{bmatrix}}_{∈ ℝ^{m × n}} Σ V^⊤ 𝐱 - \begin{bmatrix} U^⊤ \\ K^⊤ \end{bmatrix} 𝐛 \|_2^2 \\
+\|\underbrace{\begin{bmatrix}I_n \\ O \end{bmatrix}}_{∈ ℝ^{m × n}} Σ V^⊤ 𝐱 - \begin{bmatrix} U^⊤ \\ K^⊤ \end{bmatrix} 𝐛 \|_2^2 \\
 &= \|Σ V^⊤ 𝐱 - U^⊤ 𝐛 \|_2^2 + \|K^⊤ 𝐛\|^2
 \end{align*}
 $$
