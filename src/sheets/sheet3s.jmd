@@ -29,10 +29,10 @@ for $M = \sup_{0 ≤ t ≤ h} |f''(t)|$.
 
 $$
 \begin{align*}
-{f^{\rm FP}(h) \over h} &= {f(h) \over h}(1 + δ_x^{\rm r})
-= (f'(0) + f''(t)h/2)(1 + δ_x^{\rm r}) =
-f'(0) (1 + f''(t)h/(2f'(0)))(1 + δ_x^{\rm r}) \\
-&= f'(0) (1 + \underbrace{f''(t)h/(2f'(0)) + δ_x^{\rm r} + f''(t)h/(2f'(0))δ_x^{\rm r}}_{ε_h})
+{f^{\rm FP}(h) \over h} &= {f(h) \over h}(1 + δ_h^{\rm r})
+= (f'(0) + f''(t)h/2)(1 + δ_h^{\rm r}) =
+f'(0) (1 + f''(t)h/(2f'(0)))(1 + δ_h^{\rm r}) \\
+&= f'(0) (1 + \underbrace{f''(t)h/(2f'(0)) + δ_h^{\rm r} + f''(t)h/(2f'(0))δ_h^{\rm r}}_{ε_h})
 \end{align*}
 $$
 where $t ∈ [0,h]$. 
