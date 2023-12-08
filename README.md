@@ -5,104 +5,104 @@ Lecturer: [Dr Sheehan Olver](https://www.ma.imperial.ac.uk/~solver/)
 
 Office hour: Mondays 11am, Huxley 6M40
 
-## Notes ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/Notes.pdf))
+## Notes ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-232022-23/raw/main/notes/Notes.pdf))
 
 *Background material*
 
-  A. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/A.Julia.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/A.Julia.pdf)): we introduce  the basic features of the Julia language. \
-  B. [Asymptotics and Computational Cost](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/B.Asymptotics.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/B.Asymptotics.pdf)): we review Big-O, little-o and asymptotic to notation,
+  A. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-232022-23/blob/main/notes/A.Julia.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/A.Julia.pdf)): we introduce  the basic features of the Julia language. \
+  B. [Asymptotics and Computational Cost](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/B.Asymptotics.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/B.Asymptotics.pdf)): we review Big-O, little-o and asymptotic to notation,
 and their usage in describing computational cost. \
-  C. [Adjoints and Normal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/C.Adjoints.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/C.Adjoints.pdf)): we review complex inner-products, adjoints, normal matrices, and the spectral theorem.
+  C. [Adjoints and Normal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/C.Adjoints.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/C.Adjoints.pdf)): we review complex inner-products, adjoints, normal matrices, and the spectral theorem.
 
 *I: Computing with numbers*
 
-1. [Integers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.1.Integers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/I.1.Integers.pdf)): we discuss how computers represent integers using modular arithmetic.
-2. [Reals](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.2.Reals.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/I.2.Reals.pdf)): we discuss how computers represent reals using IEEE floating-point arithmetic.
-3. [Divided Differences](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.3.DividedDifferences.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/I.3.DividedDifferences.pdf)): we discuss how we can approximate derivatives using floating point arithmetic, with error bounds.
-4. [Dual Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/I.4.DualNumbers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/I.4.DualNumbers.pdf)): we discuss how a special commutative ring, _dual numbers_,
+1. [Integers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/I.1.Integers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/I.1.Integers.pdf)): we discuss how computers represent integers using modular arithmetic.
+2. [Reals](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/I.2.Reals.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/I.2.Reals.pdf)): we discuss how computers represent reals using IEEE floating-point arithmetic.
+3. [Divided Differences](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/I.3.DividedDifferences.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/I.3.DividedDifferences.pdf)): we discuss how we can approximate derivatives using floating point arithmetic, with error bounds.
+4. [Dual Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/I.4.DualNumbers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/I.4.DualNumbers.pdf)): we discuss how a special commutative ring, _dual numbers_,
 which are defined similar to complex numbers,
 facilitate fast and accurate computation of derivatives.
 
 *II: Computing with matrices*
 
-1. [Structured Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.1.StructuredMatrices.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.1.StructuredMatrices.pdf)): we discuss types of structured matrices (dense, triangular, and banded).
-2. [Orthogonal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.2.OrthogonalMatrices.ipynb)
-([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.2.OrthogonalMatrices.pdf)): we discuss types of orthogonal
+1. [Structured Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/II.1.StructuredMatrices.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/II.1.StructuredMatrices.pdf)): we discuss types of structured matrices (dense, triangular, and banded).
+2. [Orthogonal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/II.2.OrthogonalMatrices.ipynb)
+([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/II.2.OrthogonalMatrices.pdf)): we discuss types of orthogonal
 and unitary matrices (permutations, rotations, and reflections).
-3. [Least Squares and QR](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.3.QR.ipynb)
-([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.3.QR.pdf)): we discuss least squares and the computation of the QR factorisation.
-4. [PLU and Cholesky](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.4.LU.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.4.LU.pdf)): we discuss
+3. [Least Squares and QR](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/II.3.QR.ipynb)
+([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/II.3.QR.pdf)): we discuss least squares and the computation of the QR factorisation.
+4. [PLU and Cholesky](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/II.4.LU.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/II.4.LU.pdf)): we discuss
 the PLU and Cholesky factorisations, as well as symmetric positive definite matrices.
-5. [Norms](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.5.Norms.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.5.Norms.pdf)): we discuss vector and matrix norms.
-6. [Singular Value Decomposition](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.6.SVD.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.6.SVD.pdf)): we discuss the Singular Value Decomposition (SVD) and 2-norms of matrices.
-7. [Condition Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/II.7.ConditionNumbers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/II.7.ConditionNumbers.pdf)): we discuss stability, backward error analysis, and  condition numbers.
+5. [Norms](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/II.5.Norms.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/II.5.Norms.pdf)): we discuss vector and matrix norms.
+6. [Singular Value Decomposition](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/II.6.SVD.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/II.6.SVD.pdf)): we discuss the Singular Value Decomposition (SVD) and 2-norms of matrices.
+7. [Condition Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/II.7.ConditionNumbers.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/II.7.ConditionNumbers.pdf)): we discuss stability, backward error analysis, and  condition numbers.
 
 
 *III: Computing with functions*
 
-1. [Fourier Expansions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.1.Fourier.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/III.1.Fourier.pdf)): we discuss approximating Fourier expansions using the Trapezium Rule.
-2. [Discrete Fourier Transform](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.2.DFT.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/III.2.DFT.pdf)): we discuss how the approximate Fourier coefficients can be recast as a unitary matrix, and how approximate Fourier expansinos interpolate.
-3. [Orthogonal Polynomials](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.3.OrthogonalPolynomials.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/III.3.OrthogonalPolynomials.pdf)): we introduce orthogonal polynomials and discuss
+1. [Fourier Expansions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/III.1.Fourier.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/III.1.Fourier.pdf)): we discuss approximating Fourier expansions using the Trapezium Rule.
+2. [Discrete Fourier Transform](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/III.2.DFT.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/III.2.DFT.pdf)): we discuss how the approximate Fourier coefficients can be recast as a unitary matrix, and how approximate Fourier expansinos interpolate.
+3. [Orthogonal Polynomials](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/III.3.OrthogonalPolynomials.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/III.3.OrthogonalPolynomials.pdf)): we introduce orthogonal polynomials and discuss
 their properties including three-term recurrences and Jacobi matrices.
-4. [Classical Orthogonal Polynomials](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.4.ClassicalOPs.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/III.4.ClassicalOPs.pdf)): we discuss special families of orthogonal polynomials which arise in applications, in particular Chebyshev and Legendre polynomials.
-5. [Interpolation and Quadrature](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.5.Interpolation.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/III.5.Interpolation.pdf)): we discuss how interpolating a function by a polynomial leads naturally to a quadrature rule, for approximating integrals.
-6. [Gaussian Quadrature](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/notes/III.6.Quadrature.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/raw/main/notes/pdf/III.6.Quadrature.pdf)): a powerful quadrature rule comes from diagonalising truncations of Jacobi matrices, which is exact for polynomials twice the degree expected.
+4. [Classical Orthogonal Polynomials](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/III.4.ClassicalOPs.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/III.4.ClassicalOPs.pdf)): we discuss special families of orthogonal polynomials which arise in applications, in particular Chebyshev and Legendre polynomials.
+5. [Interpolation and Quadrature](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/III.5.Interpolation.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/III.5.Interpolation.pdf)): we discuss how interpolating a function by a polynomial leads naturally to a quadrature rule, for approximating integrals.
+6. [Gaussian Quadrature](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/III.6.Quadrature.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/III.6.Quadrature.pdf)): a powerful quadrature rule comes from diagonalising truncations of Jacobi matrices, which is exact for polynomials twice the degree expected.
 
 
 **Non-examinable material**: I.3 Example 1/2, II.2 Definition 7/Lemma 2, II.3.2, II.3 Example 2, II.4.1, II.4.2, III.2.3
 
 ## Assessment
 
-1. [Practice computer-based exam](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/exams/practice.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/exams/practices.ipynb))
-2. [2021–22 Computer-based exam](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/exams/computerexam2122.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/exams/computerexam2122s.ipynb))
-2. [2022–23 Computer-based exam](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/exams/computerexam2223.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/exams/computerexam2223s.ipynb))
-3. [Practice final exam](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/exams/practicefinal.pdf)
+1. [Practice computer-based exam](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/exams/practice.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/exams/practices.ipynb))
+2. [2021–22 Computer-based exam](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/exams/computerexam2122.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/exams/computerexam2122s.ipynb))
+2. [2022–23 Computer-based exam](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/exams/computerexam2223.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/exams/computerexam2223s.ipynb))
+3. [Practice final exam](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/exams/practicefinal.pdf)
 3. Final exam (pen-and-paper): TBA
 
 ## Problem sheets (pen-and-paper)
 
-1. [Integers and Reals](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet1s.ipynb))
-2. [Bounding Errors](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet2.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet2s.ipynb))
-3. [Divided Differences and Dual Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet3.ipynb)  ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet3s.ipynb))
-4. [Structured and Orthogonal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet4.ipynb)  ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet4s.ipynb))
-5. [QR Factorisations](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet5.ipynb)
-([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet5s.ipynb))
-6. [Cholesky and Norms](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet6.ipynb)
-([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet6s.ipynb))
-7. [SVD and Condition Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet7.ipynb)
-([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet7s.ipynb))
-8. [Fourier Expansions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet8.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet8s.ipynb))
-9. [Orthogonal Polynomials](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet9.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet9s.ipynb))
-10. [Quadrature](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet10.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/sheet10s.ipynb))
-11. [Revision](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/revision.ipynb)
-([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/sheets/revisions.ipynb))
+1. [Integers and Reals](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet1.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet1s.ipynb))
+2. [Bounding Errors](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet2.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet2s.ipynb))
+3. [Divided Differences and Dual Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet3.ipynb)  ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet3s.ipynb))
+4. [Structured and Orthogonal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet4.ipynb)  ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet4s.ipynb))
+5. [QR Factorisations](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet5.ipynb)
+([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet5s.ipynb))
+6. [Cholesky and Norms](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet6.ipynb)
+([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet6s.ipynb))
+7. [SVD and Condition Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet7.ipynb)
+([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet7s.ipynb))
+8. [Fourier Expansions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet8.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet8s.ipynb))
+9. [Orthogonal Polynomials](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet9.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet9s.ipynb))
+10. [Quadrature](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet10.ipynb) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/sheet10s.ipynb))
+11. [Revision](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/revision.ipynb)
+([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/sheets/revisions.ipynb))
 
 
 
 ## Labs (Julia-based)
 
-1. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab1.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab1s.ipynb))
-2. [Interval Arithmetic](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab2.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab2.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab2s.ipynb))
-2. [Divided Differences and Dual Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab3.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab3.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab3s.ipynb))
-4. [Structured Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab4.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab4.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab4s.ipynb))
-5. [Orthogonal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab5.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab5.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab5s.ipynb))
-6. [Least squares, QR, and Cholesky](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab6.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab6.jl))
-([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab6s.ipynb))
-7. [Singular value decomposition](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab7.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/src/labs/lab7.jl)) 
-([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/labs/lab7s.ipynb))
+1. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab1.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/src/labs/lab1.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab1s.ipynb))
+2. [Interval Arithmetic](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab2.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/src/labs/lab2.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab2s.ipynb))
+2. [Divided Differences and Dual Numbers](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab3.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/src/labs/lab3.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab3s.ipynb))
+4. [Structured Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab4.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/src/labs/lab4.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab4s.ipynb))
+5. [Orthogonal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab5.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/src/labs/lab5.jl)) ([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab5s.ipynb))
+6. [Least squares, QR, and Cholesky](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab6.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/src/labs/lab6.jl))
+([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab6s.ipynb))
+7. [Singular value decomposition](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab7.ipynb) ([Raw](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/src/labs/lab7.jl)) 
+([Solutions](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/labs/lab7s.ipynb))
 
 
 ## Lecture material
 
-1. Integers: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture1.ipynb)
-2. Floating Point: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture2.ipynb)
-3. Arithmetic: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture3.ipynb)
-4. Bounding Errors: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture4.ipynb)
-5. Divided Differences: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture5.ipynb)
-6. Dual Numbers: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture6.ipynb)
-7. Structured Matrices: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture7.ipynb)
-8. Orthogonal Matrices: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture8.ipynb)
-9. Reflections: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis/blob/main/lectures/Lecture9.ipynb)
+1. Integers: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/lectures/Lecture1.ipynb)
+2. Floating Point: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/lectures/Lecture2.ipynb)
+3. Arithmetic: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/lectures/Lecture3.ipynb)
+4. Bounding Errors: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/lectures/Lecture4.ipynb)
+5. Divided Differences: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/lectures/Lecture5.ipynb)
+6. Dual Numbers: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/lectures/Lecture6.ipynb)
+7. Structured Matrices: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/lectures/Lecture7.ipynb)
+8. Orthogonal Matrices: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/lectures/Lecture8.ipynb)
+9. Reflections: [Notebook](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/lectures/Lecture9.ipynb)
 
 
 
