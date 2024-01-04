@@ -5,11 +5,11 @@ Lecturer: [Dr Sheehan Olver](https://www.ma.imperial.ac.uk/~solver/)
 
 Office hour: Mondays 11am, Huxley 6M40
 
-## Notes ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-232022-23/raw/main/notes/Notes.pdf))
+## Notes ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/Notes.pdf))
 
 *Background material*
 
-  A. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-232022-23/blob/main/notes/A.Julia.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/A.Julia.pdf)): we introduce  the basic features of the Julia language. \
+  A. [Introduction to Julia](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/A.Julia.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/A.Julia.pdf)): we introduce  the basic features of the Julia language. \
   B. [Asymptotics and Computational Cost](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/B.Asymptotics.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/B.Asymptotics.pdf)): we review Big-O, little-o and asymptotic to notation,
 and their usage in describing computational cost. \
   C. [Adjoints and Normal Matrices](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/blob/main/notes/C.Adjoints.ipynb) ([PDF](https://github.com/Imperial-MATH50003/MATH50003NumericalAnalysis2022-23/raw/main/notes/pdf/C.Adjoints.pdf)): we review complex inner-products, adjoints, normal matrices, and the spectral theorem.
